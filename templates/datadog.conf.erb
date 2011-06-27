@@ -8,15 +8,12 @@ dd_url: <%= dd_url %>
 # https://app.datadoghq.com/account/settings
 api_key: <%= api_key %>
 
+# Unused for now.
 agent_key:
 
 # Boolean to enable debug_mode, which outputs massive amounts of log messages 
-# to the /tmp/ directory.
-debug_mode: no
-
-# How often you want the agent to collect data, in seconds. Any value between
-# 15 and 60 is a reasonable interval.
-check_freq: 15
+# to the /tmp/ directory.  
+debug_mode: no 
 
 # ========================================================================== #
 # Service-specific configuration                                             #
@@ -50,12 +47,30 @@ check_freq: 15
 #mysql_server:
 
 # MySQL user. It only runs "SHOW STATUS" queries, which doesn't require
-# any privileges, so you should consider creating a separate, unprivileged
+# any privileges, so you should consider creating a separate, unprivileged 
 # user
 #mysql_user:
 
 # MySQL user's password
 #mysql_pass:
+
+# -------------------------------------------------------------------------- #
+#   PostgreSQL                                                               #
+# -------------------------------------------------------------------------- #
+
+# PostgreSQL host
+#postgresql_server:
+
+# PostgreSQL port
+#postgresql_port:
+
+# PostgreSQL user. It needs to connect to the "postgres" database but does not 
+# require any privileges, so you should consider creating a separate, 
+# unprivileged user
+#postgresql_user:
+
+# PostgreSQL user's password
+#postgresql_pass:
 
 
 # -------------------------------------------------------------------------- #
@@ -64,7 +79,8 @@ check_freq: 15
 
 # Url to nginx's status page. Must have http_stub_status_module installed.
 # See http://wiki.nginx.org/HttpStubStatusModule for details.
-#nginx_status_url: http://localhost:81/nginx_status/
+#nginx_status_url: http://www.example.com/nginx_status
+
 
 # -------------------------------------------------------------------------- #
 #   RabbitMQ                                                                 #
@@ -92,21 +108,6 @@ check_freq: 15
 # CouchDB host
 #couchdb_server:
 
-
-# -------------------------------------------------------------------------- #
-#   Hudson                                                                   #
-# -------------------------------------------------------------------------- #
-
-# Path to Hudson's home directory
-#hudson_home: /var/lib/hudson/
-
-# -------------------------------------------------------------------------- #
-#   Nagios                                                                   #
-# -------------------------------------------------------------------------- #
-
-# Path to Nagios's event log file
-#nagios_log: /var/log/nagios3/nagios.log
-
 # -------------------------------------------------------------------------- #
 #   Cassandra                                                                #
 # -------------------------------------------------------------------------- #
@@ -115,12 +116,28 @@ check_freq: 15
 #cassandra_nodetool: /usr/bin/nodetool
 
 # -------------------------------------------------------------------------- #
+#   Hudson                                                                   #
+# -------------------------------------------------------------------------- #
+
+# Path to Hudson's home directory
+#hudson_home: /var/lib/hudson/
+
+
+# -------------------------------------------------------------------------- #
+#   Nagios                                                                   #
+# -------------------------------------------------------------------------- #
+
+# Path to Nagios's event log file
+#nagios_log: /var/log/nagios3/nagios.log
+
+
+# -------------------------------------------------------------------------- #
 #   Java                                                                     #
 # -------------------------------------------------------------------------- #
 
 # JMX server:port to connect to
 # jvm_jmx_server: localhost:8090
-#jvm_jmx_server:
+#jvm_jmx_server: 
 
 # JMX user to log in with, if needed
 #jvm_jmx_user: john
@@ -136,7 +153,7 @@ check_freq: 15
 #   Tomcat                                                                   #
 # -------------------------------------------------------------------------- #
 
-# host:port to connect to. Must be configured in tomcat setenv.sh or similar
+# JMX host:port to connect to. Must be configured in tomcat setenv.sh or similar
 #tomcat_jmx_server:
 
 # JMX user to log in with, if needed
@@ -144,3 +161,42 @@ check_freq: 15
 
 # Password for the configured JMX user
 #tomcat_jmx_pass: foobar
+
+# -------------------------------------------------------------------------- #
+#   Activemq                                                                 #
+# -------------------------------------------------------------------------- #
+
+# JMX host:port to connect to.
+#activemq_jmx_server:
+
+# JMX user to log in with, if needed
+#activemq_jmx_user: john
+
+# Password for the configured JMX user, if needed
+#activemq_jmx_pass: foobar
+
+# -------------------------------------------------------------------------- #
+#  Solr                                                                      #
+# -------------------------------------------------------------------------- #
+
+# JMX host:port to connect to.
+#solr_jmx_server:
+
+# JMX user to log in with, if needed
+#solr_jmx_user: john
+
+# Password for the configured JMX user, if needed
+#solr_jmx_pass: foobar
+
+# -------------------------------------------------------------------------- #
+#  Rails                                                                     
+# -------------------------------------------------------------------------- #
+
+#rails_logs: /var/log/myrailsapp.lof
+
+# -------------------------------------------------------------------------- #
+#  Memcache                                                                     
+# -------------------------------------------------------------------------- #
+
+#memcache_server: localhost
+#memcache_port: 11211

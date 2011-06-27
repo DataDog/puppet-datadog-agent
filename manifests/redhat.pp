@@ -10,13 +10,13 @@
 #
 # Sample Usage:
 #
-class datadog::redhat
+class datadog::redhat {
 
     file { "/etc/yum.repo.d/datadog.repo":
       source => "puppet:///datadog/datadog.repo",
     }
 
-    exec { "yum update":
+    exec { "/usr/bin/yum update":
       require => File["/etc/yum.repo.d/datadog.repo"],
    }
 }

@@ -14,8 +14,9 @@ Requirements
 Installation
 ------------
 
-Install `puppet-datadog` as a module in your Puppet master's module
-path.
+Install `datadog` as a module in your Puppet master's module
+path. Remember to rename the directory to `datadog` from
+`puppet-datadog-agent`.
 
 Usage
 -----

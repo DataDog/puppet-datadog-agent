@@ -29,7 +29,7 @@ class datadog {
 
     service { "datadog-agent":
       ensure => running,
-      enabled => true,
+      enable => true,
       require => Package["datadog-agent"],
     }
 
@@ -43,7 +43,7 @@ class datadog {
 
    file { "/etc/dd-agent/datadog.conf":
      ensure => present,
-     content => template("datadog/datadog.conf.erb")
+     content => template("datadog/datadog.conf.erb"),
      owner => "root",
      group => "root",
      mode => 0644,

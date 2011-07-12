@@ -1,1 +1,1 @@
-deb http://apt.datadoghq.com/ unstable/
+deb http://apt.datadoghq.com/ unstable main

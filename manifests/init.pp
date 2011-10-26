@@ -23,22 +23,6 @@ class datadog {
       default: { fail("The DataDog module only support Red Hat and Ubuntu derivatives") }
     }
 
-#    service { "datadog-agent":
-#      ensure => running,
-#      enable => true,
-#      hasstatus => $operatingsystem ? {
-#        # jkoppe modified for centos only
-#        /RedHat|CentOS|Fedora/ => false,
-#        default => true,
-#      },
-#      status => $operatingsystem ? {
-#        # jkoppe modified for centos only
-#        /RedHat|CentOS|Fedora/ => "pgrep -f /usr/share/datadog/agent/agent.py",
-#        default => undef,
-#      },
-#      require => Package["datadog-agent"],
-#    }
-
    file { "/etc/dd-agent":
      ensure => present,
      owner => "root",

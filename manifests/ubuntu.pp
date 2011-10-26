@@ -24,4 +24,16 @@ class datadog::ubuntu {
     exec { "/usr/bin/apt-get update":
       require => Exec["get datadog key"],
    }
+
+    package { "datadog-agent":
+      ensure => latest,
+      require => File["/etc/apt/sources.list.d/datadog.list"],
+    }
+
+    service { "datadog-agent":
+      ensure => running,
+      enable => true,
+      require => Package["datadog-agent"],
+    }
+
 }

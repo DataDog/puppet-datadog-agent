@@ -15,7 +15,19 @@
 # Sample Usage:
 #
 class datadog::params {
+  $api_key = "key"
+  $dd_url  = "https://app.datadoghq.com"
 
-    $api_key = "key"
-    $dd_url  = "https://app.datadoghq.com"
+  case $operatingsystem {
+    "Ubuntu","Debian": {
+      $rubygems_package = 'rubygems'
+      $report_packages = ['ruby-dev']
+    }
+    "RedHat","CentOS","Fedora": {
+      $rubygems_package = 'rubygems'
+      $report_packages = ['ruby-devel']
+    }
+    default: { fail("The DataDog module only support Red Hat and Ubuntu derivatives") }
+  }
+    
 }

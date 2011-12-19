@@ -37,6 +37,7 @@ class datadog::ubuntu {
       ensure    => running,
       enable    => true,
       hasstatus => false,
+      pattern   => 'dd-agent',
       require   => Package["datadog-agent"],
     }
 

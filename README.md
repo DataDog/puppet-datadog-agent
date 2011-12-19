@@ -21,13 +21,18 @@ path. Remember to rename the directory to `datadog` from
 Usage
 -----
 
-1. Update the datadog::params class with your API key (and confirm the
-   DataDog URL is correct).
+1. Update the default class parameters with your API key (and confirm the
+   DataDog URL is correct in datadog::params).
 
 2. Specify the module on any nodes you wish to install the DataDog
    Agent.
 
         include datadog
+
+  Or assign this module using the Puppet 2.6 style Parameterized class:
+        class {'datadog':
+          api_key => "key",
+        }
 
 Author
 ------

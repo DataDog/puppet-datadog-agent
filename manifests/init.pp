@@ -3,6 +3,10 @@
 # This class contains the agent installation mechanism for the Datadog module
 #
 # Parameters:
+#   $api_key:
+#       Your DataDog API Key. Please replace with your key value
+#   $dd_url
+#       The URL to the DataDog application.
 #
 # Actions:
 #
@@ -10,12 +14,17 @@
 #
 # Sample Usage:
 #
-class datadog {
-
-    include datadog::params
-
-    $api_key = $datadog::params::api_key
-    $dd_url  = $datadog::params::dd_url
+# include datadog
+#
+# or
+#
+# class{'datadog': api_key => 'your key'}
+#
+#
+class datadog(
+  $api_key = $datadog::params::api_key,
+  $dd_url  = $datadog::params::dd_url
+) inherits datadog::params {
 
     case $operatingsystem {
       "Ubuntu","Debian": { include datadog::ubuntu }

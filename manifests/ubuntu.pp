@@ -14,15 +14,19 @@ class datadog::ubuntu {
 
     exec { "get datadog key":
       command => "/usr/bin/apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C7A7DA52",
-      unless => "/usr/bin/apt-key list | grep C7A7DA52",
+      unless  => "/usr/bin/apt-key list | grep C7A7DA52",
+      notify  => Exec['datadog_apt-get_update'],
     }
 
     file { "/etc/apt/sources.list.d/datadog.list":
-      source => "puppet:///modules/datadog/datadog.list",
+      source  => "puppet:///modules/datadog/datadog.list",
+      notify  => Exec['datadog_apt-get_update'],
     }
 
-    exec { "/usr/bin/apt-get update":
-      require => Exec["get datadog key"],
+    exec { 'datadog_apt-get_update':
+      command     => '/usr/bin/apt-get update',
+      refreshonly => true,
+      require     => Exec["get datadog key"],
    }
 
     package { "datadog-agent":

@@ -5,8 +5,10 @@
 # Parameters:
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value
-#   $dd_url
-#       The URL to the DataDog application.
+#   $puppet_run_reports
+#       Will send results from your puppet agent runs back to the datadog service
+#   $puppetmaster_user
+#       Will chown the api key used by the report processor to this user.
 #
 # Actions:
 #
@@ -22,7 +24,9 @@
 #
 #
 class datadog(
-  $api_key = 'your key'
+  $api_key = 'your key',
+  $puppet_run_reports = false,
+  $puppetmaster_user = 'puppet'
 ) inherits datadog::params {
 
   include datadog::params
@@ -42,14 +46,22 @@ class datadog(
     require  => Package["datadog-agent"],
   }
 
+  # main agent config file
   file { "/etc/dd-agent/datadog.conf":
-    ensure   => present,
+    ensure   => file,
     content  => template("datadog/datadog.conf.erb"),
     owner    => "dd-agent",
     group    => "root",
     mode     => 0640,
     notify   => Service["datadog-agent"],
     require  => File["/etc/dd-agent"],
+  }
+
+  if $puppet_run_reports {
+    class { 'datadog::reports':
+      api_key           => $api_key,
+      puppetmaster_user => $puppetmaster_user,
+    }
   }
 
 }

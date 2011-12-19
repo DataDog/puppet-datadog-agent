@@ -31,7 +31,7 @@ Usage
 
   Or assign this module using the Puppet 2.6 style Parameterized class:
         class {'datadog':
-          api_key => "key",
+          api_key => "yourkey",
         }
 
 Author

@@ -34,9 +34,10 @@ class datadog::ubuntu {
     }
 
     service { "datadog-agent":
-      ensure => running,
-      enable => true,
-      require => Package["datadog-agent"],
+      ensure    => running,
+      enable    => true,
+      hasstatus => false,
+      require   => Package["datadog-agent"],
     }
 
 }

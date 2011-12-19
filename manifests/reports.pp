@@ -24,7 +24,6 @@ class datadog::reports(
     owner    => $puppetmaster_user,
     group    => "root",
     mode     => 0640,
-    notify   => Service["datadog-agent"],
     require  => File["/etc/dd-agent"],
   }
 

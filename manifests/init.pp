@@ -33,20 +33,20 @@ class datadog(
     }
 
    file { "/etc/dd-agent":
-     ensure => present,
-     owner => "root",
-     group => "root",
-     mode => 0755,
-     require => Package["datadog-agent"],
+     ensure   => present,
+     owner    => "root",
+     group    => "root",
+     mode     => 0755,
+     require  => Package["datadog-agent"],
    }
 
    file { "/etc/dd-agent/datadog.conf":
-     ensure => present,
-     content => template("datadog/datadog.conf.erb"),
-     owner => "root",
-     group => "root",
-     mode => 0644,
-     notify => Service["datadog-agent"],
-     require => File["/etc/dd-agent"],
+     ensure   => present,
+     content  => template("datadog/datadog.conf.erb"),
+     owner    => "dd-agent",
+     group    => "root",
+     mode     => 0640,
+     notify   => Service["datadog-agent"],
+     require  => File["/etc/dd-agent"],
    }
 }

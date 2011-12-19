@@ -25,6 +25,7 @@ class datadog(
   $api_key = 'your key'
 ) inherits datadog::params {
 
+  include datadog::params
   $dd_url  = $datadog::params::dd_url
 
   case $operatingsystem {

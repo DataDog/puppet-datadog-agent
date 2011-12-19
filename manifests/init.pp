@@ -22,7 +22,7 @@
 #
 #
 class datadog(
-  $api_key = 'your key',
+  $api_key = 'your key'
 ) inherits datadog::params {
 
   $dd_url  = $datadog::params::dd_url

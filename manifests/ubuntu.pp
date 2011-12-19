@@ -12,7 +12,7 @@
 #
 class datadog::ubuntu {
 
-    exec { "get datadog key":
+    exec { "datadog_key":
       command => "/usr/bin/apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C7A7DA52",
       unless  => "/usr/bin/apt-key list | grep C7A7DA52",
       notify  => Exec['datadog_apt-get_update'],
@@ -26,7 +26,6 @@ class datadog::ubuntu {
     exec { 'datadog_apt-get_update':
       command     => '/usr/bin/apt-get update',
       refreshonly => true,
-      require     => Exec["get datadog key"],
    }
 
     package { "datadog-agent":

@@ -35,7 +35,7 @@ class datadog(
   case $operatingsystem {
     "Ubuntu","Debian": { include datadog::ubuntu }
     "RedHat","CentOS","Fedora": { include datadog::redhat }
-    default: { fail("The DataDog module only support Red Hat and Ubuntu derivatives") }
+    default: { notify{'Unsupported OS': message => 'The DataDog module only support Red Hat and Ubuntu derivatives'} }
   }
 
   file { "/etc/dd-agent":

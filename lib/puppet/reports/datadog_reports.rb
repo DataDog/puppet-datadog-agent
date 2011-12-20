@@ -18,6 +18,20 @@ Puppet::Reports.register_report(:datadog_reports) do
   Send notification of metrics to DataDog
   DESC
 
+  def pluralize(number, noun)
+    begin
+      case number
+      when 0..1
+        "less than 1 #{noun}"
+      else
+        "#{number.round} #{noun}s"
+      end
+    rescue
+      "#{number} #{noun}s"
+    end
+  end
+
+
   def process
     @summary = self.summary
     @msg_host = self.host
@@ -25,6 +39,7 @@ Puppet::Reports.register_report(:datadog_reports) do
     event_title = ''
     alert_type = ''
     event_priority = ''
+    event_data = ''
 
     if defined?(self.status)
       # for puppet log format 2 and above
@@ -53,10 +68,28 @@ Puppet::Reports.register_report(:datadog_reports) do
       event_priority = "low"
     end
 
-    if defined?(self.configuration_version)
-      event_data = "Puppet applied version #{self.configuration_version} "
-    else
-      event_data = ""
+    # Extract statuses
+    total_resource_count = self.resource_statuses.length
+    changed_resources    = self.resource_statuses.find_all {|s| s.changed }
+    failed_resources     = self.resource_statuses.find_all {|s| s.failed }
+
+    # Little insert if we know the config
+    config_version_blurb = case when defined?(self.configuration_version) "applied version #{self.configuration_version}" else "" end
+
+    event_data << "Puppet #{config_version_blurb}changed #{pluralize(changed_resources.length, 'resources')} out of #{total_resource_count}."
+    
+    # List changed resources
+    if changed_resources.length > 0
+      event_data << "\nThe resources that changed are:\n@@@"
+      changed_resources.each {|s| event_data << "#{s.title} in #{s.file}:#{s.line}\n" }
+      event_data << "@@@\n"
+    end
+
+    # List failed resources
+    if failed_resources.length > 0
+      event_data << "\nThe resources that failed are:\n@@@"
+      failed_resources.each {|s| event_data << "#{s.title} in #{s.file}:#{s.line}\n" }
+      event_data << "@@@\n"
     end
 
     Puppet.debug "Sending metrics for #{@msg_host} to DataDog"
@@ -69,11 +102,6 @@ Puppet::Reports.register_report(:datadog_reports) do
       }
     }
 
-    Puppet.debug "Sending events for #{@msg_host} to DataDog"
-    output = []
-    self.logs.each do |log|
-      output << log
-    end
     @dog.emit_event(Dogapi::Event.new(event_data,
                                       :msg_title => event_title,
                                       :event_type => 'config_management.run',

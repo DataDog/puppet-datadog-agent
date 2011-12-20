@@ -53,6 +53,12 @@ Puppet::Reports.register_report(:datadog_reports) do
       event_priority = "low"
     end
 
+    if defined?(self.configuration_version)
+      event_data = "Puppet applied version #{self.configuration_version} "
+    else
+      event_data = ""
+    end
+
     Puppet.debug "Sending metrics for #{@msg_host} to DataDog"
     @dog = Dogapi::Client.new(API_KEY)
     self.metrics.each { |metric,data|

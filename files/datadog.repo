@@ -1,3 +1,0 @@
-[datadog]
-name = Datadog, Inc.
-baseurl = http://apt.datadoghq.com/rpm/

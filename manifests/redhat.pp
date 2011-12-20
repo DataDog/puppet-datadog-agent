@@ -12,24 +12,24 @@
 #
 class datadog::redhat {
 
-    file { "/etc/yum.repos.d/datadog.repo":
-        content => template("$module_name/datadog.repo"),
-        require => Package["python26"],
+    yumrepo {'datadog':
+      enabled   => 1,
+      gpgcheck  => 0,
+      descr     => 'Datadog, Inc.',
+      baseurl   => 'http://apt.datadoghq.com/rpm/',
     }
 
-    package { "datadog-agent":
-      ensure => latest,
-      require => File["/etc/yum.repos.d/datadog.repo"],
+    package { 'datadog-agent':
+      ensure  => latest,
+      require => Yumrepo['datadog'],
     }
 
     service { "datadog-agent":
-      ensure => running,
-      enable => true,
+      ensure    => running,
+      enable    => true,
       hasstatus => false,
-      status => "pgrep -f /usr/share/datadog/agent/agent.py",
-      require => Package["datadog-agent"],
+      pattern   => 'dd-agent',
+      require   => Package["datadog-agent"],
     }
-
-
 
 }

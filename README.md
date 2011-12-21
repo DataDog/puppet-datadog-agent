@@ -4,12 +4,19 @@ puppet-datadog-agent
 Description
 -----------
 
-A module to install the DataDog agent.
+A module to install the DataDog agent, and to send reports of puppet runs
+to the Datadog service [Datadog](http://www.datadoghq.com/).
 
 Requirements
 ------------
 
 * `puppet`
+* A Datadog account and API Key
+
+On your Puppet master:
+* `dogapi` gem (v 1.0.3 and later)
+* `ruby-dev` headers, required to build dogapi gem
+
 
 Installation
 ------------
@@ -34,10 +41,43 @@ Usage
           api_key => "yourkey",
         }
 
+  On your Puppet master, enable reporting:
+        class {'datadog':
+          api_key => "yourkey",
+          puppet_run_reports = true,
+        }
+
+3. Additionally, to enable reporting of changes to the Datadog timeline,
+   enable the report processor on your Puppet master, and enable reporting
+   for your clients. The clients will send a run report after each check-in
+   back to the master, and the master will process the reports and send them
+   to the Datadog API.
+
+
+   In your Puppet master /etc/puppet/puppet.conf, add these config options:
+
+        [master]
+        ...
+        reports="datadog_reports"
+
+        [agent]
+        ...
+        pluginsync=true
+        report=true
+
+
+   And on all of your Puppet client nodes add:
+        [agent]
+        ...
+        report=true
+
+
 Author
 ------
 
 James Turnbull <james@lovedthanlost.net>
+Alexis Lê-Quôc <alq@datadoghq.com>
+Rob Terhaar <rob@atlanticdynamic.com>
 
 License
 -------

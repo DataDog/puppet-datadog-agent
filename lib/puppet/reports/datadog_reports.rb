@@ -73,8 +73,8 @@ Puppet::Reports.register_report(:datadog_reports) do
 
     # Extract statuses
     total_resource_count = self.resource_statuses.length
-    changed_resources    = self.resource_statuses.find_all {|s| s.changed }
-    failed_resources     = self.resource_statuses.find_all {|s| s.failed }
+    changed_resources    = self.resource_statuses.values.find_all {|s| s.changed }
+    failed_resources     = self.resource_statuses.values.find_all {|s| s.failed }
 
     # Little insert if we know the config
     config_version_blurb = if defined?(self.configuration_version) then "applied version #{self.configuration_version}" else "" end

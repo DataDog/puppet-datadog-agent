@@ -74,7 +74,7 @@ Puppet::Reports.register_report(:datadog_reports) do
     failed_resources     = self.resource_statuses.find_all {|s| s.failed }
 
     # Little insert if we know the config
-    config_version_blurb = if defined?(self.configuration_version) "applied version #{self.configuration_version}" else "" end
+    config_version_blurb = if defined?(self.configuration_version) then "applied version #{self.configuration_version}" else "" end
 
     event_data << "Puppet #{config_version_blurb}changed #{pluralize(changed_resources.length, 'resources')} out of #{total_resource_count}."
     

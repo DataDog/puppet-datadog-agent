@@ -4,30 +4,33 @@ require 'yaml'
 begin
   require 'dogapi'
 rescue LoadError => e
-  Puppet.info "You need the `dogapi` gem to use the DataDog report"
+  Puppet.info "You need the `dogapi` gem to use the Datadog report"
 end
 
 Puppet::Reports.register_report(:datadog_reports) do
 
   configfile = "/etc/dd-agent/datadog.yaml"
-  raise(Puppet::ParseError, "DataDog report config file #{configfile} not readable") unless File.exist?(configfile)
+  raise(Puppet::ParseError, "Datadog report config file #{configfile} not readable") unless File.exist?(configfile)
   config = YAML.load_file(configfile)
   API_KEY = config[:datadog_api_key]
 
   desc <<-DESC
-  Send notification of metrics to DataDog
+  Send notification of metrics to Datadog
   DESC
 
   def pluralize(number, noun)
     begin
-      case number
-      when 0..1
+      if number == 0 then
+        "no #{noun}"
+      elsif number < 1 then
         "less than 1 #{noun}"
+      elsif number == 1 then
+        "1 #{noun}"
       else
         "#{number.round} #{noun}s"
       end
     rescue
-      "#{number} #{noun}s"
+      "#{number} #{noun}(s)"
     end
   end
 
@@ -92,7 +95,7 @@ Puppet::Reports.register_report(:datadog_reports) do
       event_data << "@@@\n"
     end
 
-    Puppet.debug "Sending metrics for #{@msg_host} to DataDog"
+    Puppet.debug "Sending metrics for #{@msg_host} to Datadog"
     @dog = Dogapi::Client.new(API_KEY)
     self.metrics.each { |metric,data|
       data.values.each { |val|
@@ -102,6 +105,7 @@ Puppet::Reports.register_report(:datadog_reports) do
       }
     }
 
+    Puppet.debug "Sending events for #{@msg_host} to Datadog"
     @dog.emit_event(Dogapi::Event.new(event_data,
                                       :msg_title => event_title,
                                       :event_type => 'config_management.run',

@@ -49,11 +49,12 @@ Usage
           puppet_run_reports = true,
         }
 
-3. Additionally, to enable reporting of changes to the Datadog timeline,
-   enable the report processor on your Puppet master, and enable reporting
-   for your clients. The clients will send a run report after each check-in
-   back to the master, and the master will process the reports and send them
-   to the Datadog API.
+Reporting
+-----
+To enable reporting of changes to the Datadog timeline, enable the report 
+processor on your Puppet master, and enable reporting for your clients. 
+The clients will send a run report after each check-in back to the master, 
+and the master will process the reports and send them to the Datadog API.
 
 
    In your Puppet master /etc/puppet/puppet.conf, add these config options:

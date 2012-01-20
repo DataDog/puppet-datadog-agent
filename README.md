@@ -37,11 +37,13 @@ Usage
         include datadog
 
   Or assign this module using the Puppet 2.6 style Parameterized class:
+  
         class {'datadog':
           api_key => "yourkey",
         }
 
   On your Puppet master, enable reporting:
+  
         class {'datadog':
           api_key => "yourkey",
           puppet_run_reports = true,
@@ -67,17 +69,18 @@ Usage
 
 
    And on all of your Puppet client nodes add:
+   
         [agent]
         ...
         report=true
 
 
-Author
+Authors
 ------
 
-James Turnbull <james@lovedthanlost.net>
-Alexis Lê-Quôc <alq@datadoghq.com>
-Rob Terhaar <rob@atlanticdynamic.com>
+* James Turnbull <james@lovedthanlost.net>
+* Alexis Lê-Quôc <alq@datadoghq.com>
+* Rob Terhaar <rob@atlanticdynamic.com>
 
 License
 -------

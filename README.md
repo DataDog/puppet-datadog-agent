@@ -14,9 +14,9 @@ Requirements
 * A Datadog account and API Key
 
 On your Puppet master:
+
 * `dogapi` gem (v 1.0.3 and later)
 * `ruby-dev` headers, required to build dogapi gem
-
 
 Installation
 ------------
@@ -28,8 +28,8 @@ path. Remember to rename the directory to `datadog` from
 Usage
 -----
 
-1. Update the default class parameters with your API key (and confirm the
-   DataDog URL is correct in datadog::params).
+1. Update the default class parameters with your [API key](https://app.datadoghq.com/account/settings#api)
+   (and confirm the DataDog URL is correct in datadog::params).
 
 2. Specify the module on any nodes you wish to install the DataDog
    Agent.
@@ -37,12 +37,14 @@ Usage
         include datadog
 
   Or assign this module using the Puppet 2.6 style Parameterized class:
-        class {'datadog':
+
+        class { 'datadog':
           api_key => "yourkey",
         }
 
   On your Puppet master, enable reporting:
-        class {'datadog':
+
+        class { 'datadog':
           api_key => "yourkey",
           puppet_run_reports = true,
         }
@@ -67,13 +69,14 @@ Usage
 
 
    And on all of your Puppet client nodes add:
+
         [agent]
         ...
         report=true
 
 
-Author
-------
+Authors
+-------
 
 James Turnbull <james@lovedthanlost.net>
 Alexis Lê-Quôc <alq@datadoghq.com>

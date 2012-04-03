@@ -80,10 +80,10 @@ and the master will process the reports and send them to the Datadog API.
         ...
         report=true
 
-All in one step
-===============
+Step-by-step
+============
 
-This is the minimal set of files to use to get started.
+This is the minimal set of files to use to get started. These files assume puppet 2.7.x
 
 /etc/puppet/puppet.conf
 -----------------------
@@ -129,6 +129,28 @@ This is the minimal set of files to use to get started.
 -----------------------------
 
     import "nodes.pp"
+
+Run Puppet Agent
+----------------
+
+    sudo /etc/init.d/puppetmaster restart
+    sudo puppet agent --onetime --no-daemonize --no-splay --verbose
+    
+You should see something like:
+
+    info: Retrieving plugin
+    info: Caching catalog for alq-linux.dev.datadoghq.com
+    info: Applying configuration version '1333470114'
+    notice: Finished catalog run in 0.81 seconds
+
+Verify on Datadog
+-----------------
+
+Search for "Puppet" and you should see something like this:
+
+![Puppet Events in Datadog][puppet-events]
+
+[puppet-events]: https://img.skitch.com/20120403-bdipicbpquwccwxm2u3cwdc6ar.png
 
 Miscellaneous
 =============

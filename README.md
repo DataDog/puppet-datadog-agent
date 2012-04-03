@@ -10,13 +10,12 @@ to the Datadog service [Datadog](http://www.datadoghq.com/).
 Requirements
 ------------
 
-* `puppet`
-* A Datadog account and API Key
+* [puppet](http://puppetlabs.com)
+* A [Datadog](http://www.datadoghq.com) account and an API Key
 
 On your Puppet master:
 
-* `dogapi` gem (v 1.0.3 and later)
-* `ruby-dev` headers, required to build dogapi gem
+* [dogapi](https://rubygems.org/gems/dogapi) gem (v 1.0.3 and later)
 
 Installation
 ------------

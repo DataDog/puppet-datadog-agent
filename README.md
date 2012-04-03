@@ -1,11 +1,13 @@
-puppet-datadog-agent
-====================
+Puppet & Datadog
+================
 
 Description
 -----------
 
-A module to install the DataDog agent, and to send reports of puppet runs
-to the Datadog service [Datadog](http://www.datadoghq.com/).
+A module to:
+
+1. install the [DataDog](http://www.datadoghq.com)  agent
+2. to send reports of puppet runs to the Datadog service [Datadog](http://www.datadoghq.com/).
 
 Requirements
 ------------
@@ -20,12 +22,17 @@ On your Puppet master:
 Installation
 ------------
 
-Install `datadog` as a module in your Puppet master's module
-path. Remember to rename the directory to `datadog` from
-`puppet-datadog-agent`.
+Install `datadog` as a module in your Puppet master's module path.
+
+     git clone https://github.com/DataDog/puppet-datadog-agent.git /etc/puppet/modules/datadog
+
+Note that this installed the module in `/etc/puppet/modules/datadog`
 
 Usage
 -----
+
+Once the `datadog` module is installed on your master, there's a tiny bit of configuration
+that needs to be done.
 
 1. Update the default class parameters with your [API key](https://app.datadoghq.com/account/settings#api)
    (and confirm the DataDog URL is correct in datadog::params).
@@ -48,7 +55,7 @@ Usage
         }
 
 Reporting
------
+---------
 To enable reporting of changes to the Datadog timeline, enable the report 
 processor on your Puppet master, and enable reporting for your clients. 
 The clients will send a run report after each check-in back to the master, 
@@ -73,6 +80,58 @@ and the master will process the reports and send them to the Datadog API.
         ...
         report=true
 
+All in one step
+===============
+
+This is the minimal set of files to use to get started.
+
+/etc/puppet/puppet.conf
+-----------------------
+
+    [main]
+    logdir=/var/log/puppet
+    vardir=/var/lib/puppet
+    ssldir=/var/lib/puppet/ssl
+    rundir=/var/run/puppet
+    factpath=$vardir/lib/facter
+    templatedir=$confdir/templates
+    
+    [master]
+    # These are needed when the puppetmaster is run by passenger
+    # and can safely be removed if webrick is used.
+    ssl_client_header = SSL_CLIENT_S_DN 
+    ssl_client_verify_header = SSL_CLIENT_VERIFY
+    report = true
+    reports = datadog_reports
+    pluginsync = true
+    syslogfacility = user
+    
+    [agent]
+    report = true
+    pluginsync = true
+
+/etc/puppet/manifests/nodes.pp
+------------------------------
+
+    node "default" {
+        class { "datadog":
+            api_key => "INSERT YOU API KEY HERE",
+        }
+    }
+    node "YOUR NODE NAME HERE" {
+        class { "datadog":
+            api_key => "INSERT YOUR API KEY HERE",
+            puppet_run_reports => true
+        }
+    }
+
+/etc/puppet/manifests/site.pp
+-----------------------------
+
+    import "nodes.pp"
+
+Miscellaneous
+=============
 
 Authors
 -------

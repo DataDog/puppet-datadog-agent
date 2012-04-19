@@ -83,16 +83,16 @@ Puppet::Reports.register_report(:datadog_reports) do
     
     # List changed resources
     if changed_resources.length > 0
-      event_data << "\nThe resources that changed are:\n@@@"
+      event_data << "\nThe resources that changed are:\n@@@\n"
       changed_resources.each {|s| event_data << "#{s.title} in #{s.file}:#{s.line}\n" }
-      event_data << "@@@\n"
+      event_data << "\n@@@\n"
     end
 
     # List failed resources
     if failed_resources.length > 0
-      event_data << "\nThe resources that failed are:\n@@@"
+      event_data << "\nThe resources that failed are:\n@@@\n"
       failed_resources.each {|s| event_data << "#{s.title} in #{s.file}:#{s.line}\n" }
-      event_data << "@@@\n"
+      event_data << "\n@@@\n"
     end
 
     Puppet.debug "Sending metrics for #{@msg_host} to Datadog"

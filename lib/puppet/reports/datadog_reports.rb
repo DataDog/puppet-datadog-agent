@@ -79,7 +79,7 @@ Puppet::Reports.register_report(:datadog_reports) do
     # Little insert if we know the config
     config_version_blurb = if defined?(self.configuration_version) then "applied version #{self.configuration_version} and" else "" end
 
-    event_data << "Puppet #{config_version_blurb} changed #{pluralize(changed_resources.length, 'resources')} out of #{total_resource_count}."
+    event_data << "Puppet #{config_version_blurb} changed #{pluralize(changed_resources.length, 'resource')} out of #{total_resource_count}."
     
     # List changed resources
     if changed_resources.length > 0

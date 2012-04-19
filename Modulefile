@@ -1,5 +1,5 @@
 name 'DataDog/puppet-datadog-agent'
-version '0.0.2'
+version '0.0.3'
 license 'Apache License, Version 2.0'
 author 'James Turnbull (<james@lovedthanlost.net>) and Rob Terhaar (<rob@atlanticdynamic>) for Datadog Inc.'
 summary "Install the Datadog monitoring agent and report Puppet runs to Datadog"

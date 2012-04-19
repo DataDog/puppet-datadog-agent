@@ -146,7 +146,13 @@ You should see something like:
 Verify on Datadog
 -----------------
 
-Search for "Puppet" and you should see something like this:
+Go to [the Setup page](https://app.datadoghq.com/account/settings#integrations) and you should see this
+
+![Puppet integration][puppet-integration]
+
+[puppet-integration]: https://img.skitch.com/20120419-hdd7e9fuxhgeei8y5yr7hyt8e.png
+
+Search for "Puppet" in the Stream and you should see something like this:
 
 ![Puppet Events in Datadog][puppet-events]
 

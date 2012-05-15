@@ -62,23 +62,37 @@ The clients will send a run report after each check-in back to the master,
 and the master will process the reports and send them to the Datadog API.
 
 
-   In your Puppet master /etc/puppet/puppet.conf, add these config options:
+In your Puppet master `/etc/puppet/puppet.conf`, add these configuration options:
 
-        [master]
-        ...
-        reports="datadog_reports"
+    [main]
+    # No need to modify this section
+    # ...
+        
+    [master]
+    # Enable reporting to datadog
+    reports=datadog_reports
+    # If you use other reports already, just add datadog_reports at the end
+    # reports=store,log,datadog_reports
+    # ...
+    
+    [agent]
+    # ...
+    pluginsync=true
+    report=true
+    
+And on all of your Puppet client nodes add:
 
-        [agent]
-        ...
-        pluginsync=true
-        report=true
+    [agent]
+    # ...
+    report=true
+    
+If you get
 
-
-   And on all of your Puppet client nodes add:
-
-        [agent]
-        ...
-        report=true
+    err: Could not send report:
+    Error 400 on SERVER: Could not autoload datadog_reports:
+    Class Datadog_reports is already defined in Puppet::Reports
+    
+Make suer `reports=datadog_reports` is defined in **[master]**, not **[main]**.
 
 Step-by-step
 ============

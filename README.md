@@ -50,8 +50,8 @@ that needs to be done.
   On your Puppet master, enable reporting:
 
         class { 'datadog':
-          api_key => "yourkey",
-          puppet_run_reports = true,
+          api_key            => "yourkey",
+          puppet_run_reports => true,
         }
 
 Reporting
@@ -134,7 +134,7 @@ This is the minimal set of files to use to get started. These files assume puppe
     }
     node "YOUR NODE NAME HERE" {
         class { "datadog":
-            api_key => "INSERT YOUR API KEY HERE",
+            api_key            => "INSERT YOUR API KEY HERE",
             puppet_run_reports => true
         }
     }

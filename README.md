@@ -92,7 +92,7 @@ If you get
     Error 400 on SERVER: Could not autoload datadog_reports:
     Class Datadog_reports is already defined in Puppet::Reports
     
-Make suer `reports=datadog_reports` is defined in **[master]**, not **[main]**.
+Make sure `reports=datadog_reports` is defined in **[master]**, not **[main]**.
 
 Step-by-step
 ============

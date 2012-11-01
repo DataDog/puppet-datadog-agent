@@ -41,7 +41,7 @@ Puppet::Reports.register_report(:datadog_reports) do
 
     event_title = ''
     alert_type = ''
-    event_priority = ''
+    event_priority = 'low'
     event_data = ''
 
     if defined?(self.status)
@@ -54,21 +54,17 @@ Puppet::Reports.register_report(:datadog_reports) do
       elsif @status == 'changed'
         event_title = "Puppet changed resources on #{@msg_host}"
         alert_type = "success"
-        event_priority = "low"
       elsif @status == "unchanged"
         event_title = "Puppet ran on, and left #{@msg_host} unchanged"
         alert_type = "success"
-        event_priority = "low"
       else 
         event_title = "Puppet ran on #{@msg_host}"
         alert_type = "success"
-        event_priority = "low"
       end
 
     else
       # for puppet log format 1
       event_title = "Puppet ran on #{@msg_host}"
-      event_priority = "low"
     end
 
     # Extract statuses

@@ -25,7 +25,7 @@ class datadog::params {
     }
     "RedHat","CentOS","Fedora": {
       $rubygems_package = 'rubygems'
-      $rubydev_packages = 'ruby-devel'
+      $rubydev_package = 'ruby-devel'
     }
     default: { notify{'Unsupported OS': message => 'The DataDog module only support Red Hat and Ubuntu derivatives'} }
   }

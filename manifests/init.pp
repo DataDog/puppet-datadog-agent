@@ -34,7 +34,7 @@ class datadog(
 
   case $operatingsystem {
     "Ubuntu","Debian": { include datadog::ubuntu }
-    "RedHat","CentOS","Fedora": { include datadog::redhat }
+    "RedHat","CentOS","Fedora","Amazon": { include datadog::redhat }
     default: { notify{'Unsupported OS': message => 'The DataDog module only support Red Hat and Ubuntu derivatives'} }
   }
 

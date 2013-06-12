@@ -19,11 +19,11 @@ class datadog::params {
   $dd_url  = "https://app.datadoghq.com"
 
   case $operatingsystem {
-    "Ubuntu","Debian": {
+    "Ubuntu","Debian" : {
       $rubygems_package = 'rubygems'
       $rubydev_package =  'ruby-dev'
     }
-    "RedHat","CentOS","Fedora","Amazon": {
+    "RedHat","CentOS","Fedora","Amazon","Scientific" : {
       $rubygems_package = 'rubygems'
       $rubydev_package = 'ruby-devel'
     }

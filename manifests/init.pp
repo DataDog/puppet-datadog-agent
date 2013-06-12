@@ -33,8 +33,8 @@ class datadog(
   $dd_url  = $datadog::params::dd_url
 
   case $operatingsystem {
-    "Ubuntu","Debian": { include datadog::ubuntu }
-    "RedHat","CentOS","Fedora","Amazon": { include datadog::redhat }
+    "Ubuntu","Debian" : { include datadog::ubuntu }
+    "RedHat","CentOS","Fedora","Amazon","Scientific" : { include datadog::redhat }
     default: { fail("Class[datadog]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
 

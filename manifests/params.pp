@@ -15,8 +15,12 @@
 # Sample Usage:
 #
 class datadog::params {
-  $api_key = "your API key"
-  $dd_url  = "https://app.datadoghq.com"
+  $api_key      = "your API key"
+  $dd_url       = "https://app.datadoghq.com"
+  $conf_dir     = "/etc/dd-agent/conf.d"
+  $dd_user      = "dd-agent"
+  $dd_group     = "root"
+  $service_name = "datadog-agent"
 
   case $operatingsystem {
     "Ubuntu","Debian" : {

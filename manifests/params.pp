@@ -24,12 +24,14 @@ class datadog::params {
 
   case $operatingsystem {
     "Ubuntu","Debian" : {
-      $rubygems_package = 'rubygems'
-      $rubydev_package =  'ruby-dev'
+      $rubygems_package  = 'rubygems'
+      $rubydev_package   =  'ruby-dev'
+      $mysql_int_package = 'python-mysqldb'
     }
     "RedHat","CentOS","Fedora","Amazon","Scientific" : {
-      $rubygems_package = 'rubygems'
-      $rubydev_package = 'ruby-devel'
+      $rubygems_package  = 'rubygems'
+      $rubydev_package   = 'ruby-devel'
+      $mysql_int_package = 'MySQL-python'
     }
     default: { fail("Class[datadog]: Unsupported operatingsystem: ${::operatingsystem}") }
   }

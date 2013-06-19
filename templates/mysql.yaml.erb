@@ -1,0 +1,15 @@
+init_config:
+
+instances:
+  - server: <%= @host %>
+    user: <%= @user %>
+    pass: <%= @password %>
+<% if !@tags.empty? -%>
+    tags:
+<% @tags.each do |tag| -%>
+        - <%= tag %>
+<% end -%>
+<% end -%>
+    options:
+        replication: <%= @replication %>
+        galera_cluster: <%= @galera_cluster %>

@@ -1,3 +1,5 @@
+import "defines/*.pp"
+
 # Class: datadog
 #
 # This class contains the agent installation mechanism for the Datadog module

@@ -56,7 +56,7 @@
 #
 # datadog::check::http { 'Blog HTTP Check': 
 #   url     => 'http://localhost/',
-#   headers => ['Host: stan.borbat.com', 'DNT: 1'],
+#   headers => ['Host: stan.borbat.com', 'DNT: true'],
 #   tags    => ['production', 'wordpress'],
 # }
 #

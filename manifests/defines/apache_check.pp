@@ -20,7 +20,7 @@
 #
 # Sample Usage:
 #
-# include datadog::check::apache
+# datadog::check::apache { 'apache': }
 #
 # datadog::check::apache { 'Status Check': 
 #   url      => 'http://example.com/server-status?auto',

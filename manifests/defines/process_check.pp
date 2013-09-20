@@ -22,12 +22,12 @@
 #
 # datadog::check::process { 'liferay': 
 #   search_string => ['java', 'apache'],
-#   exact         => true,
+#   exact_match   => true,
 # }
 #
 define datadog::check::process (
   $search_strings     = undef,
-  $exact              = false,
+  $exact_match        = false,
   $cpu_check_interval = undef,
 ) {
 

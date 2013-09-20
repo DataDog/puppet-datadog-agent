@@ -7,9 +7,6 @@
 #   directory
 #       string, the directory to gather stats for. required
 #
-#   name
-#       string, the name to use when tagging the metrics. defaults to the "directory"
-#
 #   pattern
 #       string, the `fnmatch` pattern to use when reading the "directory"'s files. default "*"
 #
@@ -22,16 +19,14 @@
 #
 # Sample Usage:
 #
-# datadog::check::directory { 'Media Library': 
+# datadog::check::directory { 'media-library': 
 #   directory => '/mnt/media',
-#   name      => 'media',
 #   pattern   => '*',
 #   recursive => true,
 # }
 #
 define datadog::check::directory (
   $directory = undef,
-  $name      = $title,
   $pattern   = '*',
   $recursive = false,
 ) {

@@ -35,6 +35,12 @@ define datadog::check::process (
     fail("you must specify at least on search_string to Datadog::Check::Process[$title]")
   }
 
+  if ! defined( Package['python-psutil'] ) {
+    package { 'python-psutil':
+      ensure => present,
+    }
+  }
+
   $process_check_yaml_file = '/etc/dd-agent/conf.d/process.yaml'
 
   if ( !defined( Concat[$process_check_yaml_file] ) ) {

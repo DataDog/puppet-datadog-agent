@@ -18,8 +18,8 @@ class datadog::ubuntu {
       notify  => Exec['datadog_apt-get_update'],
     }
 
-    file { "/etc/apt/sources.list.d/datadog.list":
-      source  => "puppet:///modules/datadog/datadog.list",
+    file { "/etc/apt/sources.list.d/datadog-source.list":
+      source  => "puppet:///modules/datadog/datadog-source.list",
       notify  => Exec['datadog_apt-get_update'],
     }
 

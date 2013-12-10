@@ -50,10 +50,10 @@ class datadog(
   file { "/etc/dd-agent/datadog.conf":
     ensure   => file,
     content  => template("datadog/datadog.conf.erb"),
-    owner    => "dd-agent",
-    group    => "root",
+    owner    => $dd_user,
+    group    => $dd_group,
     mode     => 0640,
-    notify   => Service["datadog-agent"],
+    notify   => Service[$service_name],
     require  => File["/etc/dd-agent"],
   }
 

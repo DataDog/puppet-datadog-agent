@@ -15,17 +15,23 @@
 # Sample Usage:
 #
 class datadog::params {
-  $api_key = "your API key"
-  $dd_url  = "https://app.datadoghq.com"
+  $api_key      = "your API key"
+  $dd_url       = "https://app.datadoghq.com"
+  $conf_dir     = "/etc/dd-agent/conf.d"
+  $dd_user      = "dd-agent"
+  $dd_group     = "root"
+  $service_name = "datadog-agent"
 
   case $operatingsystem {
     "Ubuntu","Debian" : {
-      $rubygems_package = 'rubygems'
-      $rubydev_package =  'ruby-dev'
+      $rubygems_package  = 'rubygems'
+      $rubydev_package   =  'ruby-dev'
+      $mysql_int_package = 'python-mysqldb'
     }
     "RedHat","CentOS","Fedora","Amazon","Scientific" : {
-      $rubygems_package = 'rubygems'
-      $rubydev_package = 'ruby-devel'
+      $rubygems_package  = 'rubygems'
+      $rubydev_package   = 'ruby-devel'
+      $mysql_int_package = 'MySQL-python'
     }
     default: { fail("Class[datadog]: Unsupported operatingsystem: ${::operatingsystem}") }
   }

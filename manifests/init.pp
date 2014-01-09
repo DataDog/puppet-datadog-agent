@@ -3,8 +3,14 @@
 # This class contains the agent installation mechanism for the Datadog module
 #
 # Parameters:
+#   $host:
+#       Your hostname to see in Datadog. Defaults with $fqdn
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value
+#   $use_pup:
+#       Use Pup. Boolean. Defaults to false
+#   $tags
+#       Optional array of tags
 #   $puppet_run_reports
 #       Will send results from your puppet agent runs back to the datadog service
 #   $puppetmaster_user
@@ -16,18 +22,27 @@
 #
 # Sample Usage:
 #
-# include datadog
-#
-# or
-#
-# class{'datadog': api_key => 'your key'}
+# class { 'datadog':
+#     api_key   => 'your key',
+#     tags      => ['env:production', 'linux'],
+#     use_pup   => false,
+#     puppet_run_reports  => false,
+#     puppetmaster_user   => puppet,
+# }
 #
 #
 class datadog(
-  $api_key = 'your key',
+  $host = $fqdn,
+  $api_key = 'your_API_key',
+  $use_pup = false,
+  $tags = [],
   $puppet_run_reports = false,
   $puppetmaster_user = 'puppet'
 ) inherits datadog::params {
+
+  validate_string( $api_key )
+  validate_bool( $use_pup )
+  validate_array( $tags )
 
   include datadog::params
   $dd_url  = $datadog::params::dd_url

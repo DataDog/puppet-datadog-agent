@@ -34,6 +34,8 @@ class datadog::integrations::mysql(
   $galera_cluster = '0'
 ) inherits datadog::params {
 
+  validate_array( $tags )
+
   package { $mysql_int_package :
     ensure => installed,
   }

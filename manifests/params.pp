@@ -32,8 +32,9 @@ class datadog::params {
       $rubygems_package  = 'rubygems'
       $rubydev_package   = 'ruby-devel'
       $mysql_int_package = 'MySQL-python'
+      $mongo_int_package = 'python-pymongo'
     }
     default: { fail("Class[datadog]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
-    
+
 }

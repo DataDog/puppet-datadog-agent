@@ -10,11 +10,13 @@
 #
 # Sample Usage:
 #
-class datadog::ubuntu {
+class datadog::ubuntu(
+  $apt_key = 'C7A7DA52'
+) {
 
     exec { "datadog_key":
-      command => "/usr/bin/apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C7A7DA52",
-      unless  => "/usr/bin/apt-key list | grep C7A7DA52",
+      command => "/usr/bin/apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $apt_key",
+      unless  => "/usr/bin/apt-key list | grep $apt_key | grep expires"
       notify  => Exec['datadog_apt-get_update'],
     }
 

@@ -1,12 +1,12 @@
 [Main]
 
 # The host of the Datadog intake server to send agent data to 
-dd_url: <%= dd_url %>
+dd_url: <%= @dd_url %>
 
 # The Datadog api key to associate your agent's data with your organization. 
 # Can be found here: 
 # https://app.datadoghq.com/account/settings
-api_key: <%= api_key %>
+api_key: <%= @api_key %>
 
 
 # Boolean to enable debug_mode, which outputs massive amounts of log messages 
@@ -14,7 +14,7 @@ api_key: <%= api_key %>
 debug_mode: no 
 
 # Force the hostname to whatever you want.
-hostname: <%= fqdn %>
+hostname: <%= @fqdn %>
 
 # Use the amazon EC2 instance-id instead of hostname (unless hostname is
 # explicitly set)

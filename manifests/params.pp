@@ -21,19 +21,22 @@ class datadog::params {
   $dd_user      = "dd-agent"
   $dd_group     = "root"
   $service_name = "datadog-agent"
+  $mongodb_servers = []
 
   case $operatingsystem {
     "Ubuntu","Debian" : {
       $rubygems_package  = 'rubygems'
       $rubydev_package   =  'ruby-dev'
       $mysql_int_package = 'python-mysqldb'
+      $mongodb_int_package = 'python-pymongo'
     }
     "RedHat","CentOS","Fedora","Amazon","Scientific" : {
       $rubygems_package  = 'rubygems'
       $rubydev_package   = 'ruby-devel'
       $mysql_int_package = 'MySQL-python'
+      $mongodb_int_package = 'pymongo'
     }
     default: { fail("Class[datadog]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
-    
+
 }

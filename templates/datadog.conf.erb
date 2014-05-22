@@ -1,7 +1,7 @@
 #
 # MANAGED BY PUPPET
 #
-# based on agent 4.0.1 configuration sample
+# based on agent 4.2.1 configuration sample
 
 [Main]
 
@@ -23,15 +23,16 @@ dd_url: <%= @dd_url %>
 api_key: <%= @api_key %>
 
 # Force the hostname to whatever you want.
-# hostname:
 hostname: <%= @host %>
 
 # Set the host's tags
-#tags: mytag0, mytag1
 tags: <%= scope.lookupvar('datadog-agent::tags') %>
 <% if !@tags.empty? -%>
 tags: <%= @tags.join(', ') %>
 <% end -%>
+
+# Collect AWS EC2 custom tags as agent tags
+# collect_ec2_tags: no
 
 # Set the threshold for accepting points to allow anything
 # with recent_point_threshold seconds
@@ -57,6 +58,14 @@ use_mount: yes
 # https://github.com/DataDog/dd-agent/wiki/Network-Traffic-and-Proxy-Configuration
 # non_local_traffic: no
 
+# Select the Tornado HTTP Client in the forwarder
+# Default to the simple http client
+# use_curl_http_client: False
+
+# The loopback address the Forwarder and Dogstatsd will bind.
+# Optional, it is mainly used when running the agent on Openshift
+# bind_host: localhost
+
 # ========================================================================== #
 # Pup configuration
 # ========================================================================== #
@@ -65,15 +74,17 @@ use_mount: yes
 # Think of it as a fancy status page or a toe dip into the world of
 # datadog. It can be connected to on the port below.
 
-# use_pup: yes
+use_pup: <% if @use_pup %>yes<% else %>no<% end %>
 # pup_port: 17125
 # pup_interface: localhost
 # pup_url: http://localhost:17125
-use_pup: <% if @use_pup %>yes<% else %>no<% end %>
 
 # ========================================================================== #
 # DogStatsd configuration                                                    #
 # ========================================================================== #
+
+# If you don't want to enable the DogStatsd server, set this option to no
+# use_dogstatsd: yes
 
 # DogStatsd is a small server that aggregates your custom app metrics. For
 # usage information, check out http://api.datadoghq.com
@@ -123,17 +134,6 @@ use_pup: <% if @use_pup %>yes<% else %>no<% end %>
 
 # Ganglia port where gmetad is running
 #ganglia_port: 8651
-
-# -------------------------------------------------------------------------- #
-#   Cassandra                                                                #
-# -------------------------------------------------------------------------- #
-#cassandra_host: localhost
-#cassandra_nodetool: /usr/bin/nodetool
-## If you're using Cassandra 0.8 or higher:
-# cassandra_port: 7199
-## If you're using Cassandra 0.7 or lower:
-#cassandra_port: 8080
-
 
 # -------------------------------------------------------------------------- #
 #   Nagios                                                                   #

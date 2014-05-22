@@ -13,6 +13,7 @@ Puppet::Reports.register_report(:datadog_reports) do
   raise(Puppet::ParseError, "Datadog report config file #{configfile} not readable") unless File.exist?(configfile)
   config = YAML.load_file(configfile)
   API_KEY = config[:datadog_api_key]
+  HOST_FILTER = Regexp.new(config[:host_filter])
 
   desc <<-DESC
   Send notification of metrics to Datadog
@@ -38,6 +39,8 @@ Puppet::Reports.register_report(:datadog_reports) do
   def process
     @summary = self.summary
     @msg_host = self.host
+    
+    return unless HOST_FILTER.match(@msg_host)
 
     event_title = ''
     alert_type = ''

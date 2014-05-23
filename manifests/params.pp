@@ -21,7 +21,7 @@ class datadog::params {
   $dd_user      = "dd-agent"
   $dd_group     = "root"
   $service_name = "datadog-agent"
-  $mongodb_servers = []
+
 
   case $operatingsystem {
     "Ubuntu","Debian" : {

@@ -1,0 +1,10 @@
+init_config:
+
+instances:
+  - nginx_status_url: <%= @nginx_protocol %>://<%= @nginx_host %>:<%= @nginx_port %><%= @nginx_path %>
+  <%- if !tags.empty? %>
+    tags:
+    <%- tags.each do |tag| %>
+      - <%= tag %>
+    <%- end %>
+  <%- end %>

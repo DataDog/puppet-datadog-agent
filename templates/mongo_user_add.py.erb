@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+
+from distutils.version import StrictVersion
+import pymongo
+if StrictVersion(pymongo.version) > StrictVersion('2.4'):
+    from pymongo import MongoClient as Connection
+else:
+    from pymongo import Connection
+
+client = Connection('localhost', <%= @db_port %>)
+db = client['admin']
+
+<% unless @db_admin_user == '' %>
+db.authenticate('<%= @db_admin_user %>', password='<%= db_admin_password %>')
+<% end %>
+if StrictVersion(pymongo.version) > StrictVersion('2.2'):
+    db.add_user('<%= @db_user %>', '<%= @db_password %>', read_only=True)
+else:
+    db.add_user('<%= @db_user %>', '<%= @db_password %>')

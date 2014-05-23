@@ -1,0 +1,10 @@
+init_config:
+
+instances:
+  - server: <%= mongodb_server %>
+  <%- if !tags.empty? %>
+    tags:
+    <%- tags.each do |tag| %>
+      - <%= tag %>
+    <%- end %>
+  <%- end %>

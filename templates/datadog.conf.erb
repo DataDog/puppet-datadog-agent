@@ -145,6 +145,10 @@ use_pup: <% if @use_pup %>yes<% else %>no<% end %>
 # Make sure the dd-agent user can read this file
 #nagios_log: /var/log/nagios3/nagios.log
 
+<% if @nagios_log_path != false %>
+nagios_log: <%= @nagios_log_path %>
+<% end %>
+
 # If you use perfdata, dd-agent can import automatically and in real-time
 # performance data collected by nagios.
 # For more information on perfdata configuration, please refer to

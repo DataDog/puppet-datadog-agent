@@ -38,7 +38,8 @@ class datadog (
   $tags               = [],
   $puppet_run_reports = false,
   $puppetmaster_user  = 'puppet',
-  $puppetmaster_report_host_filter = '.*') inherits datadog::params {
+  $puppetmaster_report_host_filter = '.*',
+  $nagios_log_path = false) inherits datadog::params {
   validate_string($api_key)
   validate_bool($use_pup)
   validate_array($tags)

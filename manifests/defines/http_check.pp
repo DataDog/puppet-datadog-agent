@@ -26,6 +26,12 @@
 #       The (optional) collect_response_time parameter will instruct the
 #       check to create a metric 'network.http.response_time', tagged with
 #       the url, reporting the response time in seconds.
+#  
+#   disable_ssl_validation
+#       The setting disable_ssl_validation parameter to true will instruct
+#       the http client to accept self signed, expired and otherwise
+#       problematic SSL server certificates. To maintain backwards
+#       compatibility this defaults to false.
 #
 #   headers
 #       The (optional) headers parameter allows you to send extra headers
@@ -81,6 +87,7 @@ define datadog::check::http (
   $window    = undef,
   $include_content = false,
   $collect_response_time = true,
+  $disable_ssl_validation = false,
   $headers   = [],
   $tags      = [],
   $contact   = [],

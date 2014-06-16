@@ -21,9 +21,7 @@
 <% if @collect_response_time -%>
         collect_response_time: <%= @collect_response_time %>
 <% end -%>
-<% if @disable_ssl_validation -%>
         disable_ssl_validation: <%= @disable_ssl_validation %>
-<% end -%>
 <% if @headers and ! @headers.empty? -%>
         headers:
   <%- Array(@headers).each do |header| -%>

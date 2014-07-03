@@ -39,8 +39,8 @@
 #
 #
 class datadog(
-  $dd_url = 'http://app.datadoghq.com'
-  $host = nil ,
+  $dd_url = 'http://app.datadoghq.com',
+  $host = nil,
   $api_key = 'your_API_key',
   $tags = [],
   $puppet_run_reports = false,

@@ -33,7 +33,7 @@ class datadog::integrations::nginx(
     owner   => $dd_user,
     group   => $dd_group,
     mode    => 0600,
-    content => template('datadog/integrations/nginx.yaml.erb'),
+    content => template('datadog/agent-conf.d/nginx.yaml.erb'),
     notify  => Service[$service_name]
   }
 }

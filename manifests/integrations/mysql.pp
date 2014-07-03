@@ -45,7 +45,7 @@ class datadog::integrations::mysql(
     owner   => $dd_user,
     group   => $dd_group,
     mode    => 0600,
-    content => template('datadog/integrations/mysql.yaml.erb'),
+    content => template('datadog/agent-conf.d/mysql.yaml.erb'),
     require => Package[$mysql_int_package],
     notify  => Service[$service_name]
   }

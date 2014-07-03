@@ -40,7 +40,7 @@ class datadog::integrations::process(
     owner   => $dd_user,
     group   => $dd_group,
     mode    => 0600,
-    content => template('datadog/integrations/process.yaml.erb'),
+    content => template('datadog/agent-conf.d/process.yaml.erb'),
     require => Package[$process_int_package],
     notify  => Service[$service_name]
   }

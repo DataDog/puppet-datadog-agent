@@ -35,7 +35,7 @@ class datadog::integrations::mongo(
     owner   => $dd_user,
     group   => $dd_group,
     mode    => 0600,
-    content => template('datadog/integrations/mongo.yaml.erb'),
+    content => template('datadog/agent-conf.d/mongo.yaml.erb'),
     require => Package[$mongo_int_package],
     notify  => Service[$service_name]
   }

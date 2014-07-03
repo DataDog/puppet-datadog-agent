@@ -22,7 +22,7 @@ class datadog::integrations::jenkins(
     owner   => $dd_user,
     group   => $dd_group,
     mode    => 0600,
-    content => template('datadog/integrations/jenkins.yaml.erb'),
+    content => template('datadog/agent-conf.d/jenkins.yaml.erb'),
     notify  => Service[$service_name]
   }
 }

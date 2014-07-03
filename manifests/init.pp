@@ -40,7 +40,7 @@
 #
 class datadog(
   $dd_url = 'http://app.datadoghq.com',
-  $host = nil,
+  $host = '',
   $api_key = 'your_API_key',
   $tags = [],
   $puppet_run_reports = false,
@@ -48,8 +48,9 @@ class datadog(
   $non_local_traffic = false
 ) inherits datadog::params {
 
+  validate_string($dd_url)
+  validate_string($host)
   validate_string($api_key)
-  validate_bool($use_pup)
   validate_array($tags)
   validate_bool($puppet_run_reports)
   validate_string($puppetmaster_user)

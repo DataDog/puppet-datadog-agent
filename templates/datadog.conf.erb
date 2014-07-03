@@ -21,10 +21,10 @@ dd_url: <%= dd_url %>
 api_key: <%= api_key %>
 
 # Force the hostname to whatever you want.
-<% if host -%>
-hostname: <%= host %>
-<% else -%>
+<% if host.empty? -%>
 # hostname:
+<% else -%>
+hostname: <%= host %>
 <% end -%>
 
 # Set the host's tags

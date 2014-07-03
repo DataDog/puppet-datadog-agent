@@ -21,7 +21,7 @@ class datadog::integrations::elasticsearch(
     owner   => $datadog::dd_user,
     group   => $datadog::dd_group,
     mode    => '0644',
-    content => template('datadog/elastic.yaml.erb'),
+    content => template('datadog/agent-conf.d/elastic.yaml.erb'),
     require => Package[ 'datadog-agent' ],
     notify  => Service[ $datadog::service_name ],
   }

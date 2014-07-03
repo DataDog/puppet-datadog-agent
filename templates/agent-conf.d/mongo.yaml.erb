@@ -1,0 +1,14 @@
+#
+# MANAGED BY PUPPET
+#
+
+init_config:
+
+instances:
+  - server: mongodb://<%= @host %>:<%= @port %>
+<% if !@tags.empty? -%>
+    tags:                  # Optional
+<% @tags.each do |tag| -%>
+        - <%= tag %>
+<% end -%>
+<% end -%>

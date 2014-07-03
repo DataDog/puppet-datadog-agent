@@ -1,3 +1,6 @@
+#
+# MANAGED BY PUPPET
+#
 [Main]
 
 # The host of the Datadog intake server to send agent data to 
@@ -18,10 +21,18 @@ dd_url: <%= dd_url %>
 api_key: <%= api_key %>
 
 # Force the hostname to whatever you want.
-#hostname: mymachine.mydomain
+<% if host.empty? -%>
+# hostname:
+<% else -%>
+hostname: <%= host %>
+<% end -%>
 
 # Set the host's tags
 #tags: mytag0, mytag1
+<% if !tags.empty? -%>
+tags: <%= tags.join(', ') %>
+<% end -%>
+
 
 # Collect AWS EC2 custom tags as agent tags
 # collect_ec2_tags: no

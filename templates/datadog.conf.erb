@@ -3,38 +3,127 @@
 # The host of the Datadog intake server to send agent data to 
 dd_url: <%= dd_url %>
 
-# The Datadog api key to associate your agent's data with your organization. 
-# Can be found here: 
+# If you need a proxy to connect to the Internet, provide the settings here
+# proxy_host: my-proxy.com
+# proxy_port: 3128
+# proxy_user: user
+# proxy_password: password
+
+# If you run the agent behind haproxy, you might want to set this to yes
+# skip_ssl_validation: no
+
+# The Datadog api key to associate your Agent's data with your organization.
+# Can be found here:
 # https://app.datadoghq.com/account/settings
 api_key: <%= api_key %>
 
-
-# Boolean to enable debug_mode, which outputs massive amounts of log messages 
-# to the /tmp/ directory.  
-debug_mode: no 
-
 # Force the hostname to whatever you want.
-hostname: <%= fqdn %>
+#hostname: mymachine.mydomain
 
-# Use the amazon EC2 instance-id instead of hostname (unless hostname is
-# explicitly set)
-use_ec2_instance_id: yes
+# Set the host's tags
+#tags: mytag0, mytag1
 
-# Change port the agent is listening to
+# Collect AWS EC2 custom tags as agent tags
+# collect_ec2_tags: no
+
+# Collect instance metadata
+# The Agent will try to collect instance metadata for EC2 and GCE instances by 
+# trying to connect to the local endpoint: http://169.254.169.254
+# See http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AESDG-chapter-instancedata.html
+# and https://developers.google.com/compute/docs/metadata
+# for more information
+# collect_instance_metadata: yes
+
+# Set the threshold for accepting points to allow anything
+# with recent_point_threshold seconds
+# Defaults to 30 seconds if no value is provided
+#recent_point_threshold: 30
+
+# Use mount points instead of volumes to track disk and fs metrics
+use_mount: no
+
+# Change port the Agent is listening to
 # listen_port: 17123
+
+# Start a graphite listener on this port
+# graphite_listen_port: 17124
+
+# Additional directory to look for Datadog checks
+# additional_checksd: /etc/dd-agent/checks.d/
+
+# Allow non-local traffic to this Agent
+# This is required when using this Agent as a proxy for other Agents
+# that might not have an internet connection
+# For more information, please see
+# https://github.com/DataDog/dd-agent/wiki/Network-Traffic-and-Proxy-Configuration
+non_local_traffic: <%= non_local_traffic %>
+
+# Select the Tornado HTTP Client in the forwarder
+# Default to the simple http client
+# use_curl_http_client: False
+
+# The loopback address the Forwarder and Dogstatsd will bind.
+# Optional, it is mainly used when running the agent on Openshift
+# bind_host: localhost
+
+# ========================================================================== #
+# Pup configuration
+# ========================================================================== #
+
+# Pup is a small server that displays metric data collected by the Agent.
+# Think of it as a fancy status page or a toe dip into the world of
+# datadog. It can be connected to on the port below.
+
+# use_pup: no
+# pup_port: 17125
+# pup_interface: localhost
+# pup_url: http://localhost:17125
+
+# ========================================================================== #
+# DogStatsd configuration                                                    #
+# ========================================================================== #
+
+# If you don't want to enable the DogStatsd server, set this option to no
+# use_dogstatsd: yes
+
+# DogStatsd is a small server that aggregates your custom app metrics. For
+# usage information, check out http://api.datadoghq.com
+
+#  Make sure your client is sending to the same port.
+# dogstatsd_port : 8125
+
+# By default dogstatsd will post aggregate metrics to the Agent (which handles
+# errors/timeouts/retries/etc). To send directly to the datadog api, set this
+# to https://app.datadoghq.com.
+# dogstatsd_target : http://localhost:17123
+
+## The dogstatsd flush period.
+# dogstatsd_interval : 10
+
+## If 'yes', counters and rates will be normalized to 1 second (that is divided
+## by the dogstatsd_interval) before being sent to the server. Defaults to 'yes'
+# dogstatsd_normalize : yes
+
+# If you want to forward every packet received by the dogstatsd server
+# to another statsd server, uncomment these lines.
+# WARNING: Make sure that forwarded packets are regular statsd packets and not "dogstatsd" packets,
+# as your other statsd server might not be able to handle them.
+# statsd_forward_host: address_of_own_statsd_server
+# statsd_forward_port: 8125
 
 # ========================================================================== #
 # Service-specific configuration                                             #
 # ========================================================================== #
 
 # -------------------------------------------------------------------------- #
-#   Apache                                                                   #
+#   Disk                                                                     #
 # -------------------------------------------------------------------------- #
 
-# Url to Apache's status page. Must have mod_status installed.
-# See http://httpd.apache.org/docs/2.0/mod/mod_status.html for details.
-#apache_status_url: http://www.example.com/server-status/?auto
-
+# Some infrastrucures have many constantly changing virtual devices (e.g. folks
+# running constantly churning linux containers) whose metrics aren't
+# interesting for datadog. To filter out a particular pattern of devices
+# from collection, configure a regex here:
+# device_blacklist_re: .*\/dev\/mapper\/lxc-box.*
 
 # -------------------------------------------------------------------------- #
 #   Ganglia                                                                  #
@@ -46,266 +135,66 @@ use_ec2_instance_id: yes
 # Ganglia port where gmetad is running
 #ganglia_port: 8651
 
-
 # -------------------------------------------------------------------------- #
-#   MySQL                                                                    #
-# -------------------------------------------------------------------------- #
-
-# MySQL host
-#mysql_server:
-
-# MySQL user. It runs "SHOW STATUS" and "SHOW REPLICATION STATUS" queries.
-# You should consider creating a separate user, e.g. datadog.
-# The latter requires the "REPLICATION CLIENT" privileges using a command like:
-# GRANT REPLICATION CLIENT ON *.* TO datadog;
-# http://dev.mysql.com/doc/refman/5.1/en/privileges-provided.html#priv_replication-client
-#mysql_user:
-
-# MySQL user's password
-#mysql_pass:
-
-# -------------------------------------------------------------------------- #
-#   PostgreSQL                                                               #
-# -------------------------------------------------------------------------- #
-
-# PostgreSQL host
-#postgresql_server:
-
-# PostgreSQL port
-#postgresql_port:
-
-# PostgreSQL user. It needs to connect to the "postgres" database but does not 
-# require any privileges, so you should consider creating a separate, 
-# unprivileged user
-#postgresql_user:
-
-# PostgreSQL user's password
-#postgresql_pass:
-
-
-# -------------------------------------------------------------------------- #
-#   Nginx                                                                    #
-# -------------------------------------------------------------------------- #
-
-# Url to nginx's status page. Must have http_stub_status_module installed.
-# See http://wiki.nginx.org/HttpStubStatusModule for details.
-#nginx_status_url: http://www.example.com/nginx_status
-
-
-# -------------------------------------------------------------------------- #
-#   RabbitMQ                                                                 #
-# -------------------------------------------------------------------------- #
-
-# Url to RabbitMQ's status page. Must have rabbitmq-status plugin installed.
-# See http://www.lshift.net/blog/2009/11/30/introducing-rabbitmq-status-plugin 
-# for details. 
-#rabbitmq_status_url: http://www.example.com:55672/json
-#rabbitmq_user: guest
-#rabbitmq_pass: guest
-
-
-# -------------------------------------------------------------------------- #
-#   MongoDB                                                                  #
-# -------------------------------------------------------------------------- #
-
-# MongoDB uri. For example: mongodb://my_user:my_pass@localhost/my_db
-#mongodb_server:
-
-# -------------------------------------------------------------------------- #
-#   CouchDB                                                                  #
-# -------------------------------------------------------------------------- #
-
-# CouchDB host
-#couchdb_server:
-
-# -------------------------------------------------------------------------- #
-#   Cassandra                                                                #
-# -------------------------------------------------------------------------- #
-#cassandra_host: localhost
-#cassandra_port: 8080
-#cassandra_nodetool: /usr/bin/nodetool
-
-# -------------------------------------------------------------------------- #
-#   Hudson                                                                   #
-# -------------------------------------------------------------------------- #
-
-# Path to Hudson's home directory
-# Make sure the dd-agent user can read this directory
-#hudson_home: /var/lib/hudson/
-
-
-# -------------------------------------------------------------------------- #
-#   Nagios                                                                   #
-# -------------------------------------------------------------------------- #
-
-# Path to Nagios's event log file
-# Make sure the dd-agent user can read this file
-#nagios_log: /var/log/nagios3/nagios.log
-
-
-# -------------------------------------------------------------------------- #
-#   Java                                                                     #
-# -------------------------------------------------------------------------- #
-
-# JMX server:port to connect to
-# jvm_jmx_server: localhost:8090
-#jvm_jmx_server: 
-
-# JMX user to log in with, if needed
-#jvm_jmx_user: john
-
-# Password for the configured JMX user
-#jvm_jmx_pass: foobar
-
-# Name to report the statistics for this java VM. This will allow to monitor
-# Several JVMs running on the same machine
-#jvm_jmx_name: Java
-
-# -------------------------------------------------------------------------- #
-#   Tomcat                                                                   #
-# -------------------------------------------------------------------------- #
-
-# JMX host:port to connect to. Must be configured in tomcat setenv.sh or similar
-#tomcat_jmx_server:
-
-# JMX user to log in with, if needed
-#tomcat_jmx_user: john
-
-# Password for the configured JMX user
-#tomcat_jmx_pass: foobar
-
-# -------------------------------------------------------------------------- #
-#   Activemq                                                                 #
-# -------------------------------------------------------------------------- #
-
-# JMX host:port to connect to.
-#activemq_jmx_server:
-
-# JMX user to log in with, if needed
-#activemq_jmx_user: john
-
-# Password for the configured JMX user, if needed
-#activemq_jmx_pass: foobar
-
-# -------------------------------------------------------------------------- #
-#  Solr                                                                      #
-# -------------------------------------------------------------------------- #
-
-# JMX host:port to connect to.
-#solr_jmx_server:
-
-# JMX user to log in with, if needed
-#solr_jmx_user: john
-
-# Password for the configured JMX user, if needed
-#solr_jmx_pass: foobar
-
-# -------------------------------------------------------------------------- #
-#  Rails                                                                     
-# -------------------------------------------------------------------------- #
-
-#rails_logs: /var/log/myrailsapp.log
-
-# -------------------------------------------------------------------------- #
-#  Memcache                                                                     
-# -------------------------------------------------------------------------- #
-
-#memcache_server: localhost
-#memcache_port: 11211
-
-# -------------------------------------------------------------------------- #
-#  Dogstream (log file parser)                                                                     
+#  Dogstream (log file parser)
 # -------------------------------------------------------------------------- #
 
 # Comma-separated list of logs to parse and optionally custom parsers to use.
 # The form should look like this:
 #
-#   dogstreams: /path/to/log1:parsers:custom_parser, /path/to/log2, /path/to/log3, ...
+#   dogstreams: /path/to/log1:parsers_module:custom_parser, /path/to/log2, /path/to/log3, ...
+#
+# Or this:
+#
+#   dogstreams: /path/to/log1:/path/to/my/parsers_module.py:custom_parser, /path/to/log2, /path/to/log3, ...
 #
 # Each entry is a path to a log file and optionally a Python module/function pair
-# separated by colons. 
+# separated by colons.
 #
-# Custom parsers should take a 2 parameters, a logger object and 
-# a string parameter of the current line to parse. It should return a tuple of 
+# Custom parsers should take a 2 parameters, a logger object and
+# a string parameter of the current line to parse. It should return a tuple of
 # the form:
 #   (metric (str), timestamp (unix timestamp), value (float), attributes (dict))
 # where attributes should at least contain the key 'metric_type', specifying
 # whether the given metric is a 'counter' or 'gauge'.
 #
-# In order for the agent to find the custom line parser functions, the modules
-# must exist in the agent's PYTHONPATH. You can set this as an environment
-# variable when starting the agent.
+# Unless parsers are specified with an absolute path, the modules must exist in
+# the Agent's PYTHONPATH. You can set this as an environment variable when
+# starting the Agent. If the name of the custom parser function is not passed,
+# 'parser' is assumed.
 #
 # If this value isn't specified, the default parser assumes this log format:
 #     metric timestamp value key0=val0 key1=val1 ...
 #
 
-# -------------------------------------------------------------------------- # 
-# Varnish
-# -------------------------------------------------------------------------- # 
-# Path to varnishstat
-# varnishstat: /usr/bin/varnishstat
+# ========================================================================== #
+# Custom Emitters                                                            #
+# ========================================================================== #
 
-##############################################################################
-#################### NOTHING TO MODIFY AFTER THIS LINE #######################
-##############################################################################
-
-# -------------------------------------------------------------------------- #
-#  Logging Configuration
+# Comma-separated list of emitters to be used in addition to the standard one
 #
-#  PLEASE READ ME!
+# Expected to be passed as a comma-separated list of colon-delimited
+# name/object pairs.
 #
-#  DO NOT PUT ANY INTEGRATION CONFIGURATION AFTER THIS SECTION
-#  IT WILL BE IGNORED.
-#  I REPEAT, IT WILL BE IGNORED.
+# custom_emitters: /usr/local/my-code/emitters/rabbitmq.py:RabbitMQEmitter
 #
-# -------------------------------------------------------------------------- #
+# If the name of the emitter function is not specified, 'emitter' is assumed.
 
-[loggers]
-keys:root,dogstatsd,checks
 
-[handlers]
-keys:dogstatsd,checks
+# ========================================================================== #
+# Logging
+# ========================================================================== #
 
-[formatters]
-keys:ddagent
+# log_level: INFO
 
-# DogStatsd logging
+# collector_log_file: /var/log/datadog/collector.log
+# forwarder_log_file: /var/log/datadog/forwarder.log
+# dogstatsd_log_file: /var/log/datadog/dogstatsd.log
+# pup_log_file:       /var/log/datadog/pup.log
 
-[logger_root]
-level:INFO
-handlers:
-propagate:0
-qualname:root
-
-[logger_dogstatsd]
-level:INFO
-handlers:dogstatsd
-propagate:0
-qualname:dogstatsd
-
-[logger_checks]
-level:WARN
-handlers:checks
-propagate:0
-qualname:checks
-
-[handler_dogstatsd]
-class:FileHandler
-level:INFO
-formatter:ddagent
-args:('/var/log/datadog/dogstatsd.log', 'a')
-
-[handler_checks]
-class:FileHandler
-level:WARN
-formatter:ddagent
-args:('/var/log/datadog/checks.log', 'a')
-
-[formatter_ddagent]
-format: %(asctime)s | %(name)s | %(levelname)s | %(message)s
-class:logging.Formatter
-
-# IF YOU ADD ANYTHING HERE, IT WILL BE IGNORED
-# SO IF YOU WANT TO CONFIGURE AN INTEGRATION,
-# DO IT IN THE SECTION ABOVE
+# if syslog is enabled but a host and port are not set, a local domain socket
+# connection will be attempted
+#
+# log_to_syslog: yes
+# syslog_host:
+# syslog_port:

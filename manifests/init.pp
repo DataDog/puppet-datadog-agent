@@ -3,18 +3,22 @@
 # This class contains the agent installation mechanism for the Datadog module
 #
 # Parameters:
+#   $dd_url:
+#       The host of the Datadog intake server to send agent data to.
+#       Defaults to https://app.datadoghq.com.
 #   $host:
-#       Your hostname to see in Datadog. Defaults with $fqdn
+#       Your hostname to see in Datadog. Defaults with Datadog hostname detection.
 #   $api_key:
-#       Your DataDog API Key. Please replace with your key value
-#   $use_pup:
-#       Use Pup. Boolean. Defaults to false
+#       Your DataDog API Key. Please replace with your key value.
 #   $tags
-#       Optional array of tags
+#       Optional array of tags.
 #   $puppet_run_reports
-#       Will send results from your puppet agent runs back to the datadog service
+#       Will send results from your puppet agent runs back to the datadog service.
 #   $puppetmaster_user
 #       Will chown the api key used by the report processor to this user.
+#   $non_local_traffic
+#       Enable you to use the agent as a proxy. Defaults to false.
+#       See https://github.com/DataDog/dd-agent/wiki/Proxy-Configuration
 #
 # Actions:
 #
@@ -22,27 +26,34 @@
 #
 # Sample Usage:
 #
+# include datadog
+#
+# OR
+#
 # class { 'datadog':
 #     api_key   => 'your key',
 #     tags      => ['env:production', 'linux'],
-#     use_pup   => false,
 #     puppet_run_reports  => false,
 #     puppetmaster_user   => puppet,
 # }
 #
 #
 class datadog(
-  $host = $fqdn,
+  $dd_url = 'http://app.datadoghq.com'
+  $host = nil ,
   $api_key = 'your_API_key',
-  $use_pup = false,
   $tags = [],
   $puppet_run_reports = false,
-  $puppetmaster_user = 'puppet'
+  $puppetmaster_user = 'puppet',
+  $non_local_traffic = false
 ) inherits datadog::params {
 
-  validate_string( $api_key )
-  validate_bool( $use_pup )
-  validate_array( $tags )
+  validate_string($api_key)
+  validate_bool($use_pup)
+  validate_array($tags)
+  validate_bool($puppet_run_reports)
+  validate_string($puppetmaster_user)
+  validate_bool($non_local_traffic)
 
   include datadog::params
   $dd_url  = $datadog::params::dd_url

@@ -24,7 +24,9 @@ class datadog::params {
     "Ubuntu","Debian" : {
       $rubygems_package  = 'rubygems'
       $rubydev_package   =  'ruby-dev'
+      $process_int_package = 'python-psutil'
       $mysql_int_package = 'python-mysqldb'
+      $mongo_int_package = 'python-pymongo'
     }
     "RedHat","CentOS","Fedora","Amazon","Scientific" : {
       $rubygems_package  = 'rubygems'

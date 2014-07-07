@@ -19,8 +19,8 @@ class datadog::integrations::jenkins(
 
   file { "${conf_dir}/jenkins.yaml":
     ensure  => file,
-    owner   => $dd_user,
-    group   => $dd_group,
+    owner   => $datadog::dd_user,
+    group   => $datadog::dd_group,
     mode    => 0600,
     content => template('datadog/agent-conf.d/jenkins.yaml.erb'),
     notify  => Service[$service_name]

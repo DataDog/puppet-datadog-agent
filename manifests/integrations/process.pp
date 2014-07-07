@@ -37,8 +37,8 @@ class datadog::integrations::process(
 
   file { "${conf_dir}/process.yaml":
     ensure  => file,
-    owner   => $dd_user,
-    group   => $dd_group,
+    owner   => $datadog::dd_user,
+    group   => $datadog::dd_group,
     mode    => 0600,
     content => template('datadog/agent-conf.d/process.yaml.erb'),
     require => Package[$process_int_package],

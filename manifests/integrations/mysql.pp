@@ -26,7 +26,7 @@
 #
 #
 class datadog::integrations::mysql(
-  $host,
+  $host = 'localhost',
   $password,
   $user = 'datadog',
   $tags = [],
@@ -42,8 +42,8 @@ class datadog::integrations::mysql(
 
   file { "${conf_dir}/mysql.yaml":
     ensure  => file,
-    owner   => $dd_user,
-    group   => $dd_group,
+    owner   => $datadog::dd_user,
+    group   => $datadog::dd_group,
     mode    => 0600,
     content => template('datadog/agent-conf.d/mysql.yaml.erb'),
     require => Package[$mysql_int_package],

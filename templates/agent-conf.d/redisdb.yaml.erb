@@ -1,0 +1,23 @@
+#
+# MANAGED BY PUPPET
+#
+
+init_config:
+
+instances:
+  - host: <%= @host %>
+    port: <%= @port %>
+    <% if @password.empty? %># <%end %>password: <%= @password %>
+    # unix_socket_path: /var/run/redis/redis.sock # optional, can be used in lieu of host/port
+<% unless @tags.empty? -%>
+    tags:                  # Optional
+<% @tags.each do |tag| -%>
+        - <%= tag %>
+<% end -%>
+<% end -%>
+<% unless @keys.empty? -%>
+    keys:  # check the length of these keys
+<% @keys.each do |key| -%>
+        - <%= key %>
+<% end -%>
+<% end -%>

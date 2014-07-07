@@ -3,13 +3,13 @@
 # This class will install the necessary configuration for the elasticsearch integration
 #
 # Parameters:
-#   $es_url:
+#   $url:
 #     The URL for Elasticsearch
 #
 # Sample Usage:
 #
 #   class { 'datadog::integrations::elasticsearch' :
-#     es_url  => "http://localhost:9201"
+#     url  => "http://localhost:9201"
 #   }
 #
 class datadog::integrations::elasticsearch(

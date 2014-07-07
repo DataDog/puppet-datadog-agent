@@ -27,6 +27,7 @@ class datadog::params {
       $process_int_package = 'python-psutil'
       $mysql_int_package = 'python-mysqldb'
       $mongo_int_package = 'python-pymongo'
+      $redis_int_package = 'python-redis'
     }
     "RedHat","CentOS","Fedora","Amazon","Scientific" : {
       $rubygems_package  = 'rubygems'
@@ -34,6 +35,7 @@ class datadog::params {
       $process_int_package = 'python-psutil'
       $mysql_int_package = 'MySQL-python'
       $mongo_int_package = 'python-pymongo'
+      $redis_int_package = 'python-redis'
     }
     default: { fail("Class[datadog]: Unsupported operatingsystem: ${::operatingsystem}") }
   }

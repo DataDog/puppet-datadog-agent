@@ -26,7 +26,7 @@
 #
 #
 class datadog::integrations::mysql(
-  $host,
+  $host = 'localhost',
   $password,
   $user = 'datadog',
   $tags = [],

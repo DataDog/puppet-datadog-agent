@@ -13,7 +13,7 @@
 #   }
 #
 class datadog::integrations::elasticsearch(
-  $es_url = 'http://localhost:9200'
+  $url = 'http://localhost:9200'
 ) inherits datadog::params {
 
   file { "${datadog::conf_dir}/elastic.yaml":

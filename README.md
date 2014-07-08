@@ -22,16 +22,14 @@ On your Puppet master:
 Installation
 ------------
 
-Install `datadog` as a module in your Puppet master's module path.
+Install `datadog_agent` as a module in your Puppet master's module path.
 
-     git clone https://github.com/DataDog/puppet-datadog-agent.git /etc/puppet/modules/datadog
-
-Note that this installed the module in `/etc/puppet/modules/datadog`
+    puppet module install datadog-datadog_agent
 
 Usage
 -----
 
-Once the `datadog` module is installed on your master, there's a tiny bit of configuration
+Once the `datadog_agent` module is installed on your master, there's a tiny bit of configuration
 that needs to be done.
 
 1. Update the default class parameters with your [API key](https://app.datadoghq.com/account/settings#api)
@@ -40,16 +38,16 @@ that needs to be done.
 2. Specify the module on any nodes you wish to install the DataDog
    Agent.
 
-        include datadog
+        include datadog_agent
 
   Or assign this module using the Puppet 2.6 style Parameterized class:
-        class { 'datadog':
+        class { 'datadog_agent':
           api_key => "yourkey",
         }
 
   On your Puppet master, enable reporting:
 
-        class { 'datadog':
+        class { 'datadog_agent':
           api_key            => "yourkey",
           puppet_run_reports => true,
         }
@@ -132,7 +130,7 @@ This is the minimal set of files to use to get started. These files assume puppe
             api_key => "INSERT YOU API KEY HERE",
         }
     }
-    node "YOUR NODE NAME HERE" {
+    node "puppetmaster" {
         class { "datadog":
             api_key            => "INSERT YOUR API KEY HERE",
             puppet_run_reports => true

@@ -1,4 +1,4 @@
-# Class: datadog::integrations::process
+# Class: datadog_agent::integrations::process
 #
 # This class will install the necessary configuration for the process integration
 #
@@ -8,7 +8,7 @@
 #
 # Sample Usage:
 #
-# class { 'datadog::integrations::process':
+# class { 'datadog_agent::integrations::process':
 #     processes   => [
 #         {
 #             'name'          => 'puppetmaster',
@@ -25,9 +25,9 @@
 
 #
 #
-class datadog::integrations::process(
+class datadog_agent::integrations::process(
   $processes = [],
-) inherits datadog::params {
+) inherits datadog_agent::params {
 
   validate_array( $processes )
 
@@ -37,10 +37,10 @@ class datadog::integrations::process(
 
   file { "${conf_dir}/process.yaml":
     ensure  => file,
-    owner   => $datadog::dd_user,
-    group   => $datadog::dd_group,
+    owner   => $datadog_agent::dd_user,
+    group   => $datadog_agent::dd_group,
     mode    => 0600,
-    content => template('datadog/agent-conf.d/process.yaml.erb'),
+    content => template('datadog_agent/agent-conf.d/process.yaml.erb'),
     require => Package[$process_int_package],
     notify  => Service[$service_name]
   }

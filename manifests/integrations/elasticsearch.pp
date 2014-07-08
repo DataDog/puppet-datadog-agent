@@ -1,4 +1,4 @@
-# Class: datadog::integrations::elasticsearch
+# Class: datadog_agent::integrations::elasticsearch
 #
 # This class will install the necessary configuration for the elasticsearch integration
 #
@@ -8,21 +8,21 @@
 #
 # Sample Usage:
 #
-#   class { 'datadog::integrations::elasticsearch' :
+#   class { 'datadog_agent::integrations::elasticsearch' :
 #     url  => "http://localhost:9201"
 #   }
 #
-class datadog::integrations::elasticsearch(
+class datadog_agent::integrations::elasticsearch(
   $url = 'http://localhost:9200'
-) inherits datadog::params {
+) inherits datadog_agent::params {
 
-  file { "${datadog::conf_dir}/elastic.yaml":
+  file { "${datadog_agent::conf_dir}/elastic.yaml":
     ensure  => file,
-    owner   => $datadog::dd_user,
-    group   => $datadog::dd_group,
+    owner   => $datadog_agent::dd_user,
+    group   => $datadog_agent::dd_group,
     mode    => '0644',
-    content => template('datadog/agent-conf.d/elastic.yaml.erb'),
+    content => template('datadog_agent/agent-conf.d/elastic.yaml.erb'),
     require => Package[ 'datadog-agent' ],
-    notify  => Service[ $datadog::service_name ],
+    notify  => Service[ $datadog_agent::service_name ],
   }
 }

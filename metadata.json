@@ -8,23 +8,20 @@
   "project_page": "https://github.com/DataDog/puppet-datadog-agent",
   "issues_url": "https://github.com/DataDog/puppet-datadog-agent/issues",
   "description": "This will install the Datadog monitoring agent. Sign up and get your API key at: http://www.datadoghq.com",
-  "dependencies": [
-    {"name":"puppetlabs/stdlib", "version_requirement":"4.x"}
-  ],
   "operatingsystem_support": [
     {
       "operatingsystem": "Debian",
-      "operatingsystemrelease": [ 
+      "operatingsystemrelease": [
         "6",
-        "7" 
+        "7"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": [ 
+      "operatingsystemrelease": [
         "10.04",
         "12.04",
-        "14.04" 
+        "14.04"
       ]
     }
   ],
@@ -36,6 +33,12 @@
     {
       "name": "puppet",
       "version_requirement": ">=2.7.20 <4.0.0"
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": "4.x"
     }
   ]
 }

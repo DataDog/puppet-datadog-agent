@@ -1,4 +1,4 @@
-# Class: datadog::integrations::jenkins
+# Class: datadog_agent::integrations::jenkins
 #
 # This class will install the necessary configuration for the jenkins integration
 #
@@ -8,21 +8,21 @@
 #
 # Sample Usage:
 #
-#  class { 'datadog::integrations::jenkins' :
+#  class { 'datadog_agent::integrations::jenkins' :
 #    path     => '/var/lib/jenkins',
 #  }
 #
 #
-class datadog::integrations::jenkins(
+class datadog_agent::integrations::jenkins(
   $path = '/var/lib/jenkins'
-) inherits datadog::params {
+) inherits datadog_agent::params {
 
   file { "${conf_dir}/jenkins.yaml":
     ensure  => file,
-    owner   => $datadog::dd_user,
-    group   => $datadog::dd_group,
+    owner   => $datadog_agent::dd_user,
+    group   => $datadog_agent::dd_group,
     mode    => 0600,
-    content => template('datadog/agent-conf.d/jenkins.yaml.erb'),
+    content => template('datadog_agent/agent-conf.d/jenkins.yaml.erb'),
     notify  => Service[$service_name]
   }
 }

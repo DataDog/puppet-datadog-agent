@@ -1,4 +1,4 @@
-# Class: datadog::ubuntu
+# Class: datadog_agent::ubuntu
 #
 # This class contains the DataDog agent installation mechanism for Ubuntu
 #
@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class datadog::ubuntu(
+class datadog_agent::ubuntu(
   $apt_key = 'C7A7DA52'
 ) {
 
@@ -21,7 +21,7 @@ class datadog::ubuntu(
     }
 
     file { "/etc/apt/sources.list.d/datadog.list":
-      source  => "puppet:///modules/datadog/datadog.list",
+      source  => "puppet:///modules/datadog_agent/datadog.list",
       notify  => Exec['datadog_apt-get_update'],
     }
 

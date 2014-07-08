@@ -1,4 +1,4 @@
-# Class: datadog::integrations::redis
+# Class: datadog_agent::integrations::redis
 #
 # This class will install the necessary configuration for the redis integration
 #
@@ -16,18 +16,18 @@
 #
 # Sample Usage:
 #
-#  class { 'datadog::integrations::redis' :
+#  class { 'datadog_agent::integrations::redis' :
 #    host => 'localhost',
 #  }
 #
 #
-class datadog::integrations::redis(
+class datadog_agent::integrations::redis(
   $host = 'localhost',
   $password = '',
   $port = 6379,
   $tags = [],
   $keys = [],
-) inherits datadog::params {
+) inherits datadog_agent::params {
 
   validate_re( $port, '^\d+$' )
   validate_array( $tags )
@@ -39,10 +39,10 @@ class datadog::integrations::redis(
 
   file { "${conf_dir}/redisdb.yaml":
     ensure  => file,
-    owner   => $datadog::dd_user,
-    group   => $datadog::dd_group,
+    owner   => $datadog_agent::dd_user,
+    group   => $datadog_agent::dd_group,
     mode    => 0600,
-    content => template('datadog/agent-conf.d/redisdb.yaml.erb'),
+    content => template('datadog_agent/agent-conf.d/redisdb.yaml.erb'),
     require => Package[$redis_int_package],
     notify  => Service[$service_name]
   }

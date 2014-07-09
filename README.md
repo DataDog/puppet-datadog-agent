@@ -122,12 +122,12 @@ This is the minimal set of modifications to get started. These files assume pupp
 ------------------------------
 
     node "default" {
-        class { "datadog":
+        class { "datadog_agent":
             api_key => "INSERT YOU API KEY HERE",
         }
     }
     node "puppetmaster" {
-        class { "datadog":
+        class { "datadog_agent":
             api_key            => "INSERT YOUR API KEY HERE",
             puppet_run_reports => true
         }
@@ -164,7 +164,7 @@ Search for "Puppet" in the Stream and you should see something like this:
 
 ![Puppet Events in Datadog][puppet-events]
 
-puppet-events]: https://img.skitch.com/20120403-bdipicbpquwccwxm2u3cwdc6ar.png
+[puppet-events]: https://img.skitch.com/20120403-bdipicbpquwccwxm2u3cwdc6ar.png
 
 Masterless puppet
 =================

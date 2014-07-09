@@ -17,14 +17,40 @@
 #    port     => 27017,
 #  }
 #
+#  or for multiple servers
+#
+#  class { 'datadog::integrations::mongo' :
+#    servers => [
+#      {
+#        'host' => 'localhost',
+#        'port' => '27017',
+#        'tags' => [],
+#      },
+#      {
+#        'host' => 'localhost',
+#        'port' => '27018',
+#        'tags' => [],
+#      },
+#    ]
+#  }
 #
 class datadog::integrations::mongo(
+  $servers = [],
   $host = '127.0.0.1',
   $port = 27017,
   $tags = []
 ) inherits datadog::params {
 
   validate_array( $tags )
+  validate_array( $servers )
+
+  if empty($servers) {
+    $servers = [{
+      'host' => $host,
+      'port' => $post,
+      'tags' => $tags,
+    }]
+  }
 
   package { $mongo_int_package :
     ensure => installed,

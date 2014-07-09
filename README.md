@@ -12,12 +12,7 @@ A module to:
 Requirements
 ------------
 
-* [puppet](http://puppetlabs.com)
-* A [Datadog](http://www.datadoghq.com) account and an API Key
-
-On your Puppet master:
-
-* [dogapi](https://rubygems.org/gems/dogapi) gem (v 1.0.3 and later)
+Puppet 2.7.x or 3.x. For detailed informations on compatibility, check the [module page](https://forge.puppetlabs.com/datadog/datadog_agent) on the Puppet forge.
 
 Installation
 ------------
@@ -26,6 +21,17 @@ Install `datadog_agent` as a module in your Puppet master's module path.
 
     puppet module install datadog-datadog_agent
 
+### Upgrade from previous git manual install 0.x (unreleased)
+
+You can keep using the `datadog` module but it becomes legacy with the release of `datadog_agent` 1.0.0. Upgrade to get new features, and use the puppet forge system which is way easier for maintenance.
+
+* Delete the datadog module `rm -r /etc/puppet/modules/datadog`
+* Install the new module from the puppet forge `puppet module install datadog-datadog_agent`
+* Update your manifests with the new module class, basically replace `datadog` by `datadog_agent`
+
+#### For instance to deploy the elasticsearch integration
+    include 'datadog_agent::intergrations::elasticsearch'
+
 Usage
 -----
 
@@ -33,14 +39,13 @@ Once the `datadog_agent` module is installed on your master, there's a tiny bit 
 that needs to be done.
 
 1. Update the default class parameters with your [API key](https://app.datadoghq.com/account/settings#api)
-   (and confirm the DataDog URL is correct in datadog::params).
 
 2. Specify the module on any nodes you wish to install the DataDog
    Agent.
 
         include datadog_agent
 
-  Or assign this module using the Puppet 2.6 style Parameterized class:
+  Or assign this module using the Puppet style Parameterized class:
         class { 'datadog_agent':
           api_key => "yourkey",
         }
@@ -51,6 +56,10 @@ that needs to be done.
           api_key            => "yourkey",
           puppet_run_reports => true,
         }
+
+3. Include any other integrations you want the agent to use, e.g. 
+
+        include 'datadog_agent::integrations::mongo'
 
 Reporting
 ---------
@@ -95,28 +104,15 @@ Make sure `reports=datadog_reports` is defined in **[master]**, not **[main]**.
 Step-by-step
 ============
 
-This is the minimal set of files to use to get started. These files assume puppet 2.7.x
+This is the minimal set of modifications to get started. These files assume puppet 2.7.x or higher.
 
 /etc/puppet/puppet.conf
 -----------------------
 
-    [main]
-    logdir=/var/log/puppet
-    vardir=/var/lib/puppet
-    ssldir=/var/lib/puppet/ssl
-    rundir=/var/run/puppet
-    factpath=$vardir/lib/facter
-    templatedir=$confdir/templates
-    
     [master]
-    # These are needed when the puppetmaster is run by passenger
-    # and can safely be removed if webrick is used.
-    ssl_client_header = SSL_CLIENT_S_DN 
-    ssl_client_verify_header = SSL_CLIENT_VERIFY
     report = true
     reports = datadog_reports
     pluginsync = true
-    syslogfacility = user
     
     [agent]
     report = true
@@ -168,33 +164,9 @@ Search for "Puppet" in the Stream and you should see something like this:
 
 ![Puppet Events in Datadog][puppet-events]
 
-[puppet-events]: https://img.skitch.com/20120403-bdipicbpquwccwxm2u3cwdc6ar.png
+puppet-events]: https://img.skitch.com/20120403-bdipicbpquwccwxm2u3cwdc6ar.png
 
-Miscellaneous
-=============
+Masterless puppet
+=================
 
-Authors
--------
-
-* James Turnbull <james@lovedthanlost.net>
-* Alexis Lê-Quôc <alq@datadoghq.com>
-* Rob Terhaar <rob@atlanticdynamic.com>
-
-License
--------
-
-    Author:: James Turnbull (<james@lovedthanlost.net>)
-    Copyright:: Copyright (c) 2011 James Turnbull
-    License:: Apache License, Version 2.0
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+This is a specific setup, you can use https://gist.github.com/LeoCavaille/cd412c7a9ff5caec462f to set it up.

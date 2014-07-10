@@ -12,7 +12,6 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -20,7 +19,6 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -28,7 +26,6 @@
     {
       "operatingsystem": "Scientific",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -70,6 +67,10 @@
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": "4.x"
+    },
+    {
+      "name": "puppetlabs/ruby",
+      "version_requirement": "0.2.0"
     }
   ]
 }

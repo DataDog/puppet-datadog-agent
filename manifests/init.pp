@@ -39,7 +39,7 @@
 #
 #
 class datadog_agent(
-  $dd_url = 'http://app.datadoghq.com',
+  $dd_url = 'https://app.datadoghq.com',
   $host = '',
   $api_key = 'your_API_key',
   $tags = [],

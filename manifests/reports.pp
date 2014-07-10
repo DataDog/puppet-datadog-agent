@@ -19,17 +19,19 @@ class datadog_agent::reports(
 ) {
 
   include datadog_agent::params
-  $rubydev_package =$datadog_agent::params::rubydev_package
+  $rubydev_package = $datadog_agent::params::rubydev_package
 
   # check to make sure that you're not installing rubydev somewhere else
-  if defined(Package[$rubydev_package]) {
-    # pass
-    # puppet DSL lacks a 'not' in < 2.6.8
-  } else {
+  if ! defined(Package[$rubydev_package]) {
     package {"$rubydev_package":
       ensure => installed,
-      before => Package['dogapi'],
+      before => Package['dogapi']
     }
+  }
+
+  # Ensure rubygems is installed
+  class { 'ruby':
+    rubygems_update => false
   }
 
   file { "/etc/dd-agent/datadog.yaml":

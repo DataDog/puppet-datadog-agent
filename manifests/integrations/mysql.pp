@@ -34,19 +34,15 @@ class datadog_agent::integrations::mysql(
   $galera_cluster = '0'
 ) inherits datadog_agent::params {
 
-  validate_array( $tags )
-
-  package { $mysql_int_package :
-    ensure => installed,
-  }
+  validate_array($tags)
 
   file { "${conf_dir}/mysql.yaml":
     ensure  => file,
-    owner   => $datadog_agent::dd_user,
-    group   => $datadog_agent::dd_group,
+    owner   => $datadog_agent::params::dd_user,
+    group   => $datadog_agent::params::dd_group,
     mode    => 0600,
     content => template('datadog_agent/agent-conf.d/mysql.yaml.erb'),
-    require => Package[$mysql_int_package],
-    notify  => Service[$service_name]
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

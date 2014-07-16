@@ -3,8 +3,8 @@
 #
 [Main]
 
-# The host of the Datadog intake server to send agent data to 
-dd_url: <%= dd_url %>
+# The host of the Datadog intake server to send agent data to
+dd_url: <%= @dd_url %>
 
 # If you need a proxy to connect to the Internet, provide the settings here
 # proxy_host: my-proxy.com
@@ -18,19 +18,19 @@ dd_url: <%= dd_url %>
 # The Datadog api key to associate your Agent's data with your organization.
 # Can be found here:
 # https://app.datadoghq.com/account/settings
-api_key: <%= api_key %>
+api_key: <%= @api_key %>
 
 # Force the hostname to whatever you want.
-<% if host.empty? -%>
+<% if @host.empty? -%>
 # hostname:
 <% else -%>
-hostname: <%= host %>
+hostname: <%= @host %>
 <% end -%>
 
 # Set the host's tags
 #tags: mytag0, mytag1
-<% if !tags.empty? -%>
-tags: <%= tags.join(', ') %>
+<% if !@tags.empty? -%>
+tags: <%= @tags.join(', ') %>
 <% end -%>
 
 
@@ -38,7 +38,7 @@ tags: <%= tags.join(', ') %>
 # collect_ec2_tags: no
 
 # Collect instance metadata
-# The Agent will try to collect instance metadata for EC2 and GCE instances by 
+# The Agent will try to collect instance metadata for EC2 and GCE instances by
 # trying to connect to the local endpoint: http://169.254.169.254
 # See http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AESDG-chapter-instancedata.html
 # and https://developers.google.com/compute/docs/metadata
@@ -67,7 +67,7 @@ use_mount: no
 # that might not have an internet connection
 # For more information, please see
 # https://github.com/DataDog/dd-agent/wiki/Network-Traffic-and-Proxy-Configuration
-non_local_traffic: <%= non_local_traffic %>
+non_local_traffic: <%= @non_local_traffic %>
 
 # Select the Tornado HTTP Client in the forwarder
 # Default to the simple http client
@@ -196,7 +196,7 @@ non_local_traffic: <%= non_local_traffic %>
 # Logging
 # ========================================================================== #
 
-# log_level: INFO
+log_level: <%= @_loglevel %>
 
 # collector_log_file: /var/log/datadog/collector.log
 # forwarder_log_file: /var/log/datadog/forwarder.log

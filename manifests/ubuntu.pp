@@ -21,6 +21,8 @@ class datadog::ubuntu(
     }
 
     file { "/etc/apt/sources.list.d/datadog.list":
+      owner   => 'root',
+      group   => 'root',
       source  => "puppet:///modules/datadog/datadog.list",
       notify  => Exec['datadog_apt-get_update'],
     }

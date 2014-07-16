@@ -1,0 +1,8 @@
+    -   name: <%= @title %>
+<% if @search_strings and ! @search_strings.empty? -%>
+        search_string: [<%- Array(@search_strings).each do |search_string| -%><%- if search_string != '' -%>'<%= search_string %>',<%- end -%><%- end -%>]
+<% end -%>
+        exact_match: <%= @exact_match %>
+<% if @cpu_check_interval -%>
+        cpu_check_interval: <%= @cpu_check_interval %>
+<%- end -%>

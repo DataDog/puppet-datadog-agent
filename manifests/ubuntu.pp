@@ -30,6 +30,11 @@ class datadog_agent::ubuntu(
       refreshonly => true,
    }
 
+    package { "datadog-agent-base":
+      ensure => absent,
+      before => Package['datadog-agent'],
+    }
+
     package { "datadog-agent":
       ensure => latest,
       require => [ File["/etc/apt/sources.list.d/datadog.list"], Exec['datadog_apt-get_update'] ],

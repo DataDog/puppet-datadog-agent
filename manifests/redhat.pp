@@ -19,6 +19,11 @@ class datadog_agent::redhat {
       baseurl   => "http://yum.datadoghq.com/rpm/${::architecture}/",
     }
 
+    package { "datadog-agent-base":
+      ensure => absent,
+      before => Package['datadog-agent'],
+    }
+
     package { 'datadog-agent':
       ensure  => latest,
       require => Yumrepo['datadog'],

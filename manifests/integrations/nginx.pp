@@ -30,8 +30,8 @@ class datadog::integrations::nginx(
 
   file { "${conf_dir}/nginx.yaml":
     ensure  => file,
-    owner   => $datadog::dd_user,
-    group   => $datadog::dd_group,
+    owner   => $datadog::params::dd_user,
+    group   => $datadog::params::dd_group,
     mode    => 0600,
     content => template('datadog/agent-conf.d/nginx.yaml.erb'),
     notify  => Service[$service_name]

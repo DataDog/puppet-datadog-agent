@@ -6,6 +6,19 @@
 #   $processes:
 #       Array of process hashes. See example
 #
+# Process hash keys:
+#   search_strings
+#       LIST OF STRINGS If one of the element in the list matches,
+#       return the counter of all the processes that contain the string
+#
+#   exact_match
+#       True/False, default to False, if you want to look for an arbitrary
+#       string, use exact_match: False, unless use the exact base name of the process
+#
+#   cpu_check_interval
+#       CPU percent check interval: 0.1 - 1.0 sec. More time - more precise
+#       Optional
+#
 # Sample Usage:
 #
 # class { 'datadog_agent::integrations::process':

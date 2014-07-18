@@ -73,7 +73,7 @@
 # }
 #
 #
-define datadog_agent::integrations::http_check (
+class datadog_agent::integrations::http_check (
   $url       = undef,
   $username  = undef,
   $password  = undef,

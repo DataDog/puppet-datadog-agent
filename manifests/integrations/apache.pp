@@ -26,15 +26,15 @@
 #   password => 'hunter1',
 # }
 #
-define datadog_agent::integrations::apache (
+class datadog_agent::integrations::apache (
   $url       = 'http://localhost/server-status?auto',
   $username  = undef,
   $password  = undef,
-  $tags      = [],
+  $tags      = []
 ) inherits datadog_agent::params {
 
   validate_string($url)
-  valitade_array($tags)
+  validate_array($tags)
 
   file { "${conf_dir}/apache.yaml":
     ensure  => file,

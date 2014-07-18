@@ -18,7 +18,7 @@
 #   tags     => ['env:production'],
 # }
 #
-define datadog_agent::integrations::varnish (
+class datadog_agent::integrations::varnish (
   $varnishstat = '/usr/bin/varnishstat',
   $tags      = [],
 ) inherits datadog_agent::params {

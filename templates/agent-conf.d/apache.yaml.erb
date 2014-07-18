@@ -1,7 +1,7 @@
 init_config:
 
 instances:
-    -   apache_status_url: <%= url %>
+    -   apache_status_url: <%= @url %>
 <% if @username -%>
         apache_user: <%= @username %>
 <% end -%>

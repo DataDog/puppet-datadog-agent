@@ -5,10 +5,12 @@
 init_config:
 
 instances:
-  - server: mongodb://<%= @host %>:<%= @port %>
-<% if !@tags.empty? -%>
-    tags:                  # Optional
-<% @tags.each do |tag| -%>
-        - <%= tag %>
-<% end -%>
+<% @servers.each do |server| -%>
+  - server: mongodb://<%= server['host'] %>:<%= server['port'] %>
+  <% if !server['tags'].nil? && server['tags'].any? -%>
+    tags:
+    <% server['tags'].each do |tag| -%>
+      - <%= tag %>
+    <% end -%>
+  <% end -%>
 <% end -%>

@@ -1,4 +1,4 @@
-# Class: datadog
+# Class: datadog_agent
 #
 # This class contains the agent installation mechanism for the Datadog module
 #
@@ -29,11 +29,11 @@
 #
 # Sample Usage:
 #
-# include datadog
+# include datadog_agent
 #
 # OR
 #
-# class { 'datadog':
+# class { 'datadog_agent':
 #     api_key   => 'your key',
 #     tags      => ['env:production', 'linux'],
 #     puppet_run_reports  => false,
@@ -41,8 +41,8 @@
 # }
 #
 #
-class datadog(
-  $dd_url = 'http://app.datadoghq.com',
+class datadog_agent(
+  $dd_url = 'https://app.datadoghq.com',
   $host = '',
   $api_key = 'your_API_key',
   $tags = [],
@@ -74,9 +74,9 @@ class datadog(
   }
 
   case $operatingsystem {
-    "Ubuntu","Debian" : { include datadog::ubuntu }
-    "RedHat","CentOS","Fedora","Amazon","Scientific" : { include datadog::redhat }
-    default: { fail("Class[datadog]: Unsupported operatingsystem: ${::operatingsystem}") }
+    "Ubuntu","Debian" : { include datadog_agent::ubuntu }
+    "RedHat","CentOS","Fedora","Amazon","Scientific" : { include datadog_agent::redhat }
+    default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
 
   file { "/etc/dd-agent":
@@ -90,7 +90,7 @@ class datadog(
   # main agent config file
   file { "/etc/dd-agent/datadog.conf":
     ensure   => file,
-    content  => template("datadog/datadog.conf.erb"),
+    content  => template("datadog_agent/datadog.conf.erb"),
     owner    => $dd_user,
     group    => $dd_group,
     mode     => 0640,
@@ -99,7 +99,7 @@ class datadog(
   }
 
   if $puppet_run_reports {
-    class { 'datadog::reports':
+    class { 'datadog_agent::reports':
       api_key           => $api_key,
       puppetmaster_user => $puppetmaster_user,
     }

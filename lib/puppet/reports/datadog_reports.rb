@@ -4,7 +4,7 @@ require 'yaml'
 begin
   require 'dogapi'
 rescue LoadError => e
-  Puppet.info "You need the `dogapi` gem to use the Datadog report"
+  Puppet.info "You need the `dogapi` gem to use the Datadog report (run puppet with puppet_run_reports on your master)"
 end
 
 Puppet::Reports.register_report(:datadog_reports) do

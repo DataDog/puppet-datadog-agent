@@ -1,0 +1,52 @@
+init_config:
+
+instances:
+    -   name: <%= @name %>
+        url: <%= @url %>
+<% if @timeout -%>
+        timeout: <%= @timeout %>
+<% end -%>
+<% if @username -%>
+        username: <%= @username %>
+<% end -%>
+<% if @password -%>
+        password: <%= @password %>
+<% end -%>
+<% if @threshold -%>
+        threshold: <%= @threshold %>
+<% end -%>
+<% if @window -%>
+        window: <%= @window %>
+<% end -%>
+<% if @include_content -%>
+        include_content: <%= @include_content %>
+<% end -%>
+<% if @collect_response_time -%>
+        collect_response_time: <%= @collect_response_time %>
+<% end -%>
+        disable_ssl_validation: <%= @disable_ssl_validation %>
+<% if @headers and ! @headers.empty? -%>
+        headers:
+  <%- Array(@headers).each do |header| -%>
+    <%- if header != '' -%>
+           <%= header %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
+<% if @tags and ! @tags.empty? -%>
+        tags:
+  <%- Array(@tags).each do |tag| -%>
+    <%- if tag != '' -%>
+            - <%= tag %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
+<% if @contacts and ! @contacts.empty? -%>
+        notify:
+  <%- Array(@contacts).each do |contact| -%>
+    <%- if contact != '' -%>
+           - <%= contact %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
+

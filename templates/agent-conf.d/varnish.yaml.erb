@@ -1,0 +1,13 @@
+init_config:
+
+instances:
+    -   varnishstat: <%= @varnishstat %>
+<% if @tags and ! @tags.empty? -%>
+        tags:
+  <%- Array(@tags).each do |tag| -%>
+    <%- if tag != '' -%>
+            - <%= tag %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
+

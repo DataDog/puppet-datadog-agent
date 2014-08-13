@@ -1,4 +1,4 @@
-# Class: datadog::integrations::process
+# Class: datadog_agent::integrations::process
 #
 # This class will install the necessary configuration for the process integration
 #
@@ -6,9 +6,22 @@
 #   $processes:
 #       Array of process hashes. See example
 #
+# Process hash keys:
+#   search_strings
+#       LIST OF STRINGS If one of the element in the list matches,
+#       return the counter of all the processes that contain the string
+#
+#   exact_match
+#       True/False, default to False, if you want to look for an arbitrary
+#       string, use exact_match: False, unless use the exact base name of the process
+#
+#   cpu_check_interval
+#       CPU percent check interval: 0.1 - 1.0 sec. More time - more precise
+#       Optional
+#
 # Sample Usage:
 #
-# class { 'datadog::integrations::process':
+# class { 'datadog_agent::integrations::process':
 #     processes   => [
 #         {
 #             'name'          => 'puppetmaster',
@@ -25,23 +38,19 @@
 
 #
 #
-class datadog::integrations::process(
+class datadog_agent::integrations::process(
   $processes = [],
-) inherits datadog::params {
+) inherits datadog_agent::params {
 
   validate_array( $processes )
 
-  package { $process_int_package :
-    ensure => installed,
-  }
-
   file { "${conf_dir}/process.yaml":
     ensure  => file,
-    owner   => $datadog::dd_user,
-    group   => $datadog::dd_group,
+    owner   => $datadog_agent::params::dd_user,
+    group   => $datadog_agent::params::dd_group,
     mode    => 0600,
-    content => template('datadog/agent-conf.d/process.yaml.erb'),
-    require => Package[$process_int_package],
-    notify  => Service[$service_name]
+    content => template('datadog_agent/agent-conf.d/process.yaml.erb'),
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name]
   }
 }

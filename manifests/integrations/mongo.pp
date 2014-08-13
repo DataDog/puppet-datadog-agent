@@ -1,4 +1,4 @@
-# Class: datadog::integrations::mongo
+# Class: datadog_agent::integrations::mongo
 #
 # This class will install the necessary configuration for the mongo integration
 #
@@ -12,31 +12,34 @@
 #
 # Sample Usage:
 #
-#  class { 'datadog::integrations::mongo' :
-#    host     => 'localhost',
-#    port     => 27017,
+#  class { 'datadog_agent::integrations::mongo' :
+#    servers => [
+#      {
+#        'host' => 'localhost',
+#        'port' => '27017',
+#        'tags' => [],
+#      },
+#      {
+#        'host' => 'localhost',
+#        'port' => '27018',
+#        'tags' => [],
+#      },
+#    ]
 #  }
 #
-#
-class datadog::integrations::mongo(
-  $host = '127.0.0.1',
-  $port = 27017,
-  $tags = []
-) inherits datadog::params {
+class datadog_agent::integrations::mongo(
+  $servers = [{'host' => 'localhost', 'port' => '27017'}]
+) inherits datadog_agent::params {
 
-  validate_array( $tags )
-
-  package { $mongo_int_package :
-    ensure => installed,
-  }
+  validate_array($servers)
 
   file { "${conf_dir}/mongo.yaml":
     ensure  => file,
-    owner   => $datadog::dd_user,
-    group   => $datadog::dd_group,
+    owner   => $datadog_agent::params::dd_user,
+    group   => $datadog_agent::params::dd_group,
     mode    => 0600,
-    content => template('datadog/agent-conf.d/mongo.yaml.erb'),
-    require => Package[$mongo_int_package],
-    notify  => Service[$service_name]
+    content => template('datadog_agent/agent-conf.d/mongo.yaml.erb'),
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name]
   }
 }

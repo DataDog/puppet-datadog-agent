@@ -50,7 +50,7 @@ class datadog_agent(
   $puppetmaster_user = 'puppet',
   $non_local_traffic = false,
   $log_level = 'info'
-) inherits datadog::params {
+) inherits datadog_agent::params {
 
   validate_string($dd_url)
   validate_string($host)
@@ -61,7 +61,7 @@ class datadog_agent(
   validate_bool($non_local_traffic)
   validate_string($log_level)
 
-  include datadog::params
+  include datadog_agent::params
   case upcase($log_level) {
     'CRITICAL': { $_loglevel = 'CRITICAL' }
     'DEBUG':    { $_loglevel = 'DEBUG' }

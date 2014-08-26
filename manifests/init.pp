@@ -49,7 +49,9 @@ class datadog_agent(
   $puppet_run_reports = false,
   $puppetmaster_user = 'puppet',
   $non_local_traffic = false,
-  $log_level = 'info'
+  $log_level = 'info',
+  $service_ensure = 'running',
+  $service_enable = true
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)

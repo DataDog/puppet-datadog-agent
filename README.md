@@ -57,6 +57,8 @@ that needs to be done.
           puppet_run_reports => true,
         }
 
+  __To support reporting, your Puppet master needs to have the [dogapi](https://github.com/DataDog/dogapi-rb) gem installed, to do that either run the puppet agent on your master with this configuration or install it manually with `gem`__
+
 3. Include any other integrations you want the agent to use, e.g. 
 
         include 'datadog_agent::integrations::mongo'

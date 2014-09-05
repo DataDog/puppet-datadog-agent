@@ -30,8 +30,8 @@ class datadog_agent::redhat {
     }
 
     service { "datadog-agent":
-      ensure    => running,
-      enable    => true,
+      ensure    => $::datadog_agent::service_ensure,
+      enable    => $::datadog_agent::service_enable,
       hasstatus => false,
       pattern   => 'dd-agent',
       require   => Package["datadog-agent"],

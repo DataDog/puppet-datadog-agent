@@ -1,3 +1,31 @@
+# Class: datadog_agent::integrations::tomcat
+#
+# This class will install the necessary configuration for the tomcat integration
+#
+# Parameters:
+#   $hostname:
+#       The host tomcat is running on. Defaults to 'localhost'
+#   $port
+#       The JMX port.
+#   $username
+#       The username for connecting to the running JVM. Optional.
+#   $password
+#       The password for connecting to the running JVM. Optional.
+#   $java_bin_path
+#       The path to the Java binary. Should be set if the agent cannot find your java executable. Optional.
+#   $trust_store_path
+#       The path to the trust store. Should be set if ssl is enabled. Optional.
+#   $trust_store_password
+#       The trust store password. Should be set if ssl is enabled. Optional.
+#   $tags
+#       Optional array of tags
+#
+# Sample Usage:
+#
+#  class { 'datadog_agent::integrations::tomcat':
+#    port => 8081,
+#  }
+#
 class datadog_agent::integrations::tomcat(
   $hostname             = 'localhost',
   $port                 = 7199,

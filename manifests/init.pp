@@ -46,6 +46,7 @@ class datadog_agent(
   $host = '',
   $api_key = 'your_API_key',
   $tags = [],
+  $facts_to_tags = [],
   $puppet_run_reports = false,
   $puppetmaster_user = 'puppet',
   $non_local_traffic = false,
@@ -56,6 +57,7 @@ class datadog_agent(
   validate_string($host)
   validate_string($api_key)
   validate_array($tags)
+  validate_array($facts_to_tags)
   validate_bool($puppet_run_reports)
   validate_string($puppetmaster_user)
   validate_bool($non_local_traffic)

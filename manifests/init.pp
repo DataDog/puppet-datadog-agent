@@ -12,6 +12,9 @@
 #       Your DataDog API Key. Please replace with your key value.
 #   $tags
 #       Optional array of tags.
+#   $facts_to_tags
+#       Optional array of facts' names that you can use to define tags following
+#       the scheme: "fact_name:fact_value".
 #   $puppet_run_reports
 #       Will send results from your puppet agent runs back to the datadog service.
 #   $puppetmaster_user

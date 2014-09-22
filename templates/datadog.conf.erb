@@ -29,10 +29,19 @@ hostname: <%= @host %>
 
 # Set the host's tags
 #tags: mytag0, mytag1
-<% if !@tags.empty? -%>
-tags: <%= @tags.join(', ') %>
+<%
+tag_list = @tags
+@facts_to_tags.each do |f|
+  value = scope.lookupvar(f)
+  if not value.nil?
+    tag = "#{f}:#{value}"
+    tag_list << tag
+  end
+end
+if not tag_list.empty?
+-%>
+tags: <%= tag_list.join(', ') %>
 <% end -%>
-
 
 # Collect AWS EC2 custom tags as agent tags
 # collect_ec2_tags: no

@@ -215,6 +215,6 @@ log_level: <%= @_loglevel %>
 # if syslog is enabled but a host and port are not set, a local domain socket
 # connection will be attempted
 #
-# log_to_syslog: yes
+log_to_syslog: <%= @log_to_syslog ? "yes" : "no" %>
 # syslog_host:
 # syslog_port:

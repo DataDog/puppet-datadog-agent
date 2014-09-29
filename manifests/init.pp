@@ -54,6 +54,7 @@ class datadog_agent(
   $puppetmaster_user = 'puppet',
   $non_local_traffic = false,
   $log_level = 'info',
+  $log_to_syslog = true,
   $service_ensure = 'running',
   $service_enable = true
 ) inherits datadog_agent::params {

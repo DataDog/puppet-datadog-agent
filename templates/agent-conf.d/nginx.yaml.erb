@@ -15,5 +15,24 @@
 #     -   nginx_status_url: http://example2.com:1234/nginx_status/
 #         tags:
 #             -   instance:bar
+---
+init_config:
 
-<%= require 'yaml'; {'init_config'=>nil, 'instances'=>@instances}.to_yaml %>
+instances:
+<% 
+  @sortable_urls = {}
+  @instances.each do |url_hash|
+    url = url_hash.delete("nginx_status_url")
+    @sortable_urls[url] = url_hash
+  end
+
+  @sortable_urls.keys.sort.each do |url|
+-%>
+  - nginx_status_url: <%= url %>
+<% if @sortable_urls[url]['tags'] -%>
+    tags:
+<% @sortable_urls[url]['tags'].each do |tag| -%>
+      - <%= tag %>
+<% end -%>
+<% end -%>
+<% end -%>

@@ -25,6 +25,9 @@
 #   $log_level
 #       Set value of 'log_level' variable. Default is 'info' as in dd-agent.
 #       Valid values here are: critical, debug, error, fatal, info, warn and warning.
+#   $log_to_syslog
+#       Set value of 'log_to_syslog' variable. Default is true -> yes as in dd-agent.
+#       Valid values here are: true or false.
 #
 # Actions:
 #
@@ -67,6 +70,7 @@ class datadog_agent(
   validate_bool($puppet_run_reports)
   validate_string($puppetmaster_user)
   validate_bool($non_local_traffic)
+  validate_bool($log_to_syslog)
   validate_string($log_level)
 
   include datadog_agent::params

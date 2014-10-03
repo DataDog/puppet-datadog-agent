@@ -5,6 +5,7 @@ Changes
 
 ### Notes
 
+* [FEATURE] Expose `log_to_syslog` in `datadog_agent` class
 * [BUGFIX] Fix Mongo integration YAML file generation when using `tags`
 
 # 1.1.0 / 2014-09-22

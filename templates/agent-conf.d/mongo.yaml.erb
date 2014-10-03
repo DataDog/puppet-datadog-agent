@@ -7,10 +7,10 @@ init_config:
 instances:
 <% @servers.each do |server| -%>
   - server: mongodb://<%= server['host'] %>:<%= server['port'] %>
-  <% if !server['tags'].nil? && server['tags'].any? -%>
+  <%- if !server['tags'].nil? && server['tags'].any? -%>
     tags:
-    <% server['tags'].each do |tag| -%>
+    <%- server['tags'].each do |tag| -%>
       - <%= tag %>
-    <% end -%>
-  <% end -%>
+    <%- end -%>
+  <%- end -%>
 <% end -%>

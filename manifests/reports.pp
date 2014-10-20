@@ -1,6 +1,6 @@
 # Class: datadog_agent::reports
 #
-# This class configures the puppetmaster for reporting back to 
+# This class configures the puppetmaster for reporting back to
 # the datadog service.
 #
 # Parameters:
@@ -23,7 +23,7 @@ class datadog_agent::reports(
 
   # check to make sure that you're not installing rubydev somewhere else
   if ! defined(Package[$rubydev_package]) {
-    package {"$rubydev_package":
+    package {$rubydev_package:
       ensure => installed,
       before => Package['dogapi']
     }
@@ -34,13 +34,13 @@ class datadog_agent::reports(
     rubygems_update => false
   }
 
-  file { "/etc/dd-agent/datadog.yaml":
+  file { '/etc/dd-agent/datadog.yaml':
     ensure   => file,
-    content  => template("datadog_agent/datadog.yaml.erb"),
+    content  => template('datadog_agent/datadog.yaml.erb'),
     owner    => $puppetmaster_user,
-    group    => "root",
+    group    => 'root',
     mode     => 0640,
-    require  => File["/etc/dd-agent"],
+    require  => File['/etc/dd-agent'],
   }
 
   package{'dogapi':

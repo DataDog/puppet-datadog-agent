@@ -30,7 +30,7 @@ class datadog_agent::ubuntu(
     exec { 'datadog_apt-get_update':
       command     => '/usr/bin/apt-get update',
       refreshonly => true,
-   }
+    }
 
     package { "datadog-agent-base":
       ensure => absent,

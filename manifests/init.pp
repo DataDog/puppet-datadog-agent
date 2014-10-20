@@ -85,7 +85,7 @@ class datadog_agent(
     default:    { $_loglevel = 'INFO' }
   }
 
-  case $operatingsystem {
+  case $::operatingsystem {
     "Ubuntu","Debian" : { include datadog_agent::ubuntu }
     "RedHat","CentOS","Fedora","Amazon","Scientific" : { include datadog_agent::redhat }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }

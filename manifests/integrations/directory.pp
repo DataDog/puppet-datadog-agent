@@ -28,7 +28,7 @@ class datadog_agent::integrations::directory (
 ) inherits datadog_agent::params {
 
   if $directory == undef {
-    fail("you must specify a directory path within the datadog_agent::integrations::directory class")
+    fail('you must specify a directory path within the datadog_agent::integrations::directory class')
   }
 
   file { "${conf_dir}/directory.yaml":

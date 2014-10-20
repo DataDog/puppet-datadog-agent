@@ -86,28 +86,28 @@ class datadog_agent(
   }
 
   case $::operatingsystem {
-    "Ubuntu","Debian" : { include datadog_agent::ubuntu }
-    "RedHat","CentOS","Fedora","Amazon","Scientific" : { include datadog_agent::redhat }
+    'Ubuntu','Debian' : { include datadog_agent::ubuntu }
+    'RedHat','CentOS','Fedora','Amazon','Scientific' : { include datadog_agent::redhat }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
 
-  file { "/etc/dd-agent":
+  file { '/etc/dd-agent':
     ensure   => present,
-    owner    => "root",
-    group    => "root",
+    owner    => 'root',
+    group    => 'root',
     mode     => 0755,
-    require  => Package["datadog-agent"],
+    require  => Package['datadog-agent'],
   }
 
   # main agent config file
-  file { "/etc/dd-agent/datadog.conf":
+  file { '/etc/dd-agent/datadog.conf':
     ensure   => file,
-    content  => template("datadog_agent/datadog.conf.erb"),
+    content  => template('datadog_agent/datadog.conf.erb'),
     owner    => $dd_user,
     group    => $dd_group,
     mode     => 0640,
     notify   => Service[$service_name],
-    require  => File["/etc/dd-agent"],
+    require  => File['/etc/dd-agent'],
   }
 
   if $puppet_run_reports {

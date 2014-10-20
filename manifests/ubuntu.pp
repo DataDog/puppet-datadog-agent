@@ -21,10 +21,10 @@ class datadog_agent::ubuntu(
     }
 
     file { '/etc/apt/sources.list.d/datadog.list':
-      source  => 'puppet:///modules/datadog_agent/datadog.list',
-      owner   => 'root',
-      group   => 'root',
-      notify  => Exec['datadog_apt-get_update'],
+      source => 'puppet:///modules/datadog_agent/datadog.list',
+      owner  => 'root',
+      group  => 'root',
+      notify => Exec['datadog_apt-get_update'],
     }
 
     exec { 'datadog_apt-get_update':

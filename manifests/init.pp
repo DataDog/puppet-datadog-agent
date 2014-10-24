@@ -56,9 +56,6 @@ class datadog(
   validate_string($puppetmaster_user)
   validate_bool($non_local_traffic)
 
-  include datadog::params
-  $dd_url  = $datadog::params::dd_url
-
   case $operatingsystem {
     "Ubuntu", "Debian" : {
       include datadog::ubuntu

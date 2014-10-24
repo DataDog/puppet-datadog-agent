@@ -32,10 +32,10 @@ class datadog::integrations::mongo(
 
   file { "${conf_dir}/mongo.yaml":
     ensure  => file,
-    owner   => $dd_user,
-    group   => $dd_group,
+    owner   => $datadog::dd_user,
+    group   => $datadog::dd_group,
     mode    => 0600,
-    content => template('datadog/integrations/mongo.yaml.erb'),
+    content => template('datadog/agent-conf.d/mongo.yaml.erb'),
     require => Package[$mongo_int_package],
     notify  => Service[$service_name]
   }

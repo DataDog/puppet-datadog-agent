@@ -1,11 +1,11 @@
 #
 # MANAGED BY PUPPET
 #
-# based on agent 4.2.1 configuration sample
+# based on agent 4.0.1 configuration sample
 
 [Main]
 
-# The host of the Datadog intake server to send Agent data to
+# The host of the Datadog intake server to send agent data to
 dd_url: <%= @dd_url %>
 
 # If you need a proxy to connect to the Internet, provide the settings here
@@ -23,7 +23,11 @@ dd_url: <%= @dd_url %>
 api_key: <%= @api_key %>
 
 # Force the hostname to whatever you want.
+<% if host.empty? -%>
+# hostname:
+<% else -%>
 hostname: <%= @host %>
+<% end -%>
 
 # Set the host's tags
 tags: <%= scope.lookupvar('datadog-agent::tags') %>
@@ -31,8 +35,17 @@ tags: <%= scope.lookupvar('datadog-agent::tags') %>
 tags: <%= @tags.join(', ') %>
 <% end -%>
 
+
 # Collect AWS EC2 custom tags as agent tags
 # collect_ec2_tags: no
+
+# Collect instance metadata
+# The Agent will try to collect instance metadata for EC2 and GCE instances by
+# trying to connect to the local endpoint: http://169.254.169.254
+# See http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AESDG-chapter-instancedata.html
+# and https://developers.google.com/compute/docs/metadata
+# for more information
+# collect_instance_metadata: yes
 
 # Set the threshold for accepting points to allow anything
 # with recent_point_threshold seconds
@@ -56,7 +69,7 @@ use_mount: yes
 # that might not have an internet connection
 # For more information, please see
 # https://github.com/DataDog/dd-agent/wiki/Network-Traffic-and-Proxy-Configuration
-# non_local_traffic: no
+# non_local_traffic: <%= @non_local_traffic %>
 
 # Select the Tornado HTTP Client in the forwarder
 # Default to the simple http client
@@ -134,33 +147,6 @@ use_pup: <% if @use_pup %>yes<% else %>no<% end %>
 
 # Ganglia port where gmetad is running
 #ganglia_port: 8651
-
-# -------------------------------------------------------------------------- #
-#   Nagios                                                                   #
-# -------------------------------------------------------------------------- #
-
-# dd-agent imports alerts and perfdata from nagios.
-
-# Path to Nagios' event log file
-# Make sure the dd-agent user can read this file
-#nagios_log: /var/log/nagios3/nagios.log
-
-<% if @nagios_log_path != false %>
-nagios_log: <%= @nagios_log_path %>
-<% end %>
-
-# If you use perfdata, dd-agent can import automatically and in real-time
-# performance data collected by nagios.
-# For more information on perfdata configuration, please refer to
-# http://nagios.sourceforge.net/docs/3_0/perfdata.html
-#
-# Path to Nagios' ***configuration*** file where the properties
-# host|service_perfdata_file and host|service_perfdata_file_template
-# are defined.
-# (ubuntu 10.04)
-#nagios_perf_cfg: /etc/nagios3/nagios.cfg
-# (centos 5)
-#nagios_perf_cfg: /etc/nagios/nagios.cfg
 
 # -------------------------------------------------------------------------- #
 #  Dogstream (log file parser)

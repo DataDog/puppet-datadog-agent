@@ -32,8 +32,9 @@ class datadog_agent::reports(
 
   # Ensure rubygems is installed
   class { 'ruby':
-    rubygems_update => false
+    # rubygems_update => false
   }
+  # TODO upgrade ruby module to a version with parameter rubygems_update
 
   file { '/etc/dd-agent/datadog.yaml':
     ensure   => file,

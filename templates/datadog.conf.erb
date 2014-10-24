@@ -149,6 +149,34 @@ use_pup: <% if @use_pup %>yes<% else %>no<% end %>
 #ganglia_port: 8651
 
 # -------------------------------------------------------------------------- #
+#   Nagios                                                                   #
+# -------------------------------------------------------------------------- #
+
+# dd-agent imports alerts and perfdata from nagios.
+
+# Path to Nagios' event log file
+# Make sure the dd-agent user can read this file
+#nagios_log: /var/log/nagios3/nagios.log
+
+<% if @nagios_log_path != false %>
+nagios_log: <%= @nagios_log_path %>
+<% end %>
+
+# If you use perfdata, dd-agent can import automatically and in real-time
+# performance data collected by nagios.
+# For more information on perfdata configuration, please refer to
+# http://nagios.sourceforge.net/docs/3_0/perfdata.html
+#
+# Path to Nagios' ***configuration*** file where the properties
+# host|service_perfdata_file and host|service_perfdata_file_template
+# are defined.
+# (ubuntu 10.04)
+#nagios_perf_cfg: /etc/nagios3/nagios.cfg
+# (centos 5)
+#nagios_perf_cfg: /etc/nagios/nagios.cfg
+
+
+# -------------------------------------------------------------------------- #
 #  Dogstream (log file parser)
 # -------------------------------------------------------------------------- #
 

@@ -45,6 +45,8 @@ class datadog(
   $tags = [],
   $puppet_run_reports = false,
   $puppetmaster_user = 'puppet',
+  $puppetmaster_report_host_filter = '.*',
+  $nagios_log_path = false,
   $non_local_traffic = false
 ) inherits datadog::params {
 

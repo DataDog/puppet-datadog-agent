@@ -1,4 +1,4 @@
-# Class: datadog::integrations::nginx
+# Class: datadog_agent::integrations::nginx
 #
 # This class will install the necessary configuration for the nginx integration
 #
@@ -8,7 +8,7 @@
 #
 # Sample Usage:
 #
-#   class { 'datadog::integrations::nginx':
+#   class { 'datadog_agent::integrations::nginx':
 #     instances => [
 #         {
 #             'nginx_status_url'  => 'http://example.com/nginx_status/',
@@ -22,18 +22,19 @@
 #
 #
 #
-class datadog::integrations::nginx(
+class datadog_agent::integrations::nginx(
   $instances = [],
-) inherits datadog::params {
+) inherits datadog_agent::params {
 
-  validate_array( $instances )
+  validate_array($instances)
 
   file { "${conf_dir}/nginx.yaml":
     ensure  => file,
-    owner   => $datadog::dd_user,
-    group   => $datadog::dd_group,
+    owner   => $datadog_agent::params::dd_user,
+    group   => $datadog_agent::params::dd_group,
     mode    => 0600,
-    content => template('datadog/agent-conf.d/nginx.yaml.erb'),
-    notify  => Service[$service_name]
+    content => template('datadog_agent/agent-conf.d/nginx.yaml.erb'),
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name]
   }
 }

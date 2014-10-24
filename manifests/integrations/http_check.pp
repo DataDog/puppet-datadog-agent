@@ -1,57 +1,100 @@
-# Class: datadog::integrations::http_check
+# Class: datadog_agent::integrations::http_check
 #
-# This class will install the necessary configuration for the http_check integration
+# This class will install the necessary config to hook the http_check in the agent
 #
 # Parameters:
-#   $notify_global:
-#       Array of emails or pagerduty. See example
-#   $http_checks:
-#       Array of http_check hashes. See example and template for parameter explanation
+#   url
+#   timeout
+#
+#   username
+#   password
+#       If your service uses basic authentication, you can optionally
+#       specify a username and password that will be used in the check.
+#
+#   threshold
+#   window
+#       The (optional) window and threshold parameters allow you to trigger
+#       alerts only if the check fails x times within the last y attempts
+#       where x is the threshold and y is the window.
+#
+#   include_content
+#       The (optional) collect_response_time parameter will instruct the
+#       check to create a metric 'network.http.response_time', tagged with
+#       the url, reporting the response time in seconds.
+#
+#   collect_response_time
+#       The (optional) collect_response_time parameter will instruct the
+#       check to create a metric 'network.http.response_time', tagged with
+#       the url, reporting the response time in seconds.
+#
+#   disable_ssl_validation
+#       The setting disable_ssl_validation parameter to true will instruct
+#       the http client to accept self signed, expired and otherwise
+#       problematic SSL server certificates. To maintain backwards
+#       compatibility this defaults to false.
+#
+#   headers
+#       The (optional) headers parameter allows you to send extra headers
+#       with the request. This is useful for explicitly specifying the host
+#       header or perhaps adding headers for authorisation purposes. Note
+#       that the http client library converts all headers to lowercase.
+#       This is legal according to RFC2616
+#       (See: http://tools.ietf.org/html/rfc2616#section-4.2)
+#       but may be problematic with some HTTP servers
+#       (See: https://code.google.com/p/httplib2/issues/detail?id=169)
+#
+#   contact
+#       For service-specific notifications, you can optionally specify
+#       a list of users to notify within the service configuration.
+#
+#   tags
 #
 # Sample Usage:
 #
-# class { 'datadog::integrations::http_check':
-#     notify_global => [ 'user1@example.com', 'pagerduty' ],
-#     http_checks   => [
-#         {
-#             'name'    => 'My first service',
-#             'url'     => 'http://some.url.example.com',
-#             'timeout' => 1,
-#             'username'=> 'user',  # optional
-#             'password'=> 'pass',  # optional
-#             'threshold'   => 3,  # optional
-#             'window'      => 5,  # optional
-#             'include_content'         => false,  # optional
-#             'collect_response_time'   => true,  # optional
-#             'disable_ssl_validation'  => true,  # optional
-#             'headers' => {'Host'=>'alternative.host.example.com', 'X-Auth-Token'=>'SOME-AUTH-TOKEN'},  # optional
-#             'tags'    => ['env:staging', 'tag2'],  # optional
-#             'notify'  => ['user1@example.com', 'pagerduty'],  # optional
-#         },
-#         {
-#             'name'    => 'My second service',
-#             'url'     => 'http://some.url.example.com',
-#             'timeout' => 5,
-#         },
-#     ],
+# class { 'datadog_agent::integrations::http_check':
+#   url     => 'http://www.google.com/',
 # }
-
+#
+# class { 'datadog_agent::integrations::http_check':
+#   url     => 'http://localhost/',
+#   headers => ['Host: stan.borbat.com', 'DNT: true'],
+#   tags    => ['production', 'wordpress'],
+# }
+#
+# class { 'datadog_agent::integrations::http_check':
+#   url                   => 'http://localhost:9001/',
+#   timeout               => 5,
+#   threshold             => 1,
+#   window                => 1,
+#   include_content       => true,
+#   collect_response_time => true,
+#   contact               => 'pagerduty',
+#   tags                  => 'production',
+# }
 #
 #
-class datadog::integrations::http_check(
-  $notify_global = [],
-  $http_checks = [],
-) inherits datadog::params {
-
-  validate_array( $notify_global )
-  validate_array( $http_checks )
+class datadog_agent::integrations::http_check (
+  $url       = undef,
+  $username  = undef,
+  $password  = undef,
+  $timeout   = 1,
+  $threshold = undef,
+  $window    = undef,
+  $include_content = false,
+  $collect_response_time = true,
+  $disable_ssl_validation = false,
+  $headers   = [],
+  $tags      = [],
+  $contact   = [],
+) inherits datadog_agent::params {
 
   file { "${conf_dir}/http_check.yaml":
     ensure  => file,
-    owner   => $datadog::dd_user,
-    group   => $datadog::dd_group,
+    owner   => $datadog_agent::params::dd_user,
+    group   => $datadog_agent::params::dd_group,
     mode    => 0600,
-    content => template('datadog/agent-conf.d/http_check.yaml.erb'),
-    notify  => Service[$service_name]
+    content => template('datadog_agent/agent-conf.d/http_check.yaml.erb'),
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name]
   }
 }

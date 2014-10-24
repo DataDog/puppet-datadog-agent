@@ -1,4 +1,4 @@
-# Class: datadog::reports
+# Class: datadog_agent::reports
 #
 # This class configures the puppetmaster for reporting back to
 # the datadog service.
@@ -13,48 +13,40 @@
 #
 # Sample Usage:
 #
-class datadog::reports (
+class datadog_agent::reports(
   $api_key,
   $puppetmaster_user,
-  $puppetmaster_report_host_filter) {
-  include datadog::params
-  $rubygems_package = $datadog::params::rubygems_package
-  $rubydev_package  = $datadog::params::rubydev_package
+  $puppetmaster_report_host_filter
+) {
 
-  # check to make sure that you're not installing rubygems somewhere else,
-  # and install it if it's not defined elsewhere in your puppet catalog
-  if defined(Package[$rubygems_package]) {
-    # pass
-    # puppet DSL lacks a 'not' in < 2.6.8
-  } else {
-    package { "$rubygems_package":
-      ensure => installed,
-      before => Package['dogapi'],
-    }
-  }
+  include datadog_agent::params
+  $rubydev_package = $datadog_agent::params::rubydev_package
 
   # check to make sure that you're not installing rubydev somewhere else
-  if defined(Package[$rubydev_package]) {
-    # pass
-    # puppet DSL lacks a 'not' in < 2.6.8
-  } else {
-    package { "$rubydev_package":
+  if ! defined(Package[$rubydev_package]) {
+    package {$rubydev_package:
       ensure => installed,
-      before => Package['dogapi'],
+      before => Package['dogapi']
     }
   }
 
-  file { "/etc/dd-agent/datadog.yaml":
-    ensure  => file,
-    content => template("datadog/datadog.yaml.erb"),
-    owner   => $puppetmaster_user,
-    group   => "root",
-    mode    => 0640,
-    require => File["/etc/dd-agent"],
+  # Ensure rubygems is installed
+  class { 'ruby':
+    rubygems_update => false
   }
 
-  package { 'dogapi':
-    ensure   => 'installed',
-    provider => 'gem',
+  file { '/etc/dd-agent/datadog.yaml':
+    ensure   => file,
+    content  => template('datadog_agent/datadog.yaml.erb'),
+    owner    => $puppetmaster_user,
+    group    => 'root',
+    mode     => 0640,
+    require  => File['/etc/dd-agent'],
   }
+
+  package{'dogapi':
+    ensure    => 'installed',
+    provider  => 'gem',
+  }
+
 }

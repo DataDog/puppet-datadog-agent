@@ -1,4 +1,4 @@
-# Class: datadog::redhat
+# Class: datadog_agent::redhat
 #
 # This class contains the DataDog agent installation mechanism for Red Hat derivatives
 #
@@ -10,13 +10,13 @@
 #
 # Sample Usage:
 #
-class datadog::redhat {
+class datadog_agent::redhat {
 
     yumrepo {'datadog':
       enabled   => 1,
       gpgcheck  => 0,
       descr     => 'Datadog, Inc.',
-      baseurl   => 'http://apt.datadoghq.com/rpm/',
+      baseurl   => "http://yum.datadoghq.com/rpm/${::architecture}/",
     }
 
     package { 'datadog-agent':
@@ -24,12 +24,12 @@ class datadog::redhat {
       require => Yumrepo['datadog'],
     }
 
-    service { "datadog-agent":
-      ensure    => running,
-      enable    => true,
+    service { 'datadog-agent':
+      ensure    => $::datadog_agent::service_ensure,
+      enable    => $::datadog_agent::service_enable,
       hasstatus => false,
       pattern   => 'dd-agent',
-      require   => Package["datadog-agent"],
+      require   => Package['datadog-agent'],
     }
 
 }

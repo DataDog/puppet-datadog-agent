@@ -1,8 +1,6 @@
 #
 # MANAGED BY PUPPET
 #
-# based on agent 4.0.1 configuration sample
-
 [Main]
 
 # The host of the Datadog intake server to send agent data to
@@ -23,18 +21,27 @@ dd_url: <%= @dd_url %>
 api_key: <%= @api_key %>
 
 # Force the hostname to whatever you want.
-<% if host.empty? -%>
+<% if @host.empty? -%>
 # hostname:
 <% else -%>
 hostname: <%= @host %>
 <% end -%>
 
 # Set the host's tags
-tags: <%= scope.lookupvar('datadog-agent::tags') %>
-<% if !@tags.empty? -%>
-tags: <%= @tags.join(', ') %>
+#tags: mytag0, mytag1
+<%
+tag_list = @tags
+@facts_to_tags.each do |f|
+  value = scope.lookupvar(f)
+  if not value.nil?
+    tag = "#{f}:#{value}"
+    tag_list << tag
+  end
+end
+if not tag_list.empty?
+-%>
+tags: <%= tag_list.join(', ') %>
 <% end -%>
-
 
 # Collect AWS EC2 custom tags as agent tags
 # collect_ec2_tags: no
@@ -87,7 +94,7 @@ use_mount: yes
 # Think of it as a fancy status page or a toe dip into the world of
 # datadog. It can be connected to on the port below.
 
-use_pup: <% if @use_pup %>yes<% else %>no<% end %>
+# use_pup: no
 # pup_port: 17125
 # pup_interface: localhost
 # pup_url: http://localhost:17125
@@ -226,7 +233,7 @@ nagios_log: <%= @nagios_log_path %>
 # Logging
 # ========================================================================== #
 
-# log_level: INFO
+log_level: <%= @_loglevel %>
 
 # collector_log_file: /var/log/datadog/collector.log
 # forwarder_log_file: /var/log/datadog/forwarder.log
@@ -236,6 +243,6 @@ nagios_log: <%= @nagios_log_path %>
 # if syslog is enabled but a host and port are not set, a local domain socket
 # connection will be attempted
 #
-# log_to_syslog: yes
+log_to_syslog: <%= @log_to_syslog ? "yes" : "no" %>
 # syslog_host:
 # syslog_port:

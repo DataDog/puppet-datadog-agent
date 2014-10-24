@@ -1,4 +1,4 @@
-# Class: datadog::integrations::mysql
+# Class: datadog_agent::integrations::mysql
 #
 # This class will install the necessary configuration for the mysql integration
 #
@@ -18,35 +18,31 @@
 #
 # Sample Usage:
 #
-#  class { 'datadog::integrations::mysql' :
+#  class { 'datadog_agent::integrations::mysql' :
 #    host     => 'localhost',
 #    password => 'some_pass',
 #    user     => 'datadog'
 #  }
 #
 #
-class datadog::integrations::mysql(
+class datadog_agent::integrations::mysql(
   $host = 'localhost',
   $password,
   $user = 'datadog',
   $tags = [],
   $replication = '0',
   $galera_cluster = '0'
-) inherits datadog::params {
+) inherits datadog_agent::params {
 
-  validate_array( $tags )
-
-  package { $mysql_int_package :
-    ensure => installed,
-  }
+  validate_array($tags)
 
   file { "${conf_dir}/mysql.yaml":
     ensure  => file,
-    owner   => $datadog::dd_user,
-    group   => $datadog::dd_group,
+    owner   => $datadog_agent::params::dd_user,
+    group   => $datadog_agent::params::dd_group,
     mode    => 0600,
-    content => template('datadog/agent-conf.d/mysql.yaml.erb'),
-    require => Package[$mysql_int_package],
-    notify  => Service[$service_name]
+    content => template('datadog_agent/agent-conf.d/mysql.yaml.erb'),
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

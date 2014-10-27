@@ -16,7 +16,7 @@ class datadog::redhat {
       enabled   => 1,
       gpgcheck  => 0,
       descr     => 'Datadog, Inc.',
-      baseurl   => 'http://yum.datadoghq.com/rpm/',
+      baseurl   => 'http://yum.datadoghq.com/rpm/$basearch',
     }
 
     package { 'datadog-agent':

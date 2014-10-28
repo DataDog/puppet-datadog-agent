@@ -1,0 +1,12 @@
+language: ruby
+before_install: rm -f Gemfile.lock
+rvm:
+  - 1.9.3
+script:
+  - bundle install
+  - rake spec
+  - rake test
+env:
+  matrix:
+    - PUPPET_VERSION="~> 2.7.0"
+    - PUPPET_VERSION="~> 3.3.0"

@@ -92,22 +92,22 @@ class datadog_agent(
   }
 
   file { '/etc/dd-agent':
-    ensure   => present,
-    owner    => 'root',
-    group    => 'root',
-    mode     => 0755,
-    require  => Package['datadog-agent'],
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    require => Package['datadog-agent'],
   }
 
   # main agent config file
   file { '/etc/dd-agent/datadog.conf':
-    ensure   => file,
-    content  => template('datadog_agent/datadog.conf.erb'),
-    owner    => $dd_user,
-    group    => $dd_group,
-    mode     => 0640,
-    notify   => Service[$service_name],
-    require  => File['/etc/dd-agent'],
+    ensure  => file,
+    content => template('datadog_agent/datadog.conf.erb'),
+    owner   => $dd_user,
+    group   => $dd_group,
+    mode    => '0640',
+    notify  => Service[$service_name],
+    require => File['/etc/dd-agent'],
   }
 
   if $puppet_run_reports {

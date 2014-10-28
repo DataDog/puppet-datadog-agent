@@ -13,10 +13,10 @@
 class datadog_agent::redhat {
 
     yumrepo {'datadog':
-      enabled   => 1,
-      gpgcheck  => 0,
-      descr     => 'Datadog, Inc.',
-      baseurl   => "http://yum.datadoghq.com/rpm/${::architecture}/",
+      enabled  => 1,
+      gpgcheck => 0,
+      descr    => 'Datadog, Inc.',
+      baseurl  => "http://yum.datadoghq.com/rpm/${::architecture}/",
     }
 
     package { 'datadog-agent':

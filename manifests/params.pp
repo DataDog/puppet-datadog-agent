@@ -21,7 +21,7 @@ class datadog_agent::params {
   $package_name = 'datadog-agent'
   $service_name = 'datadog-agent'
 
-  case $operatingsystem {
+  case $::operatingsystem {
     'Ubuntu','Debian' : {
       $rubydev_package   =  'ruby-dev'
     }

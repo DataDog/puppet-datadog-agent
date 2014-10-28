@@ -36,7 +36,7 @@ class datadog_agent::integrations::solr(
   $trust_store_password = undef,
   $tags                 = []) inherits datadog_agent::params {
 
-  file { "${conf_dir}/solr.yaml":
+  file { "${datadog_agent::params::conf_dir}/solr.yaml":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

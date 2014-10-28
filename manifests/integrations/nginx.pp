@@ -28,7 +28,7 @@ class datadog_agent::integrations::nginx(
 
   validate_array($instances)
 
-  file { "${conf_dir}/nginx.yaml":
+  file { "${datadog_agent::params::conf_dir}/nginx.yaml":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

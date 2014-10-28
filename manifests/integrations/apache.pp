@@ -36,7 +36,7 @@ class datadog_agent::integrations::apache (
   validate_string($url)
   validate_array($tags)
 
-  file { "${conf_dir}/apache.yaml":
+  file { "${datadog_agent::params::conf_dir}/apache.yaml":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

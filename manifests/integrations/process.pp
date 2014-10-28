@@ -44,7 +44,7 @@ class datadog_agent::integrations::process(
 
   validate_array( $processes )
 
-  file { "${conf_dir}/process.yaml":
+  file { "${datadog_agent::params::conf_dir}/process.yaml":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

@@ -36,7 +36,7 @@ class datadog_agent::integrations::mysql(
 
   validate_array($tags)
 
-  file { "${conf_dir}/mysql.yaml":
+  file { "${datadog_agent::params::conf_dir}/mysql.yaml":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

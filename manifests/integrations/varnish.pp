@@ -23,7 +23,7 @@ class datadog_agent::integrations::varnish (
   $tags      = [],
 ) inherits datadog_agent::params {
 
-  file { "${conf_dir}/varnish.yaml":
+  file { "${datadog_agent::params::conf_dir}/varnish.yaml":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

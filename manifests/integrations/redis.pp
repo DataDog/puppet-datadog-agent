@@ -33,7 +33,7 @@ class datadog_agent::integrations::redis(
   validate_array($tags)
   validate_array($keys)
 
-  file { "${conf_dir}/redisdb.yaml":
+  file { "${datadog_agent::params::conf_dir}/redisdb.yaml":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

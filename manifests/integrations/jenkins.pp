@@ -17,7 +17,7 @@ class datadog_agent::integrations::jenkins(
   $path = '/var/lib/jenkins'
 ) inherits datadog_agent::params {
 
-  file { "${conf_dir}/jenkins.yaml":
+  file { "${datadog_agent::params::conf_dir}/jenkins.yaml":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

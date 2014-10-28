@@ -88,7 +88,7 @@ class datadog_agent::integrations::http_check (
   $contact   = [],
 ) inherits datadog_agent::params {
 
-  file { "${conf_dir}/http_check.yaml":
+  file { "${datadog_agent::params::conf_dir}/http_check.yaml":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

@@ -1,0 +1,18 @@
+#
+# MANAGED BY PUPPET
+#
+
+init_config:
+
+instances:
+<% @servers.each do |server| -%>
+  - host: <%= server['host'] %>
+  - port: <%= server['port'] %>
+  - timeout: 3
+  <% if !server['tags'].nil? && server['tags'].any? -%>
+    tags:
+    <% server['tags'].each do |tag| -%>
+      - <%= tag %>
+    <% end -%>
+  <% end -%>
+<% end -%>

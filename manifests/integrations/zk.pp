@@ -27,17 +27,17 @@
 #    ]
 #  }
 #
-class datadog_agent::integrations::zk(
+class datadog_agent::integrations::zk (
   $servers = [{'host' => 'localhost', 'port' => '2181'}]
 ) inherits datadog_agent::params {
 
   validate_array($servers)
 
-  file { "${conf_dir}/zk.yaml":
+  file { "${datadog_agent::params::conf_dir}/zk.yaml":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
-    mode    => 0600,
+    mode    => '0600',
     content => template('datadog_agent/agent-conf.d/zk.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]

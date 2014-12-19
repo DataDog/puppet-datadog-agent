@@ -20,7 +20,7 @@ class datadog_agent::redhat {
     }
 
     package { 'datadog-agent':
-      ensure  => latest,
+      ensure  => hiera('datadog::version', 'latest'),
       require => Yumrepo['datadog'],
     }
 

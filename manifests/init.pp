@@ -50,7 +50,7 @@
 class datadog_agent(
   $dd_url = 'https://app.datadoghq.com',
   $host = '',
-  $api_key = 'your_API_key',
+  $api_key = hiera('datadog::api_key'),
   $tags = [],
   $facts_to_tags = [],
   $puppet_run_reports = false,

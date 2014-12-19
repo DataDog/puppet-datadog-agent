@@ -16,11 +16,11 @@ class datadog_agent::redhat {
       enabled  => 1,
       gpgcheck => 0,
       descr    => 'Datadog, Inc.',
-      baseurl  => "http://yum.datadoghq.com/rpm/${::architecture}/",
+      baseurl  => hiera('datadog::repository', "http://yum.datadoghq.com/rpm/${::architecture}/"),
     }
 
     package { 'datadog-agent':
-      ensure  => latest,
+      ensure  => hiera('datadog::version', 'latest'),
       require => Yumrepo['datadog'],
     }
 

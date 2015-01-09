@@ -36,9 +36,12 @@ class datadog_agent::integrations::postgres(
   $password,
   $tags = [],
   $tables = [],
+  $custom_metrics = [],
 ) inherits datadog_agent::params {
 
   validate_array($tags)
+  validate_array($tables)
+  validate_array($custom_metrics)
 
   file { "${datadog_agent::params::conf_dir}/postgres.yaml":
     ensure  => file,

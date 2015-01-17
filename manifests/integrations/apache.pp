@@ -3,35 +3,37 @@
 # This class will install the necessary configuration for the apache integration
 #
 # Parameters:
-#   $url:
+#   $instances
+#       A hash in the format of the YAML instance.
+#   $url: DEPRECATED
 #       The URL for apache status URL handled by mod-status.
 #       Defaults to http://localhost/server-status?auto
-#   $username:
-#   $password:
+#   $username: DEPRECATED
+#   $password: DEPRECATED
 #       If your service uses basic authentication, you can optionally
 #       specify a username and password that will be used in the check.
 #       Optional.
-#   $tags
+#   $tags: DEPRECATED
 #       Optional array of tags
-#
-# Sample Usage:
-#
-# include 'datadog_agent::integrations::apache'
-#
-# OR
-#
-# class { 'datadog_agent::integrations::apache':
-#   url      => 'http://example.com/server-status?auto',
-#   username => 'status',
-#   password => 'hunter1',
-# }
-#
+
 class datadog_agent::integrations::apache (
+  $instances,
+  $init_config = undef,
   $url       = 'http://localhost/server-status?auto',
   $username  = undef,
   $password  = undef,
   $tags      = []
 ) inherits datadog_agent::params {
+
+  validate_hash($instances)
+
+  if $url
+     or $username
+     or $password
+     or $tags
+  {
+    warning("Deprecation: using a fixed var instead of $instances. See https://github.com/DataDog/puppet-datadog-agent/wiki/NewManifests")
+  }
 
   validate_string($url)
   validate_array($tags)

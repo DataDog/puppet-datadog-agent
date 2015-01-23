@@ -60,7 +60,7 @@ tags: <%= tag_list.join(', ') %>
 #recent_point_threshold: 30
 
 # Use mount points instead of volumes to track disk and fs metrics
-use_mount: no
+use_mount: <%= @use_mount %>
 
 # Change port the Agent is listening to
 # listen_port: 17123

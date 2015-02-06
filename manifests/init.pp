@@ -83,10 +83,10 @@ class datadog_agent(
   validate_bool($non_local_traffic)
   validate_bool($log_to_syslog)
   validate_string($log_level)
-  validate_string($proxy_url)
-  validate_string($proxy_port)
-  validate_string($proxy_user)
-  validate_string($proxy_password)
+  validate_string($::proxy_host)
+  validate_string($::proxy_port)
+  validate_string($::proxy_user)
+  validate_string($::proxy_password)
 
   include datadog_agent::params
   case upcase($log_level) {
@@ -116,13 +116,13 @@ class datadog_agent(
 
   # main agent config file
   file { '/etc/dd-agent/datadog.conf':
-    ensure          => file,
-    content         => template('datadog_agent/datadog.conf.erb'),
-    owner           => $datadog_agent::params::dd_user,
-    group           => $datadog_agent::params::dd_group,
-    mode            => '0640',
-    notify          => Service[$datadog_agent::params::service_name],
-    require         => File['/etc/dd-agent'],
+    ensure  => file,
+    content => template('datadog_agent/datadog.conf.erb'),
+    owner   => $datadog_agent::params::dd_user,
+    group   => $datadog_agent::params::dd_group,
+    mode    => '0640',
+    notify  => Service[$datadog_agent::params::service_name],
+    require => File['/etc/dd-agent'],
   }
 
   if $puppet_run_reports {

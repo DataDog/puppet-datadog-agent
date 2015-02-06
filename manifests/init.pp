@@ -28,7 +28,14 @@
 #   $log_to_syslog
 #       Set value of 'log_to_syslog' variable. Default is true -> yes as in dd-agent.
 #       Valid values here are: true or false.
-#
+#   $proxy_host
+#       Set value of 'proxy_host' variable. Default is blank.
+#   $proxy_port
+#       Set value of 'proxy_port' variable. Default is blank.
+#   $proxy_user
+#       Set value of 'proxy_user' variable. Default is blank.
+#   $proxy_password
+#       Set value of 'proxy_password' variable. Default is blank.
 # Actions:
 #
 # Requires:
@@ -59,7 +66,11 @@ class datadog_agent(
   $log_level = 'info',
   $log_to_syslog = true,
   $service_ensure = 'running',
-  $service_enable = true
+  $service_enable = true,
+  $proxy_host = $datadog::params::proxy_host,
+  $proxy_port = $datadog::params::proxy_port,
+  $proxy_user = $datadog::params::proxy_user,
+  $proxy_password = $datadog::params::proxy_password
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -72,6 +83,10 @@ class datadog_agent(
   validate_bool($non_local_traffic)
   validate_bool($log_to_syslog)
   validate_string($log_level)
+  validate_string($proxy_url)
+  validate_string($proxy_port)
+  validate_string($proxy_user)
+  validate_string($proxy_password)
 
   include datadog_agent::params
   case upcase($log_level) {
@@ -101,13 +116,13 @@ class datadog_agent(
 
   # main agent config file
   file { '/etc/dd-agent/datadog.conf':
-    ensure  => file,
-    content => template('datadog_agent/datadog.conf.erb'),
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
-    mode    => '0640',
-    notify  => Service[$datadog_agent::params::service_name],
-    require => File['/etc/dd-agent'],
+    ensure          => file,
+    content         => template('datadog_agent/datadog.conf.erb'),
+    owner           => $datadog_agent::params::dd_user,
+    group           => $datadog_agent::params::dd_group,
+    mode            => '0640',
+    notify          => Service[$datadog_agent::params::service_name],
+    require         => File['/etc/dd-agent'],
   }
 
   if $puppet_run_reports {

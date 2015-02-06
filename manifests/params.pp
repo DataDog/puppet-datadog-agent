@@ -15,11 +15,15 @@
 # Sample Usage:
 #
 class datadog_agent::params {
-  $conf_dir     = '/etc/dd-agent/conf.d'
-  $dd_user      = 'dd-agent'
-  $dd_group     = 'root'
-  $package_name = 'datadog-agent'
-  $service_name = 'datadog-agent'
+  $conf_dir       = '/etc/dd-agent/conf.d'
+  $dd_user        = 'dd-agent'
+  $dd_group       = 'root'
+  $package_name   = 'datadog-agent'
+  $service_name   = 'datadog-agent'
+  $proxy_host     = ''
+  $proxy_port     = ''
+  $proxy_user     = ''
+  $proxy_password = ''
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {

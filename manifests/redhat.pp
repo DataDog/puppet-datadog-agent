@@ -3,6 +3,9 @@
 # This class contains the DataDog agent installation mechanism for Red Hat derivatives
 #
 # Parameters:
+#   $baseurl:
+#       Baseurl for the datadog yum repo
+#       Defaults to http://yum.datadoghq.com/rpm/${::architecture}/
 #
 # Actions:
 #
@@ -10,13 +13,16 @@
 #
 # Sample Usage:
 #
-class datadog_agent::redhat {
+class datadog_agent::redhat(
+  $baseurl = "http://yum.datadoghq.com/rpm/${::architecture}/"
+) {
+    validate_string($baseurl)
 
     yumrepo {'datadog':
       enabled  => 1,
       gpgcheck => 0,
       descr    => 'Datadog, Inc.',
-      baseurl  => "http://yum.datadoghq.com/rpm/${::architecture}/",
+      baseurl  => $baseurl,
     }
 
     package { 'datadog-agent-base':

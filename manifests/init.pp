@@ -71,10 +71,10 @@ class datadog_agent(
   $service_ensure = 'running',
   $service_enable = true,
   $use_mount = false,
-  $proxy_host = $datadog::params::proxy_host,
-  $proxy_port = $datadog::params::proxy_port,
-  $proxy_user = $datadog::params::proxy_user,
-  $proxy_password = $datadog::params::proxy_password
+  $proxy_host = '',
+  $proxy_port = '',
+  $proxy_user = '',
+  $proxy_password = ''
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -87,10 +87,10 @@ class datadog_agent(
   validate_bool($non_local_traffic)
   validate_bool($log_to_syslog)
   validate_string($log_level)
-  validate_string($::proxy_host)
-  validate_string($::proxy_port)
-  validate_string($::proxy_user)
-  validate_string($::proxy_password)
+  validate_string($proxy_host)
+  validate_string($proxy_port)
+  validate_string($proxy_user)
+  validate_string($proxy_password)
 
   include datadog_agent::params
   case upcase($log_level) {

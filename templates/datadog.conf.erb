@@ -7,25 +7,25 @@
 dd_url: <%= @dd_url %>
 
 # If you need a proxy to connect to the Internet, provide the settings here
-<% if @proxy_host -%>
-proxy_host: <%= @proxy_host %>
-<% else -%>
+<% if @proxy_host.empty? -%>
 # proxy_host:
-<% end -%>
-<% if @proxy_port -%>
-proxy_port: <%= @proxy_port %>
 <% else -%>
+proxy_host: <%= @proxy_host %>
+<% end -%>
+<% if @proxy_port.empty? -%>
 # proxy_port:
-<% end -%>
-<% if @proxy_user -%>
-proxy_user: <%= @proxy_user %>
 <% else -%>
+proxy_port: <%= @proxy_port %>
+<% end -%>
+<% if @proxy_user.empty? -%>
 # proxy_user:
-<% end -%>
-<% if @proxy_password -%>
-proxy_password: <%= @proxy_password %>
 <% else -%>
+proxy_user: <%= @proxy_user %>
+<% end -%>
+<% if @proxy_password.empty? -%>
 # proxy_password:
+<% else -%>
+proxy_password: <%= @proxy_password %>
 <% end -%>
 
 # If you run the agent behind haproxy, you might want to set this to yes

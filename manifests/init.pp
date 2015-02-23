@@ -28,6 +28,9 @@
 #   $log_to_syslog
 #       Set value of 'log_to_syslog' variable. Default is true -> yes as in dd-agent.
 #       Valid values here are: true or false.
+#   $use_mount
+#       Allow overriding default of tracking disks by device path instead of mountpoint
+#       Valid values here are: yes or no. The default is no.
 #
 # Actions:
 #
@@ -59,7 +62,8 @@ class datadog_agent(
   $log_level = 'info',
   $log_to_syslog = true,
   $service_ensure = 'running',
-  $service_enable = true
+  $service_enable = true,
+  $use_mount = 'no'
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)

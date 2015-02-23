@@ -31,7 +31,14 @@
 #   $use_mount
 #       Allow overriding default of tracking disks by device path instead of mountpoint
 #       Valid values here are: true or false.
-#
+#   $proxy_host
+#       Set value of 'proxy_host' variable. Default is blank.
+#   $proxy_port
+#       Set value of 'proxy_port' variable. Default is blank.
+#   $proxy_user
+#       Set value of 'proxy_user' variable. Default is blank.
+#   $proxy_password
+#       Set value of 'proxy_password' variable. Default is blank.
 # Actions:
 #
 # Requires:
@@ -63,7 +70,11 @@ class datadog_agent(
   $log_to_syslog = true,
   $service_ensure = 'running',
   $service_enable = true,
-  $use_mount = false
+  $use_mount = false,
+  $proxy_host = '',
+  $proxy_port = '',
+  $proxy_user = '',
+  $proxy_password = ''
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -76,6 +87,10 @@ class datadog_agent(
   validate_bool($non_local_traffic)
   validate_bool($log_to_syslog)
   validate_string($log_level)
+  validate_string($proxy_host)
+  validate_string($proxy_port)
+  validate_string($proxy_user)
+  validate_string($proxy_password)
 
   include datadog_agent::params
   case upcase($log_level) {

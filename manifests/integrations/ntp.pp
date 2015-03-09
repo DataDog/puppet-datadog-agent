@@ -16,7 +16,7 @@
 class datadog_agent::integrations::ntp(
 	$offset = 600,
 ) inherits datadog_agent::params {
-	
+
   file { "${datadog_agent::params::conf_dir}/ntp.yaml":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,

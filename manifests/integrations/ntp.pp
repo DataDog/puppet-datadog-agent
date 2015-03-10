@@ -6,7 +6,7 @@
 #   $offset:
 #        Offset threshold for a critical alert. Defaults to 600.
 # 
-#	Sample Usage:
+# Sample Usage:
 # 
 #  class { 'datadog_agent::integrations::ntp' :
 #    offset     => 600,
@@ -14,7 +14,7 @@
 #
 
 class datadog_agent::integrations::ntp(
-	$offset = 600,
+  $offset = 600,
 ) inherits datadog_agent::params {
 
   file { "${datadog_agent::params::conf_dir}/ntp.yaml":

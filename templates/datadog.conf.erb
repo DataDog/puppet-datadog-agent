@@ -82,7 +82,11 @@ use_mount: <%= @use_mount %>
 # listen_port: 17123
 
 # Start a graphite listener on this port
+<% if @graphite_listen_port.empty? -%>
 # graphite_listen_port: 17124
+<% else -%>
+graphite_listen_port: <%= @graphite_listen_port %>
+<% end -%>
 
 # Additional directory to look for Datadog checks
 # additional_checksd: /etc/dd-agent/checks.d/

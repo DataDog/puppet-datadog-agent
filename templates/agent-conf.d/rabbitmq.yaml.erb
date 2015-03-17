@@ -1,0 +1,10 @@
+init_config:
+
+instances:
+    -  rabbitmq_api_url: <%= @url %>
+<% if @username -%>
+       rabbitmq_user: <%= @username %>
+<% end -%>
+<% if @password -%>
+       rabbitmq_pass: <%= @password %>
+<% end -%>

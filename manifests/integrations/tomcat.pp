@@ -18,7 +18,7 @@
 #   $trust_store_password
 #       The trust store password. Should be set if ssl is enabled. Optional.
 #   $tags
-#       Optional array of tags
+#       Optional hash of tags { env => 'prod' }.
 #
 # Sample Usage:
 #
@@ -34,7 +34,7 @@ class datadog_agent::integrations::tomcat(
   $java_bin_path        = undef,
   $trust_store_path     = undef,
   $trust_store_password = undef,
-  $tags                 = []) inherits datadog_agent::params {
+  $tags                 = {}) inherits datadog_agent::params {
 
   file { "${datadog_agent::params::conf_dir}/tomcat.yaml":
     ensure  => file,

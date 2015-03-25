@@ -17,7 +17,6 @@ class datadog_agent::ubuntu(
     exec { 'datadog_key':
       command => "/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys ${apt_key}",
       unless  => "/usr/bin/apt-key list | grep ${apt_key} | grep expires",
-      notify  => Exec['datadog_apt-get_update'],
     }
 
     file { '/etc/apt/sources.list.d/datadog.list':

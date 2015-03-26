@@ -77,7 +77,7 @@ class datadog_agent(
   $proxy_port = '',
   $proxy_user = '',
   $proxy_password = '',
-  $dogstreams = ''.
+  $dogstreams = ''
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)

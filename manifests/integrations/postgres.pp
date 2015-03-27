@@ -40,7 +40,7 @@ class datadog_agent::integrations::postgres(
   $password,
   $tags = [],
   $tables = [],
-	$custom_metrics = []
+  $custom_metrics = []
 ) inherits datadog_agent::params {
 
   validate_array($tags)

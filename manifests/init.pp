@@ -74,7 +74,35 @@ class datadog_agent(
   $proxy_host = '',
   $proxy_port = '',
   $proxy_user = '',
-  $proxy_password = ''
+  $proxy_password = '',
+  $skip_ssl_validation = false,
+  $collect_ec2_tags = false,
+  $collect_instance_metadata = true,
+  $recent_point_threshold = '',
+  $listen_port = '',
+  $graphite_listen_port = '',
+  $additional_checksd = '',
+  $use_curl_http_client = true,
+  $bind_host = '',
+  $use_pup = false,
+  $pup_port = '',
+  $pup_interface = '',
+  $pup_url = '',
+  $use_dogstatsd = false,
+  $dogstatsd_port = '',
+  $dogstatsd_target = '',
+  $dogstatsd_interval = '',
+  $dogstatsd_normalize = true,
+  $statsd_forward_host = '',
+  $statsd_forward_port = '',
+  $device_blacklist_re = '',
+  $ganglia_host = '',
+  $ganglia_port = '',
+  $custom_emitters = '',
+  $collector_log_file = '',
+  $forwarder_log_file = '',
+  $dogstatsd_log_file = '',
+  $pup_log_file = '',
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -85,12 +113,40 @@ class datadog_agent(
   validate_bool($puppet_run_reports)
   validate_string($puppetmaster_user)
   validate_bool($non_local_traffic)
+  validate_bool($non_local_traffic)
   validate_bool($log_to_syslog)
   validate_string($log_level)
   validate_string($proxy_host)
   validate_string($proxy_port)
   validate_string($proxy_user)
   validate_string($proxy_password)
+  validate_bool($skip_ssl_validation)
+  validate_bool($collect_ec2_tags)
+  validate_bool($collect_instance_metadata)
+  validate_string($recent_point_threshold)
+  validate_string($listen_port)
+  validate_string($graphite_listen_port)
+  validate_string($additional_checksd)
+  validate_bool($use_curl_http_client)
+  validate_string($bind_host)
+  validate_bool($use_pup)
+  validate_string($pup_port)
+  validate_string($pup_interface)
+  validate_string($pup_url)
+  validate_bool($use_dogstatsd)
+  validate_string($dogstatsd_port)
+  validate_string($dogstatsd_target)
+  validate_string($dogstatsd_interval)
+  validate_bool($dogstatsd_normalize)
+  validate_string($statsd_forward_host)
+  validate_string($statsd_forward_port)
+  validate_string($device_blacklist_re)
+  validate_string($ganglia_host)
+  validate_string($ganglia_port)
+  validate_string($collector_log_file)
+  validate_string($forwarder_log_file)
+  validate_string($dogstatsd_log_file)
+  validate_string($pup_log_file)
 
   include datadog_agent::params
   case upcase($log_level) {

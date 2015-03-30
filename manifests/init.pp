@@ -7,7 +7,6 @@
 #       The host of the Datadog intake server to send agent data to.
 #       Defaults to https://app.datadoghq.com.
 #   $host:
-#       Your hostname to see in Datadog. Defaults with Datadog hostname detection.
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value.
 #   $collect_ec2_tags
@@ -73,6 +72,90 @@
 #       Skip SSL validation.
 #   $use_curl_http_client
 #       Uses the curl HTTP client for the forwarder
+#   $collect_ec2_tas
+#       Presents custom EC2 tags as agent tags to datadog
+#       Boolean. Default: False
+#   $collect_instance_metadata
+#       Enables the agent to try and gather instance metadata on EC2/GCE
+#       Boolean. Default: true
+#   $recent_point_threshold
+#       Sets the threshold for accepting points.
+#   String. Default: empty (30 second intervals)
+#   $listen_port
+#       Change the port that the agent listens on
+#       String. Default: empty (port 17123 in dd-agent)
+#   $additional_checksd
+#       Additional directory to look for datadog checks in
+#       String. Default: empty
+#   $bind_host
+#       The loopback address the forwarder and Dogstatsd will bind.
+#       String. Default: empty
+#   $use_pup
+#       Enables the local pup dashboard
+#       Boolean. Default: false
+#   $pup_port
+#       Specifies the port to be used by pup. Must have use_pup set
+#       String. Default: empty
+#   $pup_interface
+#       Specifies which interface pup will use. Must have use_pup set
+#       String. Default: empty
+#   $pup_url
+#       Specifies the URL used to access pup. Must have use_pup set
+#       String. Default: empty
+#   $use_dogstatsd
+#       Enables the dogstatsd server
+#       Boolean. Default: false
+#   $dogstatsd_port
+#       Specifies the port to be used by dogstatsd. Must have use_dogstatsd set
+#       String. Default: empty
+#   $dogstatsd_target
+#       Change the target to be used by dogstatsd. Must have use_dogstatsd set
+#       set
+#       String. Default: empty
+#   $dogstatsd_interval
+#       Change the dogstatsd flush period. Must have use_dogstatsd set
+#       String. Default: empty ( 10 second interval)
+#   $dogstatsd_normalize
+#       Enables 1 second nomralization. Must have use_dogstatsd set
+#       Boolean. Default: true
+#   $statsd_forward_host
+#       Enables forwarding of statsd packetsto host. Must have use_dogstatsd set
+#       String. Default: empty
+#   $statsd_forward_port
+#       Specifis port for $statsd_forward_host. Must have use_dogstatsd set
+#       String. Default: empty
+#   $device_blacklist_re
+#       Specifies pattern for device blacklisting.
+#       String. Default: empty
+#   $ganglia_host
+#       Specifies host where gmetad is running
+#       String. Default: empty
+#   $ganglia_port
+#       Specifies port  for $ganglia_host
+#       String. Default: empty
+#   $dogstreams
+#       Specifies port for list of logstreams/modules to be used.
+#       String. Default: empty
+#   $custom_emitters
+#       Specifies a comma seperated list of non standard emitters to be used
+#       String. Default: empty
+#   $custom_emitters
+#       Specifies a comma seperated list of non standard emitters to be used
+#       String. Default: empty
+#   $collector_log_file
+#       Specifies the log file location for the collector system
+#       String. Default: empty
+#   $forwarder_log_file
+#       Specifies the log file location for the forwarder system
+#       String. Default: empty
+#   $dogstatsd
+#       Specifies the log file location for the dogstatsd system
+#       String. Default: empty
+#   $pup_log_file
+#       Specifies the log file location for the pup system
+#       String. Default: empty
+#
+#
 # Actions:
 #
 # Requires:
@@ -126,6 +209,31 @@ class datadog_agent(
   $skip_ssl_validation = false,
   $skip_apt_key_trusting = false,
   $use_curl_http_client = false
+  $collect_ec2_tags = false,
+  $collect_instance_metadata = true,
+  $recent_point_threshold = '',
+  $listen_port = '',
+  $additional_checksd = '',
+  $bind_host = '',
+  $use_pup = false,
+  $pup_port = '',
+  $pup_interface = '',
+  $pup_url = '',
+  $use_dogstatsd = false,
+  $dogstatsd_port = '',
+  $dogstatsd_target = '',
+  $dogstatsd_interval = '',
+  $dogstatsd_normalize = true,
+  $statsd_forward_host = '',
+  $statsd_forward_port = '',
+  $device_blacklist_re = '',
+  $custom_emitters = '',
+  $collector_log_file = '',
+  $forwarder_log_file = '',
+  $dogstatsd_log_file = '',
+  $pup_log_file = '',
+  $syslog_host  = '',
+  $syslog_port  = '',
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -137,6 +245,7 @@ class datadog_agent(
   validate_array($facts_to_tags)
   validate_bool($puppet_run_reports)
   validate_string($puppetmaster_user)
+  validate_bool($non_local_traffic)
   validate_bool($non_local_traffic)
   validate_bool($log_to_syslog)
   validate_bool($manage_repo)
@@ -154,6 +263,31 @@ class datadog_agent(
   validate_bool($skip_ssl_validation)
   validate_bool($skip_apt_key_trusting)
   validate_bool($use_curl_http_client)
+  validate_bool($collect_ec2_tags)
+  validate_bool($collect_instance_metadata)
+  validate_string($recent_point_threshold)
+  validate_string($listen_port)
+  validate_string($additional_checksd)
+  validate_string($bind_host)
+  validate_bool($use_pup)
+  validate_string($pup_port)
+  validate_string($pup_interface)
+  validate_string($pup_url)
+  validate_bool($use_dogstatsd)
+  validate_string($dogstatsd_port)
+  validate_string($dogstatsd_target)
+  validate_string($dogstatsd_interval)
+  validate_bool($dogstatsd_normalize)
+  validate_string($statsd_forward_host)
+  validate_string($statsd_forward_port)
+  validate_string($device_blacklist_re)
+  validate_string($custom_emitters)
+  validate_string($collector_log_file)
+  validate_string($forwarder_log_file)
+  validate_string($dogstatsd_log_file)
+  validate_string($pup_log_file)
+  validate_string($syslog_host)
+  validate_string($syslog_port)
 
   if $hiera_tags {
     $local_tags = hiera_array('datadog_agent::tags')

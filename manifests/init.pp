@@ -196,6 +196,8 @@ class datadog_agent(
   $forwarder_log_file = '',
   $dogstatsd_log_file = '',
   $pup_log_file = '',
+  $syslog_host  = '',
+  $syslog_port  = '',
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -240,6 +242,8 @@ class datadog_agent(
   validate_string($forwarder_log_file)
   validate_string($dogstatsd_log_file)
   validate_string($pup_log_file)
+  validate_string($syslog_host)
+  validate_string($syslog_port)
 
   include datadog_agent::params
   case upcase($log_level) {

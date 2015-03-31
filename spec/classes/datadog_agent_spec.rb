@@ -470,6 +470,18 @@ describe 'datadog_agent' do
                     'content' => /^pup_log_file: \/test\/log\n/,
                 )}
             end
+            context 'with syslog location set to localhost' do
+                let(:params) {{:syslog_host  => 'localhost' }}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^syslog_host: localhost\n/,
+                )}
+            end
+            context 'with syslog port set to 8080' do
+                let(:params) {{:syslog_port  => '8080' }}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^syslog_port: 8080\n/,
+                )}
+            end
             end
         end
 

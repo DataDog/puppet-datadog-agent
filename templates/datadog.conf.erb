@@ -331,5 +331,15 @@ pup_log_file: <%= @pup_log_file  %>
 # connection will be attempted
 #
 log_to_syslog: <%= @log_to_syslog ? "yes" : "no" %>
+<% if @syslog_host.empty? -%>
 # syslog_host:
+<% else -%>
+syslog_host: <%= @syslog_host  %>
+<% end -%>
+
+<% if @syslog_port.empty? -%>
 # syslog_port:
+<% else -%>
+syslog_port: <%= @syslog_port  %>
+<% end -%>
+

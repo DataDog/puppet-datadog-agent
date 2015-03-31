@@ -39,6 +39,99 @@
 #       Set value of 'proxy_user' variable. Default is blank.
 #   $proxy_password
 #       Set value of 'proxy_password' variable. Default is blank.
+#   $skip_ssl_validation
+#       Can be used to disable ssl validation. Useful when behind a proxy 
+#       Boolean. Default: False
+#   $collect_ec2_tas
+#       Presents custom EC2 tags as agent tags to datadog 
+#       Boolean. Default: False
+#   $collect_instance_metadata 
+#       Enables the agent to try and gather instance metadata on EC2/GCE      
+#       Boolean. Default: true
+#   $recent_point_threshold
+#       Sets the threshold for accepting points.
+#   String. Default: empty (30 second intervals)
+#   $listen_port
+#       Change the port that the agent listens on
+#       String. Default: empty (port 17123 in dd-agent)
+#   $graphite_listen_port
+#       Enabled graphite listener on the specified port
+#       String. Default: empty
+#   $additional_checksd
+#       Additional directory to look for datadog checks in
+#       String. Default: empty
+#   $use_curl_http_client
+#       Allows use to select the simple HTTP client or Tornado HTTP client
+#       Boolean. Default: true
+#   $bind_host
+#       The loopback address the forwarder and Dogstatsd will bind.
+#       String. Default: empty
+#   $use_pup
+#       Enables the local pup dashboard
+#       Boolean. Default: false
+#   $pup_port
+#       Specifies the port to be used by pup. Must have use_pup set
+#       String. Default: empty
+#   $pup_interface
+#       Specifies which interface pup will use. Must have use_pup set
+#       String. Default: empty
+#   $pup_url
+#       Specifies the URL used to access pup. Must have use_pup set
+#       String. Default: empty
+#   $use_dogstatsd
+#       Enables the dogstatsd server
+#       Boolean. Default: false
+#   $dogstatsd_port
+#       Specifies the port to be used by dogstatsd. Must have use_dogstatsd set
+#       String. Default: empty
+#   $dogstatsd_target
+#       Change the target to be used by dogstatsd. Must have use_dogstatsd set
+#       set
+#       String. Default: empty
+#   $dogstatsd_interval
+#       Change the dogstatsd flush period. Must have use_dogstatsd set
+#       String. Default: empty ( 10 second interval)
+#   $dogstatsd_normalize
+#       Enables 1 second nomralization. Must have use_dogstatsd set
+#       Boolean. Default: true
+#   $statsd_forward_host
+#       Enables forwarding of statsd packetsto host. Must have use_dogstatsd set
+#       String. Default: empty
+#   $statsd_forward_port
+#       Specifis port for $statsd_forward_host. Must have use_dogstatsd set
+#       String. Default: empty
+#   $device_blacklist_re
+#       Specifies pattern for device blacklisting.
+#       String. Default: empty
+#   $ganglia_host
+#       Specifies host where gmetad is running
+#       String. Default: empty
+#   $ganglia_port
+#       Specifies port  for $ganglia_host
+#       String. Default: empty
+#   $custom_emitters
+#       Specifies a comma seperated list of non standard emitters to be used
+#       String. Default: empty
+#   $custom_emitters
+#       Specifies a comma seperated list of non standard emitters to be used
+#       String. Default: empty
+#   $collector_log_file
+#       Specifies the log file location for the collector system
+#       String. Default: empty
+#   $forwarder_log_file
+#       Specifies the log file location for the forwarder system
+#       String. Default: empty
+#   $dogstatsd
+#       Specifies the log file location for the dogstatsd system
+#       String. Default: empty
+#   $pup_log_file
+#       Specifies the log file location for the pup system
+#       String. Default: empty
+#
+#
+# Actions:
+#
+#
 # Actions:
 #
 # Requires:

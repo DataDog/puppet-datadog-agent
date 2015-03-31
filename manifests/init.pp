@@ -109,6 +109,9 @@
 #   $ganglia_port
 #       Specifies port  for $ganglia_host
 #       String. Default: empty
+#   $dogstreams
+#       Specifies port for list of logstreams/modules to be used.
+#       String. Default: empty
 #   $custom_emitters
 #       Specifies a comma seperated list of non standard emitters to be used
 #       String. Default: empty
@@ -191,6 +194,7 @@ class datadog_agent(
   $device_blacklist_re = '',
   $ganglia_host = '',
   $ganglia_port = '',
+  $dogstreams = '',
   $custom_emitters = '',
   $collector_log_file = '',
   $forwarder_log_file = '',
@@ -238,6 +242,7 @@ class datadog_agent(
   validate_string($device_blacklist_re)
   validate_string($ganglia_host)
   validate_string($ganglia_port)
+  validate_string($dogstreams)
   validate_string($collector_log_file)
   validate_string($forwarder_log_file)
   validate_string($dogstatsd_log_file)

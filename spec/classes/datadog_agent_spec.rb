@@ -103,6 +103,10 @@ describe 'datadog_agent' do
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^# device_blacklist_re: .*\\\/dev\\\/mapper\\\/lxc-box.*\n/,
                     )}
+
+                    it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^# dogstreams:\n/,
+                    )}
                 end
 
                 context 'for pup' do
@@ -426,6 +430,12 @@ describe 'datadog_agent' do
                 let(:params) {{:ganglia_port => '12345' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^ganglia_port: 12345\n/,
+                )}
+            end
+            context 'with dogstreams set to /path/to/log1:/path/to/parser' do
+                let(:params) {{:dogstreams  => '/path/to/log1:/path/to/parser' }}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^dogstreams: \/path\/to\/log1:\/path\/to\/parser\n/,
                 )}
             end
             context 'with custom_emitters set to /test/emitter' do

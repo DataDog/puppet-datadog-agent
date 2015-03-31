@@ -43,7 +43,7 @@ describe 'datadog_agent' do
 
         it { should contain_class('datadog_agent::reports') }
 
-        describe 'paramter check' do
+        describe 'parameter check' do
             context 'with defaults' do
                 context 'for proxy' do
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(

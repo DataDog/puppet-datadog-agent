@@ -31,7 +31,6 @@ proxy_password: <%= @proxy_password %>
 # If you run the agent behind haproxy, you might want to set this to yes
 skip_ssl_validation: <%= @skip_ssl_validation ? "yes" : "no" %>
 
-
 # The Datadog api key to associate your Agent's data with your organization.
 # Can be found here:
 # https://app.datadoghq.com/account/settings
@@ -105,7 +104,6 @@ graphite_listen_port: <%= @graphite_listen_port %>
 additional_checksd: <%= @additional_checksd %>
 <% end -%>
 
-
 # Allow non-local traffic to this Agent
 # This is required when using this Agent as a proxy for other Agents
 # that might not have an internet connection
@@ -147,7 +145,6 @@ pup_port: <%= @pup_port %>
 pup_interface: <%= @pup_interface %>
 <% end -%>
 
-
 <% if @pup_url.empty? -%>
 # pup_url: http://localhost:17125
 <% else -%>
@@ -186,7 +183,6 @@ dogstatsd_target: <%= @dogstatsd_target %>
 <% else -%>
 dogstatsd_interval: <%= dogstatsd_interval -%>
 <% end -%>
-
 
 ## If 'yes', counters and rates will be normalized to 1 second (that is divided
 ## by the dogstatsd_interval) before being sent to the server. Defaults to 'yes'
@@ -238,7 +234,6 @@ device_blacklist_re: <%= @device_blacklist_re %>
 ganglia_host: <%= @ganglia_host %>
 <% end -%>
 
-
 # Ganglia port where gmetad is running
 <% if @ganglia_port.empty? -%>
 # ganglia_port: 8651
@@ -282,7 +277,6 @@ ganglia_port: <%= @ganglia_port %>
 <% else -%>
 dogstreams: <%= @dogstreams %>
 <% end -%>
-
 
 # ========================================================================== #
 # Custom Emitters                                                            #

@@ -68,7 +68,7 @@ collect_ec2_tags: <%= @collect_ec2_tags %>
 # See http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AESDG-chapter-instancedata.html
 # and https://developers.google.com/compute/docs/metadata
 # for more information
-# collect_instance_metadata: yes
+collect_instance_metadata: <%= @collect_instance_metadata %>
 
 # Set the threshold for accepting points to allow anything
 # with recent_point_threshold seconds

@@ -7,7 +7,6 @@
 #       The host of the Datadog intake server to send agent data to.
 #       Defaults to https://app.datadoghq.com.
 #   $host:
-#       Your hostname to see in Datadog. Defaults with Datadog hostname detection.
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value.
 #   $tags
@@ -243,6 +242,7 @@ class datadog_agent(
   validate_string($ganglia_host)
   validate_string($ganglia_port)
   validate_string($dogstreams)
+  validate_string($custom_emitters)
   validate_string($collector_log_file)
   validate_string($forwarder_log_file)
   validate_string($dogstatsd_log_file)

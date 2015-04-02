@@ -50,34 +50,34 @@ describe 'datadog_agent' do
                     'content' => /^dd_url: https:\/\/app.datadoghq.com\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /# proxy_host:\n/,
+                    'content' => /^# proxy_host:\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /# proxy_port:\n/,
+                    'content' => /^# proxy_port:\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /# proxy_user:\n/,
+                    'content' => /^# proxy_user:\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /proxy_password:\n/,
+                    'content' => /^# proxy_password:\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /skip_ssl_validation: no\n/,
+                    'content' => /^skip_ssl_validation: no\n/,
                     )}
                 end
 
                 context 'for general' do
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /api_key: your_API_key\n/,
+                    'content' => /^api_key: your_API_key\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /# hostname:\n/,
+                    'content' => /^# hostname:\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /use_mount: false\n/,
+                    'content' => /^use_mount: false\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /non_local_traffic: false\n/,
+                    'content' => /^non_local_traffic: false\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^collect_ec2_tags: no\n/,
@@ -162,10 +162,10 @@ describe 'datadog_agent' do
 
                 context 'for logging' do
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /log_level: INFO\n/,
+                    'content' => /^log_level: INFO\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /log_to_syslog: yes\n/,
+                    'content' => /^log_to_syslog: yes\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^# collector_log_file: \/var\/log\/datadog\/collector.log\n/,

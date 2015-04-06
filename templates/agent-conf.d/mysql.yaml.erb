@@ -8,6 +8,9 @@ instances:
   - server: <%= @host %>
     user: <%= @user %>
     pass: <%= @password %>
+<% if @sock -%>
+    sock: <%= @sock %>
+<% end -%>
 #    port: 3306             # Optional
 #    defaults_file: my.cnf  # Alternate configuration mechanism
 <% if !@tags.empty? -%>

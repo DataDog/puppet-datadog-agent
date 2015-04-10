@@ -12,7 +12,7 @@
 #       return the counter of all the processes that contain the string
 #
 #   exact_match
-#       True/False, default to False, if you want to look for an arbitrary
+#       True/False, default to True, if you want to look for an arbitrary
 #       string, use exact_match: False, unless use the exact base name of the process
 #
 #   cpu_check_interval

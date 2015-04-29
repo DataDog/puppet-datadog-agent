@@ -92,7 +92,7 @@ class datadog_agent(
   validate_string($proxy_port)
   validate_string($proxy_user)
   validate_string($proxy_password)
-  validate_array($extra_template)
+  validate_string($extra_template)
 
   include datadog_agent::params
   case upcase($log_level) {

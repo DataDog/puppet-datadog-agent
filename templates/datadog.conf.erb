@@ -243,3 +243,9 @@ log_level: <%= @_loglevel %>
 log_to_syslog: <%= @log_to_syslog ? "yes" : "no" %>
 # syslog_host:
 # syslog_port:
+<% if not @extra_template.empty? -%>
+# ========================================================================== #
+# Custom Templates from Puppet                                               #
+# ========================================================================== #
+
+<% end -%>

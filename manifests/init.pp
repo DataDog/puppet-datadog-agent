@@ -48,6 +48,9 @@
 #       Set value of 'proxy_password' variable. Default is blank.
 #   $graphite_listen_port
 #       Set graphite listener port
+#   $extra_template
+#       Optional, append this extra template file at the end of
+#       the default datadog.conf template
 # Actions:
 #
 # Requires:
@@ -87,7 +90,8 @@ class datadog_agent(
   $proxy_port = '',
   $proxy_user = '',
   $proxy_password = '',
-  $graphite_listen_port = ''
+  $graphite_listen_port = '',
+  $extra_template = '',
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -106,6 +110,7 @@ class datadog_agent(
   validate_string($proxy_user)
   validate_string($proxy_password)
   validate_string($graphite_listen_port)
+  validate_string($extra_template)
 
   include datadog_agent::params
   case upcase($log_level) {
@@ -134,9 +139,18 @@ class datadog_agent(
   }
 
   # main agent config file
+  # content
+  if ($extra_template != '') {
+    $agent_conf_content = template(
+      'datadog_agent/datadog.conf.erb',
+      $extra_template
+    )
+  } else {
+    $agent_conf_content = template('datadog_agent/datadog.conf.erb')
+  }
   file { '/etc/dd-agent/datadog.conf':
     ensure  => file,
-    content => template('datadog_agent/datadog.conf.erb'),
+    content => $agent_conf_content,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
     mode    => '0640',

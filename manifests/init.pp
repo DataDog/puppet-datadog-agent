@@ -10,6 +10,10 @@
 #       Your hostname to see in Datadog. Defaults with Datadog hostname detection.
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value.
+#   $collect_ec2_tags
+#       Collect AWS EC2 custom tags as agent tags.
+#   $collect_instance_metadata
+#       The Agent will try to collect instance metadata for EC2 and GCE instances.
 #   $tags
 #       Optional array of tags.
 #   $facts_to_tags
@@ -61,6 +65,8 @@ class datadog_agent(
   $dd_url = 'https://app.datadoghq.com',
   $host = '',
   $api_key = 'your_API_key',
+  $collect_ec2_tags = false,
+  $collect_instance_metadata = true,
   $tags = [],
   $facts_to_tags = [],
   $puppet_run_reports = false,

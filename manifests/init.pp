@@ -43,6 +43,8 @@
 #       Set value of 'proxy_user' variable. Default is blank.
 #   $proxy_password
 #       Set value of 'proxy_password' variable. Default is blank.
+#   $dogstreams
+#       Comma-separated list of logs to parse and optionally custom parsers to use.
 # Actions:
 #
 # Requires:
@@ -80,7 +82,8 @@ class datadog_agent(
   $proxy_host = '',
   $proxy_port = '',
   $proxy_user = '',
-  $proxy_password = ''
+  $proxy_password = '',
+  $dogstreams = ''
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -97,6 +100,7 @@ class datadog_agent(
   validate_string($proxy_port)
   validate_string($proxy_user)
   validate_string($proxy_password)
+  validate_string($dogstreams)
 
   include datadog_agent::params
   case upcase($log_level) {

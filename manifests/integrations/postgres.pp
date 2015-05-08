@@ -17,6 +17,10 @@
 #       Track per relation/table metrics. Array of strings.
 #       Warning: this can collect lots of metrics per relation
 #       (10 + 10 per index)
+#   $custom_metrics
+#       Track metrics from custom queries
+#       See https://github.com/ipolishchuk/dd-agent/blob/master/conf.d/postgres.yaml.example
+#       for more details
 #
 # Sample Usage:
 #
@@ -35,11 +39,13 @@ class datadog_agent::integrations::postgres(
   $username = 'datadog',
   $password,
   $tags = [],
-  $tables = []
+  $tables = [],
+  $custom_metrics = []
 ) inherits datadog_agent::params {
 
   validate_array($tags)
   validate_array($tables)
+  validate_array($custom_metrics)
 
   file { "${datadog_agent::params::conf_dir}/postgres.yaml":
     ensure  => file,

@@ -63,6 +63,7 @@
 #
 class datadog_agent(
   $dd_url = 'https://app.datadoghq.com',
+  $dogstreams = [],
   $host = '',
   $api_key = 'your_API_key',
   $collect_ec2_tags = false,
@@ -87,6 +88,7 @@ class datadog_agent(
   validate_string($host)
   validate_string($api_key)
   validate_array($tags)
+  validate_array($dogstreams)
   validate_array($facts_to_tags)
   validate_bool($puppet_run_reports)
   validate_string($puppetmaster_user)

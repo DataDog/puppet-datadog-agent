@@ -6,6 +6,9 @@
 #   $dd_url:
 #       The host of the Datadog intake server to send agent data to.
 #       Defaults to https://app.datadoghq.com.
+#   $dd_dogstreams:
+#       The list of dogstreams that you would like to parse.
+#       Defaults to none.
 #   $host:
 #       Your hostname to see in Datadog. Defaults with Datadog hostname detection.
 #   $api_key:
@@ -63,6 +66,7 @@
 #
 class datadog_agent(
   $dd_url = 'https://app.datadoghq.com',
+  $dd_dogstreams = [],
   $host = '',
   $api_key = 'your_API_key',
   $collect_ec2_tags = false,
@@ -88,6 +92,7 @@ class datadog_agent(
   validate_string($api_key)
   validate_array($tags)
   validate_array($facts_to_tags)
+  validate_array($dd_dogstreams)
   validate_bool($puppet_run_reports)
   validate_string($puppetmaster_user)
   validate_bool($non_local_traffic)
@@ -124,11 +129,12 @@ class datadog_agent(
     require => Package['datadog-agent'],
   }
 
+  # Directory to store the custom parser scripts
   file { '/etc/dd-agent/patterns.d':
     ensure  => directory,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
-    mode    => 0644,
+    mode    => '0644',
     require => Package['datadog-agent'],
   }
 

@@ -117,10 +117,18 @@ class datadog_agent(
   }
 
   file { '/etc/dd-agent':
-    ensure  => present,
+    ensure  => directory,
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
+    require => Package['datadog-agent'],
+  }
+
+  file { '/etc/dd-agent/patterns.d':
+    ensure  => directory,
+    owner   => $datadog_agent::params::dd_user,
+    group   => $datadog_agent::params::dd_group,
+    mode    => 0644,
     require => Package['datadog-agent'],
   }
 

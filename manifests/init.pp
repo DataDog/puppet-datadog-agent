@@ -82,7 +82,7 @@ class datadog_agent(
   $proxy_user = '',
   $proxy_password = '',
   $ganglia_host = '',
-  $ganglia_port = '8651'
+  $ganglia_port = 8651
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -100,7 +100,7 @@ class datadog_agent(
   validate_string($proxy_user)
   validate_string($proxy_password)
   validate_string($ganglia_host)
-  validate_string($ganglia_port)
+  validate_integer($ganglia_port)
 
   include datadog_agent::params
   case upcase($log_level) {

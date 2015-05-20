@@ -2,19 +2,19 @@
 #
 # This class will enable ntp check
 #
-# Parameters: 
-#   $offset:
+# Parameters:
+#   $offset_threshold:
 #        Offset threshold for a critical alert. Defaults to 600.
-# 
+#
 # Sample Usage:
-# 
+#
 #  class { 'datadog_agent::integrations::ntp' :
 #    offset     => 600,
 #  }
 #
 
 class datadog_agent::integrations::ntp(
-  $offset = 600,
+  $offset_threshold = 600,
 ) inherits datadog_agent::params {
 
   file { "${datadog_agent::params::conf_dir}/ntp.yaml":

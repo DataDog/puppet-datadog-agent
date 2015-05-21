@@ -26,6 +26,9 @@
 #   $non_local_traffic
 #       Enable you to use the agent as a proxy. Defaults to false.
 #       See https://github.com/DataDog/dd-agent/wiki/Proxy-Configuration
+#   $dogstreams
+#       Optional array of logs to parse and custom parsers to use.
+#       See https://github.com/DataDog/dd-agent/blob/ed5e698/datadog.conf.example#L149-L178
 #   $log_level
 #       Set value of 'log_level' variable. Default is 'info' as in dd-agent.
 #       Valid values here are: critical, debug, error, fatal, info, warn and warning.
@@ -74,6 +77,7 @@ class datadog_agent(
   $puppet_run_reports = false,
   $puppetmaster_user = 'puppet',
   $non_local_traffic = false,
+  $dogstreams = [],
   $log_level = 'info',
   $log_to_syslog = true,
   $service_ensure = 'running',
@@ -90,6 +94,7 @@ class datadog_agent(
   validate_string($host)
   validate_string($api_key)
   validate_array($tags)
+  validate_array($dogstreams)
   validate_array($facts_to_tags)
   validate_bool($puppet_run_reports)
   validate_string($puppetmaster_user)

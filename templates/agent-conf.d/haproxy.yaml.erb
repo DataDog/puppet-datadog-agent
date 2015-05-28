@@ -1,0 +1,11 @@
+#
+# MANAGED BY PUPPET
+#
+
+init_config:
+
+instances:
+    - url: <%= @url %>
+      <% creds.each do |k,v| %>
+      <%= k %>: <%= v %>
+      <% end -%>

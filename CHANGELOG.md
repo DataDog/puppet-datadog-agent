@@ -1,6 +1,27 @@
 Changes
 =======
 
+# 1.3.0 / 2015-06-01
+
+### Notes
+
+* [FEATURE] Add `collect_ec2_tags` and `collect_instance_metadata` options to the main class
+* [FEATURE] Add `sock` parameter in MySQL integration
+* [FEATURE] Add support for graphite listener option in the main class
+* [FEATURE] Add NTP integration
+* [FEATURE] Add support for dogstreams array in the  main class
+* [FEATURE] Add HAProxy integration
+* [FEATURE] Add RabbitMQ integration
+* [FEATURE] Add support for an extra template appended to datadog.conf
+* [FEATURE] Add Mesos integration
+* [FEATURE] Add Marathon integration
+* [FEATURE] Add more flexiblity to configure the docker integration
+
+* [BUGFIX] Fix discrepancy of `exact_match` default in the process check compared to dd-agent
+* [BUGFIX] Fix ordering of resources when installing agent
+* [CI] Test on a variety of puppet & ruby versions
+* [CI] Move to Travis docker infra and add some bundle caching
+
 # 1.2.0 / 2015-02-24
 
 ### Notes

@@ -9,6 +9,9 @@
 #   $url:
 #     The URL for docker API
 #
+#   $tags:
+#     optional array of tags
+#
 # Sample Usage:
 #
 #   class { 'datadog_agent::integrations::docker' :
@@ -19,6 +22,7 @@
 class datadog_agent::integrations::docker(
   $new_tag_names = true,
   $url = 'unix://var/run/docker.sock',
+  $tags = [],
 ) inherits datadog_agent::params {
 
   file { "${datadog_agent::params::conf_dir}/docker.yaml":

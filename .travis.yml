@@ -2,10 +2,36 @@ language: ruby
 before_install: rm -f Gemfile.lock
 rvm:
   - 1.9.3
+  - 2.0.0
+  - 2.1.0
 script:
   - bundle exec rake spec
   - bundle exec rake test
 env:
-  matrix:
-    - PUPPET_VERSION="~> 2.7.0"
-    - PUPPET_VERSION="~> 3.3.0"
+  - PUPPET_VERSION="~> 2.7.0"
+  - PUPPET_VERSION="~> 3.2.0"
+  - PUPPET_VERSION="~> 3.3.0"
+  - PUPPET_VERSION="~> 3.4.0"
+  - PUPPET_VERSION="~> 3.5.0" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=yes
+matrix:
+  exclude:
+  # Ruby 1.9.3
+  - rvm: 1.9.3
+    env: PUPPET_VERSION="~> 2.7.0"
+
+  # Ruby 2.0.0
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 2.7.0"
+
+  # Ruby 2.1.0
+  - rvm: 2.1.0
+    env: PUPPET_VERSION="~> 2.7.0"
+  - rvm: 2.1.0
+    env: PUPPET_VERSION="~> 3.2.0"
+  - rvm: 2.1.0
+    env: PUPPET_VERSION="~> 3.3.0"
+  - rvm: 2.1.0
+    env: PUPPET_VERSION="~> 3.4.0"

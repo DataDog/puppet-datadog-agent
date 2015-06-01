@@ -3,7 +3,6 @@
 #
 
 init_config:
-
+  default_timeout: <%= @mesos_timeout %>
 instances:
     - url: <%= @url %>
-      new_tag_names: <%= @new_tag_names %>

@@ -5,5 +5,13 @@
 init_config:
 
 instances:
-    - url: <%= @url %>
-      new_tag_names: <%= @new_tag_names %>
+  - url: <%= @url %>
+    new_tag_names: <%= @new_tag_names %>
+<% if @tags and ! @tags.empty? -%>
+    tags:
+  <%- Array(@tags).each do |tag| -%>
+    <%- if tag != '' -%>
+      - <%= tag %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>

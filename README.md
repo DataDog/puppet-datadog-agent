@@ -178,16 +178,31 @@ This is a specific setup, you can use https://gist.github.com/LeoCavaille/cd412c
 Module Development and Testing
 ==============================
 
-Checkout module
+### Clone the repo
+
+```
+git clone git@github.com:DataDog/puppet-datadog-agent.git
+cd puppet-datadog-agent
+```
+
+### Install dependencies
 
 ```
 bundle install
-```
-
-```
 rake lint              # Check puppet manifests with puppet-lint / Run puppet-lint
 rake spec              # Run spec tests in a clean fixtures directory
 rake syntax            # Syntax check Puppet manifests and templates
 rake syntax:manifests  # Syntax check Puppet manifests
 rake syntax:templates  # Syntax check Puppet templates
+pip install pre-commit
+pre-commit install
 ```
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
+

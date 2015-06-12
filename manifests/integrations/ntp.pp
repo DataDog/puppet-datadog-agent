@@ -9,12 +9,12 @@
 # Sample Usage:
 #
 #  class { 'datadog_agent::integrations::ntp' :
-#    offset     => 600,
+#    offset_threshold     => 60,
 #  }
 #
 
 class datadog_agent::integrations::ntp(
-  $offset_threshold = 600,
+  $offset_threshold = 60,
 ) inherits datadog_agent::params {
 
   file { "${datadog_agent::params::conf_dir}/ntp.yaml":

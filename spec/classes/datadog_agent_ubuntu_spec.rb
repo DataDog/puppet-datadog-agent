@@ -1,20 +1,27 @@
 require 'spec_helper'
 
 describe 'datadog_agent::ubuntu' do
-  let(:facts) do
+  let(:facts) {
     {
-      osfamily: 'debian',
-      operatingsystem: 'Ubuntu'
+      osfamily: 'Debian',
+      operatingsystem: 'Ubuntu',
+      lsbdistid: 'Ubuntu',
     }
-  end
+  }
+
+  let(:version) { 'latest' }
 
   # it should install the mirror
-  it { should contain_exec('datadog_key') }
-  it do
-    should contain_file('/etc/apt/sources.list.d/datadog.list')\
-      .that_notifies('Exec[datadog_apt-get_update]')
-  end
-  it { should contain_exec('datadog_apt-get_update') }
+  
+  it { should contain_apt__source('datadog').with(
+    :ensure      => 'present',
+    :location    => 'http://apt.datadoghq.com',
+    :release     => 'stable',
+    :repos       => 'main',
+    :include     => { 'src' => false },
+    :key         => { 'id' => 'C7A7DA52', 'server' => 'pgp.mit.edu' },
+    :before      => 'Package[datadog-agent]',
+  ) }
 
   # it should install the packages
   it do
@@ -24,8 +31,7 @@ describe 'datadog_agent::ubuntu' do
   end
   it do
     should contain_package('datadog-agent')\
-      .that_requires('File[/etc/apt/sources.list.d/datadog.list]')\
-      .that_requires('Exec[datadog_apt-get_update]')
+      .with_ensure("#{version}")
   end
 
   # it should be able to start the service and enable the service by default

@@ -5,7 +5,7 @@
 # Parameters:
 #   $directory
 #       The directory to gather stats for
-#   $name
+#   $tag_name
 #       The name used to tag the metrics (directory alias)
 #   $pattern
 #       The `fnmatch` pattern to use when reading the "directory"'s files. default "*"
@@ -16,15 +16,15 @@
 #
 #  class { 'datadog_agent::integrations::directory' :
 #      directory     => '/mnt/media',
-#      name          => 'name,
+#      tag_name      => 'name',
 #      pattern       => '*',
 #      recursive     => true,
 #  }
 class datadog_agent::integrations::directory (
-  $directory = undef,
-  $name      = '',
-  $pattern   = '*',
-  $recursive = false
+  $directory     = undef,
+  $tag_name      = '',
+  $pattern       = '*',
+  $recursive     = false
 ) inherits datadog_agent::params {
 
   if $directory == undef {

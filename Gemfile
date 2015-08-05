@@ -1,12 +1,12 @@
 source "https://rubygems.org"
 
 group :test do
-  gem "puppet", ENV['PUPPET_VERSION'] || '~> 3.6.0'
+  gem "puppet", ENV['PUPPET_VERSION'] || '~> 4.2.0'
   gem "puppet-lint"
   gem "puppet-syntax"
   gem "puppetlabs_spec_helper"
   gem "rake"
-  gem "rspec-puppet", :git => 'https://github.com/rodjek/rspec-puppet.git'
+  gem "rspec-puppet", :git => 'https://github.com/rodjek/rspec-puppet.git', :tag => 'v2.2.0'
 end
 
 group :development do

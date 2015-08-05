@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 group :test do
-  gem "puppet", ENV['PUPPET_VERSION'] || '~> 3.6.0'
+  gem "puppet", ENV['PUPPET_VERSION'] || '~> 4.2.0'
   gem "puppet-lint"
   gem "puppet-syntax"
   gem "puppetlabs_spec_helper"

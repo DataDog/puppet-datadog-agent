@@ -25,6 +25,8 @@ class datadog_agent::integrations::rabbitmq (
   $url       = undef,
   $username  = undef,
   $password  = undef,
+  $queues    = undef,
+  $vhosts    = undef,
 ) inherits datadog_agent::params {
 
   file { "${datadog_agent::params::conf_dir}/rabbitmq.yaml":

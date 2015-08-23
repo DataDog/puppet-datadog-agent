@@ -27,13 +27,12 @@ class datadog_agent::integrations::redis(
   $host = 'localhost',
   $password = '',
   $port = 6379,
-  $slowlog_len = -1,
+  $slowlog_len = '',
   $tags = [],
   $keys = [],
 ) inherits datadog_agent::params {
 
   validate_re($port, '^\d+$')
-  validate_re($slowlog_len, '^\d+$')
   validate_array($tags)
   validate_array($keys)
 

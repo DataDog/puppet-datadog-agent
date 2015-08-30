@@ -5,12 +5,14 @@
 # Parameters:
 #   $host:
 #       The host postgres is running on
-#   $user
+#   $dbname
+#       The postgres database name
+#   $port
+#       The postgres port number
+#   $username
 #       The username for the datadog user
 #   $password
 #       The password for the datadog user
-#   $dbname
-#       The postgres database name
 #   $tags
 #       Optional array of tags
 #   $tables
@@ -23,15 +25,15 @@
 #  class { 'datadog_agent::integrations::postgres' :
 #    host     => 'localhost',
 #    dbname   => 'postgres'
-#    user     => 'datadog',
+#    username => 'datadog',
 #    password => 'some_pass',
 #  }
 #
 #
 class datadog_agent::integrations::postgres(
   $host   = 'localhost',
-  $port   = '5432',
   $dbname = 'postgres',
+  $port   = '5432',
   $username = 'datadog',
   $password,
   $tags = [],

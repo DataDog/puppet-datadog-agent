@@ -13,8 +13,9 @@ describe 'datadog_agent::redhat' do
   it do
     should contain_yumrepo('datadog')
       .with_enabled(1)\
-      .with_gpgcheck(0)\
-      .with_baseurl('http://yum.datadoghq.com/rpm/x86_64/')
+      .with_gpgcheck(1)\
+      .with_gpgkey('https://yum.datadoghq.com/DATADOG_RPM_KEY.public')\
+      .with_baseurl('https://yum.datadoghq.com/rpm/x86_64/')
   end
 
   # it should install the packages

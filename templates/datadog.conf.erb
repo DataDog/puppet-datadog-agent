@@ -130,7 +130,11 @@ non_local_traffic: <%= @non_local_traffic %>
 # usage information, check out http://api.datadoghq.com
 
 #  Make sure your client is sending to the same port.
-# dogstatsd_port : 8125
+<% if @dogstatsd_port.empty? -%>
+# dogstatsd_port : @dogstatsd_port
+<% else -%>
+dogstatsd_port : @dogstatsd_port
+<% end -%>
 
 # By default dogstatsd will post aggregate metrics to the Agent (which handles
 # errors/timeouts/retries/etc). To send directly to the datadog api, set this

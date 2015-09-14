@@ -53,6 +53,8 @@
 #   $extra_template
 #       Optional, append this extra template file at the end of
 #       the default datadog.conf template
+#   $skip_ssl_validation
+#       Skip SSL validation.
 # Actions:
 #
 # Requires:
@@ -97,6 +99,7 @@ class datadog_agent(
   $extra_template = '',
   $ganglia_host = '',
   $ganglia_port = 8651
+  $skip_ssl_validation = false
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -118,6 +121,7 @@ class datadog_agent(
   validate_string($extra_template)
   validate_string($ganglia_host)
   validate_integer($ganglia_port)
+  validate_bool($skip_ssl_validation)
 
   include datadog_agent::params
   case upcase($log_level) {

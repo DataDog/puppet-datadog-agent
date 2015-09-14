@@ -14,6 +14,11 @@ class datadog_agent::ubuntu(
   $apt_key = 'C7A7DA52'
 ) {
 
+  package { 'apt-transport-https':
+    ensure => latest,
+    before => File['/etc/apt/sources.list.d/datadog.list'],
+  }
+
   exec { 'datadog_key':
     command => "/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys ${apt_key}",
     unless  => "/usr/bin/apt-key list | grep ${apt_key} | grep expires",

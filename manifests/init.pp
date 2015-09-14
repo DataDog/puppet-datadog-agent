@@ -38,6 +38,8 @@
 #   $use_mount
 #       Allow overriding default of tracking disks by device path instead of mountpoint
 #       Valid values here are: true or false.
+#   $dogstatsd_port
+#       Set value of the 'dogstatsd_port' variable. Defaultis 8125.
 #   $proxy_host
 #       Set value of 'proxy_host' variable. Default is blank.
 #   $proxy_port
@@ -86,6 +88,7 @@ class datadog_agent(
   $service_ensure = 'running',
   $service_enable = true,
   $use_mount = false,
+  $dogstatsd_port = 8125,
   $proxy_host = '',
   $proxy_port = '',
   $proxy_user = '',

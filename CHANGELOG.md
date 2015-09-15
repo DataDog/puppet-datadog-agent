@@ -1,6 +1,22 @@
 Changes
 =======
 
+# 1.4.0 / 2015-09-14
+
+### Notes
+
+* [FEATURE] Add `ganglia` configuration
+* [FEATURE] Add `rabbitmq` featurs for `queues` and `vhosts`
+* [FEATURE] Add [pre-commit](http://www.pre-commit.com) hooks for `yaml` validation and `puppet-lint`
+
+* [BUGFIX] Check for `rubygems` definition before attempting install
+* [BUGFIX] Pin `rspec-puppet` version to 2.2.0 to avoid unexpected test regressions
+* [BUGFIX] Fix default value for `ntp` offset
+* [BUGFIX] Be more flexible in required version of `puppetlabs/ruby`
+* [DOC] Improve documentation for `ntp` integration
+* [DOC] Improve documentation for `postgres` integration
+* [DOC] Improve documentation for contributing to the repo
+
 # 1.3.0 / 2015-06-01
 
 ### Notes

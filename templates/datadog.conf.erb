@@ -137,7 +137,7 @@ non_local_traffic: <%= @non_local_traffic %>
 <% if @dogstatsd_port.empty? -%>
 # dogstatsd_port : @dogstatsd_port
 <% else -%>
-dogstatsd_port : @dogstatsd_port
+dogstatsd_port : <%= @dogstatsd_port %>
 <% end -%>
 
 # By default dogstatsd will post aggregate metrics to the Agent (which handles
@@ -156,8 +156,16 @@ dogstatsd_port : @dogstatsd_port
 # to another statsd server, uncomment these lines.
 # WARNING: Make sure that forwarded packets are regular statsd packets and not "dogstatsd" packets,
 # as your other statsd server might not be able to handle them.
+<% if @statsd_forward_host.empty? -%>
 # statsd_forward_host: address_of_own_statsd_server
+<% else -%>
+statsd_forward_host: <%= @statsd_forward_host %>
+<% end -%>
+<% if @statsd_forward_port.empty? -%>
 # statsd_forward_port: 8125
+<% else -%>
+statsd_forward_port: <%= @statsd_forward_port %>
+<% end -%>
 
 # ========================================================================== #
 # Service-specific configuration                                             #

@@ -40,6 +40,12 @@
 #       Valid values here are: true or false.
 #   $dogstatsd_port
 #       Set value of the 'dogstatsd_port' variable. Defaultis 8125.
+#   $statsd_forward_host
+#       Set the value of the statsd_forward_host varable. Used to forward all
+#       statsd metrics to another host.
+#   $statsd_forward_port
+#       Set the value of the statsd_forward_port varable. Used to forward all
+#       statsd metrics to another host.
 #   $proxy_host
 #       Set value of 'proxy_host' variable. Default is blank.
 #   $proxy_port
@@ -91,6 +97,8 @@ class datadog_agent(
   $service_enable = true,
   $use_mount = false,
   $dogstatsd_port = 8125,
+  $statsd_forward_host = '',
+  $statsd_forward_port = 8125,
   $proxy_host = '',
   $proxy_port = '',
   $proxy_user = '',

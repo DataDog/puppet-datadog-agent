@@ -29,10 +29,10 @@ proxy_password: <%= @proxy_password %>
 <% end -%>
 
 # If you run the agent behind haproxy, you might want to set this to yes
-<% if @skip_ssl_validation.empty? -%>
-# skip_ssl_validation: no
-<% else -%>
+<% if @skip_ssl_validation -%>
 skip_ssl_validation: <%= @skip_ssl_validation %>
+<% else -%>
+# skip_ssl_validation: no
 <% end -%>
 
 # The Datadog api key to associate your Agent's data with your organization.

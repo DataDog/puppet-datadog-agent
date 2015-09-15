@@ -6,7 +6,7 @@ Changes
 ### Notes
 
 * [FEATURE] Add `ganglia` configuration
-* [FEATURE] Add `rabbitmq` featurs for `queues` and `vhosts`
+* [FEATURE] Add `rabbitmq` features for `queues` and `vhosts`
 * [FEATURE] Add [pre-commit](http://www.pre-commit.com) hooks for `yaml` validation and `puppet-lint`
 
 * [BUGFIX] Check for `rubygems` definition before attempting install

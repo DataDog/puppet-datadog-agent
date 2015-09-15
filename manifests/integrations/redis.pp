@@ -9,7 +9,7 @@
 #       The redis password (optional)
 #   $port
 #       The redis port
-#   $slowlog_len
+#   $slowlog_max_len
 #       The max length of the slow-query log (optional)
 #   $tags
 #       Optional array of tags
@@ -27,7 +27,7 @@ class datadog_agent::integrations::redis(
   $host = 'localhost',
   $password = '',
   $port = 6379,
-  $slowlog_len = '',
+  $slowlog_max_len = '',
   $tags = [],
   $keys = [],
 ) inherits datadog_agent::params {

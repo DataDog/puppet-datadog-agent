@@ -20,7 +20,6 @@ describe 'datadog_agent::redhat' do
   # it should install the packages
   it do
     should contain_package('datadog-agent-base')\
-      .with_ensure('absent')\
       .that_comes_before('Package[datadog-agent]')
   end
   it do

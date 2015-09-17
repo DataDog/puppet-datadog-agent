@@ -107,7 +107,8 @@ class datadog_agent(
   $extra_template = '',
   $skip_ssl_validation = false,
   $ganglia_host = '',
-  $ganglia_port = 8651
+  $ganglia_port = 8651,
+  $package_version = 'latest'
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -130,6 +131,7 @@ class datadog_agent(
   validate_bool($skip_ssl_validation)
   validate_string($ganglia_host)
   validate_integer($ganglia_port)
+  validate_string($package_version)
 
   include datadog_agent::params
   case upcase($log_level) {

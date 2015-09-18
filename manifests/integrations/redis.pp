@@ -27,11 +27,13 @@ class datadog_agent::integrations::redis(
   $port = 6379,
   $tags = [],
   $keys = [],
+  $warn_on_missing_keys = true,
 ) inherits datadog_agent::params {
 
   validate_re($port, '^\d+$')
   validate_array($tags)
   validate_array($keys)
+  validate_bool($warn_on_missing_keys)
 
   file { "${datadog_agent::params::conf_dir}/redisdb.yaml":
     ensure  => file,

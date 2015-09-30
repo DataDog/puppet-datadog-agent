@@ -38,6 +38,11 @@
 #   $use_mount
 #       Allow overriding default of tracking disks by device path instead of mountpoint
 #       Valid values here are: true or false.
+#   $pkg_ensure
+#       Ensure for the datadog package. A version, 'latest', 'present'
+#   $manage_repo
+#       Boolean to indicate whether this module should attempt to manage
+#       the package repo. Default true.
 #   $proxy_host
 #       Set value of 'proxy_host' variable. Default is blank.
 #   $proxy_port
@@ -85,6 +90,8 @@ class datadog_agent(
   $log_to_syslog = true,
   $service_ensure = 'running',
   $service_enable = true,
+  $pkg_ensure = 'latest',
+  $manage_repo = true,
   $use_mount = false,
   $proxy_host = '',
   $proxy_port = '',
@@ -106,6 +113,7 @@ class datadog_agent(
   validate_string($puppetmaster_user)
   validate_bool($non_local_traffic)
   validate_bool($log_to_syslog)
+  validate_bool($manage_repo)
   validate_string($log_level)
   validate_string($proxy_host)
   validate_string($proxy_port)
@@ -130,7 +138,12 @@ class datadog_agent(
 
   case $::operatingsystem {
     'Ubuntu','Debian' : { include datadog_agent::ubuntu }
-    'RedHat','CentOS','Fedora','Amazon','Scientific' : { include datadog_agent::redhat }
+    'RedHat','CentOS','Fedora','Amazon','Scientific' : {
+      class { 'datadog_agent::redhat':
+        manage_repo => $manage_repo,
+        ensure      => 'latest',
+      }
+    }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
 

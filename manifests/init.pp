@@ -121,6 +121,7 @@ class datadog_agent(
   validate_bool($non_local_traffic)
   validate_bool($log_to_syslog)
   validate_string($log_level)
+  validate_integer($dogstatsd_port)
   validate_string($proxy_host)
   validate_string($proxy_port)
   validate_string($proxy_user)

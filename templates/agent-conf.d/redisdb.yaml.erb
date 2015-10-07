@@ -9,6 +9,7 @@ instances:
     port: <%= @port %>
     <% if @password.empty? %># <%end %>password: <%= @password %>
     # unix_socket_path: /var/run/redis/redis.sock # optional, can be used in lieu of host/port
+    <%- if @slowlog_max_len.empty? %># <%end %>'slowlog-max-len': <%= @slowlog_max_len %>
 <% unless @tags.empty? -%>
     tags:                  # Optional
 <% @tags.each do |tag| -%>

@@ -14,14 +14,15 @@
 # Sample Usage:
 #
 class datadog_agent::redhat(
-  $baseurl = "http://yum.datadoghq.com/rpm/${::architecture}/"
+  $baseurl = "https://yum.datadoghq.com/rpm/${::architecture}/"
 ) {
 
   validate_string($baseurl)
 
   yumrepo {'datadog':
     enabled  => 1,
-    gpgcheck => 0,
+    gpgcheck => 1,
+    gpgkey   => 'https://yum.datadoghq.com/DATADOG_RPM_KEY.public',
     descr    => 'Datadog, Inc.',
     baseurl  => $baseurl,
   }

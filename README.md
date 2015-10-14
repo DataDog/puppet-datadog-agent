@@ -160,15 +160,21 @@ Verify on Datadog
 
 Go to [the Setup page](https://app.datadoghq.com/account/settings#integrations) and you should see this
 
+![Puppet integration tile][puppet-integration-tile]
+
+If you click on the tile, you may reconfirm it's been automatically installed.
+
 ![Puppet integration][puppet-integration]
 
-[puppet-integration]: https://img.skitch.com/20120419-hdd7e9fuxhgeei8y5yr7hyt8e.png
+[puppet-integration-tile]: https://raw.githubusercontent.com/DataDog/documentation/master/content/integrations/images/snapshot_puppet_tile.png
+
+[puppet-integration]: https://raw.githubusercontent.com/DataDog/documentation/master/content/integrations/images/snapshot_puppet_integration.png
 
 Search for "Puppet" in the Stream and you should see something like this:
 
 ![Puppet Events in Datadog][puppet-events]
 
-[puppet-events]: https://img.skitch.com/20120403-bdipicbpquwccwxm2u3cwdc6ar.png
+[puppet-events]: https://raw.githubusercontent.com/DataDog/documentation/master/content/integrations/images/snapshot_puppet_events.png
 
 Masterless puppet
 =================

@@ -29,7 +29,17 @@ proxy_password: <%= @proxy_password %>
 <% end -%>
 
 # If you run the agent behind haproxy, you might want to set this to yes
+<% if @skip_ssl_validation -%>
+skip_ssl_validation: <%= @skip_ssl_validation %>
+<% else -%>
 # skip_ssl_validation: no
+<% end -%>
+# If you'd like to override the CA certs path, you might want to set this
+<% if @ca_certs.empty? -%>
+# ca_certs: /some/path
+<% else -%>
+ca_certs: <%= @ca_certs %>
+<% end -%>
 
 # The Datadog api key to associate your Agent's data with your organization.
 # Can be found here:
@@ -130,7 +140,11 @@ non_local_traffic: <%= @non_local_traffic %>
 # usage information, check out http://api.datadoghq.com
 
 #  Make sure your client is sending to the same port.
-# dogstatsd_port : 8125
+<% if @dogstatsd_port.empty? -%>
+# dogstatsd_port : @dogstatsd_port
+<% else -%>
+dogstatsd_port : <%= @dogstatsd_port %>
+<% end -%>
 
 # By default dogstatsd will post aggregate metrics to the Agent (which handles
 # errors/timeouts/retries/etc). To send directly to the datadog api, set this
@@ -148,8 +162,16 @@ non_local_traffic: <%= @non_local_traffic %>
 # to another statsd server, uncomment these lines.
 # WARNING: Make sure that forwarded packets are regular statsd packets and not "dogstatsd" packets,
 # as your other statsd server might not be able to handle them.
+<% if @statsd_forward_host.empty? -%>
 # statsd_forward_host: address_of_own_statsd_server
+<% else -%>
+statsd_forward_host: <%= @statsd_forward_host %>
+<% end -%>
+<% if @statsd_forward_port.empty? -%>
 # statsd_forward_port: 8125
+<% else -%>
+statsd_forward_port: <%= @statsd_forward_port %>
+<% end -%>
 
 # ========================================================================== #
 # Service-specific configuration                                             #

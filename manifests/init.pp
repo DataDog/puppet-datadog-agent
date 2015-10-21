@@ -106,7 +106,7 @@ class datadog_agent(
   $graphite_listen_port = '',
   $extra_template = '',
   $ganglia_host = '',
-  $ganglia_port = 8651
+  $ganglia_port = 8651,
   $skip_ssl_validation = false
 ) inherits datadog_agent::params {
 

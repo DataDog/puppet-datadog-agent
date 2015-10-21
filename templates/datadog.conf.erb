@@ -34,6 +34,12 @@ skip_ssl_validation: <%= @skip_ssl_validation %>
 <% else -%>
 # skip_ssl_validation: no
 <% end -%>
+# If you'd like to override the CA certs path, you might want to set this
+<% if @ca_certs.empty? -%>
+# ca_certs: /some/path
+<% else -%>
+ca_certs: <%= @ca_certs %>
+<% end -%>
 
 # The Datadog api key to associate your Agent's data with your organization.
 # Can be found here:

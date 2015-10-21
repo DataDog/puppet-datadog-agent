@@ -106,6 +106,7 @@ class datadog_agent(
   $graphite_listen_port = '',
   $extra_template = '',
   $skip_ssl_validation = false,
+  $ca_certs = '',
   $ganglia_host = '',
   $ganglia_port = 8651,
   $package_version = 'latest'
@@ -130,6 +131,7 @@ class datadog_agent(
   validate_string($graphite_listen_port)
   validate_string($extra_template)
   validate_bool($skip_ssl_validation)
+  validate_string($ca_certs)
   validate_string($ganglia_host)
   validate_integer($ganglia_port)
   validate_string($package_version)

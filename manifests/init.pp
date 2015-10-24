@@ -38,6 +38,14 @@
 #   $use_mount
 #       Allow overriding default of tracking disks by device path instead of mountpoint
 #       Valid values here are: true or false.
+#   $dogstatsd_port
+#       Set value of the 'dogstatsd_port' variable. Defaultis 8125.
+#   $statsd_forward_host
+#       Set the value of the statsd_forward_host varable. Used to forward all
+#       statsd metrics to another host.
+#   $statsd_forward_port
+#       Set the value of the statsd_forward_port varable. Used to forward all
+#       statsd metrics to another host.
 #   $proxy_host
 #       Set value of 'proxy_host' variable. Default is blank.
 #   $proxy_port
@@ -51,6 +59,8 @@
 #   $extra_template
 #       Optional, append this extra template file at the end of
 #       the default datadog.conf template
+#   $skip_ssl_validation
+#       Skip SSL validation.
 # Actions:
 #
 # Requires:
@@ -88,12 +98,18 @@ class datadog_agent(
   $service_ensure = 'running',
   $service_enable = true,
   $use_mount = false,
+  $dogstatsd_port = 8125,
+  $statsd_forward_host = '',
+  $statsd_forward_port = 8125,
   $proxy_host = '',
   $proxy_port = '',
   $proxy_user = '',
   $proxy_password = '',
   $graphite_listen_port = '',
   $extra_template = '',
+  $ganglia_host = '',
+  $ganglia_port = 8651,
+  $skip_ssl_validation = false
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -107,12 +123,16 @@ class datadog_agent(
   validate_bool($non_local_traffic)
   validate_bool($log_to_syslog)
   validate_string($log_level)
+  validate_integer($dogstatsd_port)
   validate_string($proxy_host)
   validate_string($proxy_port)
   validate_string($proxy_user)
   validate_string($proxy_password)
   validate_string($graphite_listen_port)
   validate_string($extra_template)
+  validate_string($ganglia_host)
+  validate_integer($ganglia_port)
+  validate_bool($skip_ssl_validation)
 
   include datadog_agent::params
   case upcase($log_level) {

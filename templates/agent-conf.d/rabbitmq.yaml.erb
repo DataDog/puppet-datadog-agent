@@ -8,3 +8,18 @@ instances:
 <% if @password -%>
        rabbitmq_pass: <%= @password %>
 <% end -%>
+
+<% if @queues  -%>
+       queues:
+<% @queues.each do |x| -%>
+         - <%= x %>
+<% end -%>
+<% end -%>
+
+
+<% if @vhosts -%>
+       vhosts:
+<% @vhosts.each do |x| -%>
+         - <%= x %>
+<% end -%>
+<% end -%>

@@ -12,6 +12,10 @@
 #
 class datadog_agent::ubuntu {
 
+  package { 'apt-transport-https':
+    ensure => latest
+  }
+
   apt::source {
     'datadog':
       ensure   => 'present',
@@ -25,7 +29,8 @@ class datadog_agent::ubuntu {
         id     => 'C7A7DA52',
         server => 'pgp.mit.edu',
       },
-      before   => Package['datadog-agent']
+      before   => [ Package['datadog-agent'],
+        Package['apt-transport-https'] ]
   }
 
   package {

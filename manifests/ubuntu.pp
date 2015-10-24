@@ -29,8 +29,8 @@ class datadog_agent::ubuntu {
         id     => 'C7A7DA52',
         server => 'pgp.mit.edu',
       },
-      before   => [ Package['datadog-agent'],
-        Package['apt-transport-https'] ]
+      require  => Package['apt-transport-https'],
+      before   => Package['datadog-agent']
   }
 
   package {

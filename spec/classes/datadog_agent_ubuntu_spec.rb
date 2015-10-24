@@ -25,6 +25,9 @@ describe 'datadog_agent::ubuntu' do
 
   # it should install the packages
   it do
+    should contain_package('apt-transport-https').with_ensure('latest')
+  end
+  it do
     should contain_package('datadog-agent-base')\
       .with_ensure('absent')\
       .that_comes_before('Package[datadog-agent]')

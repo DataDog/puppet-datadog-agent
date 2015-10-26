@@ -19,10 +19,12 @@ class datadog_agent::ubuntu(
     before => File['/etc/apt/sources.list.d/datadog.list'],
   }
 
-  exec { 'datadog_key':
-    command => "/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys ${apt_key}",
-    unless  => "/usr/bin/apt-key list | grep ${apt_key} | grep expires",
-    before  => File['/etc/apt/sources.list.d/datadog.list'],
+  if !$::datadog_agent::skip_apt_key_trusting {
+    exec { 'datadog_key':
+      command => "/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys ${apt_key}",
+      unless  => "/usr/bin/apt-key list | grep ${apt_key} | grep expires",
+      before  => File['/etc/apt/sources.list.d/datadog.list'],
+    }
   }
 
   file { '/etc/apt/sources.list.d/datadog.list':

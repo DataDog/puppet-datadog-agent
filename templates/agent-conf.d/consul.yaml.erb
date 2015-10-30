@@ -1,0 +1,25 @@
+# This check takes no init_config
+init_config:
+
+instances:
+    # Where your Consul HTTP Server Lives
+    - url: <%= @url %>
+
+      # Whether to perform checks against the Consul service Catalog
+      catalog_checks: <%= @catalog_checks %>
+
+      # Whether to enable new leader checks from this agent
+      # Note: if this is set on multiple agents in the same cluster
+      # you will receive one event per leader change per agent
+      new_leader_checks: <%= @new_leader_checks %>
+
+      # Services to restrict catalog querying to
+      # The default settings query up to 50 services. So if you have more than
+      # this many in your Consul service catalog, you will want to fill in the
+      # whitelist
+      <% if @service_whitelist and ! @service_whitelist.empty? -%>
+      service_whitelist:
+      <%- Array(@service_whitelist).each do |service| -%>
+        - <%= service %>
+      <% end %>
+      <% end %>

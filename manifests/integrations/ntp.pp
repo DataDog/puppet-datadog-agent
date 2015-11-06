@@ -6,15 +6,29 @@
 #   $offset_threshold:
 #        Offset threshold for a critical alert. Defaults to 600.
 #
+#   $host:
+#        ntp server to use for ntp check
+#
+#   $port
+#
+#   $version
+#
+#   $timeout
+#
 # Sample Usage:
 #
 #  class { 'datadog_agent::integrations::ntp' :
 #    offset_threshold     => 60,
+#    host                 => 'pool.ntp.org',
 #  }
 #
 
 class datadog_agent::integrations::ntp(
   $offset_threshold = 60,
+  $host             = undef,
+  $port             = undef,
+  $version          = undef,
+  $timeout          = undef,
 ) inherits datadog_agent::params {
 
   file { "${datadog_agent::params::conf_dir}/ntp.yaml":

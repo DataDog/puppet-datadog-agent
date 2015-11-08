@@ -2,10 +2,11 @@ require 'yaml'
 
 module Puppet::Parser::Functions
     newfunction(:to_instances_yaml, :type => :rvalue) do |args|
-        ruby_data = args[0]
+        init_config = args[0]
+        instances = args[1]
         default_values = {
-            'init_config'  => nil,
-            'instances' => ruby_data
+            'init_config'  => init_config,
+            'instances' => instances
         }
         YAML::dump(default_values)
     end

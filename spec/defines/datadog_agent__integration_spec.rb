@@ -15,5 +15,8 @@ describe "datadog_agent::integration" do
     }}
     it { should compile }
     it { should contain_file('/etc/dd-agent/conf.d/test.yaml').with_content(/init_config: /) }
-    it { should contain_file('/etc/dd-agent/conf.d/test.yaml').with_content(/instances:\n - one:two /) }
+    it { should contain_file('/etc/dd-agent/conf.d/test.yaml').with_content(/instances: /) }
+    it { should contain_file('/etc/dd-agent/conf.d/test.yaml').with_content(/one: two/) }
+
+    it { should contain_file('/etc/dd-agent/conf.d/test.yaml').that_notifies("Service[datadog-agent]") }
 end

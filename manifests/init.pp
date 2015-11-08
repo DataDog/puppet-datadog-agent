@@ -16,6 +16,8 @@
 #       The Agent will try to collect instance metadata for EC2 and GCE instances.
 #   $tags
 #       Optional array of tags.
+#   $hiera_tags
+#       Boolean to grab tags from hiera to allow merging
 #   $facts_to_tags
 #       Optional array of facts' names that you can use to define tags following
 #       the scheme: "fact_name:fact_value".
@@ -96,6 +98,7 @@ class datadog_agent(
   $collect_ec2_tags = false,
   $collect_instance_metadata = true,
   $tags = [],
+  $hiera_tags = false,
   $facts_to_tags = [],
   $puppet_run_reports = false,
   $puppetmaster_user = 'puppet',
@@ -128,6 +131,7 @@ class datadog_agent(
   validate_string($host)
   validate_string($api_key)
   validate_array($tags)
+  validate_bool($hiera_tags)
   validate_array($dogstreams)
   validate_array($facts_to_tags)
   validate_bool($puppet_run_reports)
@@ -149,6 +153,12 @@ class datadog_agent(
   validate_bool($skip_ssl_validation)
   validate_bool($skip_apt_key_trusting)
   validate_bool($use_curl_http_client)
+
+  if $hiera_tags {
+    $local_tags = hiera_array('datadog_agent::tags')
+  } else {
+    $local_tags = $tags
+  }
 
   include datadog_agent::params
   case upcase($log_level) {

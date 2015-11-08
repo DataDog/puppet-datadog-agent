@@ -50,7 +50,7 @@ hostname: <%= @host %>
 # Set the host's tags
 #tags: mytag0, mytag1
 <%
-tag_list = @tags
+tag_list = @local_tags
 @facts_to_tags.each do |f|
   value = scope.lookupvar(f)
   if not value.nil?

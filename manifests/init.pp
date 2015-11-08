@@ -229,6 +229,11 @@ class datadog_agent(
   $pup_log_file = '',
   $syslog_host  = '',
   $syslog_port  = '',
+  $conf_dir = $datadog_agent::params::conf_dir,
+  $service_name = $datadog_agent::params::service_name,
+  $package_name = $datadog_agent::params::package_name,
+  $dd_user = $datadog_agent::params::dd_user,
+  $dd_group = $datadog_agent::params::dd_group,
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)

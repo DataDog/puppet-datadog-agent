@@ -119,6 +119,11 @@ class datadog_agent(
   $skip_ssl_validation = false,
   $skip_apt_key_trusting = false,
   $use_curl_http_client = false
+  $conf_dir = $datadog_agent::params::conf_dir,
+  $service_name = $datadog_agent::params::service_name,
+  $package_name = $datadog_agent::params::package_name,
+  $dd_user = $datadog_agent::params::dd_user,
+  $dd_group = $datadog_agent::params::dd_group,
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)

@@ -11,6 +11,7 @@ end
 
 PuppetLint.configuration.relative = true
 PuppetLint.configuration.send("disable_80chars")
+PuppetLint.configuration.send('disable_autoloader_layout')
 PuppetLint.configuration.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
 PuppetLint.configuration.fail_on_warnings = true
 

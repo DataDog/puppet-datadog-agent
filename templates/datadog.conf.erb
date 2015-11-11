@@ -35,10 +35,6 @@ skip_ssl_validation: <%= @skip_ssl_validation %>
 # skip_ssl_validation: no
 <% end -%>
 
-<% if !@ca_certs.empty? -%>
-ca_certs: <%= @ca_certs %>
-<% end -%>
-
 # The Datadog api key to associate your Agent's data with your organization.
 # Can be found here:
 # https://app.datadoghq.com/account/settings

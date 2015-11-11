@@ -120,7 +120,6 @@ class datadog_agent(
   $ganglia_host = '',
   $ganglia_port = 8651,
   $skip_ssl_validation = false,
-  $ca_certs = '',
   $skip_apt_key_trusting = false,
   $use_curl_http_client = false
 ) inherits datadog_agent::params {
@@ -148,7 +147,6 @@ class datadog_agent(
   validate_string($ganglia_host)
   validate_integer($ganglia_port)
   validate_bool($skip_ssl_validation)
-  validate_string($ca_certs)
   validate_bool($skip_apt_key_trusting)
   validate_bool($use_curl_http_client)
 

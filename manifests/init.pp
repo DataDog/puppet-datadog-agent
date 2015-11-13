@@ -61,16 +61,11 @@
 #   $extra_template
 #       Optional, append this extra template file at the end of
 #       the default datadog.conf template
-#   $package_version
-#       Optional, allows specifying the version of the datadog agent to
-#       install. Defaults to "latest"
 #   $skip_apt_key_trusting
 #       Skip trusting the apt key. Default is false. Useful if you have a
 #       separate way of adding keys.
 #   $skip_ssl_validation
 #       Skip SSL validation.
-#   $ca_certs
-#       Specify the CA cert to use with the forwarder.
 #   $use_curl_http_client
 #       Uses the curl HTTP client for the forwarder
 # Actions:
@@ -119,7 +114,6 @@ class datadog_agent(
   $proxy_password = '',
   $graphite_listen_port = '',
   $extra_template = '',
-  $package_version = 'latest',
   $ganglia_host = '',
   $ganglia_port = 8651,
   $skip_ssl_validation = false,
@@ -147,7 +141,6 @@ class datadog_agent(
   validate_string($proxy_password)
   validate_string($graphite_listen_port)
   validate_string($extra_template)
-  validate_string($package_version)
   validate_string($ganglia_host)
   validate_integer($ganglia_port)
   validate_bool($skip_ssl_validation)

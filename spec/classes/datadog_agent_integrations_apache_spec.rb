@@ -57,9 +57,6 @@ describe 'datadog_agent::integrations::apache' do
     it { should contain_file(conf_file).with_content(/tags:\s+- foo\s+- bar\s+- baz\s*?[^-]/m) }
   end
 
-  context 'with tags parameter with an empty tag' do
-  end
-
   context 'with tags parameter empty values' do
     context 'mixed in with other tags' do
       let(:params) {{

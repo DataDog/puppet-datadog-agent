@@ -32,6 +32,7 @@ class datadog_agent::integrations::apache (
   $password  = undef,
   $tags      = []
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   validate_string($url)
   validate_array($tags)

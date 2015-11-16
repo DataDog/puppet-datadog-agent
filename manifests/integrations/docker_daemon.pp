@@ -29,6 +29,7 @@ class datadog_agent::integrations::docker_daemon(
   $tags = [],
   $group = 'docker',
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   exec { 'dd-agent-should-be-in-docker-group':
     command => "/usr/sbin/usermod -aG ${group} ${datadog_agent::params::dd_user}",

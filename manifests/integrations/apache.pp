@@ -33,6 +33,7 @@ class datadog_agent::integrations::apache (
   $tags                   = [],
   $disable_ssl_validation = false
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   validate_string($url)
   validate_array($tags)

@@ -88,6 +88,7 @@ class datadog_agent::integrations::http_check (
   $contact   = [],
   $instances  = undef,
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   if $instances == undef {
     $_instances = [{

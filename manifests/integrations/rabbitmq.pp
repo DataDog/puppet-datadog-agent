@@ -28,6 +28,7 @@ class datadog_agent::integrations::rabbitmq (
   $queues    = undef,
   $vhosts    = undef,
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   file { "${datadog_agent::params::conf_dir}/rabbitmq.yaml":
     ensure  => file,

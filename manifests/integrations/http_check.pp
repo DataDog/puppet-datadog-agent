@@ -87,6 +87,7 @@ class datadog_agent::integrations::http_check (
   $tags      = [],
   $contact   = [],
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   file { "${datadog_agent::params::conf_dir}/http_check.yaml":
     ensure  => file,

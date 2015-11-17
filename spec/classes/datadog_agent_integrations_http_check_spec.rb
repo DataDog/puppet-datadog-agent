@@ -125,4 +125,15 @@ describe 'datadog_agent::integrations::http_check' do
       skip("doubly undefined behavior")
     end
   end
+
+  context 'with contact set' do
+    let(:params) {{
+      contact: %r{alice bob carlo}
+    }}
+
+    # the parameter is '$contact' and the template uses '@contacts', so neither is used
+    skip "this functionality appears to not be functional" do
+      it { should contain_file(conf_file).with_content(%r{notify:\s+- alice\s+bob\s+carlo}) }
+    end
+  end
 end

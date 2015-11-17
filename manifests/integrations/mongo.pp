@@ -57,6 +57,7 @@
 class datadog_agent::integrations::mongo(
   $servers = [{'host' => 'localhost', 'port' => '27017'}]
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   validate_array($servers)
 

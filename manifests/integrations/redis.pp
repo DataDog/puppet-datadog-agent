@@ -35,6 +35,7 @@ class datadog_agent::integrations::redis(
   $keys = [],
   $warn_on_missing_keys = true,
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   validate_array($tags)
   validate_array($keys)

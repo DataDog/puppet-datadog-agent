@@ -118,7 +118,7 @@ class datadog_agent(
   $ganglia_port = 8651,
   $skip_ssl_validation = false,
   $skip_apt_key_trusting = false,
-  $use_curl_http_client = false
+  $use_curl_http_client = false,
   $conf_dir = $datadog_agent::params::conf_dir,
   $service_name = $datadog_agent::params::service_name,
   $package_name = $datadog_agent::params::package_name,

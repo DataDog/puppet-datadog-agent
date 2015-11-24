@@ -57,7 +57,7 @@ Puppet::Reports.register_report(:datadog_reports) do
       elsif @status == "unchanged"
         event_title = "Puppet ran on, and left #{@msg_host} unchanged"
         alert_type = "success"
-      else 
+      else
         event_title = "Puppet ran on #{@msg_host}"
         alert_type = "success"
       end
@@ -76,7 +76,7 @@ Puppet::Reports.register_report(:datadog_reports) do
     config_version_blurb = if defined?(self.configuration_version) then "applied version #{self.configuration_version} and" else "" end
 
     event_data << "Puppet #{config_version_blurb} changed #{pluralize(changed_resources.length, 'resource')} out of #{total_resource_count}."
-    
+
     # List changed resources
     if changed_resources.length > 0
       event_data << "\nThe resources that changed are:\n@@@\n"

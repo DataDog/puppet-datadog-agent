@@ -1,8 +1,7 @@
-#
-# MANAGED BY PUPPET
-#
-
 init_config:
   default_timeout: <%= @mesos_timeout %>
+
 instances:
-    - url: <%= @url %>
+  - url: <%= @url %>
+  # tasks:
+  #   - "hello"

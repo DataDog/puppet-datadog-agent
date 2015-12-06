@@ -32,7 +32,7 @@ You can keep using the `datadog` module but it becomes legacy with the release o
 * Update your manifests with the new module class, basically replace `datadog` by `datadog_agent`
 
 #### For instance to deploy the elasticsearch integration
-    include 'datadog_agent::intergrations::elasticsearch'
+    include 'datadog_agent::integrations::elasticsearch'
 
 Usage
 -----

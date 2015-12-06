@@ -1,6 +1,22 @@
 Changes
 =======
 
+
+# 1.5.0 / 2015-11-13
+
+### Notes
+
+* [FEATURE] Add generic integration configuration
+* [FEATURE] Add HTTPS support for yum and apt-get
+* [FEATURE] Add support for warning on missing REDIS keys.
+* [FEATURE] Add support for configuring the length of REDIS slow-query queue.
+* [FEATURE] Add dogstatsd forwarding configuration.
+* [FEATURE] Allow skipping of SSL validation.
+* [FEATURE] Allow configuration of stats histogram percentiles.
+* [FEATURE] Allow disabling apt-key trusting.
+* [FEATURE] Add configuration of http client.
+* [FEATURE] Add support for grabbing Hiera tags.
+
 # 1.4.0 / 2015-09-14
 
 ### Notes

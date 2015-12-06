@@ -16,6 +16,8 @@
 #       The Agent will try to collect instance metadata for EC2 and GCE instances.
 #   $tags
 #       Optional array of tags.
+#   $hiera_tags
+#       Boolean to grab tags from hiera to allow merging
 #   $facts_to_tags
 #       Optional array of facts' names that you can use to define tags following
 #       the scheme: "fact_name:fact_value".
@@ -59,8 +61,13 @@
 #   $extra_template
 #       Optional, append this extra template file at the end of
 #       the default datadog.conf template
+#   $skip_apt_key_trusting
+#       Skip trusting the apt key. Default is false. Useful if you have a
+#       separate way of adding keys.
 #   $skip_ssl_validation
 #       Skip SSL validation.
+#   $use_curl_http_client
+#       Uses the curl HTTP client for the forwarder
 # Actions:
 #
 # Requires:
@@ -88,6 +95,7 @@ class datadog_agent(
   $collect_ec2_tags = false,
   $collect_instance_metadata = true,
   $tags = [],
+  $hiera_tags = false,
   $facts_to_tags = [],
   $puppet_run_reports = false,
   $puppetmaster_user = 'puppet',
@@ -101,6 +109,7 @@ class datadog_agent(
   $dogstatsd_port = 8125,
   $statsd_forward_host = '',
   $statsd_forward_port = 8125,
+  $statsd_histogram_percentiles = '0.95',
   $proxy_host = '',
   $proxy_port = '',
   $proxy_user = '',
@@ -109,13 +118,16 @@ class datadog_agent(
   $extra_template = '',
   $ganglia_host = '',
   $ganglia_port = 8651,
-  $skip_ssl_validation = false
+  $skip_ssl_validation = false,
+  $skip_apt_key_trusting = false,
+  $use_curl_http_client = false
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
   validate_string($host)
   validate_string($api_key)
   validate_array($tags)
+  validate_bool($hiera_tags)
   validate_array($dogstreams)
   validate_array($facts_to_tags)
   validate_bool($puppet_run_reports)
@@ -124,6 +136,7 @@ class datadog_agent(
   validate_bool($log_to_syslog)
   validate_string($log_level)
   validate_integer($dogstatsd_port)
+  validate_string($statsd_histogram_percentiles)
   validate_string($proxy_host)
   validate_string($proxy_port)
   validate_string($proxy_user)
@@ -133,6 +146,14 @@ class datadog_agent(
   validate_string($ganglia_host)
   validate_integer($ganglia_port)
   validate_bool($skip_ssl_validation)
+  validate_bool($skip_apt_key_trusting)
+  validate_bool($use_curl_http_client)
+
+  if $hiera_tags {
+    $local_tags = hiera_array('datadog_agent::tags')
+  } else {
+    $local_tags = $tags
+  }
 
   include datadog_agent::params
   case upcase($log_level) {

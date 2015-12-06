@@ -50,7 +50,7 @@ hostname: <%= @host %>
 # Set the host's tags
 #tags: mytag0, mytag1
 <%
-tag_list = @tags
+tag_list = @local_tags
 @facts_to_tags.each do |f|
   value = scope.lookupvar(f)
   if not value.nil?
@@ -104,7 +104,7 @@ non_local_traffic: <%= @non_local_traffic %>
 
 # Select the Tornado HTTP Client in the forwarder
 # Default to the simple http client
-# use_curl_http_client: False
+use_curl_http_client: <%= @use_curl_http_client %>
 
 # The loopback address the Forwarder and Dogstatsd will bind.
 # Optional, it is mainly used when running the agent on Openshift
@@ -151,6 +151,8 @@ dogstatsd_port : <%= @dogstatsd_port %>
 ## If 'yes', counters and rates will be normalized to 1 second (that is divided
 ## by the dogstatsd_interval) before being sent to the server. Defaults to 'yes'
 # dogstatsd_normalize : yes
+
+histogram_percentiles: <%= @statsd_histogram_percentiles %>
 
 # If you want to forward every packet received by the dogstatsd server
 # to another statsd server, uncomment these lines.

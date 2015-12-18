@@ -86,7 +86,25 @@ class datadog_agent::integrations::http_check (
   $headers   = [],
   $tags      = [],
   $contact   = [],
+  $instances  = undef,
 ) inherits datadog_agent::params {
+
+  if $instances == undef {
+    $instances = [{
+      'url'                      => $url,
+      'username'                 => $username,
+      'password'                 => $password,
+      'timeout'                  => $timeout,
+      'threshold'                => $threshold,
+      'window'                   => $window,
+      'include_content'          => $include_content,
+      'collect_response_time'    => $collect_response_time,
+      'disable_ssl_validation' => $disable_ssl_validation,
+      'headers'                  => $headers,
+      'tags'                     => $tags,
+      'contact'                  => $contact,
+    }]
+  }
 
   file { "${datadog_agent::params::conf_dir}/http_check.yaml":
     ensure  => file,

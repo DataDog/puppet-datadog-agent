@@ -1,52 +1,53 @@
 init_config:
 
 instances:
-    -   name: <%= @name %>
-        url: <%= @url %>
-<% if @timeout -%>
-        timeout: <%= @timeout %>
+<%- (Array(@instances)).each do |instance| -%>
+    -   name: <%= instance['name'] %>
+        url: <%= instance['url'] %>
+<% if instance['timeout'] -%>
+        timeout: <%= instance['timeout'] %>
 <% end -%>
-<% if @username -%>
-        username: <%= @username %>
+<% if instance['username'] -%>
+        username: <%= instance['username'] %>
 <% end -%>
-<% if @password -%>
-        password: <%= @password %>
+<% if instance['password'] -%>
+        password: <%= instance['password'] %>
 <% end -%>
-<% if @threshold -%>
-        threshold: <%= @threshold %>
+<% if instance['threshold'] -%>
+        threshold: <%= instance['threshold'] %>
 <% end -%>
-<% if @window -%>
-        window: <%= @window %>
+<% if instance['window'] -%>
+        window: <%= instance['window'] %>
 <% end -%>
-<% if @include_content -%>
-        include_content: <%= @include_content %>
+<% if instance['include_content'] -%>
+        include_content: <%= instance['include_content'] %>
 <% end -%>
-<% if @collect_response_time -%>
-        collect_response_time: <%= @collect_response_time %>
+<% if instance['collect_response_time'] -%>
+        collect_response_time: <%= instance['collect_response_time'] %>
 <% end -%>
-        disable_ssl_validation: <%= @disable_ssl_validation %>
-<% if @headers and ! @headers.empty? -%>
+        disable_ssl_validation: <%= instance['disable_ssl_validation'] %>
+<% if instance['headers'] and ! instance['headers'].empty? -%>
         headers:
-  <%- Array(@headers).each do |header| -%>
+  <%- Array(instance['headers']).each do |header| -%>
     <%- if header != '' -%>
            <%= header %>
     <%- end -%>
   <%- end -%>
 <% end -%>
-<% if @tags and ! @tags.empty? -%>
+<% if instance['tags'] and ! instance['tags'].empty? -%>
         tags:
-  <%- Array(@tags).each do |tag| -%>
+  <%- Array(instance['tags']).each do |tag| -%>
     <%- if tag != '' -%>
             - <%= tag %>
     <%- end -%>
   <%- end -%>
 <% end -%>
-<% if @contacts and ! @contacts.empty? -%>
+<% if instance['contacts'] and ! instance['contacts'].empty? -%>
         notify:
-  <%- Array(@contacts).each do |contact| -%>
+  <%- Array(instance['contacts']).each do |contact| -%>
     <%- if contact != '' -%>
            - <%= contact %>
     <%- end -%>
   <%- end -%>
 <% end -%>
-
+<% end -%>

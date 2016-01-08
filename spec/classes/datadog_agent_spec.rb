@@ -26,11 +26,10 @@ describe 'datadog_agent' do
         let(:facts) do
           {
             operatingsystem: operatingsystem,
-            osfamily: DEBIAN_OS.include?(operatingsystem) ? 'debian' : 'redhat'
+            osfamily: DEBIAN_OS.include?(operatingsystem) ? 'debian' : 'redhat',
+            lsbdistid: 'Ubuntu',
           }
         end
-
-        it { should compile.with_all_deps }
 
         it { should contain_class('datadog_agent') }
 

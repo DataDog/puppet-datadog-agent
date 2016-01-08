@@ -87,6 +87,8 @@
 #
 #
 class datadog_agent(
+  $apt_key = 'C7A7DA52',
+  $keyserver = 'pgp.mit.edu',
   $dd_url = 'https://app.datadoghq.com',
   $host = '',
   $api_key = 'your_API_key',

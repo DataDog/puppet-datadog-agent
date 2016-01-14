@@ -14,7 +14,8 @@
 # Sample Usage:
 #
 class datadog_agent::redhat(
-  $baseurl = "https://yum.datadoghq.com/rpm/${::architecture}/"
+  $baseurl = "https://yum.datadoghq.com/rpm/${::architecture}/",
+  $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY.public'
 ) {
 
   validate_string($baseurl)
@@ -22,7 +23,7 @@ class datadog_agent::redhat(
   yumrepo {'datadog':
     enabled  => 1,
     gpgcheck => 1,
-    gpgkey   => 'https://yum.datadoghq.com/DATADOG_RPM_KEY.public',
+    gpgkey   => $gpgkey,
     descr    => 'Datadog, Inc.',
     baseurl  => $baseurl,
   }

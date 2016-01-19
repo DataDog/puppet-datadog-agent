@@ -134,7 +134,7 @@ use_curl_http_client: <%= @use_curl_http_client %>
 # usage information, check out http://api.datadoghq.com
 
 #  Make sure your client is sending to the same port.
-<% if @dogstatsd_port.empty? -%>
+<% if @dogstatsd_port.nil? -%>
 # dogstatsd_port : @dogstatsd_port
 <% else -%>
 dogstatsd_port : <%= @dogstatsd_port %>
@@ -163,7 +163,7 @@ histogram_percentiles: <%= @statsd_histogram_percentiles %>
 <% else -%>
 statsd_forward_host: <%= @statsd_forward_host %>
 <% end -%>
-<% if @statsd_forward_port.empty? -%>
+<% if @statsd_forward_port.nil? -%>
 # statsd_forward_port: 8125
 <% else -%>
 statsd_forward_port: <%= @statsd_forward_port %>

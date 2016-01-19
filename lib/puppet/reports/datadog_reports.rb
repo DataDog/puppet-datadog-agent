@@ -54,6 +54,7 @@ Puppet::Reports.register_report(:datadog_reports) do
       elsif @status == 'changed'
         event_title = "Puppet changed resources on #{@msg_host}"
         alert_type = "success"
+        event_priority = "normal"
       elsif @status == "unchanged"
         event_title = "Puppet ran on, and left #{@msg_host} unchanged"
         alert_type = "success"

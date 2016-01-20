@@ -14,7 +14,7 @@ A module to:
 Requirements
 ------------
 
-Puppet 2.7.x or 3.x. For detailed informations on compatibility, check the [module page](https://forge.puppetlabs.com/datadog/datadog_agent) on the Puppet forge.
+Puppet >=2.7.x and <=4.2.x. For detailed informations on compatibility, check the [module page](https://forge.puppetlabs.com/datadog/datadog_agent) on the Puppet forge.
 
 Installation
 ------------

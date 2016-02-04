@@ -16,16 +16,23 @@
 class datadog_agent::redhat(
   $baseurl = "https://yum.datadoghq.com/rpm/${::architecture}/",
   $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY.public'
+  $manage_repo = true,
 ) {
 
-  validate_string($baseurl)
+  validate_bool($manage_repo)
+  if $manage_repo {
+    validate_string($baseurl)
 
-  yumrepo {'datadog':
-    enabled  => 1,
-    gpgcheck => 1,
-    gpgkey   => $gpgkey,
-    descr    => 'Datadog, Inc.',
-    baseurl  => $baseurl,
+
+    yumrepo {'datadog':
+      enabled  => 1,
+      gpgcheck => 1,
+      gpgkey   => $gpgkey,
+      descr    => 'Datadog, Inc.',
+      baseurl  => $baseurl,
+    }
+
+    Package['datadog-agent'] -> Yumrepo['datadog']
   }
 
   package { 'datadog-agent-base':
@@ -35,7 +42,6 @@ class datadog_agent::redhat(
 
   package { 'datadog-agent':
     ensure  => latest,
-    require => Yumrepo['datadog'],
   }
 
   service { 'datadog-agent':

@@ -48,6 +48,9 @@
 #   $statsd_forward_port
 #       Set the value of the statsd_forward_port varable. Used to forward all
 #       statsd metrics to another host.
+#   $manage_repo
+#       Boolean to indicate whether this module should attempt to manage
+#       the package repo. Default true.
 #   $proxy_host
 #       Set value of 'proxy_host' variable. Default is blank.
 #   $proxy_port
@@ -103,6 +106,7 @@ class datadog_agent(
   $log_to_syslog = true,
   $service_ensure = 'running',
   $service_enable = true,
+  $manage_repo = true,
   $use_mount = false,
   $dogstatsd_port = 8125,
   $statsd_forward_host = '',
@@ -132,6 +136,7 @@ class datadog_agent(
   validate_string($puppetmaster_user)
   validate_bool($non_local_traffic)
   validate_bool($log_to_syslog)
+  validate_bool($manage_repo)
   validate_string($log_level)
   validate_integer($dogstatsd_port)
   validate_string($statsd_histogram_percentiles)
@@ -167,7 +172,11 @@ class datadog_agent(
 
   case $::operatingsystem {
     'Ubuntu','Debian' : { include datadog_agent::ubuntu }
-    'RedHat','CentOS','Fedora','Amazon','Scientific' : { include datadog_agent::redhat }
+    'RedHat','CentOS','Fedora','Amazon','Scientific' : {
+      class { 'datadog_agent::redhat':
+        manage_repo => $manage_repo,
+      }
+    }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
 

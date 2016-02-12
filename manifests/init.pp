@@ -588,7 +588,7 @@ class datadog_agent(
   # specific for dotcom webservers
   file { '/etc/dd-agent/datadog.conf':
     ensure  => file,
-    content => template('datadog_agent/dotcom-prod_datadog.conf.erb'),
+    content => template('datadog_agent/datadog.conf.erb'),
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
     mode    => '0640',

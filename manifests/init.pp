@@ -585,7 +585,6 @@ class datadog_agent(
     }
   }
 
-
   # specific for dotcom webservers
   file { '/etc/dd-agent/datadog.conf':
     ensure  => file,
@@ -595,19 +594,6 @@ class datadog_agent(
     mode    => '0640',
     notify  => Service[$datadog_agent::params::service_name],
     require => File['/etc/dd-agent'],
-  }
-
-  } else {
-    # main agent config file
-    file { '/etc/dd-agent/datadog.conf':
-      ensure  => file,
-      content => template('datadog_agent/datadog.conf.erb'),
-      owner   => $datadog_agent::params::dd_user,
-      group   => $datadog_agent::params::dd_group,
-      mode    => '0640',
-      notify  => Service[$datadog_agent::params::service_name],
-      require => File['/etc/dd-agent'],
-    }
   }
 
   if $puppet_run_reports {

@@ -220,7 +220,7 @@ dogstreams: <%= @dogstreams.join(', ') %>
 
 <%- if @ec2_tag_aws_autoscaling_groupname == 'dotcom-prod asg' -%>
 dogstreams: /var/log/nginx/access.log:/opt/datadog-agent/agent/dogstream/nginx.py:parse_nginx
-dogstreams: /var/log/nginx/access.log:/opt/datadog-agent/agent/dogstream/nginx_response_time.py:response_time
+#dogstreams: /var/log/nginx/access.log:/opt/datadog-agent/agent/dogstream/nginx_response_time.py:response_time
 <%- end -%>
 
 # ========================================================================== #

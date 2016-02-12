@@ -14,10 +14,11 @@
 #
 class datadog_agent::integrations::mesos(
   $mesos_timeout = 5,
-  $url = 'http://localhost:5050'
+  $url = 'http://localhost:5050',
+  $mesos_role = 'master'
 ) inherits datadog_agent::params {
 
-  file { "${datadog_agent::params::conf_dir}/mesos.yaml":
+  file { "${datadog_agent::params::conf_dir}/mesos-${mesos_role}.yaml":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

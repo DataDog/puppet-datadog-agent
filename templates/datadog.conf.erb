@@ -202,6 +202,10 @@ non_local_traffic: <%= @non_local_traffic %>
 # If this value isn't specified, the default parser assumes this log format:
 #     metric timestamp value key0=val0 key1=val1 ...
 #
+<%- if @ec2_tag_aws_autoscaling_groupname == 'dotcom-prod asg' -%>
+dogstreams: /var/log/nginx/access.log:/opt/datadog-agent/agent/dogstream/nginx.py:parse_nginx
+dogstreams: /var/log/nginx/access.log:/opt/datadog-agent/agent/dogstream/nginx_response_time.py:response_time
+<%- end -%>
 
 # ========================================================================== #
 # Custom Emitters                                                            #

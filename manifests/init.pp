@@ -118,15 +118,44 @@ class datadog_agent(
     require => Package['datadog-agent'],
   }
 
-  # main agent config file
+  if ( $ec2_tag_aws_autoscaling_groupname == 'dotcom-prod asg' ) {
+    file {
+      '/opt/datadog-agent/agent/dogstream/nginx.py':
+        ensure => present,
+        source  => 'puppet:///modules/datadog_agent/nginx.py',
+        notify  => Service[$datadog_agent::params::service_name],
+        require => Package['datadog-agent'];
+      '/opt/datadog-agent/agent/dogstream/nginx_response_time.py':
+        ensure => present,
+        source  => 'puppet:///modules/datadog_agent/nginx_response_time.py',
+        notify  => Service[$datadog_agent::params::service_name],
+        require => Package['datadog-agent'];
+    }
+  }
+
+
+  # specific for dotcom webservers
   file { '/etc/dd-agent/datadog.conf':
     ensure  => file,
-    content => template('datadog_agent/datadog.conf.erb'),
+    content => template('datadog_agent/dotcom-prod_datadog.conf.erb'),
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
     mode    => '0640',
     notify  => Service[$datadog_agent::params::service_name],
     require => File['/etc/dd-agent'],
+  }
+
+  } else {
+    # main agent config file
+    file { '/etc/dd-agent/datadog.conf':
+      ensure  => file,
+      content => template('datadog_agent/datadog.conf.erb'),
+      owner   => $datadog_agent::params::dd_user,
+      group   => $datadog_agent::params::dd_group,
+      mode    => '0640',
+      notify  => Service[$datadog_agent::params::service_name],
+      require => File['/etc/dd-agent'],
+    }
   }
 
   if $puppet_run_reports {

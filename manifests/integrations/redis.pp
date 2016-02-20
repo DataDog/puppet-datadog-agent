@@ -32,6 +32,7 @@ class datadog_agent::integrations::redis(
   $keys = [],
   $warn_on_missing_keys = true,
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   validate_re($port, '^\d+$')
   validate_array($tags)

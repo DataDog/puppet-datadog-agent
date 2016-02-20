@@ -24,6 +24,7 @@ class datadog_agent::integrations::docker(
   $url = 'unix://var/run/docker.sock',
   $tags = [],
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   file { "${datadog_agent::params::conf_dir}/docker.yaml":
     ensure  => file,

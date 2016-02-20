@@ -16,6 +16,7 @@ class datadog_agent::integrations::mesos(
   $mesos_timeout = 5,
   $url = 'http://localhost:5050'
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   file { "${datadog_agent::params::conf_dir}/mesos.yaml":
     ensure  => file,

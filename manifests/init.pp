@@ -125,11 +125,6 @@ class datadog_agent(
         source  => 'puppet:///modules/datadog_agent/nginx.py',
         notify  => Service[$datadog_agent::params::service_name],
         require => Package['datadog-agent'];
-      '/opt/datadog-agent/agent/dogstream/nginx_response_time.py':
-        ensure => present,
-        source  => 'puppet:///modules/datadog_agent/nginx_response_time.py',
-        notify  => Service[$datadog_agent::params::service_name],
-        require => Package['datadog-agent'];
     }
   }
 

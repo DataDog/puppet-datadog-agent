@@ -105,6 +105,7 @@ class datadog_agent(
   $service_enable = true,
   $use_mount = false,
   $dogstatsd_port = 8125,
+  $dogstatsd_bind_host = 'localhost',
   $statsd_forward_host = '',
   $statsd_forward_port = 8125,
   $statsd_histogram_percentiles = '0.95',

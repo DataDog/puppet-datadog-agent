@@ -54,8 +54,19 @@ tag_list = @local_tags
 @facts_to_tags.each do |f|
   value = scope.lookupvar(f)
   if not value.nil?
-    tag = "#{f}:#{value}"
-    tag_list << tag
+
+    if value.is_a?(String)
+      tag = "#{f}:#{value}"
+      tag_list << tag
+    end
+
+    if value.is_a?(Array)
+      for v in value
+        tag = "#{f}:#{v}"
+        tag_list << tag
+      end
+    end
+
   end
 end
 if not tag_list.empty?

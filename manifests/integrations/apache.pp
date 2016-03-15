@@ -27,14 +27,16 @@
 # }
 #
 class datadog_agent::integrations::apache (
-  $url       = 'http://localhost/server-status?auto',
-  $username  = undef,
-  $password  = undef,
-  $tags      = []
+  $url                    = 'http://localhost/server-status?auto',
+  $username               = undef,
+  $password               = undef,
+  $tags                   = [],
+  $disable_ssl_validation = false
 ) inherits datadog_agent::params {
 
   validate_string($url)
   validate_array($tags)
+  validate_bool($disable_ssl_validation)
 
   file { "${datadog_agent::params::conf_dir}/apache.yaml":
     ensure  => file,

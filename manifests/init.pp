@@ -183,6 +183,8 @@ class datadog_agent(
   $collect_ec2_tags = false,
   $collect_instance_metadata = true,
   $tags = [],
+  $intergrations = {},
+  $hiera_integrations = false,
   $hiera_tags = false,
   $facts_to_tags = [],
   $puppet_run_reports = false,
@@ -324,6 +326,13 @@ class datadog_agent(
     $local_tags = $tags
   }
 
+  if $hiera_integrations {
+    $local_integrations = hiera_hash('datadog_agent::integrations')
+  } else {
+    $local_integrations = $integrations
+  }
+
+
   include datadog_agent::params
   case upcase($log_level) {
     'CRITICAL': { $_loglevel = 'CRITICAL' }
@@ -383,4 +392,5 @@ class datadog_agent(
       hostname_extraction_regex => $hostname_extraction_regex,
     }
   }
+  create_resources('datadog_agent::intergration', $local_integrations)
 }

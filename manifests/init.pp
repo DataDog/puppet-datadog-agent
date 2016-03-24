@@ -93,7 +93,7 @@ class datadog_agent(
   $collect_ec2_tags = false,
   $collect_instance_metadata = true,
   $tags = [],
-  $intergrations = {},
+  $integrations = {},
   $hiera_integrations = false,
   $hiera_tags = false,
   $facts_to_tags = [],
@@ -220,6 +220,6 @@ class datadog_agent(
     }
   }
 
-  create_resources('datadog_agent::intergration', $local_integrations)
+  create_resources('datadog_agent::integration', $local_integrations)
 
 }

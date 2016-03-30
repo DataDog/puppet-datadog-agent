@@ -34,6 +34,11 @@
 #   $log_level
 #       Set value of 'log_level' variable. Default is 'info' as in dd-agent.
 #       Valid values here are: critical, debug, error, fatal, info, warn and warning.
+#   $hostname_extraction_regex
+#       Completely optional.
+#       Instead of reporting the puppet nodename, use this regex to extract the named
+#       'hostname' captured group to report the run in Datadog.
+#       ex.: '^(?<hostname>.*\.datadoghq\.com)(\.i-\w{8}\..*)?$'
 #   $log_to_syslog
 #       Set value of 'log_to_syslog' variable. Default is true -> yes as in dd-agent.
 #       Valid values here are: true or false.
@@ -107,6 +112,7 @@ class datadog_agent(
   $service_ensure = 'running',
   $service_enable = true,
   $manage_repo = true,
+  $hostname_extraction_regex = nil,
   $use_mount = false,
   $dogstatsd_port = 8125,
   $statsd_forward_host = '',
@@ -212,6 +218,7 @@ class datadog_agent(
     class { 'datadog_agent::reports':
       api_key           => $api_key,
       puppetmaster_user => $puppetmaster_user,
+      hostname_extraction_regex => $hostname_extraction_regex,
     }
   }
 

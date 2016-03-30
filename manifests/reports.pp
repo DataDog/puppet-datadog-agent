@@ -16,7 +16,7 @@
 class datadog_agent::reports(
   $api_key,
   $puppetmaster_user,
-  $hostname_extraction_regex
+  $hostname_extraction_regex = nil
 ) {
 
   include datadog_agent::params

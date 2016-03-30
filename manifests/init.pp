@@ -344,5 +344,4 @@ class datadog_agent(
       hostname_extraction_regex => $hostname_extraction_regex,
     }
   }
-
 }

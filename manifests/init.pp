@@ -37,9 +37,6 @@
 #   $log_to_syslog
 #       Set value of 'log_to_syslog' variable. Default is true -> yes as in dd-agent.
 #       Valid values here are: true or false.
-#   $use_mount
-#       Allow overriding default of tracking disks by device path instead of mountpoint
-#       Valid values here are: true or false.
 #   $dogstatsd_port
 #       Set value of the 'dogstatsd_port' variable. Defaultis 8125.
 #   $statsd_forward_host
@@ -103,7 +100,6 @@ class datadog_agent(
   $log_to_syslog = true,
   $service_ensure = 'running',
   $service_enable = true,
-  $use_mount = false,
   $dogstatsd_port = 8125,
   $statsd_forward_host = '',
   $statsd_forward_port = 8125,

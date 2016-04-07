@@ -4,6 +4,7 @@ describe 'datadog_agent::reports' do
   let(:params) do
     {
       api_key: 'notanapikey',
+      hostname_extraction_regex: nil,
       puppetmaster_user: 'puppet'
     }
   end

@@ -90,7 +90,7 @@ class datadog_agent::integrations::http_check (
 ) inherits datadog_agent::params {
 
   if $instances == undef {
-    $instances = [{
+    $_instances = [{
       'url'                      => $url,
       'username'                 => $username,
       'password'                 => $password,
@@ -104,6 +104,8 @@ class datadog_agent::integrations::http_check (
       'tags'                     => $tags,
       'contact'                  => $contact,
     }]
+  } else {
+    $_instances = $instances
   }
 
   file { "${datadog_agent::params::conf_dir}/http_check.yaml":

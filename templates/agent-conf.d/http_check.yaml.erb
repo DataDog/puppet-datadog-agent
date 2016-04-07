@@ -1,7 +1,7 @@
 init_config:
 
 instances:
-<%- (Array(@instances)).each do |instance| -%>
+<%- (Array(@_instances)).each do |instance| -%>
     -   name: <%= instance['name'] %>
         url: <%= instance['url'] %>
 <% if instance['timeout'] -%>

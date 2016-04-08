@@ -5,7 +5,7 @@
 init_config:
 
 instances:
-<% @ports.each do |port| -%>
+<% @_ports.each do |port| -%>
   - host: <%= @host %>
     port: <%= port %>
     warn_on_missing_keys: <%= @warn_on_missing_keys %>

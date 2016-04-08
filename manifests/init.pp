@@ -196,7 +196,7 @@ class datadog_agent(
   $use_mount = false,
   $dogstatsd_port = 8125,
   $statsd_forward_host = '',
-  $statsd_forward_port = 8125,
+  $statsd_forward_port = '',
   $statsd_histogram_percentiles = '0.95',
   $proxy_host = '',
   $proxy_port = '',
@@ -208,9 +208,7 @@ class datadog_agent(
   $ganglia_port = 8651,
   $skip_ssl_validation = false,
   $skip_apt_key_trusting = false,
-  $use_curl_http_client = false
-  $collect_ec2_tags = false,
-  $collect_instance_metadata = true,
+  $use_curl_http_client = false,
   $recent_point_threshold = '',
   $listen_port = '',
   $additional_checksd = '',
@@ -220,12 +218,9 @@ class datadog_agent(
   $pup_interface = '',
   $pup_url = '',
   $use_dogstatsd = false,
-  $dogstatsd_port = '',
   $dogstatsd_target = '',
   $dogstatsd_interval = '',
   $dogstatsd_normalize = true,
-  $statsd_forward_host = '',
-  $statsd_forward_port = '',
   $device_blacklist_re = '',
   $custom_emitters = '',
   $collector_log_file = '',
@@ -246,12 +241,12 @@ class datadog_agent(
   validate_bool($puppet_run_reports)
   validate_string($puppetmaster_user)
   validate_bool($non_local_traffic)
-  validate_bool($non_local_traffic)
   validate_bool($log_to_syslog)
   validate_bool($manage_repo)
   validate_string($log_level)
   validate_integer($dogstatsd_port)
   validate_string($statsd_histogram_percentiles)
+  validate_string($statsd_forward_port)
   validate_string($proxy_host)
   validate_string($proxy_port)
   validate_string($proxy_user)
@@ -274,12 +269,10 @@ class datadog_agent(
   validate_string($pup_interface)
   validate_string($pup_url)
   validate_bool($use_dogstatsd)
-  validate_string($dogstatsd_port)
   validate_string($dogstatsd_target)
   validate_string($dogstatsd_interval)
   validate_bool($dogstatsd_normalize)
   validate_string($statsd_forward_host)
-  validate_string($statsd_forward_port)
   validate_string($device_blacklist_re)
   validate_string($custom_emitters)
   validate_string($collector_log_file)

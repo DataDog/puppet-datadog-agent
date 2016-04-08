@@ -62,7 +62,7 @@ describe 'datadog_agent' do
                     'content' => /^# proxy_password:\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^skip_ssl_validation: no\n/,
+                    'content' => /^# skip_ssl_validation: no\n/,
                     )}
                 end
 
@@ -74,16 +74,13 @@ describe 'datadog_agent' do
                     'content' => /^# hostname:\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^use_mount: false\n/,
-                    )}
-                    it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^non_local_traffic: false\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^collect_ec2_tags: no\n/,
+                    'content' => /^collect_ec2_tags: false\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^collect_instance_metadata: yes\n/,
+                    'content' => /^collect_instance_metadata: true\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /# recent_point_threshold: 30\n/,
@@ -98,14 +95,10 @@ describe 'datadog_agent' do
                     'content' => /^# additional_checksd: \/etc\/dd-agent\/checks.d\/\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^use_curl_http_client: true\n/,
+                    'content' => /^use_curl_http_client: false\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^# device_blacklist_re: .*\\\/dev\\\/mapper\\\/lxc-box.*\n/,
-                    )}
-
-                    it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^# dogstreams:\n/,
                     )}
                 end
 
@@ -132,13 +125,13 @@ describe 'datadog_agent' do
                     'content' => /^use_dogstatsd: no\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^# dogstatsd_port : 8125\n/,
+                    'content' => /^dogstatsd_port: 8125\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^# dogstatsd_target : http:\/\/localhost:17123\n/,
+                    'content' => /^# dogstatsd_target: http:\/\/localhost:17123\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^# dogstatsd_interval : 10\n/,
+                    'content' => /^# dogstatsd_interval: 10\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^dogstatsd_normalize: yes\n/,
@@ -230,12 +223,6 @@ describe 'datadog_agent' do
                     'content' => /^hostname: notahost\n/,
                 )}
             end
-            context 'with use_mount set to true' do
-                let(:params) {{:use_mount => 'true'}}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^use_mount: true\n/,
-                )}
-            end
             context 'with non_local_traffic set to true' do
                 let(:params) {{:non_local_traffic => true}}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
@@ -261,38 +248,38 @@ describe 'datadog_agent' do
                     'content' => /^log_to_syslog: no\n/,
                 )}
             end
-            context 'with skip_ssl_validation set to yes' do
+            context 'with skip_ssl_validation set to true' do
                 let(:params) {{:skip_ssl_validation => true }} 
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^skip_ssl_validation: yes\n/,
+                    'content' => /^skip_ssl_validation: true\n/,
                 )}
             end
             context 'with collect_ec2_tags set to yes' do
                 let(:params) {{:collect_ec2_tags => true }} 
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^collect_ec2_tags: yes\n/,
+                    'content' => /^collect_ec2_tags: true\n/,
                 )}
             end
             context 'with collect_instance_metadata set to no' do
-                let(:params) {{:collect_ec2_tags => true }} 
+                let(:params) {{:collect_instance_metadata => false }} 
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^collect_ec2_tags: yes\n/,
+                    'content' => /^collect_instance_metadata: false\n/,
                 )}
             end
             context 'with recent_point_threshold set to 60' do
-                let(:params) {{:recent_point_threshold => 60 }} 
+                let(:params) {{:recent_point_threshold => '60' }} 
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^recent_point_threshold: 60\n/,
                 )}
             end
             context 'with a custom port set to 17125' do
-                let(:params) {{:listen_port => 17125 }} 
+                let(:params) {{:listen_port => '17125' }} 
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^listen_port: 17125\n/,
                 )}
             end
             context 'litstening for graphite data on port 17124' do
-                let(:params) {{:graphite_listen_port => 17124 }} 
+                let(:params) {{:graphite_listen_port => '17124' }} 
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^graphite_listen_port: 17124\n/,
                 )}
@@ -317,9 +304,9 @@ describe 'datadog_agent' do
                 )}
             end
             context 'with using the Tornado HTTP client' do
-                let(:params) {{:use_curl_http_client => false  }}
+                let(:params) {{:use_curl_http_client => true }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^use_curl_http_client: false\n/,
+                    'content' => /^use_curl_http_client: true\n/,
                 )}
             end
             context 'with a custom bind_host' do
@@ -335,7 +322,7 @@ describe 'datadog_agent' do
                 )}
             end
             context 'with a custom pup_port' do
-                let(:params) {{:pup_port => 17126 }}
+                let(:params) {{:pup_port => '17126' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^pup_port: 17126\n/,
                 )}
@@ -420,20 +407,17 @@ describe 'datadog_agent' do
                     'content' => /^device_blacklist_re: test\n/,
                 )}
             end
-            context 'with ganglia_host set to testhost' do
-                let(:params) {{:ganglia_host  => 'testhost' }}
+            context 'with ganglia_host set to localhost and ganglia_port set to 12345' do
+                let(:params) {{:ganglia_host  => 'testhost', :ganglia_port => '12345' }}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^ganglia_port: 12345\n/,
+                )}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^ganglia_host: testhost\n/,
                 )}
             end
-            context 'with ganglia_port set to 12345' do
-                let(:params) {{:ganglia_port => '12345' }}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^ganglia_port: 12345\n/,
-                )}
-            end
             context 'with dogstreams set to /path/to/log1:/path/to/parser' do
-                let(:params) {{:dogstreams  => '/path/to/log1:/path/to/parser' }}
+                let(:params) {{:dogstreams  => ['/path/to/log1:/path/to/parser'] }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^dogstreams: \/path\/to\/log1:\/path\/to\/parser\n/,
                 )}

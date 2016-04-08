@@ -193,7 +193,6 @@ class datadog_agent(
   $service_enable = true,
   $manage_repo = true,
   $hostname_extraction_regex = nil,
-  $use_mount = false,
   $dogstatsd_port = 8125,
   $statsd_forward_host = '',
   $statsd_forward_port = '',

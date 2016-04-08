@@ -1,0 +1,23 @@
+init_config:
+
+instances:
+#   -   host: localhost
+#       port: 6432
+#       username: my_username
+#       password: my_password
+#       tags:
+#            - optional_tag1
+#            - optional_tag2
+#
+  - host: <%= @host %>
+    port: <%= @port %>
+    username: <%= @username %>
+    password: <%= @password %>
+<% if @tags and ! @tags.empty? -%>
+    tags:
+  <%- Array(@tags).each do |tag| -%>
+    <%- if tag != '' -%>
+      - <%= tag %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>

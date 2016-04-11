@@ -207,8 +207,8 @@ class datadog_agent(
 
   if $puppet_run_reports {
     class { 'datadog_agent::reports':
-      api_key           => $api_key,
-      puppetmaster_user => $puppetmaster_user,
+      api_key                   => $api_key,
+      puppetmaster_user         => $puppetmaster_user,
       hostname_extraction_regex => $hostname_extraction_regex,
     }
   }

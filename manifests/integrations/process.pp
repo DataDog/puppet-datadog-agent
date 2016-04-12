@@ -42,7 +42,7 @@ class datadog_agent::integrations::process(
   $processes = [],
 ) inherits datadog_agent::params {
 
-  validate_array( $processes )
+  validate_processes( $processes )
 
   file { "${datadog_agent::params::conf_dir}/process.yaml":
     ensure  => file,

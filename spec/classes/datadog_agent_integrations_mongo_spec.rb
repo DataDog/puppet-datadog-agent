@@ -36,7 +36,7 @@ describe 'datadog_agent::integrations::mongo' do
       ]
     }}
 
-    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:12345\s+tags:\s+- foo\s+- bar\s+- baz}) }
+    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:12345/\s+tags:\s+- foo\s+- bar\s+- baz}) }
   end
 
   context 'with multiple mongos' do
@@ -54,8 +54,8 @@ describe 'datadog_agent::integrations::mongo' do
         }
       ]
     }}
-    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:34567\s+tags:\s+- foo\s+- bar}) }
-    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.2:45678\s+tags:\s+- baz\s+- bat}) }
+    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:34567/\s+tags:\s+- foo\s+- bar}) }
+    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.2:45678/\s+tags:\s+- baz\s+- bat}) }
     it { should contain_file(conf_file).with_content(%r{server:.*127.0.0.1.*server:.*127.0.0.2}m) }
   end
 

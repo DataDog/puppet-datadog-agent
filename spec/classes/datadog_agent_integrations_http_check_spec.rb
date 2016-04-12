@@ -19,7 +19,6 @@ describe 'datadog_agent::integrations::http_check' do
   )}
   it { should contain_file(conf_file).that_requires("Package[#{dd_package}]") }
   it { should contain_file(conf_file).that_notifies("Service[#{dd_service}]") }
-  it { should contain_file(conf_file).with_content(%r{name: datadog_agent::integrations::http_check}) }
 
   context 'with default parameters' do
     it { should contain_file(conf_file).with_content(%r{url: }) }

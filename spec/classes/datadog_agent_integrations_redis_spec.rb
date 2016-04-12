@@ -35,7 +35,7 @@ describe 'datadog_agent::integrations::redis' do
       host: 'redis1',
       password: 'hunter2',
       port: 867,
-      slowlog_max_len: 5309,
+      slowlog_max_len: '5309',
       tags: %w{foo bar},
       keys: %w{baz bat},
       warn_on_missing_keys: false,

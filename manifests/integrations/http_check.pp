@@ -90,7 +90,7 @@ class datadog_agent::integrations::http_check (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  if $instances == undef {
+  if !$instances and $url {
     $_instances = [{
       'url'                      => $url,
       'username'                 => $username,
@@ -105,6 +105,8 @@ class datadog_agent::integrations::http_check (
       'tags'                     => $tags,
       'contact'                  => $contact,
     }]
+  } elsif !$instances{
+    $_instances = []
   } else {
     $_instances = $instances
   }

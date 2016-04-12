@@ -21,15 +21,15 @@ describe 'datadog_agent::integrations::http_check' do
   it { should contain_file(conf_file).that_notifies("Service[#{dd_service}]") }
 
   context 'with default parameters' do
-    it { should contain_file(conf_file).with_content(%r{url: }) }
+    it { should contain_file(conf_file).without_content(%r{url: }) }
     it { should contain_file(conf_file).without_content(%r{username: }) }
     it { should contain_file(conf_file).without_content(%r{password: }) }
-    it { should contain_file(conf_file).with_content(%r{timeout: 1}) }
+    it { should contain_file(conf_file).without_content(%r{timeout: 1}) }
     it { should contain_file(conf_file).without_content(%{threshold: }) }
     it { should contain_file(conf_file).without_content(%r{window: }) }
     it { should contain_file(conf_file).without_content(%r{include_content: true}) }
-    it { should contain_file(conf_file).with_content(%r{collect_response_time: true}) }
-    it { should contain_file(conf_file).with_content(%r{disable_ssl_validation: false}) }
+    it { should contain_file(conf_file).without_content(%r{collect_response_time: true}) }
+    it { should contain_file(conf_file).without_content(%r{disable_ssl_validation: false}) }
     it { should contain_file(conf_file).without_content(%r{headers: }) }
     it { should contain_file(conf_file).without_content(%r{tags: }) }
   end
@@ -60,6 +60,7 @@ describe 'datadog_agent::integrations::http_check' do
 
   context 'with headers parameter array' do
     let(:params) {{
+      url: 'http://foo.bar.baz:4096',
       headers: %w{ foo bar baz },
     }}
     it { should contain_file(conf_file).with_content(/headers:\s+foo\s+bar\s+baz\s*?[^-]/m) }
@@ -68,6 +69,7 @@ describe 'datadog_agent::integrations::http_check' do
   context 'with headers parameter empty values' do
     context 'mixed in with other headers' do
       let(:params) {{
+        url: 'http://foo.bar.baz:4096',
         headers: [ 'foo', '', 'baz' ]
       }}
 
@@ -94,6 +96,7 @@ describe 'datadog_agent::integrations::http_check' do
 
   context 'with tags parameter array' do
     let(:params) {{
+      url: 'http://foo.bar.baz:4096',
       tags: %w{ foo bar baz },
     }}
     it { should contain_file(conf_file).with_content(/tags:\s+- foo\s+- bar\s+- baz\s*?[^-]/m) }
@@ -102,6 +105,7 @@ describe 'datadog_agent::integrations::http_check' do
   context 'with tags parameter empty values' do
     context 'mixed in with other tags' do
       let(:params) {{
+        url: 'http://foo.bar.baz:4096',
         tags: [ 'foo', '', 'baz' ]
       }}
 

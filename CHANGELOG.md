@@ -1,6 +1,31 @@
 Changes
 =======
 
+# 1.7.0 / 2016-04-12
+
+### Notes
+
+* [FEATURE] Added manifest for PGBouncer. See [#175][]. (Thanks [@mcasper][]).
+* [FEATURE] Added manifest for Consul. See [#174][]. (Thanks [@flyinprogrammer][]).
+* [FEATURE] Added mesos master and slave manifests for individual management. See [#174][]. (Thanks [@flyinprogrammer][] and [@jangie][]).
+* [FEATURE] Added option to extract the hostname from puppet hostname strings with a regex capture group. See [#173][]. (Thanks [@LeoCavaille][]).
+* [FEATURE] Added support on multiple ports per host on Redis integration. See [#169][]. (Thanks [@fzwart][]).
+* [FEATURE] Added support for `disable_ssl_validation` on Apache integration. See[#171. (Thanks [@BIAndrews][]).
+* [FEATURE] Added support for SSL, additional metrics and database connection in Mongo integration. See [#164][]. (Thanks [@bflad][]).
+* [FEATURE] Added support for multiple instance in HTTP check. See [#155][]. (Thanks [@jniesen][]).
+* [FEATURE] Added support for multiple new datadog.conf directives. See [#79][]. (Thanks [@obowersa][]).
+* [FEATURE] Decouple yum repo from agent package. See [#168][]. (Thanks [@b2jrock][]).
+
+* [IMPROVEMENT] Moved GPG key to its own parameter. See [#158][]. (Thanks [@davidgibbons][]).
+
+* [BUFIX] Updated docker to use more current `docker_daemon`. See [#174][]. (Thanks [@flyinprogrammer][] and [@jangie][]).
+
+* [DEPRECATE] Deprecated old docker manifest. See [#174][]. (Thanks [@flyinprogrammer][]).
+* [DEPRECATE] Deprecated `new_tag_names` in `docker_daemon` manifest. See [#176][].
+* [DEPRECATE] Deprecated `use_mount` option in base manifest. See [#174][]. (Thanks [@flyinprogrammer][]).
+
+* [CI] Improved spec and docs. See [#79][]. (Thanks [@obowersa][]).
+* [CI] Added multiple tests for integration classes. See [#145][]. (Thanks [@kitchen][]).
 
 # 1.6.0 / 2016-01-20
 
@@ -113,8 +138,27 @@ Changes
 [#154]: https://github.com/DataDog/puppet-datadog-agent/issues/154
 [#156]: https://github.com/DataDog/puppet-datadog-agent/issues/156
 [#161]: https://github.com/DataDog/puppet-datadog-agent/issues/161
+[#164]: https://github.com/DataDog/puppet-datadog-agent/issues/164
+[#168]: https://github.com/DataDog/puppet-datadog-agent/issues/168
+[#169]: https://github.com/DataDog/puppet-datadog-agent/issues/169
+[#171]: https://github.com/DataDog/puppet-datadog-agent/issues/171
+[#173]: https://github.com/DataDog/puppet-datadog-agent/issues/173
+[#174]: https://github.com/DataDog/puppet-datadog-agent/issues/174
+[#175]: https://github.com/DataDog/puppet-datadog-agent/issues/175
+[#176]: https://github.com/DataDog/puppet-datadog-agent/issues/176
+[@BIAndrews]: https://github.com/BIAndrews
+[@LeoCavaille]: https://github.com/LeoCavaille
 [@MartinDelta]: https://github.com/MartinDelta
+[@b2jrock]: https://github.com/b2jrock
+[@bflad]: https://github.com/bflad
+[@davidgibbons]: https://github.com/davidgibbons
+[@flyinprogrammer]: https://github.com/flyinprogrammer
+[@fzwart]: https://github.com/fzwart
 [@grubernaut]: https://github.com/grubernaut
+[@jangie]: https://github.com/jangie
+[@jniesen]: https://github.com/jniesen
+[@kitchen]: https://github.com/kitchen
+[@mcasper]: https://github.com/mcasper
 [@mrunkel-ut]: https://github.com/mrunkel-ut
 [@rtyler]: https://github.com/rtyler
 [@tuxinaut]: https://github.com/tuxinaut

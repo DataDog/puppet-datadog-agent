@@ -36,6 +36,7 @@ class datadog_agent::integrations::mysql(
   $replication = '0',
   $galera_cluster = '0'
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   validate_array($tags)
 

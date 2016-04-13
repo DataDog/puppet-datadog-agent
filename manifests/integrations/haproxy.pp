@@ -19,6 +19,7 @@ class datadog_agent::integrations::haproxy(
   $creds = {},
   $url   = "http://${::ipaddress}:8080",
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   file {
     "${datadog_agent::params::conf_dir}/haproxy.yaml":

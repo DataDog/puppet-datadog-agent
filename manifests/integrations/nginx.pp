@@ -25,6 +25,7 @@
 class datadog_agent::integrations::nginx(
   $instances = [],
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   validate_array($instances)
 

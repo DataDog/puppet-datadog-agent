@@ -8,7 +8,9 @@
 #   $password
 #       The redis password (optional)
 #   $port
-#       The redis port
+#       The main redis port.
+#   $ports
+#       Array of redis ports: overrides port (optional)
 #   $slowlog_max_len
 #       The max length of the slow-query log (optional)
 #   $tags
@@ -27,16 +29,25 @@ class datadog_agent::integrations::redis(
   $host = 'localhost',
   $password = '',
   $port = 6379,
+  $ports = undef,
   $slowlog_max_len = '',
   $tags = [],
   $keys = [],
   $warn_on_missing_keys = true,
 ) inherits datadog_agent::params {
+  include datadog_agent
 
-  validate_re($port, '^\d+$')
   validate_array($tags)
   validate_array($keys)
   validate_bool($warn_on_missing_keys)
+
+  if $ports == undef {
+    $_ports = [ $port ]
+  } else {
+    $_ports = $ports
+  }
+
+  validate_array($_ports)
 
   file { "${datadog_agent::params::conf_dir}/redisdb.yaml":
     ensure  => file,

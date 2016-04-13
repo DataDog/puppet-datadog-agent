@@ -15,6 +15,7 @@
 class datadog_agent::integrations::elasticsearch(
   $url = 'http://localhost:9200'
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   file { "${datadog_agent::params::conf_dir}/elastic.yaml":
     ensure  => file,

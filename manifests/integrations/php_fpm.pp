@@ -15,14 +15,14 @@
 # Sample Usage:
 #
 #  class { 'datadog_agent::integrations::php_fpm' :
-#    status_url     => "http://localhost/fpm_status",
-#    ping_url       => "http://localhost/fpm_ping"
+#    status_url     => 'http://localhost/fpm_status',
+#    ping_url       => 'http://localhost/fpm_ping'
 #  }
 #
 
 class datadog_agent::integrations::php_fpm(
-  $status_url       = "http://localhost/status",
-  $ping_url         = "http://localhost/ping",
+  $status_url       = 'http://localhost/status',
+  $ping_url         = 'http://localhost/ping',
   $tags             = []
 ) inherits datadog_agent::params {
   include datadog_agent

@@ -20,12 +20,19 @@ def parse_nginx(log, line):
     base = re.match(r'^(/\w*)', json_line['uri'])
 
     metrics = []
-    metrics.append(('dotcom_nginx', timestamp, 1, {'metric_type': 'gauge', 'tags': [
-        'uri:' + json_line['uri'], 'base:' + base.group(1), 'status:' + status,
-        'request_time:' + json_line['request_time'],
-        'upstream_response_time:' + json_line['upstream_response_time']]}))
+    metrics.append(('dotcom_nginx', 
+                    timestamp,
+                    1,
+                    {'metric_type': 'gauge', 
+                     'tags': ['uri:' + json_line['uri'], 
+                              'base:' + base.group(1), 
+                              'status:' + status]}))
 
-    metrics.append(('dotcom_nginx_response_time', timestamp, json_line['request_time'], 
-        {'metric_type': 'gauge', 'tags': ['uri:' + json_line['uri'], 'base:' + base.group(1)]}))
+    metrics.append(('dotcom_nginx_response_time', 
+                    timestamp, 
+                    json_line['request_time'], 
+                    {'metric_type': 'gauge', 
+                     'tags': ['uri:' + json_line['uri'], 
+                              'base:' + base.group(1)]}))
 
     return (metrics)

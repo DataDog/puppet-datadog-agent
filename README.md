@@ -8,7 +8,7 @@ Description
 
 A module to:
 
-1. install the [DataDog](http://www.datadoghq.com)  agent
+1. install the [DataDog](http://www.datadoghq.com) agent
 2. to send reports of puppet runs to the Datadog service [Datadog](http://www.datadoghq.com/).
 
 Requirements
@@ -64,6 +64,31 @@ that needs to be done.
 3. Include any other integrations you want the agent to use, e.g.
 
         include 'datadog_agent::integrations::mongo'
+
+Client Settings
+---------------
+
+### Tagging client nodes
+
+The datadog agent configuration file will be recreated from the template every puppet run. If you need to tag your nodes, add an array entry in hiera
+
+        datadog_agent::local_tags
+        - 'keyname:value'
+        - 'anotherkey:%{factname}'
+
+Here are some of the other variables that be set in the datadog_agent class to control settings in the agent:
+
+| variable name | description |
+| ------------- | ----------- |
+| collect_ec2_tags | Set this to yes to have an instance's custom EC2 tags used as agent tags|
+| dd_url        | datadog intake server URL. You are unlikely to need to change this |
+| host          | overrides the node's hostname |
+| local_tags    | an array of key:value strings that will be set as tags for the node |
+| non_local_traffic | set this to allow other nodes to relay their traffic through this one|
+
+### Proxy Settings
+
+If you need to connect to the internet through a proxy, you can set `proxy_host`, `proxy_port`, `proxy_user` and `proxy_password`.
 
 Reporting
 ---------

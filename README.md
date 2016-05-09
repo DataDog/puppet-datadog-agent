@@ -196,16 +196,16 @@ Here are some of the other variables that be set in the datadog_agent class to c
 
 | variable name | description |
 | ------------- | ----------- |
-| collect_ec2_tags | Set this to yes to have an instance's custom EC2 tags used as agent tags|
+| collect_ec2_tags | Set this to yes to have an instance's custom EC2 tags used as agent tags |
+| collect_instance_metadata | Set this to yes to have an instance's EC2 metadata used as agent tags |
 | dd_url        | datadog intake server URL. You are unlikely to need to change this |
 | host          | overrides the node's hostname |
 | local_tags    | an array of key:value strings that will be set as tags for the node |
-| non_local_traffic | set this to allow other nodes to relay their traffic through this one|
+| non_local_traffic | set this to allow other nodes to relay their traffic through this one |
 
 ### Proxy Settings
 
 If you need to connect to the internet through a proxy, you can set `proxy_host`, `proxy_port`, `proxy_user` and `proxy_password`.
-
 
 
 Module Development and Testing

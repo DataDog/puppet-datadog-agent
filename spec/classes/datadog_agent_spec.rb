@@ -40,6 +40,7 @@ describe 'datadog_agent' do
 
         it { should contain_file('/etc/dd-agent') }
         it { should contain_file('/etc/dd-agent/datadog.conf') }
+        it { should contain_file('/etc/dd-agent/conf.d').with_ensure('directory') }
 
         it { should contain_class('datadog_agent::reports') }
 
@@ -253,7 +254,7 @@ describe 'datadog_agent' do
                     'content' => /^non_local_traffic: true\n/,
                 )}
             end
-            #Should expand testing to cover changes to the case upcase 
+            #Should expand testing to cover changes to the case upcase
             context 'with log level set to critical' do
                 let(:params) {{:log_level => 'critical'}}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
@@ -273,56 +274,56 @@ describe 'datadog_agent' do
                 )}
             end
             context 'with skip_ssl_validation set to true' do
-                let(:params) {{:skip_ssl_validation => true }} 
+                let(:params) {{:skip_ssl_validation => true }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^skip_ssl_validation: true\n/,
                 )}
             end
             context 'with collect_ec2_tags set to yes' do
-                let(:params) {{:collect_ec2_tags => true }} 
+                let(:params) {{:collect_ec2_tags => true }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^collect_ec2_tags: true\n/,
                 )}
             end
             context 'with collect_instance_metadata set to no' do
-                let(:params) {{:collect_instance_metadata => false }} 
+                let(:params) {{:collect_instance_metadata => false }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^collect_instance_metadata: false\n/,
                 )}
             end
             context 'with recent_point_threshold set to 60' do
-                let(:params) {{:recent_point_threshold => '60' }} 
+                let(:params) {{:recent_point_threshold => '60' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^recent_point_threshold: 60\n/,
                 )}
             end
             context 'with a custom port set to 17125' do
-                let(:params) {{:listen_port => '17125' }} 
+                let(:params) {{:listen_port => '17125' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^listen_port: 17125\n/,
                 )}
             end
             context 'litstening for graphite data on port 17124' do
-                let(:params) {{:graphite_listen_port => '17124' }} 
+                let(:params) {{:graphite_listen_port => '17124' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^graphite_listen_port: 17124\n/,
                 )}
             end
             context 'with configuration for a custom checks.d' do
-                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d'  }} 
+                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d'  }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^additional_checksd: \/etc\/dd-agent\/checks_custom.d\n/,
                 )}
             end
             context 'with configuration for a custom checks.d' do
-                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d'  }} 
+                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d'  }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^additional_checksd: \/etc\/dd-agent\/checks_custom.d\n/,
                 )}
             end
 
             context 'with configuration for a custom checks.d' do
-                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d'  }} 
+                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d'  }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^additional_checksd: \/etc\/dd-agent\/checks_custom.d\n/,
                 )}

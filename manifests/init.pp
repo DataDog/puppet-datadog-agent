@@ -52,6 +52,8 @@
 #   $statsd_forward_port
 #       Set the value of the statsd_forward_port varable. Used to forward all
 #       statsd metrics to another host.
+#   $check_freq
+#       Sets how often checks should be run. By default, set to 15s
 #   $manage_repo
 #       Boolean to indicate whether this module should attempt to manage
 #       the package repo. Default true.
@@ -197,6 +199,7 @@ class datadog_agent(
   $statsd_forward_host = '',
   $statsd_forward_port = '',
   $statsd_histogram_percentiles = '0.95',
+  $check_freq = '',
   $proxy_host = '',
   $proxy_port = '',
   $proxy_user = '',
@@ -259,6 +262,7 @@ class datadog_agent(
   validate_integer($dogstatsd_port)
   validate_string($statsd_histogram_percentiles)
   validate_string($statsd_forward_port)
+  validate_string($check_freq)
   validate_string($proxy_host)
   validate_string($proxy_port)
   validate_string($proxy_user)

@@ -135,6 +135,14 @@ use_curl_http_client: <%= @use_curl_http_client %>
 bind_host: <%= @bind_host %>
 <% end -%>
 
+# Sets how often checks should be run.
+<% if @check_freq.empty? -%>
+# check_freq: 15
+<% else -%>
+check_freq: <%= @check_freq %>
+<% end -%>
+
+
 # ========================================================================== #
 # Pup configuration
 # ========================================================================== #

@@ -350,11 +350,12 @@ class datadog_agent(
   }
 
   file { $conf_dir:
-    ensure => directory,
-    purge  => $conf_dir_purge,
-    owner  => $dd_user,
-    group  => $dd_group,
-    notify => Service['datadog-agent']
+    ensure  => directory,
+    purge   => $conf_dir_purge,
+    recurse => true,
+    owner   => $dd_user,
+    group   => $dd_group,
+    notify  => Service['datadog-agent']
   }
 
   # main agent config file

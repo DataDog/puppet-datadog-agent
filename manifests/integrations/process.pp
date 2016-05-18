@@ -41,6 +41,7 @@
 class datadog_agent::integrations::process(
   $processes = [],
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   validate_array( $processes )
 

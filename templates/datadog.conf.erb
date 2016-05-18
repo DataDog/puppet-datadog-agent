@@ -88,13 +88,19 @@ collect_instance_metadata: <%= @collect_instance_metadata %>
 # Set the threshold for accepting points to allow anything
 # with recent_point_threshold seconds
 # Defaults to 30 seconds if no value is provided
-#recent_point_threshold: 30
 
-# Use mount points instead of volumes to track disk and fs metrics
-use_mount: <%= @use_mount %>
+<% if @recent_point_threshold.empty? -%>
+# recent_point_threshold: 30
+<% else -%>
+recent_point_threshold: <%= @recent_point_threshold %>
+<% end -%>
 
 # Change port the Agent is listening to
+<% if @listen_port.empty? -%>
 # listen_port: 17123
+<% else -%>
+listen_port: <%= @listen_port %>
+<% end -%>
 
 # Start a graphite listener on this port
 <% if @graphite_listen_port.empty? -%>
@@ -104,7 +110,11 @@ graphite_listen_port: <%= @graphite_listen_port %>
 <% end -%>
 
 # Additional directory to look for Datadog checks
+<% if @additional_checksd.empty? -%>
 # additional_checksd: /etc/dd-agent/checks.d/
+<% else -%>
+additional_checksd: <%= @additional_checksd %>
+<% end -%>
 
 # Allow non-local traffic to this Agent
 # This is required when using this Agent as a proxy for other Agents
@@ -119,7 +129,11 @@ use_curl_http_client: <%= @use_curl_http_client %>
 
 # The loopback address the Forwarder and Dogstatsd will bind.
 # Optional, it is mainly used when running the agent on Openshift
+<% if @bind_host.empty? -%>
 # bind_host: localhost
+<% else -%>
+bind_host: <%= @bind_host %>
+<% end -%>
 
 # ========================================================================== #
 # Pup configuration
@@ -129,39 +143,62 @@ use_curl_http_client: <%= @use_curl_http_client %>
 # Think of it as a fancy status page or a toe dip into the world of
 # datadog. It can be connected to on the port below.
 
-# use_pup: no
+use_pup: <%= @use_pup ? "yes" : "no" %>
+
+<% if @pup_port.empty? -%>
 # pup_port: 17125
+<% else -%>
+pup_port: <%= @pup_port %>
+<% end -%>
+
+<% if @pup_interface.empty? -%>
 # pup_interface: localhost
+<% else -%>
+pup_interface: <%= @pup_interface %>
+<% end -%>
+
+<% if @pup_url.empty? -%>
 # pup_url: http://localhost:17125
+<% else -%>
+pup_url: <%= @pup_url %>
+<% end -%>
 
 # ========================================================================== #
 # DogStatsd configuration                                                    #
 # ========================================================================== #
 
 # If you don't want to enable the DogStatsd server, set this option to no
-# use_dogstatsd: yes
 
+use_dogstatsd: <%= @use_dogstatsd ? "yes" : "no" %>
 # DogStatsd is a small server that aggregates your custom app metrics. For
 # usage information, check out http://api.datadoghq.com
 
 #  Make sure your client is sending to the same port.
 <% if @dogstatsd_port.nil? -%>
-# dogstatsd_port : @dogstatsd_port
+# dogstatsd_port: 8125
 <% else -%>
-dogstatsd_port : <%= @dogstatsd_port %>
+dogstatsd_port: <%= @dogstatsd_port %>
 <% end -%>
 
 # By default dogstatsd will post aggregate metrics to the Agent (which handles
 # errors/timeouts/retries/etc). To send directly to the datadog api, set this
 # to https://app.datadoghq.com.
-# dogstatsd_target : http://localhost:17123
+<% if @dogstatsd_target.empty? -%>
+# dogstatsd_target: http://localhost:17123
+<% else -%>
+dogstatsd_target: <%= @dogstatsd_target %>
+<% end -%>
 
 ## The dogstatsd flush period.
-# dogstatsd_interval : 10
+<% if @dogstatsd_interval.empty? -%>
+# dogstatsd_interval: 10
+<% else -%>
+dogstatsd_interval: <%= @dogstatsd_interval -%>
+<% end -%>
 
 ## If 'yes', counters and rates will be normalized to 1 second (that is divided
 ## by the dogstatsd_interval) before being sent to the server. Defaults to 'yes'
-# dogstatsd_normalize : yes
+dogstatsd_normalize: <%= @dogstatsd_normalize ? "yes" : "no" %>
 
 histogram_percentiles: <%= @statsd_histogram_percentiles %>
 
@@ -174,7 +211,7 @@ histogram_percentiles: <%= @statsd_histogram_percentiles %>
 <% else -%>
 statsd_forward_host: <%= @statsd_forward_host %>
 <% end -%>
-<% if @statsd_forward_port.nil? -%>
+<% if @statsd_forward_port.empty? -%>
 # statsd_forward_port: 8125
 <% else -%>
 statsd_forward_port: <%= @statsd_forward_port %>
@@ -192,7 +229,12 @@ statsd_forward_port: <%= @statsd_forward_port %>
 # running constantly churning linux containers) whose metrics aren't
 # interesting for datadog. To filter out a particular pattern of devices
 # from collection, configure a regex here:
+
+<% if @device_blacklist_re.empty? -%>
 # device_blacklist_re: .*\/dev\/mapper\/lxc-box.*
+<% else -%>
+device_blacklist_re: <%= @device_blacklist_re %>
+<% end -%>
 
 # -------------------------------------------------------------------------- #
 #   Ganglia                                                                  #
@@ -200,10 +242,10 @@ statsd_forward_port: <%= @statsd_forward_port %>
 
 <% if @ganglia_host.empty? -%>
 # Ganglia host where gmetad is running
-#ganglia_host: localhost
-
+# ganglia_host: localhost
+#
 # Ganglia port where gmetad is running
-#ganglia_port: 8651
+# ganglia_port: 8651
 <% else -%>
 # Ganglia host where gmetad is running
 ganglia_host: <%= @ganglia_host %>
@@ -211,7 +253,6 @@ ganglia_host: <%= @ganglia_host %>
 # Ganglia port where gmetad is running
 ganglia_port: <%= @ganglia_port %>
 <% end -%>
-
 
 
 # -------------------------------------------------------------------------- #
@@ -248,7 +289,7 @@ ganglia_port: <%= @ganglia_port %>
 <%
 if not @dogstreams.empty?
 -%>
-dogstreams: <%= dogstreams.join(', ') %>
+dogstreams: <%= @dogstreams.join(', ') %>
 <% end -%>
 
 # ========================================================================== #
@@ -260,7 +301,11 @@ dogstreams: <%= dogstreams.join(', ') %>
 # Expected to be passed as a comma-separated list of colon-delimited
 # name/object pairs.
 #
+<% if @custom_emitters.empty? -%>
 # custom_emitters: /usr/local/my-code/emitters/rabbitmq.py:RabbitMQEmitter
+<% else -%>
+custom_emitters: <%= @custom_emitters %>
+<% end -%>
 #
 # If the name of the emitter function is not specified, 'emitter' is assumed.
 
@@ -271,17 +316,47 @@ dogstreams: <%= dogstreams.join(', ') %>
 
 log_level: <%= @_loglevel %>
 
+<% if @collector_log_file.empty? -%>
 # collector_log_file: /var/log/datadog/collector.log
+<% else -%>
+collector_log_file: <%= @collector_log_file %>
+<% end -%>
+
+<% if @forwarder_log_file.empty? -%>
 # forwarder_log_file: /var/log/datadog/forwarder.log
+<% else -%>
+forwarder_log_file: <%= @forwarder_log_file %>
+<% end -%>
+
+<% if @dogstatsd_log_file.empty? -%>
 # dogstatsd_log_file: /var/log/datadog/dogstatsd.log
+<% else -%>
+dogstatsd_log_file: <%= @dogstatsd_log_file  %>
+<% end -%>
+
+<% if @pup_log_file.empty? -%>
 # pup_log_file:       /var/log/datadog/pup.log
+<% else -%>
+pup_log_file: <%= @pup_log_file  %>
+<% end -%>
+
 
 # if syslog is enabled but a host and port are not set, a local domain socket
 # connection will be attempted
 #
 log_to_syslog: <%= @log_to_syslog ? "yes" : "no" %>
+<% if @syslog_host.empty? -%>
 # syslog_host:
+<% else -%>
+syslog_host: <%= @syslog_host  %>
+<% end -%>
+
+<% if @syslog_port.empty? -%>
 # syslog_port:
+<% else -%>
+syslog_port: <%= @syslog_port  %>
+<% end -%>
+
 <% if not @extra_template.empty? -%>
 # ========================================================================== #
 # Custom Templates from Puppet                                               #

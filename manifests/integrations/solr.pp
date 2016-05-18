@@ -34,7 +34,9 @@ class datadog_agent::integrations::solr(
   $java_bin_path        = undef,
   $trust_store_path     = undef,
   $trust_store_password = undef,
-  $tags                 = {})inherits datadog_agent::params {
+  $tags                 = {},
+) inherits datadog_agent::params {
+  include datadog_agent
 
   file { "${datadog_agent::params::conf_dir}/solr.yaml":
     ensure  => file,

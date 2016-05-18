@@ -30,6 +30,7 @@
 class datadog_agent::integrations::zk (
   $servers = [{'host' => 'localhost', 'port' => '2181'}]
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   validate_array($servers)
 

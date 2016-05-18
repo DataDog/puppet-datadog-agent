@@ -6,6 +6,6 @@ init_config:
 
 instances:
     - url: <%= @url %>
-      <% creds.each do |k,v| %>
+      <% @creds.each do |k,v| %>
       <%= k %>: <%= v %>
       <% end -%>

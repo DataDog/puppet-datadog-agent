@@ -14,6 +14,14 @@ Puppet::Reports.register_report(:datadog_reports) do
   config = YAML.load_file(configfile)
   API_KEY = config[:datadog_api_key]
 
+  # if need be initialize the regex
+  HOSTNAME_EXTRACTION_REGEX = config[:hostname_extraction_regex]
+  begin
+    HOSTNAME_EXTRACTION_REGEX = Regexp.new HOSTNAME_EXTRACTION_REGEX unless HOSTNAME_EXTRACTION_REGEX.nil?
+  rescue
+    raise(Puppet::ParseError, "Invalid hostname_extraction_regex #{HOSTNAME_EXTRACTION_REGEX}")
+  end
+
   desc <<-DESC
   Send notification of metrics to Datadog
   DESC
@@ -38,6 +46,12 @@ Puppet::Reports.register_report(:datadog_reports) do
   def process
     @summary = self.summary
     @msg_host = self.host
+    unless HOSTNAME_EXTRACTION_REGEX.nil?
+      m = @msg_host.match(HOSTNAME_EXTRACTION_REGEX)
+      unless m[:hostname].nil?
+        @msg_host = m[:hostname]
+      end
+    end
 
     event_title = ''
     alert_type = ''

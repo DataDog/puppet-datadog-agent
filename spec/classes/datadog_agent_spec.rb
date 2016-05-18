@@ -40,6 +40,7 @@ describe 'datadog_agent' do
 
         it { should contain_file('/etc/dd-agent') }
         it { should contain_file('/etc/dd-agent/datadog.conf') }
+        it { should contain_file('/etc/dd-agent/conf.d').with_ensure('directory') }
 
         it { should contain_class('datadog_agent::reports') }
 

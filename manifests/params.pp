@@ -20,6 +20,7 @@ class datadog_agent::params {
   $dd_group       = 'root'
   $package_name   = 'datadog-agent'
   $service_name   = 'datadog-agent'
+  $conf_dir_purge = false
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {

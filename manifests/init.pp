@@ -234,6 +234,7 @@ class datadog_agent(
   $syslog_host  = '',
   $syslog_port  = '',
   $conf_dir = $datadog_agent::params::conf_dir,
+  $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
   $service_name = $datadog_agent::params::service_name,
   $package_name = $datadog_agent::params::package_name,
   $dd_user = $datadog_agent::params::dd_user,
@@ -333,6 +334,13 @@ class datadog_agent(
     group   => 'root',
     mode    => '0755',
     require => Package['datadog-agent'],
+  }
+
+  file { $conf_dir:
+    ensure => directory,
+    purge  => $conf_dir_purge,
+    owner  => $dd_user,
+    group  => $dd_group,
   }
 
   # main agent config file

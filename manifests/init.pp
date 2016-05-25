@@ -117,6 +117,9 @@ class datadog_agent(
     mode    => '0755',
     require => Package['datadog-agent'],
   }
+    
+  #for puppet run success reporting to datadog.
+  include datadog_agent::puppet_last_run
 
   # main agent config file
   file { '/etc/dd-agent/datadog.conf':

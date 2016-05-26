@@ -122,7 +122,7 @@ describe 'datadog_agent' do
                     'content' => /^# bind_host: localhost\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^use_dogstatsd: no\n/,
+                    'content' => /^use_dogstatsd: yes\n/,
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^dogstatsd_port: 8125\n/,
@@ -341,10 +341,10 @@ describe 'datadog_agent' do
                 )}
             end
 
-            context 'with use_dogstatsd set to yes' do
-                let(:params) {{:use_dogstatsd => true}}
+            context 'with use_dogstatsd set to no' do
+                let(:params) {{:use_dogstatsd => false}}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^use_dogstatsd: yes\n/,
+                    'content' => /^use_dogstatsd: no\n/,
                 )}
             end
             context 'with dogstatsd_port set to 8126' do

@@ -3,9 +3,9 @@ before_install: rm -f Gemfile.lock
 sudo: false
 cache: bundler
 rvm:
-  - 1.9.3
   - 2.0.0
   - 2.1.0
+  - 2.2.3
 script:
   - bundle exec rake spec
   - bundle exec rake test
@@ -41,4 +41,13 @@ matrix:
   - rvm: 2.1.0
     env: PUPPET_VERSION="~> 3.3.0"
   - rvm: 2.1.0
+    env: PUPPET_VERSION="~> 3.4.0"
+
+  - rvm: 2.2.3
+    env: PUPPET_VERSION="~> 2.7.0"
+  - rvm: 2.2.3
+    env: PUPPET_VERSION="~> 3.2.0"
+  - rvm: 2.2.3
+    env: PUPPET_VERSION="~> 3.3.0"
+  - rvm: 2.2.3
     env: PUPPET_VERSION="~> 3.4.0"

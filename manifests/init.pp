@@ -117,7 +117,12 @@ class datadog_agent(
     mode    => '0755',
     require => Package['datadog-agent'],
   }
-    
+
+  file {['/etc/dd-agent/conf.d/', '/etc/dd-agent/checks.d/']:
+  ensure => directory,
+  owner  => 'dd-agent'
+  }
+
   #for puppet run success reporting to datadog.
   include datadog_agent::puppet_last_run
 
@@ -138,5 +143,4 @@ class datadog_agent(
       puppetmaster_user => $puppetmaster_user,
     }
   }
-
 }

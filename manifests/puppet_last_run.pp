@@ -1,13 +1,4 @@
 class datadog_agent::puppet_last_run {
-  file {'/etc/dd-agent/conf.d/':
-    ensure => directory,
-    owner  => 'dd-agent'
-    } ->
-  file {'/etc/dd-agent/checks.d/':
-    ensure => directory,
-    owner  => 'dd-agent',
-    } ->
-
   file { '/etc/dd-agent/checks.d/puppet_last_run.py':
     ensure  => file,
     owner  => 'dd-agent',

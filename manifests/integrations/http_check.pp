@@ -52,16 +52,19 @@
 # Sample Usage:
 #
 # class { 'datadog_agent::integrations::http_check':
+#   name    => 'google',
 #   url     => 'http://www.google.com/',
 # }
 #
 # class { 'datadog_agent::integrations::http_check':
+#   name    => 'local',
 #   url     => 'http://localhost/',
 #   headers => ['Host: stan.borbat.com', 'DNT: true'],
 #   tags    => ['production', 'wordpress'],
 # }
 #
 # class { 'datadog_agent::integrations::http_check':
+#   name                  => 'localhost-9001',
 #   url                   => 'http://localhost:9001/',
 #   timeout               => 5,
 #   threshold             => 1,
@@ -74,6 +77,7 @@
 #
 #
 class datadog_agent::integrations::http_check (
+  $name      = undef,
   $url       = undef,
   $username  = undef,
   $password  = undef,
@@ -92,6 +96,7 @@ class datadog_agent::integrations::http_check (
 
   if !$instances and $url {
     $_instances = [{
+      'name'                     => $name,
       'url'                      => $url,
       'username'                 => $username,
       'password'                 => $password,

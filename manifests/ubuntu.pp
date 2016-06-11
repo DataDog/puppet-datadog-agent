@@ -10,6 +10,7 @@
 #
 # Sample Usage:
 #
+# lint:ignore:80chars
 class datadog_agent::ubuntu(
   $apt_key = 'C7A7DA52'
 ) {
@@ -56,4 +57,5 @@ class datadog_agent::ubuntu(
     require   => Package['datadog-agent'],
   }
 
+# lint:endignore
 }

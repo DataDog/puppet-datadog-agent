@@ -1,5 +1,6 @@
 # Class: datadog_agent::integrations::marathon
 #
+# lint:ignore:80chars
 # This class will install the necessary configuration for the Marathon integration
 #
 # Parameters:
@@ -15,8 +16,7 @@
 class datadog_agent::integrations::marathon(
   $marathon_timeout = 5,
   $url = 'http://localhost:8080'
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   file { "${datadog_agent::params::conf_dir}/marathon.yaml":
     ensure  => file,
@@ -24,7 +24,8 @@ class datadog_agent::integrations::marathon(
     group   => $datadog_agent::params::dd_group,
     mode    => '0644',
     content => template('datadog_agent/agent-conf.d/marathon.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
+    require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
     notify  => Service[$datadog_agent::params::service_name]
   }
+# lint:endignore
 }

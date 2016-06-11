@@ -2,6 +2,7 @@
 #
 # This class will install the necessary config to hook the directory check
 #
+# lint:ignore:80chars
 # Parameters:
 #   $directory
 #       The directory to gather stats for
@@ -25,7 +26,7 @@ class datadog_agent::integrations::directory (
   $tag_name      = '',
   $pattern       = '*',
   $recursive     = false
-) inherits datadog_agent::params {
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   if $directory == undef {
     fail('you must specify a directory path within the datadog_agent::integrations::directory class')
@@ -40,4 +41,5 @@ class datadog_agent::integrations::directory (
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]
   }
+# lint:endignore
 }

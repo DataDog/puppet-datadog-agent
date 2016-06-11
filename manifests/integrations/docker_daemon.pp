@@ -19,17 +19,17 @@
 #     url           => 'unix://var/run/docker.sock',
 #   }
 #
+# lint:ignore:80chars
 class datadog_agent::integrations::docker_daemon(
   $url = 'unix://var/run/docker.sock',
   $tags = [],
   $group = 'docker',
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   exec { 'dd-agent-should-be-in-docker-group':
     command => "/usr/sbin/usermod -aG ${group} ${datadog_agent::params::dd_user}",
     unless  => "/bin/cat /etc/group | grep '^${group}:' | grep -qw ${datadog_agent::params::dd_user}",
-    require => Package[$datadog_agent::params::package_name],
+    require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
     notify  => Service[$datadog_agent::params::service_name]
   }
 
@@ -43,7 +43,8 @@ class datadog_agent::integrations::docker_daemon(
     group   => $datadog_agent::params::dd_group,
     mode    => '0644',
     content => template('datadog_agent/agent-conf.d/docker_daemon.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
+    require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
     notify  => Service[$datadog_agent::params::service_name]
   }
+# lint:endignore
 }

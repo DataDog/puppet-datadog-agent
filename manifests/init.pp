@@ -2,6 +2,7 @@
 #
 # This class contains the agent installation mechanism for the Datadog module
 #
+# lint:ignore:80chars
 # Parameters:
 #   $dd_url:
 #       The host of the Datadog intake server to send agent data to.
@@ -228,7 +229,7 @@ class datadog_agent(
   $pup_log_file = '',
   $syslog_host  = '',
   $syslog_port  = '',
-) inherits datadog_agent::params {
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   validate_string($dd_url)
   validate_string($host)
@@ -344,4 +345,5 @@ class datadog_agent(
       hostname_extraction_regex => $hostname_extraction_regex,
     }
   }
+# lint:endignore
 }

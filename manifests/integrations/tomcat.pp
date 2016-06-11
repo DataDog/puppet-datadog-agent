@@ -2,6 +2,7 @@
 #
 # This class will install the necessary configuration for the tomcat integration
 #
+# lint:ignore:80chars
 # Parameters:
 #   $hostname:
 #       The host tomcat is running on. Defaults to 'localhost'
@@ -35,8 +36,7 @@ class datadog_agent::integrations::tomcat(
   $trust_store_path     = undef,
   $trust_store_password = undef,
   $tags                 = {},
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
 
   file { "${datadog_agent::params::conf_dir}/tomcat.yaml":
@@ -45,8 +45,8 @@ class datadog_agent::integrations::tomcat(
     group   => $datadog_agent::params::dd_group,
     mode    => '0600',
     content => template('datadog_agent/agent-conf.d/tomcat.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
+    require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
     notify  => Service[$datadog_agent::params::service_name]
   }
-
+# lint:endignore
 }

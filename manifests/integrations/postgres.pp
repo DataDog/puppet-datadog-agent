@@ -1,5 +1,6 @@
 # Class: datadog_agent::integrations::postgres
 #
+# lint:ignore:80chars
 # This class will install the necessary configuration for the postgres integration
 #
 # Parameters:
@@ -38,8 +39,7 @@ class datadog_agent::integrations::postgres(
   $password,
   $tags = [],
   $tables = []
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   validate_array($tags)
   validate_array($tables)
@@ -50,7 +50,8 @@ class datadog_agent::integrations::postgres(
     group   => $datadog_agent::params::dd_group,
     mode    => '0600',
     content => template('datadog_agent/agent-conf.d/postgres.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
+    require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
     notify  => Service[$datadog_agent::params::service_name],
   }
+# lint:endignore
 }

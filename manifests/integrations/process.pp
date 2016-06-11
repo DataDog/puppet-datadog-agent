@@ -1,5 +1,6 @@
 # Class: datadog_agent::integrations::process
 #
+# lint:ignore:80chars
 # This class will install the necessary configuration for the process integration
 #
 # Parameters:
@@ -40,8 +41,7 @@
 #
 class datadog_agent::integrations::process(
   $processes = [],
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   validate_array( $processes )
 
@@ -51,7 +51,8 @@ class datadog_agent::integrations::process(
     group   => $datadog_agent::params::dd_group,
     mode    => '0600',
     content => template('datadog_agent/agent-conf.d/process.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
+    require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
     notify  => Service[$datadog_agent::params::service_name]
   }
+# lint:endignore
 }

@@ -1,5 +1,6 @@
 # Class: datadog_agent::redhat
 #
+# lint:ignore:80chars
 # This class contains the DataDog agent installation mechanism for Red Hat derivatives
 #
 # Parameters:
@@ -52,4 +53,5 @@ class datadog_agent::redhat(
     require   => Package['datadog-agent'],
   }
 
+# lint:endignore
 }

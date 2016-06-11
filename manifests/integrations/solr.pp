@@ -2,6 +2,7 @@
 #
 # This class will install the necessary configuration for the solr integration
 #
+# lint:ignore:80chars
 # Parameters:
 #   $hostname:
 #       The host solr is running on. Defaults to 'localhost'
@@ -35,8 +36,7 @@ class datadog_agent::integrations::solr(
   $trust_store_path     = undef,
   $trust_store_password = undef,
   $tags                 = {},
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   file { "${datadog_agent::params::conf_dir}/solr.yaml":
     ensure  => file,
@@ -44,8 +44,8 @@ class datadog_agent::integrations::solr(
     group   => $datadog_agent::params::dd_group,
     mode    => '0600',
     content => template('datadog_agent/agent-conf.d/solr.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
+    require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
     notify  => Service[$datadog_agent::params::service_name]
   }
-
+# lint:endignore
 }

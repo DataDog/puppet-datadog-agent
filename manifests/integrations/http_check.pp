@@ -1,5 +1,6 @@
 # Class: datadog_agent::integrations::http_check
 #
+# lint:ignore:80chars
 # This class will install the necessary config to hook the http_check in the agent
 #
 # Parameters:
@@ -87,8 +88,7 @@ class datadog_agent::integrations::http_check (
   $tags      = [],
   $contact   = [],
   $instances  = undef,
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   if !$instances and $url {
     $_instances = [{
@@ -117,7 +117,8 @@ class datadog_agent::integrations::http_check (
     group   => $datadog_agent::params::dd_group,
     mode    => '0600',
     content => template('datadog_agent/agent-conf.d/http_check.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
+    require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
     notify  => Service[$datadog_agent::params::service_name]
   }
+# lint:endignore
 }

@@ -20,7 +20,7 @@
 class datadog_agent::integrations::generic(
   $integration_name     = undef,
   $integration_contents = undef,
-) inherits datadog_agent::params {
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   validate_string($integration_name)
   validate_string($integration_contents)
@@ -34,4 +34,5 @@ class datadog_agent::integrations::generic(
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]
   }
+# lint:endignore
 }

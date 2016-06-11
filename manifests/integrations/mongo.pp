@@ -54,10 +54,10 @@
 #    ]
 #  }
 #
+# lint:ignore:80chars
 class datadog_agent::integrations::mongo(
   $servers = [{'host' => 'localhost', 'port' => '27017'}]
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   validate_array($servers)
 
@@ -67,7 +67,8 @@ class datadog_agent::integrations::mongo(
     group   => $datadog_agent::params::dd_group,
     mode    => '0600',
     content => template('datadog_agent/agent-conf.d/mongo.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
+    require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
     notify  => Service[$datadog_agent::params::service_name]
   }
+# lint:endignore
 }

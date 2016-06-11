@@ -1,5 +1,6 @@
 # Class: datadog_agent::integrations::haproxy
 #
+# lint:ignore:80chars
 # This class will install the necessary configuration for the haproxy integration
 #
 # Parameters:
@@ -18,8 +19,7 @@
 class datadog_agent::integrations::haproxy(
   $creds = {},
   $url   = "http://${::ipaddress}:8080",
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   file {
     "${datadog_agent::params::conf_dir}/haproxy.yaml":
@@ -28,7 +28,8 @@ class datadog_agent::integrations::haproxy(
       group   => $datadog_agent::params::dd_group,
       mode    => '0644',
       content => template('datadog_agent/agent-conf.d/haproxy.yaml.erb'),
-      require => Package[$datadog_agent::params::package_name],
+      require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
       notify  => Service[$datadog_agent::params::service_name]
   }
+# lint:endignore
 }

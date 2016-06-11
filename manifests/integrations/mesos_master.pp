@@ -12,11 +12,11 @@
 #     url  => "http://localhost:5050"
 #   }
 #
+# lint:ignore:80chars
 class datadog_agent::integrations::mesos_master(
   $mesos_timeout = 10,
   $url = 'http://localhost:5050'
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   file { "${datadog_agent::params::conf_dir}/mesos.yaml":
     ensure => 'absent'
@@ -28,7 +28,8 @@ class datadog_agent::integrations::mesos_master(
     group   => $datadog_agent::params::dd_group,
     mode    => '0644',
     content => template('datadog_agent/agent-conf.d/mesos_master.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
+    require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
     notify  => Service[$datadog_agent::params::service_name]
   }
+# lint:endignore
 }

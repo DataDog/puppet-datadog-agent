@@ -14,6 +14,7 @@
 #
 # Sample Usage:
 #
+# lint:ignore:80chars
 class datadog_agent::params {
   $conf_dir       = '/etc/dd-agent/conf.d'
   $dd_user        = 'dd-agent'
@@ -32,4 +33,5 @@ class datadog_agent::params {
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
 
+# lint:endignore
 }

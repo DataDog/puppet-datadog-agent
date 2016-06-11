@@ -26,14 +26,14 @@
 #   password => 'hunter1',
 # }
 #
+# lint:ignore:80chars
 class datadog_agent::integrations::apache (
   $url                    = 'http://localhost/server-status?auto',
   $username               = undef,
   $password               = undef,
   $tags                   = [],
   $disable_ssl_validation = false
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   validate_string($url)
   validate_array($tags)
@@ -45,7 +45,8 @@ class datadog_agent::integrations::apache (
     group   => $datadog_agent::params::dd_group,
     mode    => '0600',
     content => template('datadog_agent/agent-conf.d/apache.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
+    require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
     notify  => Service[$datadog_agent::params::service_name]
   }
+# lint:endignore
 }

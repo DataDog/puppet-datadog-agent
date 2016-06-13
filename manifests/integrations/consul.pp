@@ -38,12 +38,12 @@ class datadog_agent::integrations::consul(
   validate_bool($new_leader_checks)
   validate_array($service_whitelist)
 
-  file { "${datadog_agent::params::conf_dir}/consul.yaml":
+  file { "${datadog_agent::params::conf_dir}/consul_check.yaml":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
     mode    => '0644',
-    content => template('datadog_agent/agent-conf.d/consul.yaml.erb'),
+    content => template('datadog_agent/agent-conf.d/consul_check.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]
   }

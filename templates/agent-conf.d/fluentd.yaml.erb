@@ -1,0 +1,14 @@
+#
+# MANAGED BY PUPPET
+#
+
+init_config:
+
+instances:
+  - monitor_agent_url: <%= @monitor_agent_url %>
+<% if !@plugin_ids.empty? -%>
+    plugin_ids:
+<% @plugin_ids.each do |plugin| -%>
+      - <%= plugin %>
+<% end -%>
+<% end -%>

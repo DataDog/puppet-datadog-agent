@@ -21,6 +21,7 @@ describe 'datadog_agent::integrations::http_check' do
   it { should contain_file(conf_file).that_notifies("Service[#{dd_service}]") }
 
   context 'with default parameters' do
+    it { should contain_file(conf_file).without_content(%r{name: }) }
     it { should contain_file(conf_file).without_content(%r{url: }) }
     it { should contain_file(conf_file).without_content(%r{username: }) }
     it { should contain_file(conf_file).without_content(%r{password: }) }
@@ -36,6 +37,7 @@ describe 'datadog_agent::integrations::http_check' do
 
   context 'with parameters set' do
     let(:params) {{
+      sitename: 'foo.bar.baz',
       url: 'http://foo.bar.baz:4096',
       username: 'foouser',
       password: 'barpassword',
@@ -47,6 +49,7 @@ describe 'datadog_agent::integrations::http_check' do
       disable_ssl_validation: true,
     }}
 
+    it { should contain_file(conf_file).with_content(%r{name: foo.bar.baz}) }
     it { should contain_file(conf_file).with_content(%r{url: http://foo.bar.baz:4096}) }
     it { should contain_file(conf_file).with_content(%r{username: foouser}) }
     it { should contain_file(conf_file).with_content(%r{password: barpassword}) }
@@ -60,6 +63,7 @@ describe 'datadog_agent::integrations::http_check' do
 
   context 'with headers parameter array' do
     let(:params) {{
+      sitename: 'foo.bar.baz',
       url: 'http://foo.bar.baz:4096',
       headers: %w{ foo bar baz },
     }}
@@ -69,6 +73,7 @@ describe 'datadog_agent::integrations::http_check' do
   context 'with headers parameter empty values' do
     context 'mixed in with other headers' do
       let(:params) {{
+      sitename: 'foo.bar.baz',
         url: 'http://foo.bar.baz:4096',
         headers: [ 'foo', '', 'baz' ]
       }}
@@ -96,6 +101,7 @@ describe 'datadog_agent::integrations::http_check' do
 
   context 'with tags parameter array' do
     let(:params) {{
+      sitename: 'foo.bar.baz',
       url: 'http://foo.bar.baz:4096',
       tags: %w{ foo bar baz },
     }}
@@ -105,6 +111,7 @@ describe 'datadog_agent::integrations::http_check' do
   context 'with tags parameter empty values' do
     context 'mixed in with other tags' do
       let(:params) {{
+        sitename: 'foo.bar.baz',
         url: 'http://foo.bar.baz:4096',
         tags: [ 'foo', '', 'baz' ]
       }}

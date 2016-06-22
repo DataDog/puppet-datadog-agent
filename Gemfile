@@ -1,6 +1,9 @@
 source "https://rubygems.org"
 
 group :test do
+  gem "syck"
+  gem "safe_yaml", "~> 1.0.4"
+  gem "listen", "~> 3.0.0"
   gem "puppet", ENV['PUPPET_VERSION'] || '~> 4.2.0'
   gem "puppet-lint"
   gem "puppet-syntax"

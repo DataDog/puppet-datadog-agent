@@ -1,6 +1,16 @@
 Changes
 =======
 
+# 1.7.1 / 2016-06-22
+
+### Notes
+
+* [BUFIX] Fix reversed logic in `hostname_extraction` option.. See [#189][]. (Thanks [@davejrt][]).
+* [BUFIX] Fix reporting on PE and POSS. Dogapi gem required in JRuby Env. See [#188][].
+* [BUFIX] On ubuntu manifest, agent version should be explicitly configurable. See [#187][].
+* [BUFIX] HTTP check, name is a compulsory field. See [#186][].
+* [BUFIX] Dogstatsd should be enabled by default. See [#183][].
+
 # 1.7.0 / 2016-04-12
 
 ### Notes
@@ -150,6 +160,11 @@ Changes
 [#174]: https://github.com/DataDog/puppet-datadog-agent/issues/174
 [#175]: https://github.com/DataDog/puppet-datadog-agent/issues/175
 [#176]: https://github.com/DataDog/puppet-datadog-agent/issues/176
+[#183]: https://github.com/DataDog/puppet-datadog-agent/pull/183
+[#186]: https://github.com/DataDog/puppet-datadog-agent/pull/186
+[#187]: https://github.com/DataDog/puppet-datadog-agent/pull/187
+[#188]: https://github.com/DataDog/puppet-datadog-agent/pull/188
+[#189]: https://github.com/DataDog/puppet-datadog-agent/pull/189
 [@BIAndrews]: https://github.com/BIAndrews
 [@LeoCavaille]: https://github.com/LeoCavaille
 [@MartinDelta]: https://github.com/MartinDelta
@@ -167,3 +182,4 @@ Changes
 [@obowersa]: https://github.com/obowersa
 [@rtyler]: https://github.com/rtyler
 [@tuxinaut]: https://github.com/tuxinaut
+[@davejrt]: https://github.com/davejrt

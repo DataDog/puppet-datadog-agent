@@ -59,7 +59,8 @@ that needs to be done.
           puppet_run_reports => true,
         }
 
-  __To support reporting, your Puppet master needs to have the [dogapi](https://github.com/DataDog/dogapi-rb) gem installed, to do that either run the puppet agent on your master with this configuration or install it manually with `gem`__
+  __To support reporting, your Puppet master needs to have the [dogapi](https://github.com/DataDog/dogapi-rb) gem installed, to do that either run the puppet agent on your master with this configuration or install it manually with `gem`.__
+  _Please note if on Puppet Enterprise or POSS (ie. >=3.7.0) there is a soft dependency for reporting on the `puppetserver_gem` module. Install with `puppet module install puppetlabs-puppetserver_gem` - installing manually with `gem` will *not* work._
 
 3. Include any other integrations you want the agent to use, e.g.
 
@@ -96,6 +97,7 @@ And on all of your Puppet client nodes add:
     [agent]
     # ...
     report=true
+
 
 If you get
 

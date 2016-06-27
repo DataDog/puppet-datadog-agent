@@ -17,7 +17,16 @@
 #       replication option
 #   $galera_cluster
 #       galera cluster option
-#
+#   $extra_status_metrics
+#       extra status metrics
+#   $extra_innodb_metrics
+#       extra innodb metrics
+#   $extra_performance_metrics
+#       extra performance metrics, query run time, 95th precentile avg
+#   $schema_size_metrics
+#       schema size metrics
+#   $disable_innodb_metrics
+#       disable innodb metrics, used with older versions of MySQL without innodb engine support.
 # Sample Usage:
 #
 #  class { 'datadog_agent::integrations::mysql' :
@@ -34,8 +43,13 @@ class datadog_agent::integrations::mysql(
   $sock = undef,
   $tags = [],
   $replication = '0',
-  $galera_cluster = '0'
-) inherits datadog_agent::params {
+  $galera_cluster = '0',
+  $extra_status_metrics = false,
+  $extra_innodb_metrics = false,
+  $extra_performance_metrics = false,
+  $schema_size_metrics = false,
+  $disable_innodb_metrics = false,
+  ) inherits datadog_agent::params {
   include datadog_agent
 
   validate_array($tags)
@@ -50,3 +64,4 @@ class datadog_agent::integrations::mysql(
     notify  => Service[$datadog_agent::params::service_name],
   }
 }
+

@@ -6,3 +6,27 @@ init_config:
 
 instances:
     - url: <%= @url %>
+<%- if @username -%>
+      username: <%= @username %>
+<%- end -%>
+<%- if @password -%>
+      password: <%= @password %>
+<%- end -%>
+      cluster_stats: <%= @cluster_stats %>
+      pshard_stats: <%= @pshard_stats %>
+      pending_task_stats: <%= @pending_task_stats %>
+<%- if @url.match(/^https/) -%>
+      ssl_verify: <%= @ssl_verify %>
+<%- end -%>
+<%- if @ssl_cert -%>
+      ssl_cert: <%= @ssl_cert %>
+<%- end -%>
+<%- if @ssl_key -%>
+      ssl_key: <%= @ssl_key %>
+<%- end -%>
+<%- unless @tags.empty? -%>
+      tags:
+  <%- @tags.each do |tag| -%>
+        - <%= tag %>
+  <%- end -%>
+<%- end -%>

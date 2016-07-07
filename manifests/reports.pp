@@ -15,11 +15,20 @@
 #
 class datadog_agent::reports(
   $api_key,
-  $puppetmaster_user
+  $puppetmaster_user,
+  $hostname_extraction_regex = nil
 ) {
 
   include datadog_agent::params
   $rubydev_package = $datadog_agent::params::rubydev_package
+  $gemprovider = 'puppetserver_gem'
+
+  # set the right provider
+  if (!defined('$::serverversion') or versioncmp($::serverversion, '3.7.0') < 0) {
+      $_gemprovider = 'gem'
+  } else {
+      $_gemprovider = $gemprovider
+  }
 
   # check to make sure that you're not installing rubydev somewhere else
   if ! defined(Package[$rubydev_package]) {
@@ -47,7 +56,7 @@ class datadog_agent::reports(
 
   package{'dogapi':
     ensure   => 'installed',
-    provider => 'gem',
+    provider => $_gemprovider,
   }
 
 }

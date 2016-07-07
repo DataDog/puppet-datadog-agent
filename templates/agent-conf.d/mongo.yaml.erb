@@ -6,11 +6,32 @@ init_config:
 
 instances:
 <% @servers.each do |server| -%>
-  - server: mongodb://<%= server['host'] %>:<%= server['port'] %>
+  - server: mongodb://<%= server['username'] %><%= ":" unless server['password'].nil? %><%= server['password'] %><%= "@" unless server['username'].nil? %><%= server['host'] %>:<%= server['port'] %>/<%= server['database'] %>
   <%- if !server['tags'].nil? && server['tags'].any? -%>
     tags:
     <%- server['tags'].each do |tag| -%>
       - <%= tag %>
+    <%- end -%>
+  <%- end -%>
+  <%- if !server['ssl'].nil? -%>
+    ssl: <%= server['ssl'] %>
+    <%- if !server['ssl_keyfile'].nil? -%>
+    ssl_keyfile: <%= server['ssl_keyfile'] %>
+    <%- end -%>
+    <%- if !server['ssl_certfile'].nil? -%>
+    ssl_certfile: <%= server['ssl_certfile'] %>
+    <%- end -%>
+    <%- if !server['ssl_cert_reqs'].nil? -%>
+    ssl_cert_reqs: <%= server['ssl_cert_reqs'] %>
+    <%- end -%>
+    <%- if !server['ssl_ca_certs'].nil? -%>
+    ssl_ca_certs: <%= server['ssl_ca_certs'] %>
+    <%- end -%>
+  <%- end -%>
+  <%- if !server['additional_metrics'].nil? && server['additional_metrics'].any? -%>
+    additional_metrics:
+    <%- server['additional_metrics'].each do |additional_metric| -%>
+      - <%= additional_metric %>
     <%- end -%>
   <%- end -%>
 <% end -%>

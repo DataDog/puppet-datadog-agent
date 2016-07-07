@@ -11,7 +11,8 @@
 # Sample Usage:
 #
 class datadog_agent::ubuntu(
-  $apt_key = 'C7A7DA52'
+  $apt_key = 'C7A7DA52',
+  $agent_version = 'latest'
 ) {
 
   ensure_packages(['apt-transport-https'])
@@ -43,7 +44,7 @@ class datadog_agent::ubuntu(
   }
 
   package { 'datadog-agent':
-    ensure  => latest,
+    ensure  => $agent_version,
     require => [File['/etc/apt/sources.list.d/datadog.list'],
                 Exec['datadog_apt-get_update']],
   }

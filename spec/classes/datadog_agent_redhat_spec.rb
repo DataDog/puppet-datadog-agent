@@ -10,13 +10,23 @@ describe 'datadog_agent::redhat' do
   end
 
   # it should install the mirror
-  it do
-    should contain_yumrepo('datadog')
-      .with_enabled(1)\
-      .with_gpgcheck(1)\
-      .with_gpgkey('https://yum.datadoghq.com/DATADOG_RPM_KEY.public')\
-      .with_baseurl('https://yum.datadoghq.com/rpm/x86_64/')
+  context 'with manage_repo => true' do
+    let(:params){ {:manage_repo => true} }
+    it do
+      should contain_yumrepo('datadog')
+        .with_enabled(1)\
+        .with_gpgcheck(1)\
+        .with_gpgkey('https://yum.datadoghq.com/DATADOG_RPM_KEY.public')\
+        .with_baseurl('https://yum.datadoghq.com/rpm/x86_64/')
+    end
   end
+  context 'with manage_repo => false' do
+    let(:params){ {:manage_repo => false} }
+    it do
+      should_not contain_yumrepo('datadog')
+    end
+  end
+
 
   # it should install the packages
   it do

@@ -5,8 +5,9 @@
 init_config:
 
 instances:
+<% @_ports.each do |port| -%>
   - host: <%= @host %>
-    port: <%= @port %>
+    port: <%= port %>
     warn_on_missing_keys: <%= @warn_on_missing_keys %>
     <% if @password.empty? %># <%end %>password: <%= @password %>
     # unix_socket_path: /var/run/redis/redis.sock # optional, can be used in lieu of host/port
@@ -21,5 +22,6 @@ instances:
     keys:  # check the length of these keys
 <% @keys.each do |key| -%>
         - <%= key %>
+<% end -%>
 <% end -%>
 <% end -%>

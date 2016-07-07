@@ -30,6 +30,7 @@ class datadog_agent::integrations::ntp(
   $version          = undef,
   $timeout          = undef,
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   file { "${datadog_agent::params::conf_dir}/ntp.yaml":
     ensure  => file,

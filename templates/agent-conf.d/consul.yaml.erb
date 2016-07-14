@@ -22,12 +22,12 @@ instances:
       # ca_bundle_file: '/path/to/trusted_ca_bundle_file'
 
       # Whether to perform checks against the Consul service Catalog
-      catalog_checks: yes
+      catalog_checks: <%= @catalog_checks ? 'yes' : 'no' %>
 
       # Whether to enable new leader checks from this agent
       # Note: if this is set on multiple agents in the same cluster
       # you will receive one event per leader change per agent
-      new_leader_checks: yes
+      new_leader_checks: <%= @new_leader_checks ? 'yes' : 'no' %>
 
       # Services to restrict catalog querying to
       # The default settings query up to 50 services. So if you have more than
@@ -37,3 +37,11 @@ instances:
       #  - zookeeper
       #  - gunicorn
       #  - redis
+      <% if @service_whitelist and ! @service_whitelist.empty? -%>
+      service_whitelist:
+        <%- Array(@service_whitelist).each do |svc| -%>
+          <%- if svc != '' -%>
+          - <%= svc %>
+          <%- end -%>
+        <%- end -%>
+      <% end -%>

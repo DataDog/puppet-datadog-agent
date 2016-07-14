@@ -340,6 +340,7 @@ class datadog_agent(
     ensure  => directory,
     purge   => $conf_dir_purge,
     recurse => true,
+    force   => $conf_dir_purge,
     owner   => $dd_user,
     group   => $dd_group,
     notify  => Service['datadog-agent']

@@ -5,16 +5,38 @@
 # Parameters:
 #   $url:
 #     The URL for consul
+#   $catalog_checks:
+#       Whether to perform checks against the Consul service Catalog
+#       Optional.
+#   $new_leader_checks:
+#       Whether to enable new leader checks from this agent
+#       Note: if this is set on multiple agents in the same cluster
+#       you will receive one event per leader change per agent
+#   $service_whitelist
+#       Services to restrict catalog querying to
+#       The default settings query up to 50 services. So if you have more than
+#       this many in your Consul service catalog, you will want to fill in the
+#       whitelist
 #
 # Sample Usage:
 #
 #   class { 'datadog_agent::integrations::consul' :
 #     url  => "http://localhost:8500"
+#     catalog_checks    => true,
+#     new_leader_checks => false,
 #   }
 #
 class datadog_agent::integrations::consul(
-  $url = 'http://localhost:8500'
+  $url               = 'http://localhost:8500',
+  $catalog_checks    = true,
+  $new_leader_checks = true,
+  $service_whitelist = []
 ) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
+
+  validate_string($url)
+  validate_bool($catalog_checks)
+  validate_bool($new_leader_checks)
+  validate_array($service_whitelist)
 
   file { "${datadog_agent::params::conf_dir}/consul.yaml":
     ensure  => file,

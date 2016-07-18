@@ -105,7 +105,7 @@
 #       String. Default: empty
 #   $use_dogstatsd
 #       Enables the dogstatsd server
-#       Boolean. Default: false
+#       Boolean. Default: true
 #   $dogstatsd_port
 #       Specifies the port to be used by dogstatsd. Must have use_dogstatsd set
 #       String. Default: empty
@@ -217,7 +217,7 @@ class datadog_agent(
   $pup_port = '',
   $pup_interface = '',
   $pup_url = '',
-  $use_dogstatsd = false,
+  $use_dogstatsd = true,
   $dogstatsd_target = '',
   $dogstatsd_interval = '',
   $dogstatsd_normalize = true,

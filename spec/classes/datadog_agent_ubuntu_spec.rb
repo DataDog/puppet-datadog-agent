@@ -8,6 +8,11 @@ describe 'datadog_agent::ubuntu' do
     }
   end
 
+  it do
+    contain_file('/etc/apt/sources.list.d/datadog.list')\
+      .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+main})
+  end
+
   # it should install the mirror
   it { should contain_exec('datadog_key') }
   it do

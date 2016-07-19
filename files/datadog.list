@@ -1,1 +1,1 @@
-deb http://apt.datadoghq.com/ stable main
+deb https://apt.datadoghq.com/ stable main

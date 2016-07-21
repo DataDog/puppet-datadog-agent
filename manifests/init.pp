@@ -337,7 +337,7 @@ class datadog_agent(
     $local_integrations = $integrations
   }
 
-  datadog::tag{$local_tags: }
+  datadog_agent::tag{$local_tags: }
 
   include datadog_agent::params
   case upcase($log_level) {

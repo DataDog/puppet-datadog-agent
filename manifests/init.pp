@@ -306,6 +306,9 @@ class datadog_agent(
   }
 
   datadog_agent::tag{$local_tags: }
+  datadog_agent::tag{$facts_to_tags:
+    lookup_fact => true,
+  }
 
   include datadog_agent::params
   case upcase($log_level) {

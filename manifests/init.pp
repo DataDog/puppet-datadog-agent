@@ -318,6 +318,7 @@ class datadog_agent(
     $local_integrations = $integrations
   }
 
+  datadog::tag{$local_tags: }
 
   include datadog_agent::params
   case upcase($log_level) {
@@ -359,25 +360,32 @@ class datadog_agent(
     notify  => Service['datadog-agent']
   }
 
-  # main agent config file
-  # content
-  if ($extra_template != '') {
-    $agent_conf_content = template(
-      'datadog_agent/datadog.conf.erb',
-      $extra_template
-    )
-  } else {
-    $agent_conf_content = template('datadog_agent/datadog.conf.erb')
-  }
-  file { '/etc/dd-agent/datadog.conf':
-    ensure  => file,
-    content => $agent_conf_content,
+  concat {'/etc/dd-agent/datadog.conf':
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
     mode    => '0640',
     notify  => Service[$datadog_agent::params::service_name],
     require => File['/etc/dd-agent'],
   }
+
+  concat::fragment{ 'datadog header':
+    target  => '/etc/dd-agent/datadog.conf',
+    content => template('datadog_agent/datadog_header.conf.erb'),
+    order   => '01',
+  }
+
+  concat::fragment{ 'datadog tags':
+    target  => '/etc/dd-agent/datadog.conf',
+    content => 'tags: ',
+    order   => '02',
+  }
+
+  concat::fragment{ 'datadog footer':
+    target  => '/etc/dd-agent/datadog.conf',
+    content => template('datadog_agent/datadog_footer.conf.erb'),
+    order   => '05',
+  }
+
 
   if $puppet_run_reports {
     class { 'datadog_agent::reports':

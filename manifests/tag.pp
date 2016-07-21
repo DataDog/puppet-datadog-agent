@@ -9,11 +9,12 @@ define datadog_agent::tag(
     if is_array($value){
       $tags = prefix($value, "${tag}:")
       datadog_agent::tag{$tags: }
-    }
-    concat::fragment{ "datadog tag ${tag}:${value}":
-      target  => '/etc/dd-agent/datadog.conf',
-      content => "${tag}:${value}, ",
-      order   => '03',
+    } else {
+      concat::fragment{ "datadog tag ${tag}:${value}":
+        target  => '/etc/dd-agent/datadog.conf',
+        content => "${tag}:${value}, ",
+        order   => '03',
+      }
     }
   } else {
     concat::fragment{ "datadog tag ${tag}":

@@ -6,14 +6,17 @@ define datadog_agent::tag(
 
   if $lookup_fact{
     $value = getvar($tag)
+
     if is_array($value){
       $tags = prefix($value, "${tag}:")
       datadog_agent::tag{$tags: }
     } else {
-      concat::fragment{ "datadog tag ${tag}:${value}":
-        target  => '/etc/dd-agent/datadog.conf',
-        content => "${tag}:${value}, ",
-        order   => '03',
+      if $value {
+        concat::fragment{ "datadog tag ${tag}:${value}":
+          target  => '/etc/dd-agent/datadog.conf',
+          content => "${tag}:${value}, ",
+          order   => '03',
+        }
       }
     }
   } else {

@@ -7,7 +7,8 @@ define datadog_agent::tag(
   if $lookup_fact{
     $value = getvar($tag)
     if is_array($value){
-      datadog_agent::tag{map($value) |$v| { "$tag:$v" }: }
+      $tags = map($value) |$v| { "${tag}:${v}" }
+      datadog_agent::tag{$tags: }
     }
     concat::fragment{ "datadog tag ${tag}:${value}":
       target  => '/etc/dd-agent/datadog.conf',

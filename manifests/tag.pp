@@ -6,7 +6,7 @@ define datadog_agent::tag(
 
   if $lookup_fact{
     $value = getvar($tag)
-    if $value =~ Array {
+    if is_array($value){
       datadog_agent::tag{$value.map |$v| { "$tag:$v" }: }
     }
     concat::fragment{ "datadog tag ${tag}:${value}":

@@ -19,13 +19,15 @@
 #   url      => 'localhost',
 # }
 #
+# lint:ignore:80chars
 class datadog_agent::integrations::memcache (
   $url                    = 'localhost',
   $port                   = 11211,
   $tags                   = [],
   $items                  = false,
   $slabs                  = false,
-) inherits datadog_agent::params {
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
+
   include datadog_agent
 
   validate_string($url)
@@ -41,4 +43,5 @@ class datadog_agent::integrations::memcache (
     require => Class['datadog_agent'],
     notify  => Service[$datadog_agent::params::service_name]
   }
+# lint:endignore
 }

@@ -17,6 +17,7 @@
 #   integration_contents => template(my_custom_template),
 # }
 #
+# lint:ignore:80chars
 class datadog_agent::integrations::generic(
   $integration_name     = undef,
   $integration_contents = undef,

@@ -26,6 +26,7 @@
 #     new_leader_checks => false,
 #   }
 #
+# lint:ignore:80chars
 class datadog_agent::integrations::consul(
   $url               = 'http://localhost:8500',
   $catalog_checks    = true,

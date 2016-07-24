@@ -38,7 +38,7 @@ class datadog_agent::integrations::memcache (
     group   => $datadog_agent::params::dd_group,
     mode    => '0600',
     content => template('datadog_agent/agent-conf.d/mcache.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
+    require => Class['datadog_agent'],
     notify  => Service[$datadog_agent::params::service_name]
   }
 }

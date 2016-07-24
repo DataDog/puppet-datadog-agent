@@ -28,7 +28,7 @@ class datadog_agent::integrations::haproxy(
       group   => $datadog_agent::params::dd_group,
       mode    => '0644',
       content => template('datadog_agent/agent-conf.d/haproxy.yaml.erb'),
-      require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
+      require => Class['datadog_agent'],
       notify  => Service[$datadog_agent::params::service_name]
   }
 # lint:endignore

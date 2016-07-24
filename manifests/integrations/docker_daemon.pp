@@ -29,7 +29,7 @@ class datadog_agent::integrations::docker_daemon(
   exec { 'dd-agent-should-be-in-docker-group':
     command => "/usr/sbin/usermod -aG ${group} ${datadog_agent::params::dd_user}",
     unless  => "/bin/cat /etc/group | grep '^${group}:' | grep -qw ${datadog_agent::params::dd_user}",
-    require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
+    require => Class['datadog_agent'],
     notify  => Service[$datadog_agent::params::service_name]
   }
 
@@ -43,7 +43,7 @@ class datadog_agent::integrations::docker_daemon(
     group   => $datadog_agent::params::dd_group,
     mode    => '0644',
     content => template('datadog_agent/agent-conf.d/docker_daemon.yaml.erb'),
-    require => [Class['datadog_agent'],Package[$datadog_agent::params::package_name]],
+    require => Class['datadog_agent'],
     notify  => Service[$datadog_agent::params::service_name]
   }
 # lint:endignore

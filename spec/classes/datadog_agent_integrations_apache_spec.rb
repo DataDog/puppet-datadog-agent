@@ -10,17 +10,19 @@ describe 'datadog_agent::integrations::apache' do
   let(:dd_package) { 'datadog-agent' }
   let(:dd_service) { 'datadog-agent' }
   let(:conf_file) { "#{conf_dir}/apache.yaml" }
-  let(:dd_agent) { 'datadog-agent' }
 
-  # it { should compile.with_all_deps }
+  it { is_expected.to contain_class("datadog_agent::params")  }
+
   it { should contain_file(conf_file).with(
     owner: dd_user,
     group: dd_group,
     mode: '0600',
   )}
-  it { should contain_file(conf_file).that_requires("Package[#{dd_package}]") }
-  it { should contain_file(conf_file).that_requires("Class[#{dd_agent}]") }
-  it { should contain_file(conf_file).that_notifies("Service[#{dd_service}]") }
+
+  it { is_expected.to contain_file(conf_file).with(
+    'require' => 'Class[Datadog_agent]',
+    'notify'  => "Service[#{dd_service}]",
+  )}
 
   context 'with default parameters' do
     it { should contain_file(conf_file).with_content(%r{apache_status_url: http://localhost/server-status\?auto}) }

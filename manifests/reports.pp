@@ -55,7 +55,7 @@ class datadog_agent::reports(
   }
 
   package{'dogapi':
-    ensure   => 'installed',
+    ensure   => $datadog_agent::params::dogapi_version,
     provider => $_gemprovider,
   }
 

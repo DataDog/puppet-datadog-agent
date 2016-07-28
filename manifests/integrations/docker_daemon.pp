@@ -30,7 +30,13 @@ class datadog_agent::integrations::docker_daemon(
     command => "/usr/sbin/usermod -aG ${group} ${datadog_agent::params::dd_user}",
     unless  => "/bin/cat /etc/group | grep '^${group}:' | grep -qw ${datadog_agent::params::dd_user}",
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
+    notify  => Exec['dd-agent-should-be-in-docker-group']
+  }
+
+  exec { 'dd-agent-should-be-in-docker-group':
+    command => "/usr/sbin/usermod -aG docker ${datadog_agent::params::dd_user}",
+    unless  => "/bin/cat /etc/group | grep '^docker:' | grep -qw ${datadog_agent::params::dd_user}"
   }
 
   file { "${datadog_agent::params::conf_dir}/docker.yaml":

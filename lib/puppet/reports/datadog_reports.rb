@@ -48,7 +48,7 @@ Puppet::Reports.register_report(:datadog_reports) do
     @msg_host = self.host
     unless HOSTNAME_EXTRACTION_REGEX.nil?
       m = @msg_host.match(HOSTNAME_EXTRACTION_REGEX)
-      unless m[:hostname].nil?
+      if !m.nil? && !m[:hostname].nil?
         @msg_host = m[:hostname]
       end
     end

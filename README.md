@@ -70,40 +70,55 @@ Reporting
 ---------
 To enable reporting of changes to the Datadog timeline, enable the report
 processor on your Puppet master, and enable reporting for your clients.
-The clients will send a run report after each check-in back to the master,
-and the master will process the reports and send them to the Datadog API.
+The clients will send a run report after each check-in back to the master.
 
+Please specify what clients/hosts you'd like to submit puppet run reports
+for by setting the puppet_run_reports option to true in the node configuration
+manifest.
+
+```ruby
+class { "datadog-agent":
+    api_key => "<your_api_key>",
+    puppet_run_reports => true
+    # ...
+}
+```
 
 In your Puppet master `/etc/puppet/puppet.conf`, add these configuration options:
 
-    [main]
-    # No need to modify this section
-    # ...
+```ini
+[main]
+# No need to modify this section
+# ...
 
-    [master]
-    # Enable reporting to datadog
-    reports=datadog_reports
-    # If you use other reports already, just add datadog_reports at the end
-    # reports=store,log,datadog_reports
-    # ...
+[master]
+# Enable reporting to datadog
+reports=datadog_reports
+# If you use other reports already, just add datadog_reports at the end
+# reports=store,log,datadog_reports
+# ...
 
-    [agent]
-    # ...
-    pluginsync=true
-    report=true
+[agent]
+# ...
+pluginsync=true
+report=true
+```
 
 And on all of your Puppet client nodes add:
 
-    [agent]
-    # ...
-    report=true
-
+```ini
+[agent]
+# ...
+report=true
+```
 
 If you get
 
-    err: Could not send report:
-    Error 400 on SERVER: Could not autoload datadog_reports:
-    Class Datadog_reports is already defined in Puppet::Reports
+```
+err: Could not send report:
+Error 400 on SERVER: Could not autoload datadog_reports:
+Class Datadog_reports is already defined in Puppet::Reports
+```
 
 Make sure `reports=datadog_reports` is defined in **[master]**, not **[main]**.
 

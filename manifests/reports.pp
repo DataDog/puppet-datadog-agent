@@ -16,6 +16,7 @@
 class datadog_agent::reports(
   $api_key,
   $puppetmaster_user,
+  $dogapi_version,
   $hostname_extraction_regex = nil
 ) {
 
@@ -48,7 +49,7 @@ class datadog_agent::reports(
   }
 
   package{'dogapi':
-    ensure   => $datadog_agent::params::dogapi_version,
+    ensure   => $dogapi_version,
     provider => $gemprovider,
   }
 

@@ -29,13 +29,13 @@ describe 'datadog_agent::integrations::process' do
       processes: [
         {
           'name' => 'foo',
-          'search_string' => 'bar',
+          'search_string' => [ 'bar' ],
           'exact_match' => true
         }
       ]
     }}
     it { should contain_file(conf_file).with_content(%r{name: foo}) }
-    it { should contain_file(conf_file).with_content(%r{search_string: bar}) }
+    it { should contain_file(conf_file).with_content(%r{search_string:\n^.*- bar}) }
     it { should contain_file(conf_file).with_content(%r{exact_match: true}) }
   end
 end

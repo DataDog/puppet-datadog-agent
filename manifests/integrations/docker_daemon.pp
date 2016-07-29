@@ -39,6 +39,11 @@ class datadog_agent::integrations::docker_daemon(
     require => Group['docker']
   }
 
+  group { 'docker':
+    ensure => 'present',
+    gid    => '500'
+  }
+
   file { "${datadog_agent::params::conf_dir}/docker.yaml":
     ensure => 'absent'
   }

@@ -33,17 +33,6 @@ class datadog_agent::integrations::docker_daemon(
     notify  => Service[$datadog_agent::params::service_name]
   }
 
-  exec { 'dd-agent-should-be-in-docker-group':
-    command => "/usr/sbin/usermod -aG docker ${datadog_agent::params::dd_user}",
-    unless  => "/bin/cat /etc/group | grep '^docker:' | grep -qw ${datadog_agent::params::dd_user}"
-  }
-
-  group { 'docker':
-    ensure => 'present',
-    gid    => '500',
-    before => Exec['dd-agent-should-be-in-docker-group']
-  }
-
   file { "${datadog_agent::params::conf_dir}/docker.yaml":
     ensure => 'absent'
   }

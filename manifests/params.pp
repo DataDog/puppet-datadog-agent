@@ -31,25 +31,4 @@ class datadog_agent::params {
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
 
-  user { 'create-dd-agent-user':
-    name    => "$dd_user",
-    ensure  => 'present',
-    gid     => 'root',
-    groups  => ['dd-agent', 'docker']
-  }
-
-  group { 'create-docker-group':
-    name    => 'docker',
-    gid     => '500',
-    ensure  => 'present',
-    before  => User['create-dd-agent-user']
-  }
-
-  group { 'create-dd-agent-group':
-    name    => 'dd-agent',
-    gid     => '501',
-    ensure  => 'present',
-    before  => User['create-dd-agent-user']
-  }
-
 }

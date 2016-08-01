@@ -38,7 +38,31 @@ class datadog_agent::integrations::consul(
   validate_bool($new_leader_checks)
   validate_array($service_whitelist)
 
-  file { "${datadog_agent::params::conf_dir}/consul_check.yaml":
+  case $::operatingsystem {
+    'Ubuntu','Debian' : {
+      if versioncmp($datadog_agent::agent_version, '1:5.8') >= 0 {
+        $consul_check_filename = 'consul_check.yaml'
+        file { "${datadog_agent::params::conf_dir}/consul.yaml":
+          ensure => 'absent',
+        }
+      } else {
+        $consul_check_filename = 'consul.yaml'
+      }
+    }
+    'RedHat','CentOS','Fedora','Amazon','Scientific' : {
+      if versioncmp($datadog_agent::agent_version, '5.8') >= 0 {
+        $consul_check_filename = 'consul_check.yaml'
+        file { "${datadog_agent::params::conf_dir}/consul.yaml":
+          ensure => 'absent',
+        }
+      } else {
+        $consul_check_filename = 'consul.yaml'
+      }
+    }
+    default: { fail("Class[datadog_agent::integrations::consul]: Unsupported operatingsystem: ${::operatingsystem}") }
+  }
+
+  file { "${datadog_agent::params::conf_dir}/${consul_check_filename}":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

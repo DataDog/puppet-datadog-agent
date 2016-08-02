@@ -17,6 +17,15 @@
 #       alerts only if the check fails x times within the last y attempts
 #       where x is the threshold and y is the window.
 #
+#   content_match
+#       The (optional) content_match parameter will allow the check
+#       to look for a particular string within the response. The check
+#       will report as DOWN if the string is not found.
+#       content_match uses Python regular expressions which means that
+#       you will have to escape the following "special" characters with
+#       a backslash (\) if you're trying to match them in your content:
+#        . ^ $ * + ? { } [ ] \ | ( )
+#
 #   include_content
 #       The (optional) collect_response_time parameter will instruct the
 #       check to create a metric 'network.http.response_time', tagged with
@@ -69,6 +78,7 @@
 #   timeout               => 5,
 #   threshold             => 1,
 #   window                => 1,
+#   content_match         => '^(Bread|Apples) float(s)? in water'
 #   include_content       => true,
 #   collect_response_time => true,
 #   contact               => 'pagerduty',
@@ -84,6 +94,7 @@ class datadog_agent::integrations::http_check (
   $timeout   = 1,
   $threshold = undef,
   $window    = undef,
+  $content_match = undef,
   $include_content = false,
   $collect_response_time = true,
   $disable_ssl_validation = false,
@@ -103,6 +114,7 @@ class datadog_agent::integrations::http_check (
       'timeout'                  => $timeout,
       'threshold'                => $threshold,
       'window'                   => $window,
+      'content_match'            => $content_match,
       'include_content'          => $include_content,
       'collect_response_time'    => $collect_response_time,
       'disable_ssl_validation' => $disable_ssl_validation,

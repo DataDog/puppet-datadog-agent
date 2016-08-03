@@ -1,0 +1,19 @@
+# 
+# Managed by Puppet
+#
+
+init_config:
+
+instances:
+
+    - host: <%= @host %>
+      port: <%= @port %>
+      username: <%= @username %>
+<% if @password -%>
+      password: <%= @password %>
+<% end -%>
+      sftp_check: <%= @sftp_check %>
+<% if @private_key_file -%>
+      private_key_file: <%= @private_key_file %>
+<% end -%>
+      add_missing_keys: <%= @add_missing_keys %>

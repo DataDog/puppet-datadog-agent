@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::docker
+# Class: datadog_agent::integrations::docker_daemon
 #
 # This class will install the necessary configuration for the docker integration
 #
@@ -15,7 +15,7 @@
 #
 # Sample Usage:
 #
-#   class { 'datadog_agent::integrations::docker' :
+#   class { 'datadog_agent::integrations::docker_daemon' :
 #     url           => 'unix://var/run/docker.sock',
 #   }
 #

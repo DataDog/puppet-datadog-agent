@@ -53,8 +53,9 @@
 #  }
 class datadog_agent::integrations::mysql(
   $host = 'localhost',
-  $password,
+  $password = undef,
   $user = 'datadog',
+  $port = 3306,
   $sock = undef,
   $tags = [],
   $replication = '0',
@@ -62,7 +63,7 @@ class datadog_agent::integrations::mysql(
   $extra_status_metrics = false,
   $extra_innodb_metrics = false,
   $extra_performance_metrics = false,
-  $schema_size_metrics = false,
+  $schema_size_metrics = false, 
   $disable_innodb_metrics = false,
   $instances = undef,
   ) 
@@ -70,7 +71,7 @@ class datadog_agent::integrations::mysql(
   include datadog_agent
   validate_array($tags)
   
-  if !$instances {
+    if !$instances {
     $_instances = [{
       'host'                      => $host,
       'password'                  => $password,
@@ -91,6 +92,7 @@ class datadog_agent::integrations::mysql(
   } else {
     $_instances = $instances
   }
+ 
 
   file { "${datadog_agent::params::conf_dir}/mysql.yaml":
     ensure  => file,
@@ -102,4 +104,3 @@ class datadog_agent::integrations::mysql(
     notify  => Service[$datadog_agent::params::service_name],
   }
 }
-

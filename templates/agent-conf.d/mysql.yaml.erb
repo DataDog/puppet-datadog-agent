@@ -5,7 +5,7 @@
 init_config:
 
 instances:
-<%- (Array(@instances)).each do |instance| -%>
+<%- (Array(@_instances)).each do |instance| -%>
   - server: <%= instance['host'] %>
     user: <%= instance['user'] %>
     pass: <%= instance['password'] %>

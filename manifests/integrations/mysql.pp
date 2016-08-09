@@ -71,7 +71,7 @@ class datadog_agent::integrations::mysql(
   include datadog_agent
   validate_array($tags)
   
-    if !$instances {
+  if !$instances and $host {
     $_instances = [{
       'host'                      => $host,
       'password'                  => $password,

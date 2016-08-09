@@ -8,13 +8,13 @@ Description
 
 A module to:
 
-1. install the [DataDog](http://www.datadoghq.com)  agent
+1. install the [DataDog](http://www.datadoghq.com) agent
 2. to send reports of puppet runs to the Datadog service [Datadog](http://www.datadoghq.com/).
 
 Requirements
 ------------
 
-Puppet >=2.7.x and <=4.2.x. For detailed informations on compatibility, check the [module page](https://forge.puppetlabs.com/datadog/datadog_agent) on the Puppet forge.
+Puppet >=2.7.x and <=4.2.x (we may work with newer versions, but untested). For detailed informations on compatibility, check the [module page](https://forge.puppetlabs.com/datadog/datadog_agent) on the Puppet forge.
 
 Installation
 ------------
@@ -70,40 +70,55 @@ Reporting
 ---------
 To enable reporting of changes to the Datadog timeline, enable the report
 processor on your Puppet master, and enable reporting for your clients.
-The clients will send a run report after each check-in back to the master,
-and the master will process the reports and send them to the Datadog API.
+The clients will send a run report after each check-in back to the master.
 
+Please specify what clients/hosts you'd like to submit puppet run reports
+for by setting the puppet_run_reports option to true in the node configuration
+manifest.
+
+```ruby
+class { "datadog-agent":
+    api_key => "<your_api_key>",
+    puppet_run_reports => true
+    # ...
+}
+```
 
 In your Puppet master `/etc/puppet/puppet.conf`, add these configuration options:
 
-    [main]
-    # No need to modify this section
-    # ...
+```ini
+[main]
+# No need to modify this section
+# ...
 
-    [master]
-    # Enable reporting to datadog
-    reports=datadog_reports
-    # If you use other reports already, just add datadog_reports at the end
-    # reports=store,log,datadog_reports
-    # ...
+[master]
+# Enable reporting to datadog
+reports=datadog_reports
+# If you use other reports already, just add datadog_reports at the end
+# reports=store,log,datadog_reports
+# ...
 
-    [agent]
-    # ...
-    pluginsync=true
-    report=true
+[agent]
+# ...
+pluginsync=true
+report=true
+```
 
 And on all of your Puppet client nodes add:
 
-    [agent]
-    # ...
-    report=true
-
+```ini
+[agent]
+# ...
+report=true
+```
 
 If you get
 
-    err: Could not send report:
-    Error 400 on SERVER: Could not autoload datadog_reports:
-    Class Datadog_reports is already defined in Puppet::Reports
+```
+err: Could not send report:
+Error 400 on SERVER: Could not autoload datadog_reports:
+Class Datadog_reports is already defined in Puppet::Reports
+```
 
 Make sure `reports=datadog_reports` is defined in **[master]**, not **[main]**.
 
@@ -182,6 +197,33 @@ Masterless puppet
 =================
 
 This is a specific setup, you can use https://gist.github.com/LeoCavaille/cd412c7a9ff5caec462f to set it up.
+
+Client Settings
+===============
+
+### Tagging client nodes
+
+The datadog agent configuration file will be recreated from the template every puppet run. If you need to tag your nodes, add an array entry in hiera
+
+        datadog_agent::local_tags
+        - 'keyname:value'
+        - 'anotherkey:%{factname}'
+
+Here are some of the other variables that be set in the datadog_agent class to control settings in the agent:
+
+| variable name | description |
+| ------------- | ----------- |
+| collect_ec2_tags | Set this to yes to have an instance's custom EC2 tags used as agent tags |
+| collect_instance_metadata | Set this to yes to have an instance's EC2 metadata used as agent tags |
+| dd_url        | datadog intake server URL. You are unlikely to need to change this |
+| host          | overrides the node's hostname |
+| local_tags    | an array of key:value strings that will be set as tags for the node |
+| non_local_traffic | set this to allow other nodes to relay their traffic through this one |
+
+### Proxy Settings
+
+If you need to connect to the internet through a proxy, you can set `proxy_host`, `proxy_port`, `proxy_user` and `proxy_password`.
+
 
 Module Development and Testing
 ==============================

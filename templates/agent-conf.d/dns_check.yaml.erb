@@ -1,0 +1,13 @@
+#
+# MANAGED BY PUPPET
+#
+
+init_config:
+  default_timeout: 4
+
+instances:
+<% @checks.each do |check| -%>
+  - hostname: <%= check['hostname'] %>
+    nameserver: <%= check['nameserver'] %>
+    timeout: <%= check['timeout'] %>
+<% end -%>

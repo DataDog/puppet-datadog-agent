@@ -10,7 +10,7 @@ end
 Puppet::Reports.register_report(:datadog_reports) do
 
   configfile = "/etc/dd-agent/datadog.yaml"
-  raise(Puppet::ParseError, "Datadog report config file #{configfile} not readable") unless File.exist?(configfile)
+  raise(Puppet::ParseError, "Datadog report config file #{configfile} not readable") unless File.readable?(configfile)
   config = YAML.load_file(configfile)
   API_KEY = config[:datadog_api_key]
 
@@ -48,7 +48,7 @@ Puppet::Reports.register_report(:datadog_reports) do
     @msg_host = self.host
     unless HOSTNAME_EXTRACTION_REGEX.nil?
       m = @msg_host.match(HOSTNAME_EXTRACTION_REGEX)
-      unless m[:hostname].nil?
+      if !m.nil? && !m[:hostname].nil?
         @msg_host = m[:hostname]
       end
     end

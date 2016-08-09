@@ -21,6 +21,7 @@ class datadog_agent::params {
   $dd_group       = 'root'
   $package_name   = 'datadog-agent'
   $service_name   = 'datadog-agent'
+  $dogapi_version = 'installed'
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {

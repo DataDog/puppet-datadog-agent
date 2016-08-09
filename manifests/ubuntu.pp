@@ -37,6 +37,8 @@ class datadog_agent::ubuntu(
   exec { 'datadog_apt-get_update':
     command     => '/usr/bin/apt-get update',
     refreshonly => true,
+    tries       => 2, # https://bugs.launchpad.net/launchpad/+bug/1430011 won't get fixed until 16.04 xenial
+    try_sleep   => 30,
   }
 
   package { 'datadog-agent-base':

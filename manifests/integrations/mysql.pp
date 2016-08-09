@@ -17,7 +17,16 @@
 #       replication option
 #   $galera_cluster
 #       galera cluster option
-#
+#   $extra_status_metrics
+#       extra status metrics
+#   $extra_innodb_metrics
+#       extra innodb metrics
+#   $extra_performance_metrics
+#       extra performance metrics, query run time, 95th precentile avg
+#   $schema_size_metrics
+#       schema size metrics
+#   $disable_innodb_metrics
+#       disable innodb metrics, used with older versions of MySQL without innodb engine support.
 # Sample Usage:
 #
 #  class { 'datadog_agent::integrations::mysql' :
@@ -35,8 +44,13 @@ class datadog_agent::integrations::mysql(
   $sock = undef,
   $tags = [],
   $replication = '0',
-  $galera_cluster = '0'
-) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
+  $galera_cluster = '0',
+  $extra_status_metrics = false,
+  $extra_innodb_metrics = false,
+  $extra_performance_metrics = false,
+  $schema_size_metrics = false,
+  $disable_innodb_metrics = false,
+  ) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   validate_array($tags)
 
@@ -46,7 +60,7 @@ class datadog_agent::integrations::mysql(
     group   => $datadog_agent::params::dd_group,
     mode    => '0600',
     content => template('datadog_agent/agent-conf.d/mysql.yaml.erb'),
-    require => Class['datadog_agent'],
+    require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name],
   }
 # lint:endignore

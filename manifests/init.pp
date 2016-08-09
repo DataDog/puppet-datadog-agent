@@ -342,6 +342,7 @@ class datadog_agent(
     class { 'datadog_agent::reports':
       api_key                   => $api_key,
       puppetmaster_user         => $puppetmaster_user,
+      dogapi_version            => $datadog_agent::params::dogapi_version,
       hostname_extraction_regex => $hostname_extraction_regex,
     }
   }

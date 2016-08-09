@@ -29,7 +29,7 @@
 class datadog_agent::integrations::redis(
   $host = 'localhost',
   $password = '',
-  $port = 6379,
+  $port = '6379',
   $ports = undef,
   $slowlog_max_len = '',
   $tags = [],

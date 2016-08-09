@@ -66,8 +66,7 @@ class datadog_agent::integrations::mysql(
   $schema_size_metrics = false, 
   $disable_innodb_metrics = false,
   $instances = undef,
-  ) 
-  inherits datadog_agent::params {
+  ) inherits datadog_agent::params {
   include datadog_agent
   validate_array($tags)
   

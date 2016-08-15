@@ -41,3 +41,34 @@ instances:
     <%- end -%>
   <%- end -%>
 <% end -%>
+# https://help.datadoghq.com/hc/en-us/articles/208385813-Postgres-custom-metric-collection-explained
+# custom_metrics:
+#   - # Capture simple data
+#   query: SELECT name, address, %s from company where name = 'Paul'; # this query will be run and "%s" replaced with the parameters defined in the metrics section just below
+#   metrics:
+#       age: [postgresql.employee_age, GAUGE] # the value contained in column "age" will be captured and submitted as a gauge metric named "postgresql.employee.age"
+#       salary: [postgresql.employee_salary, GAUGE]
+#   relation: false #  when relation is not an empty list, it gathers per-relation metrics on top of that.
+#   descriptors:
+#       - [name, name] # captures the content of the "name" column as a tag for the 2 metrics defined
+#       - [address, localisation] # captures the content of "address" column as a tag and renames this tag "localisation"
+#
+<% if @custom_metrics and ! @custom_metrics.empty? -%>
+    custom_metrics:
+  <%- Array(@custom_metrics).each do |n, custom_metric| -%>
+      - query: <%= custom_metric["query"] %>
+        relation: <%= custom_metric["relation"]? "true" : "false" %>
+        metrics:
+    <%- Array(custom_metric["metrics"]).each do |metric_name, metric_descriptor| -%>
+          "<%= metric_name %>": [<%= metric_descriptor[0] %>, <%= metric_descriptor[1] %>]
+    <%- end -%>
+    <%- if custom_metric["descriptors"] == nil || custom_metric["descriptors"].empty? -%>
+        descriptors: []
+    <%- else -%>
+        descriptors:
+      <%- Array(custom_metric["descriptors"]).each do |descriptor| -%>
+          - [<%=descriptor[0]%>, <%=descriptor[1] %>]
+      <%- end -%>
+    <%- end -%>
+  <%- end -%>
+<% end -%>

@@ -22,7 +22,7 @@ describe 'datadog_agent' do
   context 'all supported operating systems' do
     ALL_OS.each do |operatingsystem|
       describe "datadog_agent class common actions on #{operatingsystem}" do
-        let(:params) { { puppet_run_reports: true } }
+        let(:params) { { puppet_run_reports: true, puppet_gem_provider: 'gem' } }
         let(:facts) do
           {
             operatingsystem: operatingsystem,

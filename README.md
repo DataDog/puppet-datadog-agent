@@ -73,9 +73,8 @@ To enable reporting of changes to the Datadog timeline, enable the report
 processor on your Puppet master, and enable reporting for your clients.
 The clients will send a run report after each check-in back to the master.
 
-Please specify what clients/hosts you'd like to submit puppet run reports
-for by setting the puppet_run_reports option to true in the node configuration
-manifest.
+Make sure you enable the `puppet_run_reports` option to true in the node
+configuration manifest for your master.
 
 ```ruby
 class { "datadog-agent":

@@ -1,6 +1,35 @@
 Changes
 =======
 
+# 1.8.0 / 2016-08-15
+
+### Notes
+
+* [FEATURE] Cassandra integration. See #195. (Thanks @aaron-miller).
+* [FEATURE] Fluentd integration. See #197. (Thanks @aaron-miller).
+* [FEATURE] Memcached integration. See #203. (Thanks @NoodlesNZ).
+* [FEATURE] Riak integration. See #213. (Thanks @cristianjuve).
+* [FEATURE] Supervisord integration. See #214. (Thanks @cristianjuve).
+* [FEATURE] Kong integration. See #215. (Thanks @eddmann).
+* [FEATURE] SSH integration. See #219. (Thanks @aaron-miller).
+* [FEATURE] DNS integration. See #212. (Thanks @jacobbednarz).
+
+* [IMPROVEMENT] MySQL: adding new mysql options. See #216. (Thanks @IanCrouch).
+* [IMPROVEMENT] Elasticsearch: adding elasticsearch shield support. See #202. (Thanks @pabrahamsson).
+* [IMPROVEMENT] Update the report config file check to account for permissions. See #205. (Thanks @mcasper).
+* [IMPROVEMENT] Ubuntu: Use HTTPS for apt requests. See #208. (Thanks @jacobbednarz).
+* [IMPROVEMENT] Ubuntu: retry `apt-get update`. See #207. (Thanks @mraylu).
+* [IMPROVEMENT] Reporting: allow setting `dogapi` version. See #210. (Thanks @degemer).
+* [IMPROVEMENT] Reporting: allow setting `gem_provider` manually. See #223.
+* [IMPROVEMENT] Http_check: Adding content_match argument. See #217. (Thanks @cristianjuve)
+* [IMPROVEMENT] Varnish: Add `-n` argument. See #209. (Thanks @cristianjuve)
+* [IMPROVEMENT] Consul: new configuration options. See #204. (Thanks @scottgeary)
+
+* [BUGFIX] Reporting could break if `m` in datadog_reports returns nil. See #211.
+* [BUGFIX] Redhat: Setting provider to `redhat`, should fix init issues. See #222.
+
+* [CI] Fixed broken Travis testing.
+
 # 1.7.1 / 2016-06-22
 
 ### Notes

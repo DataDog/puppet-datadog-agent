@@ -61,6 +61,7 @@ that needs to be done.
 
   __To support reporting, your Puppet master needs to have the [dogapi](https://github.com/DataDog/dogapi-rb) gem installed, to do that either run the puppet agent on your master with this configuration or install it manually with `gem`.__
   _Please note if on Puppet Enterprise or POSS (ie. >=3.7.0) there is a soft dependency for reporting on the `puppetserver_gem` module. Install with `puppet module install puppetlabs-puppetserver_gem` - installing manually with `gem` will *not* work._
+  _Also note that we have made the gem provider configurable, so you can set it to `puppetserver_gem` (already set by default) if on PE/POSS (>=3.7.0) or `gem` if on older versions of puppet_
 
 3. Include any other integrations you want the agent to use, e.g.
 

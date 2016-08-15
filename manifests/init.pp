@@ -184,6 +184,7 @@ class datadog_agent(
   $hiera_tags = false,
   $facts_to_tags = [],
   $puppet_run_reports = false,
+  $puppet_gem_provider = 'puppetserver_gem',
   $puppetmaster_user = 'puppet',
   $non_local_traffic = false,
   $dogstreams = [],
@@ -238,6 +239,7 @@ class datadog_agent(
   validate_array($dogstreams)
   validate_array($facts_to_tags)
   validate_bool($puppet_run_reports)
+  validate_string($puppet_gem_provider)
   validate_string($puppetmaster_user)
   validate_bool($non_local_traffic)
   validate_bool($log_to_syslog)
@@ -340,6 +342,7 @@ class datadog_agent(
   if $puppet_run_reports {
     class { 'datadog_agent::reports':
       api_key                   => $api_key,
+      puppet_gem_provider       => $puppet_gem_provider,
       puppetmaster_user         => $puppetmaster_user,
       dogapi_version            => $datadog_agent::params::dogapi_version,
       hostname_extraction_regex => $hostname_extraction_regex,

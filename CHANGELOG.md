@@ -1,6 +1,12 @@
 Changes
 =======
 
+# 1.8.1 / 2016-08-15
+
+### Notes
+
+* [BUGFIX] Updating Changelog and README.
+
 # 1.8.0 / 2016-08-15
 
 ### Notes

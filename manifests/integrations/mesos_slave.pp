@@ -1,5 +1,6 @@
 # Class: datadog_agent::integrations::mesos_slave
 #
+# lint:ignore:80chars
 # This class will install the necessary configuration for the mesos slave integration
 #
 # Parameters:
@@ -15,7 +16,7 @@
 class datadog_agent::integrations::mesos_slave(
   $mesos_timeout = 10,
   $url = 'http://localhost:5051'
-) inherits datadog_agent::params {
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   file { "${datadog_agent::params::conf_dir}/mesos_slave.yaml":
     ensure  => file,
@@ -26,4 +27,5 @@ class datadog_agent::integrations::mesos_slave(
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]
   }
+# lint:endignore
 }

@@ -26,12 +26,13 @@
 #     new_leader_checks => false,
 #   }
 #
+# lint:ignore:80chars
 class datadog_agent::integrations::consul(
   $url               = 'http://localhost:8500',
   $catalog_checks    = true,
   $new_leader_checks = true,
   $service_whitelist = []
-) inherits datadog_agent::params {
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   validate_string($url)
   validate_bool($catalog_checks)
@@ -47,4 +48,5 @@ class datadog_agent::integrations::consul(
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]
   }
+# lint:endignore
 }

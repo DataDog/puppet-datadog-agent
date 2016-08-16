@@ -1,5 +1,6 @@
 # Class: datadog_agent::integrations::pgbouncer
 #
+# lint:ignore:80chars
 # This class will install the necessary configuration for the pgbouncer integration
 #
 # Parameters:
@@ -30,7 +31,7 @@ class datadog_agent::integrations::pgbouncer(
   $username = 'datadog',
   $password,
   $tags = [],
-) inherits datadog_agent::params {
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   validate_array($tags)
 
@@ -43,4 +44,5 @@ class datadog_agent::integrations::pgbouncer(
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name],
   }
+# lint:endignore
 }

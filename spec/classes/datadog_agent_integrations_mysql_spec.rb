@@ -20,14 +20,18 @@ describe 'datadog_agent::integrations::mysql' do
       password: 'foobar',
     }}
 
-    it { should compile.with_all_deps }
+    it { is_expected.to contain_class("datadog_agent::params")  }
+
     it { should contain_file(conf_file).with(
       owner: dd_user,
       group: dd_group,
       mode: '0600',
     )}
-    it { should contain_file(conf_file).that_requires("Package[#{dd_package}]") }
-    it { should contain_file(conf_file).that_notifies("Service[#{dd_service}]") }
+
+    it { is_expected.to contain_file(conf_file).with(
+        'require' => 'Class[Datadog_agent]',
+        'notify'  => "Service[#{dd_service}]",
+    )}
 
     it { should contain_file(conf_file).with_content(%r{pass: foobar}) }
     it { should contain_file(conf_file).without_content(%r{tags: }) }

@@ -1,5 +1,6 @@
 # Class: datadog_agent::integrations::elasticsearch
 #
+# lint:ignore:80chars
 # This class will install the necessary configuration for the elasticsearch integration
 #
 # Parameters:
@@ -23,8 +24,7 @@ class datadog_agent::integrations::elasticsearch(
   $tags               = [],
   $url                = 'http://localhost:9200',
   $username           = undef,
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits datadog_agent::params { # lint:ignore:class_inherits_from_params_class
 
   validate_array($tags)
   # $ssl_verify can be a bool or a string
@@ -44,7 +44,8 @@ class datadog_agent::integrations::elasticsearch(
     group   => $datadog_agent::params::dd_group,
     mode    => '0644',
     content => template('datadog_agent/agent-conf.d/elastic.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
+    require => Class['datadog_agent'],
     notify  => Service[$datadog_agent::params::service_name]
   }
+# lint:endignore
 }

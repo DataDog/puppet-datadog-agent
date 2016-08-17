@@ -32,6 +32,8 @@
 #       the scheme: "fact_name:fact_value".
 #   $puppet_run_reports
 #       Will send results from your puppet agent runs back to the datadog service.
+#   $manage_ruby
+#       Invoke the ruby class to manage ruby install
 #   $puppetmaster_user
 #       Will chown the api key used by the report processor to this user.
 #       Defaults to the user the puppetmaster is configured to run as.
@@ -243,6 +245,7 @@ class datadog_agent(
   $service_ensure = 'running',
   $service_enable = true,
   Boolean $manage_repo = true,
+  Boolean $manage_ruby = true,
   $hostname_extraction_regex = undef,
   Boolean $hostname_fqdn = false,
   $dogstatsd_port = 8125,
@@ -706,6 +709,7 @@ class datadog_agent(
     class { 'datadog_agent::reports':
       api_key                   => $api_key,
       datadog_site              => $datadog_site,
+      manage_ruby               => $manage_ruby,
       puppet_gem_provider       => $puppet_gem_provider,
       dogapi_version            => $datadog_agent::params::dogapi_version,
       puppetmaster_user         => $puppetmaster_user,

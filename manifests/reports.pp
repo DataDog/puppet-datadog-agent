@@ -17,6 +17,7 @@ class datadog_agent::reports(
   $api_key,
   $puppetmaster_user,
   $dogapi_version,
+  $manage_ruby = true,
   $hostname_extraction_regex = undef,
   $datadog_site = 'datadoghq.com',
   $puppet_gem_provider = $datadog_agent::params::gem_provider,
@@ -28,21 +29,28 @@ class datadog_agent::reports(
 
   } else {
 
-    include datadog_agent
-    $rubydev_package = $datadog_agent::params::rubydev_package
+    if $manage_ruby {
+      include datadog_agent
+      $rubydev_package = $datadog_agent::params::rubydev_package
 
-    # check to make sure that you're not installing rubydev somewhere else
-    if ! defined(Package[$rubydev_package]) {
-      package {$rubydev_package:
-        ensure => installed,
-        before => Package['dogapi']
+      # check to make sure that you're not installing rubydev somewhere else
+      if ! defined(Package[$rubydev_package]) {
+        package {$rubydev_package:
+          ensure => installed,
+          before => Package['dogapi']
+        }
       }
-    }
 
-    if (! defined(Package['rubygems'])) {
-      # Ensure rubygems is installed
-      class { 'ruby':
-        rubygems_update => false
+      if (! defined(Package['rubygems'])) {
+        # Ensure rubygems is installed
+        class { 'ruby':
+          rubygems_update => false
+        }
+      }
+
+      package{ 'dogapi':
+        ensure   => $dogapi_version,
+        provider => $puppet_gem_provider,
       }
     }
 
@@ -53,11 +61,6 @@ class datadog_agent::reports(
       group   => 'root',
       mode    => '0640',
       require => File['/etc/datadog-agent'],
-    }
-
-    package{ 'dogapi':
-      ensure   => $dogapi_version,
-      provider => $puppet_gem_provider,
     }
 
   }

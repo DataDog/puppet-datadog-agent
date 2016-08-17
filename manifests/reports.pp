@@ -15,27 +15,30 @@
 #
 class datadog_agent::reports(
   $api_key,
+  $manage_ruby,
   $puppet_gem_provider,
   $puppetmaster_user,
   $dogapi_version,
   $hostname_extraction_regex = nil
 ) {
 
-  include datadog_agent::params
-  $rubydev_package = $datadog_agent::params::rubydev_package
+  if $manage_ruby {
+    include datadog_agent::params
+    $rubydev_package = $datadog_agent::params::rubydev_package
 
-  # check to make sure that you're not installing rubydev somewhere else
-  if ! defined(Package[$rubydev_package]) {
-    package {$rubydev_package:
-      ensure => installed,
-      before => Package['dogapi']
+    # check to make sure that you're not installing rubydev somewhere else
+    if ! defined(Package[$rubydev_package]) {
+      package {$rubydev_package:
+        ensure => installed,
+        before => Package['dogapi']
+      }
     }
-  }
 
-  if (! defined(Package['rubygems'])) {
-    # Ensure rubygems is installed
-    class { 'ruby':
-      rubygems_update => false
+    if (! defined(Package['rubygems'])) {
+      # Ensure rubygems is installed
+      class { 'ruby':
+        rubygems_update => false
+      }
     }
   }
 

@@ -63,12 +63,12 @@ class datadog_agent::integrations::mysql(
   $extra_status_metrics = false,
   $extra_innodb_metrics = false,
   $extra_performance_metrics = false,
-  $schema_size_metrics = false, 
+  $schema_size_metrics = false,
   $disable_innodb_metrics = false,
   $instances = undef,
   ) inherits datadog_agent::params {
   include datadog_agent
-  validate_array($tags)
+  validate_hash($tags)
   
   if !$instances and $host {
     $_instances = [{
@@ -103,3 +103,4 @@ class datadog_agent::integrations::mysql(
     notify  => Service[$datadog_agent::params::service_name],
   }
 }
+

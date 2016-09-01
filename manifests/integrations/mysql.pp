@@ -68,7 +68,7 @@ class datadog_agent::integrations::mysql(
   $instances = undef,
   ) inherits datadog_agent::params {
   include datadog_agent
-  validate_hash($tags)
+  validate_array($tags)
   
   if !$instances and $host {
     $_instances = [{

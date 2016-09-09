@@ -3,6 +3,8 @@
 # This class will install the necessary configuration for the postgres integration
 #
 # Parameters:
+#   $password
+#       The password for the datadog user
 #   $host:
 #       The host postgres is running on
 #   $dbname
@@ -11,8 +13,6 @@
 #       The postgres port number
 #   $username
 #       The username for the datadog user
-#   $password
-#       The password for the datadog user
 #   $tags
 #       Optional array of tags
 #   $tables
@@ -31,11 +31,11 @@
 #
 #
 class datadog_agent::integrations::postgres(
+  $password,
   $host   = 'localhost',
   $dbname = 'postgres',
   $port   = '5432',
   $username = 'datadog',
-  $password,
   $tags = [],
   $tables = []
 ) inherits datadog_agent::params {

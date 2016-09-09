@@ -3,10 +3,10 @@
 # This class will install the necessary configuration for the mysql integration
 #
 # Parameters:
-#   $host:
-#       The host mysql is running on
 #   $password
 #       The mysql password for the datadog user
+#   $host:
+#       The host mysql is running on
 #   $user
 #       The mysql user for the datadog user
 #   $sock
@@ -37,8 +37,8 @@
 #
 #
 class datadog_agent::integrations::mysql(
-  $host = 'localhost',
   $password,
+  $host = 'localhost',
   $user = 'datadog',
   $sock = undef,
   $tags = [],

@@ -22,7 +22,7 @@
 #   $tags
 #       Optional array of tags
 #   $custom_metrics
-#       An array of custom metrics with the following hash keys - query, metrics,
+#       A hash of custom metrics with the following keys - query, metrics,
 #       relation, descriptors. Refer to this guide for details on those fields:
 #       https://help.datadoghq.com/hc/en-us/articles/208385813-Postgres-custom-metric-collection-explained
 #

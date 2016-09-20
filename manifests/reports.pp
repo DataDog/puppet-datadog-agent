@@ -15,10 +15,10 @@
 #
 class datadog_agent::reports(
   $api_key,
-  $manage_ruby,
   $puppet_gem_provider,
   $puppetmaster_user,
   $dogapi_version,
+  $manage_ruby = true,
   $hostname_extraction_regex = nil
 ) {
 

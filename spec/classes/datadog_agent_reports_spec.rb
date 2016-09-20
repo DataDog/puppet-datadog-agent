@@ -96,4 +96,43 @@ describe 'datadog_agent::reports' do
       end
     end
   end
+  context 'disabled ruby-manage' do
+    let(:params) do
+      {
+        api_key: 'notanapikey',
+        hostname_extraction_regex: nil,
+        dogapi_version: 'installed',
+        puppetmaster_user: 'puppet',
+        puppet_gem_provider: 'gem',
+        manage_ruby: false
+      }
+    end
+    describe "datadog_agent class dogapi version override" do
+      let(:facts) do
+        {
+          operatingsystem: 'Debian',
+          osfamily: 'debian'
+        }
+      end
+
+      it { should_not contain_class('ruby').with_rubygems_update(false) }
+      it { should_not contain_class('ruby::params') }
+      it { should_not contain_package('ruby').with_ensure('installed') }
+      it { should_not contain_package('rubygems').with_ensure('installed') }
+
+      it { should_not contain_package('ruby-dev') }
+
+      it do
+        should contain_package('dogapi')\
+          .with_ensure('installed')
+          .with_provider('gem')
+      end
+
+      it do
+        should contain_file('/etc/dd-agent/datadog.yaml')\
+          .with_owner('puppet')\
+          .with_group('root')
+      end
+    end
+  end
 end

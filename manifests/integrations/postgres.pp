@@ -19,6 +19,12 @@
 #       Track per relation/table metrics. Array of strings.
 #       Warning: this can collect lots of metrics per relation
 #       (10 + 10 per index)
+#   $tags
+#       Optional array of tags
+#   $custom_metrics
+#       A hash of custom metrics with the following keys - query, metrics,
+#       relation, descriptors. Refer to this guide for details on those fields:
+#       https://help.datadoghq.com/hc/en-us/articles/208385813-Postgres-custom-metric-collection-explained
 #
 # Sample Usage:
 #
@@ -27,6 +33,18 @@
 #    dbname   => 'postgres'
 #    username => 'datadog',
 #    password => 'some_pass',
+#    custom_metrics => {
+#      a_custom_query => {
+#        query => "select tag_column, %s from table",
+#        relation => false,
+#        metrics => {
+#          value_column => ["value_column.datadog.tag", "GAUGE"]
+#        },
+#        descriptors => [
+#          ["tag_column", "tag_column.datadog.tag"]
+#        ]
+#      }
+#    }
 #  }
 #
 #
@@ -37,7 +55,8 @@ class datadog_agent::integrations::postgres(
   $port   = '5432',
   $username = 'datadog',
   $tags = [],
-  $tables = []
+  $tables = [],
+  $custom_metrics = {},
 ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -53,4 +72,6 @@ class datadog_agent::integrations::postgres(
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name],
   }
+
+  create_resources('datadog_agent::integrations::postgres_custom_metric', $custom_metrics)
 }

@@ -55,6 +55,53 @@ describe 'datadog_agent::integrations::postgres' do
       it { should contain_file(conf_file).with_content(%r{username: monitoring}) }
       it { should contain_file(conf_file).with_content(%r{^[^#]*tags:\s+- foo\s+- bar\s+- baz}) }
       it { should contain_file(conf_file).with_content(%r{^[^#]*relations:\s+- furry\s+- fuzzy\s+- funky}) }
+
+      context 'with custom metric query missing %s' do
+        let(:params) {{
+          host: 'postgres1',
+          dbname: 'cats',
+          port: 4142,
+          username: 'monitoring',
+          password: 'abc123',
+          custom_metrics: {
+            'query_is_missing_%s' => {
+              'query' => 'select * from fuzz',
+              'metrics' => { },
+            }
+          }
+        }}
+        it do
+          expect {
+            is_expected.to compile
+          }.to raise_error(/custom_metrics require %s for metric substitution/)
+        end
+      end
+
+      context 'with custom metric query' do
+        let(:params) {{
+          host: 'postgres1',
+          dbname: 'cats',
+          port: 4142,
+          username: 'monitoring',
+          password: 'abc123',
+          custom_metrics: {
+            'foo_gooo_bar_query' => {
+              'query' => 'select foo, %s from bar',
+              'metrics' => {
+                "gooo" => ["custom_metric.tag.gooo", "GAUGE"]
+              },
+              'descriptors' => [["foo", "custom_metric.tag.foo"]]
+            }
+          }
+        }}
+        it { is_expected.to compile }
+        it { should contain_file(conf_file).with_content(%r{^[^#]*custom_metrics:}) }
+        it { should contain_file(conf_file).with_content(%r{\s+query:\s*['"]?select foo, %s from bar['"]?}) }
+        it { should contain_file(conf_file).with_content(%r{\s+metrics:}) }
+        it { should contain_file(conf_file).with_content(%r{\s+"gooo":\s+\[custom_metric.tag.gooo, GAUGE\]}) }
+        it { should contain_file(conf_file).with_content(%r{\s+query.*\n\s+relation:\s*false}) }
+        it { should contain_file(conf_file).with_content(%r{\s+descriptors.*\n\s+-\s+\[foo, custom_metric.tag.foo\]}) }
+      end
     end
   end
 

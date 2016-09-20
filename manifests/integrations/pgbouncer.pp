@@ -3,14 +3,14 @@
 # This class will install the necessary configuration for the pgbouncer integration
 #
 # Parameters:
+#   $password
+#       The password for the datadog user
 #   $host:
 #       The host pgbouncer is listening on
 #   $port
 #       The pgbouncer port number
 #   $username
 #       The username for the datadog user
-#   $password
-#       The password for the datadog user
 #   $tags
 #       Optional array of tags
 #
@@ -25,10 +25,10 @@
 #
 #
 class datadog_agent::integrations::pgbouncer(
+  $password,
   $host   = 'localhost',
   $port   = '6432',
   $username = 'datadog',
-  $password,
   $tags = [],
 ) inherits datadog_agent::params {
 

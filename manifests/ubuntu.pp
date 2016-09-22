@@ -11,7 +11,7 @@
 # Sample Usage:
 #
 class datadog_agent::ubuntu(
-  $apt_key = 'C7A7DA52',
+  $apt_key = '382E94DE',
   $agent_version = 'latest'
 ) {
 

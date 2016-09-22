@@ -13,7 +13,7 @@ group :test do
 end
 
 group :development do
-  gem "beaker"
+  gem "beaker", '2.51.0'
   gem "beaker-rspec"
   gem "puppet-blacksmith"
   gem "guard-rake"

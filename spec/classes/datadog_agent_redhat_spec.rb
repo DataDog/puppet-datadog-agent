@@ -16,7 +16,7 @@ describe 'datadog_agent::redhat' do
       should contain_yumrepo('datadog')
         .with_enabled(1)\
         .with_gpgcheck(1)\
-        .with_gpgkey('https://yum.datadoghq.com/DATADOG_RPM_KEY.public')\
+          .with_gpgkey('https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public')\
         .with_baseurl('https://yum.datadoghq.com/rpm/x86_64/')
     end
   end

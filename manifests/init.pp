@@ -307,7 +307,10 @@ class datadog_agent(
   }
 
   case $::operatingsystem {
-    'Ubuntu','Debian' : { include datadog_agent::ubuntu }
+    'Ubuntu','Debian' : {
+      class { 'datadog_agent::ubuntu':
+        manage_repo => $manage_repo,
+      }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       class { 'datadog_agent::redhat':
         manage_repo => $manage_repo,

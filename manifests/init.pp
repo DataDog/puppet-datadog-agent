@@ -311,6 +311,7 @@ class datadog_agent(
       class { 'datadog_agent::ubuntu':
         manage_repo => $manage_repo,
       }
+    }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       class { 'datadog_agent::redhat':
         manage_repo => $manage_repo,

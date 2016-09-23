@@ -13,24 +13,31 @@
 class datadog_agent::ubuntu(
   $apt_key = 'C7A7DA52',
   $agent_version = 'latest'
+  $manage_repo = true,
 ) {
+
+  validate_bool($manage_repo)
 
   ensure_packages(['apt-transport-https'])
 
-  if !$::datadog_agent::skip_apt_key_trusting {
-    exec { 'datadog_key':
-      command => "/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys ${apt_key}",
-      unless  => "/usr/bin/apt-key list | grep ${apt_key} | grep expires",
-      before  => File['/etc/apt/sources.list.d/datadog.list'],
-    }
-  }
+  if $manage_repo {
 
-  file { '/etc/apt/sources.list.d/datadog.list':
-    source  => 'puppet:///modules/datadog_agent/datadog.list',
-    owner   => 'root',
-    group   => 'root',
-    notify  => Exec['datadog_apt-get_update'],
-    require => Package['apt-transport-https'],
+  if !$::datadog_agent::skip_apt_key_trusting {
+      exec { 'datadog_key':
+        command => "/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys ${apt_key}",
+        unless  => "/usr/bin/apt-key list | grep ${apt_key} | grep expires",
+        before  => File['/etc/apt/sources.list.d/datadog.list'],
+      }
+    }
+
+    file { '/etc/apt/sources.list.d/datadog.list':
+      source  => 'puppet:///modules/datadog_agent/datadog.list',
+      owner   => 'root',
+      group   => 'root',
+      notify  => Exec['datadog_apt-get_update'],
+      require => Package['apt-transport-https'],
+    }
+
   }
 
   exec { 'datadog_apt-get_update':

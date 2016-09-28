@@ -69,6 +69,10 @@
       "version_requirement": ">=4.6.0"
     },
     {
+      "name": "puppetlabs/puppetserver_gem",
+      "version_requirement": ">=0.2.0"
+    },
+    {
       "name": "puppetlabs/ruby",
       "version_requirement": ">=0.2.0 <1.0.0"
     }

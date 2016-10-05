@@ -35,8 +35,17 @@ describe 'datadog_agent::integrations::postgres' do
       it { should contain_file(conf_file).with_content(%r{dbname: postgres}) }
       it { should contain_file(conf_file).with_content(%r{port: 5432}) }
       it { should contain_file(conf_file).with_content(%r{username: datadog}) }
+      it { should contain_file(conf_file).without_content(%r{^\s*use_psycopg2: }) }
       it { should contain_file(conf_file).without_content(%r{tags: })}
       it { should contain_file(conf_file).without_content(%r{^[^#]*relations: }) }
+    end
+
+    context 'with use_psycopg2 enabled' do
+      let(:params) {{
+        use_psycopg2: true,
+        password: 'abc123',
+      }}
+      it { should contain_file(conf_file).with_content(%r{use_psycopg2: true}) }
     end
 
     context 'with parameters set' do

@@ -9,7 +9,7 @@ group :test do
   gem "puppet-syntax"
   gem "puppetlabs_spec_helper"
   gem "rake"
-  gem "rspec-puppet", '2.2.0'
+  gem "rspec-puppet", '2.3.2'
 end
 
 group :development do

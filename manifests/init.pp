@@ -228,6 +228,12 @@ class datadog_agent(
   $pup_log_file = '',
   $syslog_host  = '',
   $syslog_port  = '',
+  $service_discovery_backend = '',
+  $sd_config_backend = '',
+  $sd_backend_host = '',
+  $sd_backend_port = 0,
+  $sd_template_dir = '',
+  $consul_token = ''
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -280,6 +286,12 @@ class datadog_agent(
   validate_string($pup_log_file)
   validate_string($syslog_host)
   validate_string($syslog_port)
+  validate_string($service_discovery_backend)
+  validate_string($sd_config_backend)
+  validate_string($sd_backend_host)
+  validate_integer($sd_backend_port)
+  validate_string($sd_template_dir)
+  validate_string($consul_token)
 
   if $hiera_tags {
     $local_tags = hiera_array('datadog_agent::tags')

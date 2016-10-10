@@ -25,7 +25,7 @@ class datadog_agent::redhat(
     validate_string($baseurl)
 
     yumrepo {'datadog':
-      enabled  => 1,
+      enabled  => 0,
       gpgcheck => 1,
       gpgkey   => $gpgkey,
       descr    => 'Datadog, Inc.',

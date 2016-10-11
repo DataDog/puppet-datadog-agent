@@ -11,13 +11,6 @@
 # Sample Usage:
 #
 #
-#
-define datadog_agent::ubuntu::install_key() {
-  exec { "key ${name}":
-    command => "/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys ${name}",
-    unless  => "/usr/bin/apt-key list | grep ${name} | grep expires",
-  }
-}
 
 class datadog_agent::ubuntu(
   $apt_key = '382E94DE',

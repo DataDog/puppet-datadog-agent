@@ -28,9 +28,7 @@ instances:
 <% if instance['collect_response_time'] -%>
     collect_response_time: <%= instance['collect_response_time'] %>
 <% end -%>
-<% if instance['disable_ssl_validation'] -%>
     disable_ssl_validation: <%= instance['disable_ssl_validation'] %>
-<% end -%>
 <% if instance['check_certificate_expiration'] -%>
     check_certificate_expiration: <%= instance['check_certificate_expiration'] %>
 <% if instance['check_certificate_expiration'] == true -%>

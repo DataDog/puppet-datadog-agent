@@ -33,9 +33,30 @@ describe 'datadog_agent::integrations::disk' do
     let(:params) {{
       use_mount: 'yes',
       excluded_filesystems: [ 'tmpfs', 'dev' ],
-      excluded_disks: '/dev/sda1'
+      excluded_disks: '/dev/sda1',
+      excluded_disk_re: '/dev/sdb.*',
+      excluded_mountpoint_re: '/mnt/other.*',
+      all_partitions: 'yes',
+      tag_by_filesystem: 'no'
     }}
-    it { is_expected.to contain_file(conf_file).with_content(%r{\s+-\s+tmpfs\n\s+-\s+dev$}) }
+    let(:yaml_conf) {
+       <<-HEREDOC
+init_config:
+
+instances:
+  - use_mount: yes
+    excluded_filesystems:
+      - tmpfs
+      - dev
+    excluded_disks:
+      - /dev/sda1
+    excluded_disk_re: /dev/sdb.*
+    excluded_mountpoint_re: /mnt/other.*
+    all_partitions: yes
+    tag_by_filesystem: no
+        HEREDOC
+     }
+    it { is_expected.to contain_file(conf_file).with_content(yaml_conf) }
   end
 
 end

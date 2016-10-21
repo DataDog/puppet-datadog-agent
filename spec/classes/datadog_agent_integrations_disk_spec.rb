@@ -25,7 +25,7 @@ describe 'datadog_agent::integrations::disk' do
   context 'compile errors for incorrect values' do
     let(:params) {{ use_mount: 'heaps' }}
     it do
-      expect { is_expected.to compile }.to raise_error(/Evaluation Error/)
+      expect { is_expected.to compile }.to raise_error(/error\s+during\s+compilation/)
     end
   end
 

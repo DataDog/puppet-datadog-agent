@@ -43,6 +43,9 @@ class datadog_agent::integrations::disk (
   include datadog_agent
 
   validate_re($use_mount, '^(no|yes)$', "use_mount should be either 'yes' or 'no'")
+  if $all_partitions {
+    validate_re($all_partitions, '^(no|yes)$', "all_partitions should be either 'yes' or 'no'")
+  }
 
   file { "${datadog_agent::params::conf_dir}/disk.yaml":
     ensure  => file,

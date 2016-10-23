@@ -11,8 +11,10 @@
 #       Your DataDog API Key. Please replace with your key value.
 #   $collect_ec2_tags
 #       Collect AWS EC2 custom tags as agent tags.
+#       Boolean. Default: false
 #   $collect_instance_metadata
 #       The Agent will try to collect instance metadata for EC2 and GCE instances.
+#       Boolean. Default: true
 #   $tags
 #       Optional array of tags.
 #   $hiera_tags
@@ -72,12 +74,6 @@
 #       Skip SSL validation.
 #   $use_curl_http_client
 #       Uses the curl HTTP client for the forwarder
-#   $collect_ec2_tas
-#       Presents custom EC2 tags as agent tags to datadog
-#       Boolean. Default: False
-#   $collect_instance_metadata
-#       Enables the agent to try and gather instance metadata on EC2/GCE
-#       Boolean. Default: true
 #   $recent_point_threshold
 #       Sets the threshold for accepting points.
 #   String. Default: empty (30 second intervals)

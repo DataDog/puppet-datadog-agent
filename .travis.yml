@@ -5,7 +5,7 @@ cache: bundler
 rvm:
   - 2.0.0
   - 2.1.0
-  - 2.2.3
+  - 2.2.5
 script:
   - bundle exec rake spec
   - bundle exec rake test
@@ -39,12 +39,12 @@ matrix:
   - rvm: 2.1.0
     env: PUPPET_VERSION="~> 3.4.0"
 
-  # Ruby 2.2.3
-  - rvm: 2.2.3
+  # Ruby 2.2.5
+  - rvm: 2.2.5
     env: PUPPET_VERSION="~> 2.7.0"
-  - rvm: 2.2.3
+  - rvm: 2.2.5
     env: PUPPET_VERSION="~> 3.2.0"
-  - rvm: 2.2.3
+  - rvm: 2.2.5
     env: PUPPET_VERSION="~> 3.3.0"
-  - rvm: 2.2.3
+  - rvm: 2.2.5
     env: PUPPET_VERSION="~> 3.4.0"

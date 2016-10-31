@@ -12,8 +12,8 @@ instances:
 <% end -%>
 <% if @tags.length > 0 -%>
     tags:
-<% @tags.each do |tag| -%>
-      - <%= tag %>
+<%- @tags.each do |tag_name, tag_value| -%>
+      <%= tag_name %>: <%= tag_value %>
 <% end -%>
 <% end -%>
 

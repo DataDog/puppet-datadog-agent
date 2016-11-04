@@ -23,7 +23,7 @@
 class datadog_agent::ubuntu(
   $apt_key = 'C7A7DA52',
   $agent_version = 'latest',
-  $repo = 'local'
+  $repo = 'datadog'
 ) {
   if $repo == 'datadog' {
     include ::datadog_agent::ubuntu::update_repo

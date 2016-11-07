@@ -10,19 +10,24 @@
 #
 # Sample Usage:
 #
+#
+
 class datadog_agent::ubuntu(
-  $apt_key = 'C7A7DA52',
-  $agent_version = 'latest'
+  $apt_key = '382E94DE',
+  $agent_version = 'latest',
+  $other_keys = ['C7A7DA52']
 ) {
 
   ensure_packages(['apt-transport-https'])
+  validate_array($other_keys)
 
   if !$::datadog_agent::skip_apt_key_trusting {
-    exec { 'datadog_key':
-      command => "/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys ${apt_key}",
-      unless  => "/usr/bin/apt-key list | grep ${apt_key} | grep expires",
+    $mykeys = concat($other_keys, [$apt_key])
+
+    ::datadog_agent::ubuntu::install_key { $mykeys:
       before  => File['/etc/apt/sources.list.d/datadog.list'],
     }
+
   }
 
   file { '/etc/apt/sources.list.d/datadog.list':

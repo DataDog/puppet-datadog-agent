@@ -29,6 +29,13 @@ instances:
     collect_response_time: <%= instance['collect_response_time'] %>
 <% end -%>
     disable_ssl_validation: <%= instance['disable_ssl_validation'] %>
+<% if instance['check_certificate_expiration'] -%>
+    check_certificate_expiration: <%= instance['check_certificate_expiration'] %>
+<% if instance['check_certificate_expiration'] == true -%>
+    days_warning: <%= instance['days_warning'] %>
+    days_critical: <%= instance['days_critical'] %>
+<% end -%>
+<% end -%>
 <% if instance['headers'] and ! instance['headers'].empty? -%>
     headers:
   <%- Array(instance['headers']).each do |header| -%>
@@ -36,6 +43,9 @@ instances:
       <%= header %>
     <%- end -%>
   <%- end -%>
+<% end -%>
+<% if instance['allow_redirects'] -%>
+    allow_redirects: <%= instance['allow_redirects'] %>
 <% end -%>
 <% if instance['tags'] and ! instance['tags'].empty? -%>
     tags:

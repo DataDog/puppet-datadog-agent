@@ -104,9 +104,9 @@
 #        },
 #        {
 #          'sitename' => 'local',
-#         'url'      => 'http://localhost/',
-#         'headers'  => ['Host: stan.borbat.com', 'DNT: true'],
-#         'tags'     => ['production', 'wordpress']
+#          'url'      => 'http://localhost/',
+#          'headers'  => ['Host: stan.borbat.com', 'DNT: true'],
+#          'tags'     => ['production', 'wordpress']
 #        }]
 #     }
 

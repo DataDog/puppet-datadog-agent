@@ -13,6 +13,9 @@
 #       The postgres port number
 #   $username
 #       The username for the datadog user
+#   $use_psycopg2
+#       Boolean to flag connecting to postgres with psycopg2 instead of pg8000.
+#       Warning, psycopg2 doesn't support ssl mode.
 #   $tags
 #       Optional array of tags
 #   $tables
@@ -54,6 +57,7 @@ class datadog_agent::integrations::postgres(
   $dbname = 'postgres',
   $port   = '5432',
   $username = 'datadog',
+  $use_psycopg2 = false,
   $tags = [],
   $tables = [],
   $custom_metrics = {},
@@ -62,6 +66,7 @@ class datadog_agent::integrations::postgres(
 
   validate_array($tags)
   validate_array($tables)
+  validate_bool($use_psycopg2)
 
   file { "${datadog_agent::params::conf_dir}/postgres.yaml":
     ensure  => file,

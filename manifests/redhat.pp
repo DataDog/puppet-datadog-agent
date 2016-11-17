@@ -45,7 +45,7 @@ class datadog_agent::redhat(
 
     exec { 'cleanup-gpg-key':
         command => "/bin/rm ${public_key_local}",
-        onlyif  => "/bin/test -f ${public_key_local}",
+        onlyif  => "/usr/bin/test -f ${public_key_local}",
     }
 
     yumrepo {'datadog':

@@ -12,15 +12,17 @@ instances:
 <% if instance['port'] -%>
     port: <%= instance['port'] %>
 <% end -%>
-<% if instance['sock'] -%>
+<% if instance['sock'] and (instance['sock'] != "undef") -%>
     sock: <%= instance['sock'] %>
 <% end -%>
 
-<% if !instance['tags'].empty? -%>
-    tags:                  # Optional
-<% instance['tags'].each do |tag| -%>
-        - <%= tag %>
-<% end -%>
+<% if instance['tags'] and ! instance['tags'].empty? -%>
+    tags:
+  <%- Array(instance['tags']).each do |tag| -%>
+    <%- if tag != '' -%>
+      - <%= tag %>
+    <%- end -%>
+  <%- end -%>
 <% end -%>
 
     options:               # Optional

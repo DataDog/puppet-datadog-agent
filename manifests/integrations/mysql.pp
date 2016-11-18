@@ -53,7 +53,7 @@
 #
 #
 class datadog_agent::integrations::mysql(
-  $password,
+  $password = undef,
   $host = 'localhost',
   $user = 'datadog',
   $port = 3306,

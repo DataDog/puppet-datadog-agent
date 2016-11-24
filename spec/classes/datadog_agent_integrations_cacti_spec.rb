@@ -25,6 +25,6 @@ describe 'datadog_agent::integrations::cacti' do
     it { should contain_file(conf_file).with_content(/mysql_host: localhost/) }
     it { should contain_file(conf_file).with_content(/mysql_user: foo/) }
     it { should contain_file(conf_file).with_content(/mysql_password: bar/) }
-    it { should contain_file(conf_file).with_content(/rrd_path: \/var\/foo\//) }
+    it { should contain_file(conf_file).with_content(/rrd_path: /var/foo//) }
   end
 end

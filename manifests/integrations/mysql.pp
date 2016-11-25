@@ -49,11 +49,12 @@
 #      extra_performance_metrics => 'true',
 #      schema_size_metrics       => 'true', 
 #      disable_innodb_metrics    => 'false',
+#    }
 #  }
 #
 #
 class datadog_agent::integrations::mysql(
-  $password = undef,
+  $password,
   $host = 'localhost',
   $user = 'datadog',
   $port = 3306,

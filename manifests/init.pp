@@ -3,6 +3,9 @@
 # This class contains the agent installation mechanism for the Datadog module
 #
 # Parameters:
+#   $agent_version:
+#       The package version of datadog-agent to install.
+#       Defaults to latest.
 #   $dd_url:
 #       The host of the Datadog intake server to send agent data to.
 #       Defaults to https://app.datadoghq.com.
@@ -175,6 +178,7 @@
 #
 #
 class datadog_agent(
+  $agent_version = 'latest',
   $dd_url = 'https://app.datadoghq.com',
   $host = '',
   $api_key = 'your_API_key',
@@ -236,6 +240,7 @@ class datadog_agent(
   $dd_group = $datadog_agent::params::dd_group,
 ) inherits datadog_agent::params {
 
+  validate_string($agent_version)
   validate_string($dd_url)
   validate_string($host)
   validate_string($api_key)
@@ -307,10 +312,15 @@ class datadog_agent(
   }
 
   case $::operatingsystem {
-    'Ubuntu','Debian' : { include datadog_agent::ubuntu }
+    'Ubuntu','Debian' : {
+      class { 'datadog_agent::ubuntu':
+        agent_version => $agent_version,
+      }
+    }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       class { 'datadog_agent::redhat':
-        manage_repo => $manage_repo,
+        agent_version => $agent_version,
+        manage_repo   => $manage_repo,
       }
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }

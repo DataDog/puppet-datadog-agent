@@ -27,23 +27,46 @@
 #   }
 #
 class datadog_agent::integrations::consul(
-  $url               = 'http://localhost:8500',
-  $catalog_checks    = true,
-  $new_leader_checks = true,
-  $service_whitelist = []
+  $url                   = 'http://localhost:8500',
+  $agent_version         = undef,
+  $catalog_checks        = true,
+  $consul_check_filename = undef,
+  $new_leader_checks     = true,
+  $service_whitelist     = []
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   validate_string($url)
   validate_bool($catalog_checks)
   validate_bool($new_leader_checks)
   validate_array($service_whitelist)
 
-  file { "${datadog_agent::params::conf_dir}/consul.yaml":
+  if $consul_check_filename {
+    $final_consul_check_filename = $consul_check_filename
+  } else {
+    if $agent_version {
+      $tmp_agent_version = $agent_version
+    } else {
+      $tmp_agent_version = $datadog_agent::agent_version
+    }
+    $tmp2_agent_version = split($tmp_agent_version, ':')
+    $final_agent_version = $tmp2_agent_version[-1]
+    if versioncmp($final_agent_version, '5.8') >= 0 {
+      $final_consul_check_filename = 'consul_check.yaml'
+      file { "${datadog_agent::params::conf_dir}/consul.yaml":
+        ensure => 'absent',
+      }
+    } else {
+      $final_consul_check_filename = 'consul.yaml'
+    }
+  }
+
+  file { "${datadog_agent::params::conf_dir}/${final_consul_check_filename}":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
-    mode    => '0644',
-    content => template('datadog_agent/agent-conf.d/consul.yaml.erb'),
+    mode    => '0600',
+    content => template('datadog_agent/agent-conf.d/consul_check.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]
   }

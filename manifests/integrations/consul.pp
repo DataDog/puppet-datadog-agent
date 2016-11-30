@@ -49,7 +49,8 @@ class datadog_agent::integrations::consul(
     } else {
       $tmp_agent_version = $datadog_agent::agent_version
     }
-    $final_agent_version = split($tmp_agent_version, ':')[-1]
+    $tmp2_agent_version = split($tmp_agent_version, ':')
+    $final_agent_version = $tmp2_agent_version[-1]
     if versioncmp($final_agent_version, '5.8') >= 0 {
       $final_consul_check_filename = 'consul_check.yaml'
       file { "${datadog_agent::params::conf_dir}/consul.yaml":

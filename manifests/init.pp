@@ -9,6 +9,10 @@
 #   $host:
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value.
+#   $agent_version:
+#       The version of the datadog agent you want to install, defaults to 'latest'.
+#       apt package format example: "1:5.9.0-1"
+#       yum format example: "5.9.0-1"
 #   $collect_ec2_tags
 #       Collect AWS EC2 custom tags as agent tags.
 #   $collect_instance_metadata
@@ -178,6 +182,7 @@ class datadog_agent(
   $dd_url = 'https://app.datadoghq.com',
   $host = '',
   $api_key = 'your_API_key',
+  $agent_version = 'latest',
   $collect_ec2_tags = false,
   $collect_instance_metadata = true,
   $tags = [],
@@ -307,10 +312,15 @@ class datadog_agent(
   }
 
   case $::operatingsystem {
-    'Ubuntu','Debian' : { include datadog_agent::ubuntu }
+    'Ubuntu','Debian' : {
+      class { 'datadog_agent::ubuntu':
+        agent_version => $agent_version
+      }
+    }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       class { 'datadog_agent::redhat':
         manage_repo => $manage_repo,
+        agent_version => $agent_version
       }
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }

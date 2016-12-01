@@ -319,7 +319,7 @@ class datadog_agent(
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       class { 'datadog_agent::redhat':
-        manage_repo => $manage_repo,
+        manage_repo   => $manage_repo,
         agent_version => $agent_version
       }
     }

@@ -24,6 +24,7 @@
 #       Will send results from your puppet agent runs back to the datadog service.
 #   $puppetmaster_user
 #       Will chown the api key used by the report processor to this user.
+#       Defaults to the user the puppetmaster is configured to run as.
 #   $non_local_traffic
 #       Enable you to use the agent as a proxy. Defaults to false.
 #       See https://github.com/DataDog/dd-agent/wiki/Proxy-Configuration
@@ -185,7 +186,7 @@ class datadog_agent(
   $facts_to_tags = [],
   $puppet_run_reports = false,
   $puppet_gem_provider = 'puppetserver_gem',
-  $puppetmaster_user = 'puppet',
+  $puppetmaster_user = $settings::user,
   $non_local_traffic = false,
   $dogstreams = [],
   $log_level = 'info',

@@ -3,8 +3,14 @@
 # This class will install the necessary config to hook the http_check in the agent
 #
 # Parameters:
+#   sitename
+#       (Required) The name of the instance.
+#
 #   url
+#       (Required) The url to check.
+#
 #   timeout
+#       The (optional) timeout in seconds.
 #
 #   username
 #   password
@@ -57,8 +63,11 @@
 #       a list of users to notify within the service configuration.
 #
 #   tags
+#       The (optional) tags to add to the check instance.
 #
 # Sample Usage:
+#
+# Add a class for each check instance:
 #
 # class { 'datadog_agent::integrations::http_check':
 #   sitename  => 'google',
@@ -86,6 +95,22 @@
 # }
 #
 #
+# Add multiple instances in one class declaration:
+#
+#  class { 'datadog_agent::integrations::http_check':
+#        instances => [{
+#          'sitename'  => 'google',
+#          'url'       => 'http://www.google.com',
+#        },
+#        {
+#          'sitename' => 'local',
+#          'url'      => 'http://localhost/',
+#          'headers'  => ['Host: stan.borbat.com', 'DNT: true'],
+#          'tags'     => ['production', 'wordpress']
+#        }]
+#     }
+
+
 class datadog_agent::integrations::http_check (
   $sitename  = undef,
   $url       = undef,
@@ -117,7 +142,7 @@ class datadog_agent::integrations::http_check (
       'content_match'            => $content_match,
       'include_content'          => $include_content,
       'collect_response_time'    => $collect_response_time,
-      'disable_ssl_validation' => $disable_ssl_validation,
+      'disable_ssl_validation'   => $disable_ssl_validation,
       'headers'                  => $headers,
       'tags'                     => $tags,
       'contact'                  => $contact,

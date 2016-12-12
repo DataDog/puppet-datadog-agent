@@ -1,0 +1,28 @@
+init_config:
+
+instances:
+  - use_mount: <%= @use_mount %>
+<% if @excluded_filesystems -%>
+    excluded_filesystems:
+<% (Array(@excluded_filesystems)).each do |fs| -%>
+      - <%= fs %>
+<%- end -%>
+<% end -%>
+<% if @excluded_disks -%>
+    excluded_disks:
+<% (Array(@excluded_disks)).each do |disk| -%>
+      - <%= disk %>
+<% end -%>
+<% end -%>
+<% if @excluded_disk_re -%>
+    excluded_disk_re: <%= @excluded_disk_re %>
+<% end -%>
+<% if @excluded_mountpoint_re -%>
+    excluded_mountpoint_re: <%= @excluded_mountpoint_re %>
+<% end -%>
+<% if @all_partitions -%>
+    all_partitions: <%= @all_partitions %>
+<% end -%>
+<% if @tag_by_filesystem -%>
+    tag_by_filesystem: <%= @tag_by_filesystem %>
+<% end -%>

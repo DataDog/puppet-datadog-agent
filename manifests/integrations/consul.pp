@@ -32,6 +32,7 @@ class datadog_agent::integrations::consul(
   $new_leader_checks = true,
   $service_whitelist = []
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   validate_string($url)
   validate_bool($catalog_checks)

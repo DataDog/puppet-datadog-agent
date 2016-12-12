@@ -46,15 +46,18 @@ describe 'datadog_agent::integrations::cassandra' do
       it { should contain_file(conf_file).with_content(%r{user: baz}) }
     end
 
-    context 'with tags parameter array' do
+    context 'with tags parameter hash' do
       let(:params) {{
         password: 'foobar',
-        tags: %w{ foo bar baz },
+        tags: {
+                'foo'=> 'bar',
+                'baz'=> 'ama',
+        }
       }}
-      it { should contain_file(conf_file).with_content(/tags:[^-]+- foo\s+- bar\s+- baz\s*?[^-]/m) }
+      it { should contain_file(conf_file).with_content(/tags:\s+foo: bar\s+baz: ama\s*?[^-]/m) }
     end
 
-    context 'tags not array' do
+    context 'tags not hash' do
       let(:params) {{
         password: 'foobar',
         tags: 'aoeu',

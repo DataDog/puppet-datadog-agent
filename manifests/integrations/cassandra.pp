@@ -19,6 +19,9 @@
 #
 #  class { 'datadog_agent::integrations::cassandra' :
 #    host     => 'localhost',
+#    tags     => {
+#      environment => "production",
+#    },
 #  }
 #
 #
@@ -27,10 +30,10 @@ class datadog_agent::integrations::cassandra(
   $port = 7199,
   $user = undef,
   $password = undef,
-  $tags = [],
+  $tags = {},
 ) inherits datadog_agent::params {
   require ::datadog_agent
-  validate_array($tags)
+  validate_hash($tags)
 
   file { "${datadog_agent::params::conf_dir}/cassandra.yaml":
     ensure  => file,

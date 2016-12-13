@@ -32,6 +32,10 @@ describe 'datadog_agent::integrations::http_check' do
     it { should contain_file(conf_file).without_content(%r{include_content: true}) }
     it { should contain_file(conf_file).without_content(%r{collect_response_time: true}) }
     it { should contain_file(conf_file).without_content(%r{disable_ssl_validation: false}) }
+    it { should contain_file(conf_file).without_content(%r{skip_event: }) }
+    it { should contain_file(conf_file).without_content(%r{check_certificate_expiration: }) }
+    it { should contain_file(conf_file).without_content(%r{days_warning: }) }
+    it { should contain_file(conf_file).without_content(%r{days_critical: }) }    
     it { should contain_file(conf_file).without_content(%r{headers: }) }
     it { should contain_file(conf_file).without_content(%r{tags: }) }
   end
@@ -62,6 +66,10 @@ describe 'datadog_agent::integrations::http_check' do
     it { should contain_file(conf_file).with_content(%r{include_content: true}) }
     it { should contain_file(conf_file).without_content(%r{collect_response_time: true}) }
     it { should contain_file(conf_file).with_content(%r{disable_ssl_validation: true}) }
+    it { should contain_file(conf_file).with_content(%r{skip_event: true}) }
+    it { should contain_file(conf_file).with_content(%r{check_certificate_expiration: true}) }
+    it { should contain_file(conf_file).with_content(%r{days_warning: 14}) }
+    it { should contain_file(conf_file).with_content(%r{days_critical: 7}) }
   end
 
   context 'with headers parameter array' do

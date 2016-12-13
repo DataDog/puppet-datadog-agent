@@ -48,6 +48,22 @@
 #       problematic SSL server certificates. To maintain backwards
 #       compatibility this defaults to false.
 #
+#  skip_event
+#       The (optional) skip_event parameter will instruct the check to not
+#       create any event to avoid duplicates with a server side service check.
+#       This default to False.
+#
+#  check_certificate_expiration
+#  days_warning
+#  days_critical
+#       The (optional) check_certificate_expiration will instruct the check
+#       to create a service check that checks the expiration of the
+#       ssl certificate. Allow for a warning to occur when x days are
+#       left in the certificate, and alternatively raise a critical
+#       warning if the certificate is y days from the expiration date.
+#       The SSL certificate will always be validated for this additional
+#       service check regardless of the value of disable_ssl_validation
+# 
 #   headers
 #       The (optional) headers parameter allows you to send extra headers
 #       with the request. This is useful for explicitly specifying the host
@@ -123,6 +139,10 @@ class datadog_agent::integrations::http_check (
   $include_content = false,
   $collect_response_time = true,
   $disable_ssl_validation = false,
+  $skip_event = undef,
+  $check_certificate_expiration = undef,
+  $days_warning = undef,
+  $days_critical = undef,
   $headers   = [],
   $tags      = [],
   $contact   = [],
@@ -143,6 +163,10 @@ class datadog_agent::integrations::http_check (
       'include_content'          => $include_content,
       'collect_response_time'    => $collect_response_time,
       'disable_ssl_validation'   => $disable_ssl_validation,
+      'skip_event'              => $skip_event, 
+      'check_certificate_expiration' => $check_certificate_expiration, 
+      'days_warning'              => $days_warning, 
+      'days_critical'              => $days_critical, 
       'headers'                  => $headers,
       'tags'                     => $tags,
       'contact'                  => $contact,

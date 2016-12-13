@@ -48,25 +48,21 @@
 #       problematic SSL server certificates. To maintain backwards
 #       compatibility this defaults to false.
 #
-#   disable_ssl_validation
-#       The setting disable_ssl_validation parameter to true will instruct
-#       the http client to accept self signed, expired and otherwise
-#       problematic SSL server certificates. To maintain backwards
-#       compatibility this defaults to false.
+#  skip_event
+#       The (optional) skip_event parameter will instruct the check to not
+#       create any event to avoid duplicates with a server side service check.
+#       This default to False.
 #
-# skip_event
-# The (optional) skip_event parameter will instruct the check to not
-# create any event to avoid duplicates with a server side service check.
-# This default to False.
-#
-# check_certificate_expiration,days_warning,days_critical
-# The (optional) check_certificate_expiration will instruct the check
-# to create a service check that checks the expiration of the
-# ssl certificate. Allow for a warning to occur when x days are
-# left in the certificate, and alternatively raise a critical
-# warning if the certificate is y days from the expiration date.
-# The SSL certificate will always be validated for this additional
-# service check regardless of the value of disable_ssl_validation
+#  check_certificate_expiration
+#  days_warning
+#  days_critical
+#       The (optional) check_certificate_expiration will instruct the check
+#       to create a service check that checks the expiration of the
+#       ssl certificate. Allow for a warning to occur when x days are
+#       left in the certificate, and alternatively raise a critical
+#       warning if the certificate is y days from the expiration date.
+#       The SSL certificate will always be validated for this additional
+#       service check regardless of the value of disable_ssl_validation
 # 
 #   headers
 #       The (optional) headers parameter allows you to send extra headers

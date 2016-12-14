@@ -53,6 +53,10 @@ describe 'datadog_agent::integrations::http_check' do
       include_content: true,
       collect_response_time: false,
       disable_ssl_validation: true,
+      skip_event: true,
+      check_certificate_expiration: true,
+      days_warning: 14,
+      days_critical: 7,
     }}
 
     it { should contain_file(conf_file).with_content(%r{name: foo.bar.baz}) }

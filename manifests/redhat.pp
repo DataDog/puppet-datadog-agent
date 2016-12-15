@@ -23,7 +23,7 @@ class datadog_agent::redhat(
 
   validate_bool($manage_repo)
   if $manage_repo {
-    $public_key_local = 'file:///etc/pki/rpm-gpg/DATADOG_RPM_KEY.public'
+    $public_key_local = '/etc/pki/rpm-gpg/DATADOG_RPM_KEY.public'
 
     validate_string($baseurl)
 
@@ -45,7 +45,7 @@ class datadog_agent::redhat(
     yumrepo {'datadog':
       enabled  => 1,
       gpgcheck => 1,
-      gpgkey   => $public_key_local,
+      gpgkey   => "file://${public_key_local}",
       descr    => 'Datadog, Inc.',
       baseurl  => $baseurl,
       require  => Exec['install-gpg-key'],

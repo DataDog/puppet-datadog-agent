@@ -12,7 +12,7 @@ instances:
 <% if instance['port'] -%>
     port: <%= instance['port'] %>
 <% end -%>
-<% if instance['sock'] -%>
+<% if instance['sock'] and instance['sock'] != :undef -%>
     sock: <%= instance['sock'] %>
 <% end -%>
 

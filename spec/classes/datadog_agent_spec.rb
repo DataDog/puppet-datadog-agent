@@ -177,7 +177,28 @@ describe 'datadog_agent' do
                     )}
                     it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^# syslog_port:\n/,
-                )}
+                    )}
+                end
+
+                context 'for service_discovery' do
+                    it { should contain_file('/etc/dd-agent/datadog.conf').without(
+                    'content' => /^service_discovery_backend:\n/,
+                    )}
+                    it { should contain_file('/etc/dd-agent/datadog.conf').without(
+                    'content' => /^sd_config_backend:\n/,
+                    )}
+                    it { should contain_file('/etc/dd-agent/datadog.conf').without(
+                    'content' => /^sd_backend_host:\n/,
+                    )}
+                    it { should contain_file('/etc/dd-agent/datadog.conf').without(
+                    'content' => /^sd_backend_port:\n/,
+                    )}
+                    it { should contain_file('/etc/dd-agent/datadog.conf').without(
+                    'content' => /^sd_template_dir:\n/,
+                    )}
+                    it { should contain_file('/etc/dd-agent/datadog.conf').without(
+                    'content' => /^consul_token:\n/,
+                    )}
                 end
             end
 
@@ -474,6 +495,26 @@ describe 'datadog_agent' do
                 let(:params) {{:syslog_port  => '8080' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^syslog_port: 8080\n/,
+                )}
+            end
+            context 'with service_discovery enabled' do
+                let(:params) {
+                    {:service_discovery_backend  => 'docker',
+                     :sd_config_backend          => 'etcd',
+                     :sd_backend_host            => 'localhost',
+                     :sd_backend_port            => '8080',
+                }}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                'content' => /^service_discovery_backend: docker\n/,
+                )}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                'content' => /^sd_config_backend: etcd\n/,
+                )}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                'content' => /^sd_backend_host: localhost\n/,
+                )}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                'content' => /^sd_backend_port: 8080\n/,
                 )}
             end
             end

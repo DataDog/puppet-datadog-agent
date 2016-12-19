@@ -235,7 +235,7 @@ class datadog_agent(
   $sd_backend_host = '',
   $sd_backend_port = 0,
   $sd_template_dir = '',
-  $consul_token = ''
+  $consul_token = '',
   $conf_dir = $datadog_agent::params::conf_dir,
   $service_name = $datadog_agent::params::service_name,
   $package_name = $datadog_agent::params::package_name,

@@ -54,4 +54,31 @@ describe 'datadog_agent::integrations::haproxy' do
       it { should contain_file(conf_file).without_content(/invalid: is this real life/) }
     end
   end
+
+  context 'with instances set' do
+    let(:params) {{
+      instances: [
+        {
+          'url'   => 'http://foo.bar:8421',
+          'creds' => {
+            'username' => 'foo',
+            'password' => 'bar',
+          }
+        },
+        {
+          'url'   => 'http://shoe.baz:1248',
+          'creds' => {
+            'username' => 'shoe',
+            'password' => 'baz',
+          }
+        },
+      ]
+    }}
+    it { should contain_file(conf_file).with_content(%r{url: http://foo.bar:8421}) }
+    it { should contain_file(conf_file).with_content(%r{username: foo}) }
+    it { should contain_file(conf_file).with_content(%r{password: bar}) }
+    it { should contain_file(conf_file).with_content(%r{url: http://shoe.baz:1248}) }
+    it { should contain_file(conf_file).with_content(%r{username: shoe}) }
+    it { should contain_file(conf_file).with_content(%r{password: baz}) }
+  end
 end

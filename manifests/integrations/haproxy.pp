@@ -16,10 +16,22 @@
 #   }
 #
 class datadog_agent::integrations::haproxy(
-  $creds = {},
-  $url   = "http://${::ipaddress}:8080",
+  $creds     = {},
+  $url       = "http://${::ipaddress}:8080",
+  $instances = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
+
+  if !$instances and $url {
+    $_instances = [{
+      'creds' => $creds,
+      'url'   => $url,
+    }]
+  } elsif !$instances {
+    $_instances = []
+  } else {
+    $_instances = $instances
+  }
 
   file {
     "${datadog_agent::params::conf_dir}/haproxy.yaml":

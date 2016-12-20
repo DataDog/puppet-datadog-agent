@@ -1,7 +1,7 @@
 Changes
 =======
 
-# 1.9.0 / Unreleased
+# 1.9.0 / 2016-12-20
 
 ### Notes
 

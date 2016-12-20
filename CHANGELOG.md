@@ -1,6 +1,37 @@
 Changes
 =======
 
+# 1.9.0 / Unreleased
+
+### Notes
+
+* [BUGFIX] [rpm] fix key rotation for RPMs - install legacy key as well. See [#283][]. (Thanks [@aepod][]).
+* [BUGFIX] Reporting: allow the report processor to run on Puppet Enterprise. See [#266][]. (Thanks [@binford2k][]).
+* [BUGFIX] RHEL/CentOS: Fix gpg and test binary paths. See [#259][]. (Thanks [@sethcleveland][]).
+* [BUGFIX] NTP: fix template. See [#280][]. (Thanks [@MartinDelta][]).
+* [BUGFIX] Multiple integrations: swapped order of optional vs. non-optional parameters. See [#232][]. (Thanks [@sethcleveland][]).
+
+* [IMPROVEMENT] [rpm+deb] repo keys rotated. See [#242][].
+* [IMPROVEMENT] MySQL: Allow multiple MySQL instances See [#267][]. (Thanks [@IanCrouch][]).
+* [IMPROVEMENT] Http check: `allow_redirects` + `check_certificate_expiration` improvement. See [#282][]. (Thanks [@cristianjuve][]).
+* [IMPROVEMENT] Http_check: update to include new attributes. See [#276][]. (Thanks [@aepod][]).
+* [IMPROVEMENT] Http_check: set disable_ssl_validation parameter. See [#258][].
+* [IMPROVEMENT] Postgres: support generic postgres custom metrics. See [#224][]. (Thanks [@sethcleveland][]).
+* [IMPROVEMENT] Postgres: support use_pscopg2 flag for postgres integrations. See [#243][]. (Thanks [@sethcleveland][]).
+* [IMPROVEMENT] Cassandra: support cassandra integration tags. See [#256][]. (Thanks [@sethcleveland][]).
+* [IMPROVEMENT] HAProxy: support multiple instances. See [#279][]. (Thanks [@swwolf][]).
+
+* [FEATURE] Service Discovery: Allow Service Discovery configuration See [#281][]. (Thanks [@scottgeary][]).
+* [FEATURE] Disk integration. See [#263][]. (Thanks [@denmat][]).
+* [FEATURE] Cacti integration. See [#247][]. (Thanks [@sambanks][]).
+* [FEATURE] JMX integration. See [#231][]. (Thanks [@rooprob][]).
+* [FEATURE] Generic define to enable new integrations. See [#233][]. (Thanks [@cwood][])
+
+* [CI] Multiple fixes related to the spec tests on older puppets.
+* [CI] Consul: adding spec tests. See [#264][]. (Thanks [@flyinprogrammer][]).
+
+
+
 # 1.8.1 / 2016-08-15
 
 ### Notes
@@ -220,18 +251,42 @@ Changes
 [#219]: https://github.com/DataDog/puppet-datadog-agent/issues/219
 [#222]: https://github.com/DataDog/puppet-datadog-agent/issues/222
 [#223]: https://github.com/DataDog/puppet-datadog-agent/issues/223
+[#224]: https://github.com/DataDog/puppet-datadog-agent/issues/224
+[#231]: https://github.com/DataDog/puppet-datadog-agent/issues/231
+[#232]: https://github.com/DataDog/puppet-datadog-agent/issues/232
+[#233]: https://github.com/DataDog/puppet-datadog-agent/issues/233
+[#242]: https://github.com/DataDog/puppet-datadog-agent/issues/242
+[#243]: https://github.com/DataDog/puppet-datadog-agent/issues/243
+[#247]: https://github.com/DataDog/puppet-datadog-agent/issues/247
+[#256]: https://github.com/DataDog/puppet-datadog-agent/issues/256
+[#258]: https://github.com/DataDog/puppet-datadog-agent/issues/258
+[#259]: https://github.com/DataDog/puppet-datadog-agent/issues/259
+[#263]: https://github.com/DataDog/puppet-datadog-agent/issues/263
+[#264]: https://github.com/DataDog/puppet-datadog-agent/issues/264
+[#266]: https://github.com/DataDog/puppet-datadog-agent/issues/266
+[#267]: https://github.com/DataDog/puppet-datadog-agent/issues/267
+[#276]: https://github.com/DataDog/puppet-datadog-agent/issues/276
+[#279]: https://github.com/DataDog/puppet-datadog-agent/issues/279
+[#280]: https://github.com/DataDog/puppet-datadog-agent/issues/280
+[#281]: https://github.com/DataDog/puppet-datadog-agent/issues/281
+[#282]: https://github.com/DataDog/puppet-datadog-agent/issues/282
+[#283]: https://github.com/DataDog/puppet-datadog-agent/issues/283
 [@BIAndrews]: https://github.com/BIAndrews
 [@IanCrouch]: https://github.com/IanCrouch
 [@LeoCavaille]: https://github.com/LeoCavaille
 [@MartinDelta]: https://github.com/MartinDelta
 [@NoodlesNZ]: https://github.com/NoodlesNZ
 [@aaron-miller]: https://github.com/aaron-miller
+[@aepod]: https://github.com/aepod
 [@b2jrock]: https://github.com/b2jrock
 [@bflad]: https://github.com/bflad
+[@binford2k]: https://github.com/binford2k
 [@cristianjuve]: https://github.com/cristianjuve
+[@cwood]: https://github.com/cwood
 [@davejrt]: https://github.com/davejrt
 [@davidgibbons]: https://github.com/davidgibbons
 [@degemer]: https://github.com/degemer
+[@denmat]: https://github.com/denmat
 [@eddmann]: https://github.com/eddmann
 [@flyinprogrammer]: https://github.com/flyinprogrammer
 [@fzwart]: https://github.com/fzwart
@@ -245,6 +300,10 @@ Changes
 [@mrunkel-ut]: https://github.com/mrunkel-ut
 [@obowersa]: https://github.com/obowersa
 [@pabrahamsson]: https://github.com/pabrahamsson
+[@rooprob]: https://github.com/rooprob
 [@rtyler]: https://github.com/rtyler
+[@sambanks]: https://github.com/sambanks
 [@scottgeary]: https://github.com/scottgeary
+[@sethcleveland]: https://github.com/sethcleveland
+[@swwolf]: https://github.com/swwolf
 [@tuxinaut]: https://github.com/tuxinaut

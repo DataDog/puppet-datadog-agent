@@ -99,7 +99,7 @@ class datadog_agent::integrations::tcp_check (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  if !$instances and $url {
+  if !$instances and $host {
     $_instances = [{
       'name'                         => $name,
       'host'                         => $host,

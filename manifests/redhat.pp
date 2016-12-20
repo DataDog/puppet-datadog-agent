@@ -51,7 +51,7 @@ class datadog_agent::redhat(
     yumrepo {'datadog':
       enabled  => 1,
       gpgcheck => 1,
-      gpgkey   => $gpgkey,
+      gpgkey   => 'https://yum.datadoghq.com/DATADOG_RPM_KEY.public',
       descr    => 'Datadog, Inc.',
       baseurl  => $baseurl,
       require  => Exec['install-gpg-key'],

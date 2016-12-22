@@ -18,7 +18,7 @@ class datadog_agent::reports(
   $puppet_gem_provider,
   $puppetmaster_user,
   $dogapi_version,
-  $hostname_extraction_regex = nil
+  $hostname_extraction_regex = undef
 ) {
 
   include datadog_agent

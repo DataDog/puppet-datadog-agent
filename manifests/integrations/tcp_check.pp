@@ -23,7 +23,7 @@
 #        trigger if the check fails <threshold> times in <window> attempts.
 #
 #   window
-#       (Optional) - Refer to ‘threshold’.
+#       (Optional) - Refer to threshold.
 #
 #   collect_response_time
 #       (Optional) - Defaults to false. If this is not set to true, no 
@@ -86,7 +86,7 @@
 
 
 class datadog_agent::integrations::tcp_check (
-  $name      = undef,
+  $check_name      = undef,
   $host      = undef,
   $port      = undef,
   $timeout   = 10,
@@ -101,7 +101,7 @@ class datadog_agent::integrations::tcp_check (
 
   if !$instances and $host {
     $_instances = [{
-      'name'                         => $name,
+      'check_name'                   => $check_name,
       'host'                         => $host,
       'port'                         => $port,
       'timeout'                      => $timeout,

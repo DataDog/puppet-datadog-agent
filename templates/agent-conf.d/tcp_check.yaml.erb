@@ -2,7 +2,7 @@ init_config:
 
 instances:
 <%- (Array(@_instances)).each do |instance| -%>
-  - name: <%= instance['name'] %>
+  - name: <%= instance['check_name'] %>
     host: <%= instance['host'] %>
     port: <%= instance['port'] %>
 <% if instance['timeout'] -%>

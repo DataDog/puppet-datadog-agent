@@ -21,7 +21,7 @@ describe 'datadog_agent::integrations::tcp_check' do
   it { should contain_file(conf_file).that_notifies("Service[#{dd_service}]") }
 
   context 'with default parameters' do
-    it { should contain_file(conf_file).without_content(%r{check_name: }) }
+    it { should contain_file(conf_file).without_content(%r{name: }) }
     it { should contain_file(conf_file).without_content(%r{host: }) }
     it { should contain_file(conf_file).without_content(%r{port: }) }
     it { should contain_file(conf_file).without_content(%r{timeout: 1}) }
@@ -44,7 +44,7 @@ describe 'datadog_agent::integrations::tcp_check' do
       skip_event: true,
     }}
 
-    it { should contain_file(conf_file).with_content(%r{check_name: foo.bar.baz}) }
+    it { should contain_file(conf_file).with_content(%r{name: foo.bar.baz}) }
     it { should contain_file(conf_file).with_content(%r{host: foo.bar.baz}) }
     it { should contain_file(conf_file).with_content(%r{port: 80}) }
     it { should contain_file(conf_file).with_content(%r{timeout: 123}) }
@@ -56,7 +56,7 @@ describe 'datadog_agent::integrations::tcp_check' do
 
   context 'with tags parameter array' do
     let(:params) {{
-      check_name: 'foo.bar.baz',
+      name: 'foo.bar.baz',
       url: 'foo.bar.baz',
       port: '80',
       tags: %w{ foo bar baz },
@@ -67,7 +67,7 @@ describe 'datadog_agent::integrations::tcp_check' do
   context 'with tags parameter empty values' do
     context 'mixed in with other tags' do
       let(:params) {{
-        check_name: 'foo.bar.baz',
+        name: 'foo.bar.baz',
         url: 'foo.bar.baz',
         port: '80',
         tags: [ 'foo', '', 'baz' ]

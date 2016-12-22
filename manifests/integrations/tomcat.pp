@@ -7,6 +7,8 @@
 #       The host tomcat is running on. Defaults to 'localhost'
 #   $port
 #       The JMX port.
+#   $jmx_url
+#       The JMX URL.
 #   $username
 #       The username for connecting to the running JVM. Optional.
 #   $password
@@ -29,6 +31,7 @@
 class datadog_agent::integrations::tomcat(
   $hostname             = 'localhost',
   $port                 = 7199,
+  $jmx_url              = undef,
   $username             = undef,
   $password             = undef,
   $java_bin_path        = undef,

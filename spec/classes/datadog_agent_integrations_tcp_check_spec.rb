@@ -50,13 +50,13 @@ describe 'datadog_agent::integrations::tcp_check' do
     it { should contain_file(conf_file).with_content(%r{timeout: 123}) }
     it { should contain_file(conf_file).with_content(%r{threshold: 456}) }
     it { should contain_file(conf_file).with_content(%r{window: 789}) }
-    it { should contain_file(conf_file).without_content(%r{collect_response_time: true}) }
+    it { should contain_file(conf_file).with_content(%r{collect_response_time: true}) }
     it { should contain_file(conf_file).with_content(%r{skip_event: true}) }
   end
 
   context 'with tags parameter array' do
     let(:params) {{
-      name: 'foo.bar.baz',
+      check_name: 'foo.bar.baz',
       url: 'foo.bar.baz',
       port: '80',
       tags: %w{ foo bar baz },
@@ -67,7 +67,7 @@ describe 'datadog_agent::integrations::tcp_check' do
   context 'with tags parameter empty values' do
     context 'mixed in with other tags' do
       let(:params) {{
-        name: 'foo.bar.baz',
+        check_name: 'foo.bar.baz',
         url: 'foo.bar.baz',
         port: '80',
         tags: [ 'foo', '', 'baz' ]

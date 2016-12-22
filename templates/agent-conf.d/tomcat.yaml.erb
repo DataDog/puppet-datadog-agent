@@ -19,10 +19,10 @@ instances:
     trust_store_password: <%= @trust_store_password %>
 <% end -%>
 <% if @tags and ! @tags.empty? -%>
-        tags:
-  <%- @tags.each do |key, val| -%>
-          <%= "#{key}: #{val}" %>
-  <%- end -%>
+    tags:
+<%- @tags.each do |key, val| -%>
+        <%= "#{key}: #{val}" %>
+<%- end -%>
 <% end -%>
 
 

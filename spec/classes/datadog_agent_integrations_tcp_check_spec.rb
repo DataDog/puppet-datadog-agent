@@ -57,9 +57,9 @@ describe 'datadog_agent::integrations::tcp_check' do
   context 'with tags parameter array' do
     let(:params) {{
       check_name: 'foo.bar.baz',
-      url: 'foo.bar.baz',
+      host: 'foo.bar.baz',
       port: '80',
-      tags: %w{ foo bar baz },
+      tags: [ 'foo', 'bar', 'baz' ],
     }}
     it { should contain_file(conf_file).with_content(/tags:\s+- foo\s+- bar\s+- baz\s*?[^-]/m) }
   end
@@ -68,7 +68,7 @@ describe 'datadog_agent::integrations::tcp_check' do
     context 'mixed in with other tags' do
       let(:params) {{
         check_name: 'foo.bar.baz',
-        url: 'foo.bar.baz',
+        host: 'foo.bar.baz',
         port: '80',
         tags: [ 'foo', '', 'baz' ]
       }}

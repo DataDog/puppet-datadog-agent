@@ -2,6 +2,9 @@
 
 instances:
   - host: <%= @hostname %>
+<% if @jmx_url -%>
+    jmx_url: "<%= @jmx_url %>"
+<% end -%>
     port: <%= @port %>
 <% if @username -%>
     user: <%= @username %>

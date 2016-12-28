@@ -15,11 +15,11 @@ Puppet::Reports.register_report(:datadog_reports) do
   API_KEY = config[:datadog_api_key]
 
   # if need be initialize the regex
-  HOSTNAME_EXTRACTION_REGEX = config[:hostname_extraction_regex]
+  HOSTNAME_REGEX = config[:hostname_extraction_regex]
   begin
-    HOSTNAME_EXTRACTION_REGEX = Regexp.new HOSTNAME_EXTRACTION_REGEX unless HOSTNAME_EXTRACTION_REGEX.nil?
+    HOSTNAME_EXTRACTION_REGEX = Regexp.new HOSTNAME_REGEX unless HOSTNAME_REGEX.nil?
   rescue
-    raise(Puppet::ParseError, "Invalid hostname_extraction_regex #{HOSTNAME_EXTRACTION_REGEX}")
+    raise(Puppet::ParseError, "Invalid hostname_extraction_regex #{HOSTNAME_REGEX}")
   end
 
   desc <<-DESC

@@ -25,6 +25,9 @@ instances:
 <% if instance['include_content'] -%>
     include_content: <%= instance['include_content'] %>
 <% end -%>
+<% if instance['http_response_status_code'] -%>
+    http_response_status_code: <%= instance['http_response_status_code'] %>
+<% end -%>
 <% if instance['collect_response_time'] -%>
     collect_response_time: <%= instance['collect_response_time'] %>
 <% end -%>

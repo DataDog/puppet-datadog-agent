@@ -37,6 +37,13 @@
 #       check to create a metric 'network.http.response_time', tagged with
 #       the url, reporting the response time in seconds.
 #
+#   http_response_status_code
+#       The (optional) http_response_status_code parameter will instruct the check
+#       to look for a particular HTTP response status code or a Regex identifying
+#       a set of possible status codes.
+#       The check will report as DOWN if status code returned differs.
+#       This defaults to 1xx, 2xx and 3xx HTTP status code: (1|2|3)\d\d.
+#
 #   collect_response_time
 #       The (optional) collect_response_time parameter will instruct the
 #       check to create a metric 'network.http.response_time', tagged with
@@ -144,6 +151,7 @@ class datadog_agent::integrations::http_check (
   $window    = undef,
   $content_match = undef,
   $include_content = false,
+  $http_response_status_code = undef,
   $collect_response_time = true,
   $disable_ssl_validation = false,
   $skip_event = true,
@@ -169,6 +177,7 @@ class datadog_agent::integrations::http_check (
       'window'                       => $window,
       'content_match'                => $content_match,
       'include_content'              => $include_content,
+      'http_response_status_code'    => $http_response_status_code,
       'collect_response_time'        => $collect_response_time,
       'disable_ssl_validation'       => $disable_ssl_validation,
       'skip_event'                   => $skip_event,

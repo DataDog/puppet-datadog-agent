@@ -307,6 +307,12 @@ class datadog_agent(
     $local_tags = $tags
   }
 
+  if $hiera_tags {
+    $local_tags = hiera_array('datadog_agent::tags')
+  } else {
+    $local_tags = $tags
+  }
+
   include datadog_agent::params
   case upcase($log_level) {
     'CRITICAL': { $_loglevel = 'CRITICAL' }

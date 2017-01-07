@@ -235,6 +235,7 @@ class datadog_agent(
   $sd_backend_host = '',
   $sd_backend_port = 0,
   $sd_template_dir = '',
+  $sd_jmx_enable = false,
   $consul_token = '',
   $conf_dir = $datadog_agent::params::conf_dir,
   $service_name = $datadog_agent::params::service_name,
@@ -299,6 +300,7 @@ class datadog_agent(
   validate_string($sd_backend_host)
   validate_integer($sd_backend_port)
   validate_string($sd_template_dir)
+  validate_bool($sd_jmx_enable)
   validate_string($consul_token)
 
   if $hiera_tags {

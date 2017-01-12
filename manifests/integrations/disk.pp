@@ -32,7 +32,7 @@
 #      excluded_disk_re     => '/dev/sd[e-z]*'
 #  }
 class datadog_agent::integrations::disk (
-  $use_mount              = 'no',
+  $use_mount              = false,
   $excluded_filesystems   = undef,
   $excluded_disks         = undef,
   $excluded_disk_re       = undef,
@@ -42,9 +42,10 @@ class datadog_agent::integrations::disk (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_re($use_mount, '^(no|yes)$', "use_mount should be either 'yes' or 'no'")
+  validate_bool($use_mount)
+
   if $all_partitions {
-    validate_re($all_partitions, '^(no|yes)$', "all_partitions should be either 'yes' or 'no'")
+    validate_bool($all_partitions)
   }
 
   file { "${datadog_agent::params::conf_dir}/disk.yaml":

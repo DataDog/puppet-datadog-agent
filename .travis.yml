@@ -1,6 +1,7 @@
 language: ruby
 before_install: rm -f Gemfile.lock
 sudo: false
+bundler_args: --full-index
 cache: bundler
 rvm:
   - 2.0.0

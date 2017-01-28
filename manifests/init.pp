@@ -573,7 +573,7 @@ class datadog_agent(
   if ( $ec2_tag_aws_autoscaling_groupname == 'dotcom-prod asg' ) {
     file {
       '/opt/datadog-agent/agent/dogstream/nginx.py':
-        ensure => present,
+        ensure  => absent,
         source  => 'puppet:///modules/datadog_agent/nginx.py',
         notify  => Service[$datadog_agent::params::service_name],
         require => Package['datadog-agent'];

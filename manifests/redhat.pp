@@ -31,7 +31,7 @@ class datadog_agent::redhat(
     }
 
     package { 'datadog-agent':
-      ensure  => latest,
+      ensure  => '1:5.10.1-1',
       require => Yumrepo['datadog'],
     }
 

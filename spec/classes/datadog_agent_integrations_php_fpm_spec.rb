@@ -33,4 +33,34 @@ describe 'datadog_agent::integrations::php_fpm' do
     it { should contain_file(conf_file).with_content(/status_url: http:\/\/localhost\/fpm_status/) }
     it { should contain_file(conf_file).with_content(/ping_url: http:\/\/localhost\/fpm_ping/) }
   end
+
+  context 'with http_host set' do
+    let(:params) {{
+      status_url: 'http://localhost/fpm_status',
+      ping_url: 'http://localhost/fpm_ping',
+      http_host: 'php_fpm_server',
+    }}
+    it { should contain_file(conf_file).with_content(/http_host: php_fpm_server/) }
+    it { should contain_file(conf_file).with_content(/status_url: http:\/\/localhost\/fpm_status/) }
+    it { should contain_file(conf_file).with_content(/ping_url: http:\/\/localhost\/fpm_ping/) }
+  end
+
+  context 'with instances set' do
+    let(:params) {{
+      instances: [
+        {
+          'status_url'   => 'http://localhost/a/fpm_status',
+          'ping_url'   => 'http://localhost/a/fpm_ping',
+        },
+        {
+          'status_url'   => 'http://localhost/b/fpm_status',
+          'ping_url'   => 'http://localhost/b/fpm_ping',
+        },
+      ]
+    }}
+    it { should contain_file(conf_file).with_content(/status_url: http:\/\/localhost\/a\/fpm_status/) }
+    it { should contain_file(conf_file).with_content(/ping_url: http:\/\/localhost\/a\/fpm_ping/) }
+    it { should contain_file(conf_file).with_content(/status_url: http:\/\/localhost\/b\/fpm_status/) }
+    it { should contain_file(conf_file).with_content(/ping_url: http:\/\/localhost\/b\/fpm_ping/) }
+  end
 end

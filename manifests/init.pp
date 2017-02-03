@@ -74,7 +74,8 @@ class datadog_agent(
   $proxy_host = '',
   $proxy_port = '',
   $proxy_user = '',
-  $proxy_password = ''
+  $proxy_password = '',
+  $enable_trace = false
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)

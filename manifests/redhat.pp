@@ -31,8 +31,8 @@ class datadog_agent::redhat(
     }
 
     package { 'datadog-agent':
-      ensure  => '5.10.1-1',
-      require => Yumrepo['datadog'],
+      ensure  => 'latest',
+      require => [ Yumrepo['datadog'], Service[dd-trace-agent] ],
     }
 
     service { 'datadog-agent':

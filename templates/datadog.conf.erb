@@ -237,3 +237,7 @@ log_level: <%= @_loglevel %>
 log_to_syslog: <%= @log_to_syslog ? "yes" : "no" %>
 # syslog_host:
 # syslog_port:
+
+<%- if @enable_trace  -%>
+apm_enabled: true
+<%- end -%>

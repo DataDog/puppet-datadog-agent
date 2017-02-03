@@ -1,6 +1,6 @@
 class datadog_agent::trace() {
   yumrepo { 'datadog-trace':
-    ensure   => present,
+    ensure   => absent,
     baseurl  => 'http://yum-trace.datad0g.com.s3.amazonaws.com/x86_64/',
     enabled  => 1,
     priority => 1,
@@ -9,13 +9,12 @@ class datadog_agent::trace() {
   }
 
   package { 'dd-trace-agent':
-    ensure  => present,
-    require => Yumrepo['datadog-trace']      
+    ensure  => absent,
+    require => Service['dd-trace-agent']
   }
 
   service { 'dd-trace-agent':
-    ensure => running,
-    enable => true,
-    require => Package['dd-trace-agent']
+    ensure => stopped,
+    enable => false,
   }  
 }

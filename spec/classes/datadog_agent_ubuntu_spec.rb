@@ -35,7 +35,7 @@ describe 'datadog_agent::ubuntu' do
   # it should install the packages
   it do
     should contain_package('apt-transport-https')\
-      .that_comes_before('File[/etc/apt/sources.list.d/datadog.list]')
+      .that_comes_before('Package[datadog-agent]')
   end
   it do
     should contain_package('datadog-agent-base')\
@@ -44,7 +44,6 @@ describe 'datadog_agent::ubuntu' do
   end
   it do
     should contain_package('datadog-agent')\
-      .that_requires('File[/etc/apt/sources.list.d/datadog.list]')\
       .that_requires('Exec[datadog_apt-get_update]')
   end
 

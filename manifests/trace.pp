@@ -5,8 +5,7 @@ class datadog_agent::trace() {
   }
 
   package { 'dd-trace-agent':
-    ensure  => absent,
-    require => Service['dd-trace-agent']
+    ensure  => absent
   }
 
   service { 'dd-trace-agent':

@@ -32,7 +32,7 @@ class datadog_agent::redhat(
 
     package { 'datadog-agent':
       ensure  => 'latest',
-      require => [ Yumrepo['datadog'], Service[dd-trace-agent] ],
+      require => Yumrepo['datadog'],
     }
 
     service { 'datadog-agent':

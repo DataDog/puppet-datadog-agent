@@ -1,6 +1,6 @@
 class datadog_agent::trace() {
-  file { 'dd_trace_repo'
-    path => '/etc/yum.repos.d/datadog-trace.repo',
+  file { 'dd_trace_repo':
+    path   => '/etc/yum.repos.d/datadog-trace.repo',
     ensure => absent
   }
 

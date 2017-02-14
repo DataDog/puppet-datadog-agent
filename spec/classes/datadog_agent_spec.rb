@@ -200,6 +200,12 @@ describe 'datadog_agent' do
                     'content' => /^consul_token:\n/,
                     )}
                 end
+
+                context 'for APM' do
+                    it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^apm_enabled: false\n/,
+                    )}
+                end
             end
 
             context 'with user provided paramaters' do
@@ -495,6 +501,12 @@ describe 'datadog_agent' do
                 let(:params) {{:syslog_port  => '8080' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^syslog_port: 8080\n/,
+                )}
+            end
+            context 'with apm_enabled set to true' do
+                let(:params) {{:apm_enabled  => true }}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^apm_enabled: true\n/,
                 )}
             end
             context 'with service_discovery enabled' do

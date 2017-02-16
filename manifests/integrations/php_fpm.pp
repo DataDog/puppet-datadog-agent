@@ -30,11 +30,11 @@ class datadog_agent::integrations::php_fpm(
   include datadog_agent
 
   if !$instances {
-   $_instances = [{
-     'http_host' => $http_host,
-     'status_url' => $status_url,
-     'ping_url' => $ping_url,
-     'tags' => $tags,
+    $_instances = [{
+      'http_host' => $http_host,
+      'status_url' => $status_url,
+      'ping_url' => $ping_url,
+      'tags' => $tags,
     }]
   } else {
     $_instances = $instances

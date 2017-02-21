@@ -120,4 +120,11 @@ instances:
     # List of container label names that should be collected and sent as tags.
     # Default to None
     # Example:
-    # collect_labels_as_tags: ["com.docker.compose.service", "com.docker.compose.project"] 
+    <% if @collect_labels_as_tags and ! @collect_labels_as_tags.empty? -%>
+    collect_labels_as_tags:
+      <%- Array(@collect_labels_as_tags).each do |label| -%>
+        <%- if label != '' -%>
+          - <%= label %>
+        <%- end -%>
+      <%- end -%>
+    <% end -%>

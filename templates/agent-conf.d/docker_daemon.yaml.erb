@@ -1,3 +1,7 @@
+#
+# MANAGED BY PUPPET
+#
+
 init_config:
   # Change the root directory to look at to get cgroup statistics. Useful when running inside a
   # container with host directories mounted on a different folder. Default: /.
@@ -120,11 +124,5 @@ instances:
     # List of container label names that should be collected and sent as tags.
     # Default to None
     # Example:
-    <% if @collect_labels_as_tags and ! @collect_labels_as_tags.empty? -%>
-    collect_labels_as_tags:
-      <%- Array(@collect_labels_as_tags).each do |label| -%>
-        <%- if label != '' -%>
-          - <%= label %>
-        <%- end -%>
-      <%- end -%>
-    <% end -%>
+
+    collect_labels_as_tags: <%= @collect_labels_as_tags %>

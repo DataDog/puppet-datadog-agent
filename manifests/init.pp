@@ -602,7 +602,7 @@ class datadog_agent(
 
   create_resources('datadog_agent::integration', $local_integrations)
   
-  exec { 'rename_default_configs'
+  exec { 'rename_default_configs':
     command => 'find /etc/dd-agent/conf.d -iname "*.yaml.default" -exec rename yaml.default yaml "{}" \;',
     onlyif  => 'ls /etc/dd-agent/conf.d/*default',
   }

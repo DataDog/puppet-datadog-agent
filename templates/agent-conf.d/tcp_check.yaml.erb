@@ -1,0 +1,31 @@
+init_config:
+
+instances:
+<%- (Array(@_instances)).each do |instance| -%>
+  - name: <%= instance['check_name'] %>
+    host: <%= instance['host'] %>
+    port: <%= instance['port'] %>
+<% if instance['timeout'] -%>
+    timeout: <%= instance['timeout'] %>
+<% end -%>
+<% if instance['threshold'] -%>
+    threshold: <%= instance['threshold'] %>
+<% end -%>
+<% if instance['window'] -%>
+    window: <%= instance['window'] %>
+<% end -%>
+<% if instance['collect_response_time'] -%>
+    collect_response_time: <%= instance['collect_response_time'] %>
+<% end -%>
+<% if instance['skip_event'] -%>
+    skip_event: <%= instance['skip_event'] %>
+<% end -%>
+<% if instance['tags'] and ! instance['tags'].empty? -%>
+    tags:
+  <%- Array(instance['tags']).each do |tag| -%>
+    <%- if tag != '' -%>
+      - <%= tag %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
+<% end -%>

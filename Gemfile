@@ -16,5 +16,6 @@ group :development do
   gem "beaker", '2.51.0'
   gem "beaker-rspec"
   gem "puppet-blacksmith"
+  gem "nokogiri", "~> 1.6.0"
   gem "guard-rake"
 end

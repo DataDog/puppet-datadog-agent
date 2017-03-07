@@ -51,7 +51,8 @@
 #  skip_event
 #       The (optional) skip_event parameter will instruct the check to not
 #       create any event to avoid duplicates with a server side service check.
-#       This default to False.
+#       This defaults to True because this is being deprecated.
+#       (See https://github.com/DataDog/dd-agent/blob/master/checks/network_checks.py#L178-L180)
 #
 #  check_certificate_expiration
 #  days_warning
@@ -139,7 +140,7 @@ class datadog_agent::integrations::http_check (
   $include_content = false,
   $collect_response_time = true,
   $disable_ssl_validation = false,
-  $skip_event = undef,
+  $skip_event = true,
   $check_certificate_expiration = undef,
   $days_warning = undef,
   $days_critical = undef,

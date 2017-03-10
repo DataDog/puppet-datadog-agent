@@ -199,6 +199,9 @@ describe 'datadog_agent' do
                     it { should contain_file('/etc/dd-agent/datadog.conf').without(
                     'content' => /^consul_token:\n/,
                     )}
+                    it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^# sd_jmx_enable: no\n/,
+                    )}
                 end
             end
 
@@ -503,6 +506,7 @@ describe 'datadog_agent' do
                      :sd_config_backend          => 'etcd',
                      :sd_backend_host            => 'localhost',
                      :sd_backend_port            => '8080',
+                     :sd_jmx_enable              =>  true,
                 }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                 'content' => /^service_discovery_backend: docker\n/,
@@ -515,6 +519,9 @@ describe 'datadog_agent' do
                 )}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                 'content' => /^sd_backend_port: 8080\n/,
+                )}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                'content' => /^sd_jmx_enable: true\n/,
                 )}
             end
             end

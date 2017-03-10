@@ -387,6 +387,13 @@ sd_backend_port: <%= @sd_backend_port %>
 sd_template_dir: <%= @sd_template_dir %>
 <% end -%>
 
+# Enable JMX checks for service discovery
+<% if @sd_jmx_enable -%>
+sd_jmx_enable: <%= @sd_jmx_enable %>
+<% else -%>
+# sd_jmx_enable: no
+<% end -%>
+
 # If you Consul store requires token authentication for service discovery, you can define that token here.
 <% if @consul_token.empty? -%>
 # consul_token: f45cbd0b-5022-samp-le00-4eaa7c1f40f1

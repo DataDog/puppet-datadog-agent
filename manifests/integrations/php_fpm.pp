@@ -21,9 +21,9 @@
 #
 
 class datadog_agent::integrations::php_fpm(
-  $http_host        = undef,
   $status_url       = 'http://localhost/status',
   $ping_url         = 'http://localhost/ping',
+  $http_host        = undef,
   $tags             = [],
   $instances        = undef
 ) inherits datadog_agent::params {

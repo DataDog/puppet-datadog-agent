@@ -34,6 +34,9 @@ instances:
 <% if instance['skip_event'] -%>
     skip_event: <%= instance['skip_event'] %>
 <% end -%>
+<% if instance['no_proxy'] -%>
+    no_proxy: <%= instance['no_proxy'] %>
+<% end -%>
 <% if instance['check_certificate_expiration'] -%>
     check_certificate_expiration: <%= instance['check_certificate_expiration'] %>
 <% if instance['check_certificate_expiration'] == true -%>

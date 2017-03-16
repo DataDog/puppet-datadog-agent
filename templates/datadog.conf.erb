@@ -119,7 +119,7 @@ use_curl_http_client: <%= @use_curl_http_client %>
 # The loopback address the Forwarder and Dogstatsd will bind.
 # Optional, it is mainly used when running the agent on Openshift
 <% if @bind_host.empty? -%>
-# bind_host: localhost
+bind_host: localhost
 <% else -%>
 bind_host: <%= @bind_host %>
 <% end -%>

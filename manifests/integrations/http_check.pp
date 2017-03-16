@@ -48,15 +48,21 @@
 #       problematic SSL server certificates. To maintain backwards
 #       compatibility this defaults to false.
 #
-#  skip_event
+#   skip_event
 #       The (optional) skip_event parameter will instruct the check to not
 #       create any event to avoid duplicates with a server side service check.
 #       This defaults to True because this is being deprecated.
 #       (See https://github.com/DataDog/dd-agent/blob/master/checks/network_checks.py#L178-L180)
 #
-#  check_certificate_expiration
-#  days_warning
-#  days_critical
+#   no_proxy
+#       The (optional) no_proxy parameter would bypass any proxy settings enabled
+#       and attempt to reach the the URL directly.
+#       If no proxy is defined at any level, this flag bears no effect.
+#       Defaults to False.
+#
+#   check_certificate_expiration
+#   days_warning
+#   days_critical
 #       The (optional) check_certificate_expiration will instruct the check
 #       to create a service check that checks the expiration of the
 #       ssl certificate. Allow for a warning to occur when x days are
@@ -64,7 +70,7 @@
 #       warning if the certificate is y days from the expiration date.
 #       The SSL certificate will always be validated for this additional
 #       service check regardless of the value of disable_ssl_validation
-# 
+#
 #   headers
 #       The (optional) headers parameter allows you to send extra headers
 #       with the request. This is useful for explicitly specifying the host
@@ -141,6 +147,7 @@ class datadog_agent::integrations::http_check (
   $collect_response_time = true,
   $disable_ssl_validation = false,
   $skip_event = true,
+  $no_proxy  = false,
   $check_certificate_expiration = undef,
   $days_warning = undef,
   $days_critical = undef,
@@ -165,6 +172,7 @@ class datadog_agent::integrations::http_check (
       'collect_response_time'        => $collect_response_time,
       'disable_ssl_validation'       => $disable_ssl_validation,
       'skip_event'                   => $skip_event,
+      'no_proxy'                     => $no_proxy,
       'check_certificate_expiration' => $check_certificate_expiration,
       'days_warning'                 => $days_warning,
       'days_critical'                => $days_critical,

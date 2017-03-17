@@ -512,6 +512,21 @@ describe 'datadog_agent' do
                     'content' => /^apm_enabled: true\n/,
                 )}
             end
+            context 'with apm_enabled set to true and env specified' do
+                let(:params) {
+                    {:apm_enabled  => true,
+                     :apm_env => 'foo',
+                }}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^apm_enabled: true\n/,
+                )}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^\[trace.agent\]\n/,
+                )}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^env: foo\n/,
+                )}
+            end
             context 'with service_discovery enabled' do
                 let(:params) {
                     {:service_discovery_backend  => 'docker',

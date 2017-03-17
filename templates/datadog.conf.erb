@@ -414,3 +414,8 @@ apm_enabled: <%= @apm_enabled %>
 # ========================================================================== #
 
 <% end -%>
+
+<% if not @apm_env.empty? -%>
+[trace.agent]
+env: <%= @apm_env %>
+<% end -%>

@@ -154,6 +154,9 @@
 #   $apm_enabled
 #       Boolean to enable or disable the trace agent
 #       Boolean. Default: false
+#   $apm_env
+#       String defining the environment for the APM traces
+#       String. Default: empty
 #
 # Actions:
 #
@@ -241,6 +244,7 @@ class datadog_agent(
   $dd_user = $datadog_agent::params::dd_user,
   $dd_group = $datadog_agent::params::dd_group,
   $apm_enabled = false,
+  $apm_env = '',
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -302,6 +306,7 @@ class datadog_agent(
   validate_bool($sd_jmx_enable)
   validate_string($consul_token)
   validate_bool($apm_enabled)
+  validate_string($apm_env)
 
   if $hiera_tags {
     $local_tags = hiera_array('datadog_agent::tags')

@@ -151,7 +151,9 @@
 #   $pup_log_file
 #       Specifies the log file location for the pup system
 #       String. Default: empty
-#
+#   $apm_enabled
+#       Boolean to enable or disable the trace agent
+#       Boolean. Default: false
 #
 # Actions:
 #
@@ -238,6 +240,7 @@ class datadog_agent(
   $package_name = $datadog_agent::params::package_name,
   $dd_user = $datadog_agent::params::dd_user,
   $dd_group = $datadog_agent::params::dd_group,
+  $apm_enabled = false,
 ) inherits datadog_agent::params {
 
   validate_string($dd_url)
@@ -298,6 +301,7 @@ class datadog_agent(
   validate_string($sd_template_dir)
   validate_bool($sd_jmx_enable)
   validate_string($consul_token)
+  validate_bool($apm_enabled)
 
   if $hiera_tags {
     $local_tags = hiera_array('datadog_agent::tags')

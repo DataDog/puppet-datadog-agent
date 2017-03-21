@@ -49,7 +49,7 @@ class datadog_agent::redhat(
     }
 
     yumrepo {'datadog':
-      enabled  => 1,
+      enabled  => 0,
       gpgcheck => 1,
       gpgkey   => 'https://yum.datadoghq.com/DATADOG_RPM_KEY.public',
       descr    => 'Datadog, Inc.',

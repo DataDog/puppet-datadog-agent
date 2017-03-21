@@ -408,6 +408,12 @@ class datadog_agent(
     order   => '05',
   }
 
+  concat::fragment{ 'datadog apm footer':
+    target  => '/etc/dd-agent/datadog.conf',
+    content => template('datadog_agent/datadog_apm_footer.conf.erb'),
+    order   => '06',
+  }
+
 
   if $puppet_run_reports {
     class { 'datadog_agent::reports':

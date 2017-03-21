@@ -343,6 +343,14 @@ sd_jmx_enable: <%= @sd_jmx_enable %>
 consul_token: <%= @consul_token %>
 <% end -%>
 
+# ========================================================================== #
+# Trace                                                                      #
+# ========================================================================== #
+
+# Enable the trace agent.
+apm_enabled: <%= @apm_enabled %>
+
+
 <% if not @extra_template.empty? -%>
 # ========================================================================== #
 # Custom Templates from Puppet                                               #

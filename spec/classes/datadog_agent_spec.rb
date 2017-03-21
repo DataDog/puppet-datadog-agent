@@ -206,7 +206,7 @@ describe 'datadog_agent' do
                 end
 
                 context 'for APM' do
-                    it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^apm_enabled: false\n/,
                     )}
                 end
@@ -550,7 +550,7 @@ describe 'datadog_agent' do
             end
             context 'with apm_enabled set to true' do
                 let(:params) {{:apm_enabled  => true }}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^apm_enabled: true\n/,
                 )}
             end
@@ -559,13 +559,13 @@ describe 'datadog_agent' do
                     {:apm_enabled  => true,
                      :apm_env => 'foo',
                 }}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^apm_enabled: true\n/,
                 )}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                it { should contain_concat__fragment('datadog apm footer').with(
                     'content' => /^\[trace.agent\]\n/,
                 )}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                it { should contain_concat__fragment('datadog apm footer').with(
                     'content' => /^env: foo\n/,
                 )}
             end

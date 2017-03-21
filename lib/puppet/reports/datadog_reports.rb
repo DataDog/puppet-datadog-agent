@@ -108,13 +108,15 @@ Puppet::Reports.register_report(:datadog_reports) do
 
     Puppet.debug "Sending metrics for #{@msg_host} to Datadog"
     @dog = Dogapi::Client.new(API_KEY)
-    self.metrics.each { |metric,data|
-      data.values.each { |val|
-        name = "puppet.#{val[1].gsub(/ /, '_')}.#{metric}".downcase
-        value = val[2]
-        @dog.emit_point("#{name}", value, :host => "#{@msg_host}")
+    @dog.batch_metrics do
+      self.metrics.each { |metric,data|
+        data.values.each { |val|
+          name = "puppet.#{val[1].gsub(/ /, '_')}.#{metric}".downcase
+          value = val[2]
+          @dog.emit_point("#{name}", value, :host => "#{@msg_host}")
+        }
       }
-    }
+    end
 
     Puppet.debug "Sending events for #{@msg_host} to Datadog"
     @dog.emit_event(Dogapi::Event.new(event_data,

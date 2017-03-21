@@ -37,7 +37,7 @@ instances:
       #  - zookeeper
       #  - gunicorn
       #  - redis
-      <% if @service_whitelist and ! @service_whitelist.empty? -%>
+      <%- if @service_whitelist and ! @service_whitelist.empty? -%>
       service_whitelist:
         <%- Array(@service_whitelist).each do |svc| -%>
           <%- if svc != '' -%>

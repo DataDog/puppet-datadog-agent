@@ -606,18 +606,18 @@ describe 'datadog_agent' do
   end
 
   context "with facts to tags set" do
-    describe "make sure facts_array outputs a list of tags" do
-      let(:params) { { puppet_run_reports: true, facts_to_tags: ['osfamily', 'facts_array']} }
+    describe "ensure facts_array outputs a list of tags" do
+      let(:params) { { puppet_run_reports: true, puppet_gem_provider: 'gem', facts_to_tags: ['osfamily', 'facts_array']} }
       let(:facts) do
         {
-          operatingsystem: 'CentOS',
-          osfamily: 'redhat',
-          facts_array: ['one', 'two', 'three']
+            operatingsystem: 'CentOS',
+            osfamily: 'redhat',
+            facts_array: ['one', 'two', 'three']
         }
-      end
 
-        it { should contain_concat('/etc/dd-agent/datadog.conf').with_content(/tags: osfamily:redhat, facts_array:one, facts_array:two, facts_array:three/) }
+        it { should contain_concat('/etc/dd-agent/datadog.conf') }
+        it { should contain_concat__fragment('datadog tags').with(/tags: osfamily:redhat, facts_array:one, facts_array:two, facts_array:three/) }
+      end
     end
   end
-
 end

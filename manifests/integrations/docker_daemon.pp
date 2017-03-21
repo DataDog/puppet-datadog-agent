@@ -22,11 +22,31 @@
 class datadog_agent::integrations::docker_daemon(
   $url = 'unix://var/run/docker.sock',
   $tags = [],
-  $group = 'docker',
+  $group = 'dd-agent',
+  $collect_labels_as_tags = '["appName", "project", "runtime", "runtimeVersion", "webserver"]',
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  exec { 'dd-agent-should-be-in-docker-group':
+  user { 'create-dd-agent-user':
+    name    => "$dd_user",
+    ensure  => 'present',
+    gid     => 'dd-agent',
+    groups  => ['root', 'docker']
+  }
+
+  group { 'create-docker-group':
+    name    => 'docker',
+    ensure  => 'present',
+    before  => User['create-dd-agent-user']
+  }
+
+  group { 'create-dd-agent-group':
+    name    => 'dd-agent',
+    ensure  => 'present',
+    before  => User['create-dd-agent-user']
+  }
+
+  exec { 'dd-agent-should-be-in-dd-agent-group':
     command => "/usr/sbin/usermod -aG ${group} ${datadog_agent::params::dd_user}",
     unless  => "/bin/cat /etc/group | grep '^${group}:' | grep -qw ${datadog_agent::params::dd_user}",
     require => Package[$datadog_agent::params::package_name],

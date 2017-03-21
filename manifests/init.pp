@@ -197,6 +197,7 @@ class datadog_agent(
   $manage_repo = true,
   $hostname_extraction_regex = nil,
   $dogstatsd_port = 8125,
+  $dogstatsd_bind_host = 'localhost',
   $statsd_forward_host = '',
   $statsd_forward_port = '',
   $statsd_histogram_percentiles = '0.95',

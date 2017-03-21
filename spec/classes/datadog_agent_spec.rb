@@ -123,7 +123,7 @@ describe 'datadog_agent' do
                     'content' => /^# bind_host: localhost\n/,
                     )}
                     it { should contain_concat__fragment('datadog footer').with(
-                    'content' => /^use_dogstatsd: no\n/,
+                    'content' => /^use_dogstatsd: yes\n/,
                     )}
                     it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^dogstatsd_port: 8125\n/,
@@ -182,26 +182,26 @@ describe 'datadog_agent' do
                 end
 
                 context 'for service_discovery' do
-                    it { should contain_file('/etc/dd-agent/datadog.conf').without(
+                    it { should contain_concat__fragment('datadog footer').without(
                     'content' => /^service_discovery_backend:\n/,
                     )}
-                    it { should contain_file('/etc/dd-agent/datadog.conf').without(
+                    it { should contain_concat__fragment('datadog footer').without(
                     'content' => /^sd_config_backend:\n/,
                     )}
-                    it { should contain_file('/etc/dd-agent/datadog.conf').without(
+                    it { should contain_concat__fragment('datadog footer').without(
                     'content' => /^sd_backend_host:\n/,
                     )}
-                    it { should contain_file('/etc/dd-agent/datadog.conf').without(
+                    it { should contain_concat__fragment('datadog footer').without(
                     'content' => /^sd_backend_port:\n/,
                     )}
-                    it { should contain_file('/etc/dd-agent/datadog.conf').without(
+                    it { should contain_concat__fragment('datadog footer').without(
                     'content' => /^sd_template_dir:\n/,
                     )}
-                    it { should contain_file('/etc/dd-agent/datadog.conf').without(
+                    it { should contain_concat__fragment('datadog footer').without(
                     'content' => /^consul_token:\n/,
                     )}
-                    it { should contain_file('/etc/dd-agent/datadog.conf').with(
-                    'content' => /^# sd_jmx_enable: no\n/,
+                    it { should contain_concat__fragment('datadog footer').without(
+                    'content' => /^# sd_jmx_enable:\n/,
                     )}
                 end
 
@@ -577,19 +577,19 @@ describe 'datadog_agent' do
                      :sd_backend_port            => '8080',
                      :sd_jmx_enable              =>  true,
                 }}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                it { should contain_concat__fragment('datadog footer').with(
                 'content' => /^service_discovery_backend: docker\n/,
                 )}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                it { should contain_concat__fragment('datadog footer').with(
                 'content' => /^sd_config_backend: etcd\n/,
                 )}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                it { should contain_concat__fragment('datadog footer').with(
                 'content' => /^sd_backend_host: localhost\n/,
                 )}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                it { should contain_concat__fragment('datadog footer').with(
                 'content' => /^sd_backend_port: 8080\n/,
                 )}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                it { should contain_concat__fragment('datadog footer').with(
                 'content' => /^sd_jmx_enable: true\n/,
                 )}
             end

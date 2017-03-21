@@ -290,6 +290,59 @@ syslog_host: <%= @syslog_host  %>
 syslog_port: <%= @syslog_port  %>
 <% end -%>
 
+
+# ========================================================================== #
+# Service Discovery
+# ========================================================================== #
+
+# For now only docker is supported so you just need to un-comment this line.
+<% if @service_discovery_backend.empty? -%>
+# service_discovery_backend: docker
+<% else -%>
+service_discovery_backend: <%= @service_discovery_backend %>
+<% end -%>
+
+# Define which key/value store must be used to look for configuration templates.
+# Default is etcd. Consul is also supported.
+<% if @sd_config_backend.empty? -%>
+# sd_config_backend: etcd
+<% else -%>
+sd_config_backend: <%= @sd_config_backend %>
+<% end -%>
+
+# Settings for connecting to the backend. These are the default, edit them if you run a different config.
+<% if @sd_backend_host.empty? -%>
+# sd_backend_host: 127.0.0.1
+<% else -%>
+sd_backend_host: <%= @sd_backend_host %>
+<% end -%>
+<% if @sd_backend_port.to_i < 1 -%>
+# sd_backend_port: 4001
+<% else -%>
+sd_backend_port: <%= @sd_backend_port %>
+<% end -%>
+
+# By default, the agent will look for the configuration templates under the
+# `/datadog/check_configs` key in the back-end.
+# If you wish otherwise, uncomment this option and modify its value.
+<% if @sd_template_dir.empty? -%>
+# sd_template_dir: /datadog/check_configs
+<% else -%>
+sd_template_dir: <%= @sd_template_dir %>
+<% end -%>
+
+# Enable JMX checks for service discovery
+<% if @sd_jmx_enable -%>
+sd_jmx_enable: <%= @sd_jmx_enable %>
+<% end -%>
+
+# If you Consul store requires token authentication for service discovery, you can define that token here.
+<% if @consul_token.empty? -%>
+# consul_token: f45cbd0b-5022-samp-le00-4eaa7c1f40f1
+<% else -%>
+consul_token: <%= @consul_token %>
+<% end -%>
+
 <% if not @extra_template.empty? -%>
 # ========================================================================== #
 # Custom Templates from Puppet                                               #

@@ -218,21 +218,24 @@ describe 'datadog_agent' do
                     'content' => /^dd_url: https:\/\/notaurl.datadoghq.com\n/,
                 )}
             end
-
             context 'with a custom proxy_host' do
                 let(:params) {{:proxy_host => 'localhost'}}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^proxy_host: localhost\n/,
                 )}
             end
-
             context 'with a custom proxy_port' do
                 let(:params) {{:proxy_port => '1234'}}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^proxy_port: 1234\n/,
                 )}
             end
-
+            context 'with a custom proxy_port, specified as an integer' do
+                let(:params) {{:proxy_port => 1234}}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^proxy_port: 1234\n/,
+                )}
+            end
             context 'with a custom proxy_user' do
                 let(:params) {{:proxy_user => 'notauser'}}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
@@ -245,7 +248,6 @@ describe 'datadog_agent' do
                     'content' => /^api_key: notakey\n/,
                 )}
             end
-
             context 'with a custom hostname' do
                 let(:params) {{:host => 'notahost'}}
 
@@ -259,7 +261,7 @@ describe 'datadog_agent' do
                     'content' => /^non_local_traffic: true\n/,
                 )}
             end
-            #Should expand testing to cover changes to the case upcase 
+            #Should expand testing to cover changes to the case upcase
             context 'with log level set to critical' do
                 let(:params) {{:log_level => 'critical'}}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
@@ -279,56 +281,67 @@ describe 'datadog_agent' do
                 )}
             end
             context 'with skip_ssl_validation set to true' do
-                let(:params) {{:skip_ssl_validation => true }} 
+                let(:params) {{:skip_ssl_validation => true }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^skip_ssl_validation: true\n/,
                 )}
             end
             context 'with collect_ec2_tags set to yes' do
-                let(:params) {{:collect_ec2_tags => true }} 
+                let(:params) {{:collect_ec2_tags => true }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^collect_ec2_tags: true\n/,
                 )}
             end
             context 'with collect_instance_metadata set to no' do
-                let(:params) {{:collect_instance_metadata => false }} 
+                let(:params) {{:collect_instance_metadata => false }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^collect_instance_metadata: false\n/,
                 )}
             end
             context 'with recent_point_threshold set to 60' do
-                let(:params) {{:recent_point_threshold => '60' }} 
+                let(:params) {{:recent_point_threshold => '60' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^recent_point_threshold: 60\n/,
                 )}
             end
             context 'with a custom port set to 17125' do
-                let(:params) {{:listen_port => '17125' }} 
+                let(:params) {{:listen_port => '17125' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^listen_port: 17125\n/,
                 )}
             end
-            context 'litstening for graphite data on port 17124' do
-                let(:params) {{:graphite_listen_port => '17124' }} 
+            context 'with a custom port set to 17125, specified as an integer' do
+                let(:params) {{:listen_port => 17125 }}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^listen_port: 17125\n/,
+                )}
+            end
+            context 'listening for graphite data on port 17124' do
+                let(:params) {{:graphite_listen_port => '17124' }}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^graphite_listen_port: 17124\n/,
+                )}
+            end
+            context 'listening for graphite data on port 17124, port specified as an integer' do
+                let(:params) {{:graphite_listen_port => 17124 }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^graphite_listen_port: 17124\n/,
                 )}
             end
             context 'with configuration for a custom checks.d' do
-                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d'  }} 
+                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^additional_checksd: \/etc\/dd-agent\/checks_custom.d\n/,
                 )}
             end
             context 'with configuration for a custom checks.d' do
-                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d'  }} 
+                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^additional_checksd: \/etc\/dd-agent\/checks_custom.d\n/,
                 )}
             end
-
             context 'with configuration for a custom checks.d' do
-                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d'  }} 
+                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^additional_checksd: \/etc\/dd-agent\/checks_custom.d\n/,
                 )}
@@ -357,28 +370,32 @@ describe 'datadog_agent' do
                     'content' => /^pup_port: 17126\n/,
                 )}
             end
+            context 'with a custom pup_port, specified as an integer' do
+                let(:params) {{:pup_port => 17126 }}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^pup_port: 17126\n/,
+                )}
+            end
             context 'with a custom pup_interface' do
                 let(:params) {{:pup_interface => 'notalocalhost' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^pup_interface: notalocalhost\n/,
                 )}
             end
-
             context 'with a custom pup_url' do
                 let(:params) {{:pup_url => 'http://localhost:17126' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^pup_url: http:\/\/localhost:17126\n/,
                 )}
             end
-
             context 'with use_dogstatsd set to no' do
                 let(:params) {{:use_dogstatsd => false}}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^use_dogstatsd: no\n/,
                 )}
             end
-            context 'with dogstatsd_port set to 8126' do
-                let(:params) {{:dogstatsd_port  => 8126}}
+            context 'with dogstatsd_port set to 8126 - must be specified as an integer!' do
+                let(:params) {{:dogstatsd_port => 8126 }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^dogstatsd_port: 8126\n/,
                 )}
@@ -414,13 +431,13 @@ describe 'datadog_agent' do
                 )}
             end
             context 'with statsd_forward_port set to 8126' do
-                let(:params) {{:statsd_forward_port  => '8126' }}
+                let(:params) {{:statsd_forward_port => '8126' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^statsd_forward_port: 8126\n/,
                 )}
             end
-            context 'with statsd_forward_port set to 8126' do
-                let(:params) {{:statsd_forward_port  => '8126' }}
+            context 'with statsd_forward_port set to 8126, specified as an integer' do
+                let(:params) {{:statsd_forward_port => 8126 }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^statsd_forward_port: 8126\n/,
                 )}
@@ -438,12 +455,18 @@ describe 'datadog_agent' do
                 )}
             end
             context 'with ganglia_host set to localhost and ganglia_port set to 12345' do
-                let(:params) {{:ganglia_host  => 'testhost', :ganglia_port => '12345' }}
+                let(:params) {{:ganglia_host => 'testhost', :ganglia_port => '12345' }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^ganglia_port: 12345\n/,
                 )}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^ganglia_host: testhost\n/,
+                )}
+            end
+            context 'with ganglia_host set to localhost and ganglia_port set to 12345, port specified as an integer' do
+                let(:params) {{:ganglia_host => 'testhost', :ganglia_port => 12345 }}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^ganglia_port: 12345\n/,
                 )}
             end
             context 'with dogstreams set to /path/to/log1:/path/to/parser' do
@@ -501,7 +524,13 @@ describe 'datadog_agent' do
                 )}
             end
             context 'with syslog port set to 8080' do
-                let(:params) {{:syslog_port  => '8080' }}
+                let(:params) {{:syslog_port => '8080' }}
+                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                    'content' => /^syslog_port: 8080\n/,
+                )}
+            end
+            context 'with syslog port set to 8080, specified as an integer' do
+                let(:params) {{:syslog_port => 8080 }}
                 it { should contain_file('/etc/dd-agent/datadog.conf').with(
                     'content' => /^syslog_port: 8080\n/,
                 )}

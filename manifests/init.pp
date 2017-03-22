@@ -247,6 +247,16 @@ class datadog_agent(
   $apm_env = '',
 ) inherits datadog_agent::params {
 
+  # Allow ports to be passed as integers or strings.
+  # lint:ignore:only_variable_string
+  $_statsd_forward_port = "${statsd_forward_port}"
+  $_proxy_port = "${proxy_port}"
+  $_graphite_listen_port = "${graphite_listen_port}"
+  $_listen_port = "${listen_port}"
+  $_pup_port = "${pup_port}"
+  $_syslog_port = "${syslog_port}"
+  # lint:endignore
+
   validate_string($dd_url)
   validate_string($host)
   validate_string($api_key)
@@ -263,12 +273,12 @@ class datadog_agent(
   validate_string($log_level)
   validate_integer($dogstatsd_port)
   validate_string($statsd_histogram_percentiles)
-  validate_string($statsd_forward_port)
+  validate_re($_statsd_forward_port, '^\d*$')
   validate_string($proxy_host)
-  validate_string($proxy_port)
+  validate_re($_proxy_port, '^\d*$')
   validate_string($proxy_user)
   validate_string($proxy_password)
-  validate_string($graphite_listen_port)
+  validate_re($_graphite_listen_port, '^\d*$')
   validate_string($extra_template)
   validate_string($ganglia_host)
   validate_integer($ganglia_port)
@@ -278,11 +288,11 @@ class datadog_agent(
   validate_bool($collect_ec2_tags)
   validate_bool($collect_instance_metadata)
   validate_string($recent_point_threshold)
-  validate_string($listen_port)
+  validate_re($_listen_port, '^\d*$')
   validate_string($additional_checksd)
   validate_string($bind_host)
   validate_bool($use_pup)
-  validate_string($pup_port)
+  validate_re($_pup_port, '^\d*$')
   validate_string($pup_interface)
   validate_string($pup_url)
   validate_bool($use_dogstatsd)
@@ -297,7 +307,7 @@ class datadog_agent(
   validate_string($dogstatsd_log_file)
   validate_string($pup_log_file)
   validate_string($syslog_host)
-  validate_string($syslog_port)
+  validate_re($_syslog_port, '^\d*$')
   validate_string($service_discovery_backend)
   validate_string($sd_config_backend)
   validate_string($sd_backend_host)

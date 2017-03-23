@@ -107,7 +107,7 @@ use_dogstatsd: <%= @use_dogstatsd ? "yes" : "no" %>
 # usage information, check out http://api.datadoghq.com
 
 #  Make sure your client is sending to the same port.
-<% if @_dogstatsd_port.nil? -%>
+<% if @_dogstatsd_port.empty? -%>
 # dogstatsd_port: 8125
 <% else -%>
 dogstatsd_port: <%= @_dogstatsd_port %>

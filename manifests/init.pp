@@ -255,6 +255,7 @@ class datadog_agent(
 
   # Allow ports to be passed as integers or strings.
   # lint:ignore:only_variable_string
+  $_dogstatsd_port = "${dogstatsd_port}"
   $_statsd_forward_port = "${statsd_forward_port}"
   $_proxy_port = "${proxy_port}"
   $_graphite_listen_port = "${graphite_listen_port}"
@@ -277,7 +278,7 @@ class datadog_agent(
   validate_bool($log_to_syslog)
   validate_bool($manage_repo)
   validate_string($log_level)
-  validate_integer($dogstatsd_port)
+  validate_re($_dogstatsd_port, '^\d*$')
   validate_string($statsd_histogram_percentiles)
   validate_re($_statsd_forward_port, '^\d*$')
   validate_string($check_freq)

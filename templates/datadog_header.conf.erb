@@ -12,10 +12,10 @@ dd_url: <%= @dd_url %>
 <% else -%>
 proxy_host: <%= @proxy_host %>
 <% end -%>
-<% if @proxy_port.empty? -%>
+<% if @_proxy_port.empty? -%>
 # proxy_port:
 <% else -%>
-proxy_port: <%= @proxy_port %>
+proxy_port: <%= @_proxy_port %>
 <% end -%>
 <% if @proxy_user.empty? -%>
 # proxy_user:

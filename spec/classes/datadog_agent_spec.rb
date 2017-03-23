@@ -233,7 +233,7 @@ describe 'datadog_agent' do
             end
             context 'with a custom proxy_port, specified as an integer' do
                 let(:params) {{:proxy_port => 1234}}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                it { should contain_concat__fragment('datadog header').with(
                     'content' => /^proxy_port: 1234\n/,
                 )}
             end
@@ -313,7 +313,7 @@ describe 'datadog_agent' do
             end
             context 'with a custom port set to 17125, specified as an integer' do
                 let(:params) {{:listen_port => 17125 }}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^listen_port: 17125\n/,
                 )}
             end
@@ -325,7 +325,7 @@ describe 'datadog_agent' do
             end
             context 'listening for graphite data on port 17124, port specified as an integer' do
                 let(:params) {{:graphite_listen_port => 17124 }}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^graphite_listen_port: 17124\n/,
                 )}
             end
@@ -373,7 +373,7 @@ describe 'datadog_agent' do
             end
             context 'with a custom pup_port, specified as an integer' do
                 let(:params) {{:pup_port => 17126 }}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^pup_port: 17126\n/,
                 )}
             end
@@ -478,7 +478,7 @@ describe 'datadog_agent' do
             end
             context 'with ganglia_host set to localhost and ganglia_port set to 12345, port specified as an integer' do
                 let(:params) {{:ganglia_host => 'testhost', :ganglia_port => 12345 }}
-                it { should contain_file('/etc/dd-agent/datadog.conf').with(
+                it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^ganglia_port: 12345\n/,
                 )}
             end

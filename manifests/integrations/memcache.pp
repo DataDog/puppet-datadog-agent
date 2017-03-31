@@ -19,18 +19,44 @@
 #   url      => 'localhost',
 # }
 #
+#
+# Sample Usage (Instance):
+#  class { 'datadog_agent::integrations::memcache' :
+#    instances => [{
+#      url   => 'localhost',
+#      port  => '11211',
+#      items => false,
+#      slabs => false,
+#    }]
+#  }
+#
 class datadog_agent::integrations::memcache (
   $url                    = 'localhost',
   $port                   = 11211,
   $tags                   = [],
   $items                  = false,
   $slabs                  = false,
+  $instances = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 
   validate_string($url)
   validate_array($tags)
   validate_integer($port)
+
+  if !$instances and $url {
+    $_instances = [{
+      'url'   => $url,
+      'port'  => $port,
+      'tags'  => $tags,
+      'items' => $items,
+      'slabs' => $slabs,
+    }]
+  } elsif !$instances{
+    $_instances = []
+  } else {
+    $_instances = $instances
+  }
 
   file { "${datadog_agent::params::conf_dir}/mcache.yaml":
     ensure  => file,

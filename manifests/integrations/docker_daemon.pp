@@ -21,6 +21,7 @@
 #
 class datadog_agent::integrations::docker_daemon(
   $url = 'unix://var/run/docker.sock',
+  $collect_events = true,
   $tags = [],
   $group = 'docker',
 ) inherits datadog_agent::params {

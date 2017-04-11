@@ -23,7 +23,7 @@ class datadog_agent::redhat(
 
   validate_bool($manage_repo)
   if $manage_repo {
-    $public_key_local = '/tmp/DATADOG_RPM_KEY.public'
+    $public_key_local = '/etc/pki/rpm-gpg/DATADOG_RPM_KEY.public'
 
     validate_string($baseurl)
 
@@ -39,13 +39,7 @@ class datadog_agent::redhat(
         command => "/bin/rpm --import ${public_key_local}",
         onlyif  => "/usr/bin/gpg --quiet --with-fingerprint -n ${public_key_local} | grep \'60A3 89A4 4A0C 32BA E3C0  3F0B 069B 56F5 4172 A230\'",
         unless  => '/bin/rpm -q gpg-pubkey-4172a230',
-        require => Remote_file['DATADOG_RPM_KEY.public'],
-        notify  => Exec['cleanup-gpg-key'],
-    }
-
-    exec { 'cleanup-gpg-key':
-        command => "/bin/rm ${public_key_local}",
-        onlyif  => "/usr/bin/test -f ${public_key_local}",
+        require => Remote_file['DATADOG_RPM_KEY.public']
     }
 
     yumrepo {'datadog':

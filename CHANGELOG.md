@@ -1,6 +1,31 @@
 Changes
 =======
 
+# 1.10.0 / Unreleased
+
+### Notes
+
+* [FEATURE] Ceph: Adding integration. See [#293][] (Thanks [@stamak][])
+* [FEATURE] Tcp_check: Adding integration. See [#286][] (Thanks [@aepod][])
+* [FEATURE] Trace_agent: Configure APM trace agent. See [#302][] and [#311][] (Thanks [@DDRBoxman][])
+* [FEATURE] Allow hiera defined integrations. See [#261][] (Thanks [@cwood][])
+
+* [IMPROVEMENT] Make tags their own resource. See [#261][] (Thanks [@cwood][])
+* [IMPROVEMENT] Support ports as integers. See [#315][] (Thanks [@alexharv074][])
+* [IMPROVEMENT] PHPfpm: Support for multiple instances and `http_host`. See [#299][] (Thanks [@obi11235][])
+* [IMPROVEMENT] RabbitMQ: Adding additional configuration parameters. See [#288][] (Thanks [@alvin-huang][])
+* [IMPROVEMENT] Http_check: Adding response_status_code. See [#290][] (Thanks [@dzinek][])
+* [IMPROVEMENT] Http_check: Adding no_proxy configuration option. See [#309][]
+* [IMPROVEMENT] Service_discovery: Adding jmx checks for SD. See [#296][] (Thanks [@alvin-huang][])
+* [IMPROVEMENT] Reporting: Fix already initialized warning. See [#292][] and [#310][] (Thanks [@craigwatson][])
+* [IMPROVEMENT] Reporting: Send metrics for hosts as a batch, reducing overhead. See [#313][] (Thanks [@tdm4][])
+
+* [DEPRECATE] Http_check: Slowly deprecate skip_event. See [#291][] (Thanks [@flyinprogrammer][])
+
+* [DOCUMENTATION] Cleanup EC2-related parameter docs. See [#252][] (Thanks [@jdavisp3][])
+* [DOCUMENTATION] Zookeeper: fix comment to match reality. See [#297][] (Thanks [@generica][])
+
+
 # 1.9.0 / 2016-12-20
 
 ### Notes
@@ -258,9 +283,11 @@ Changes
 [#242]: https://github.com/DataDog/puppet-datadog-agent/issues/242
 [#243]: https://github.com/DataDog/puppet-datadog-agent/issues/243
 [#247]: https://github.com/DataDog/puppet-datadog-agent/issues/247
+[#252]: https://github.com/DataDog/puppet-datadog-agent/issues/252
 [#256]: https://github.com/DataDog/puppet-datadog-agent/issues/256
 [#258]: https://github.com/DataDog/puppet-datadog-agent/issues/258
 [#259]: https://github.com/DataDog/puppet-datadog-agent/issues/259
+[#261]: https://github.com/DataDog/puppet-datadog-agent/issues/261
 [#263]: https://github.com/DataDog/puppet-datadog-agent/issues/263
 [#264]: https://github.com/DataDog/puppet-datadog-agent/issues/264
 [#266]: https://github.com/DataDog/puppet-datadog-agent/issues/266
@@ -271,33 +298,56 @@ Changes
 [#281]: https://github.com/DataDog/puppet-datadog-agent/issues/281
 [#282]: https://github.com/DataDog/puppet-datadog-agent/issues/282
 [#283]: https://github.com/DataDog/puppet-datadog-agent/issues/283
+[#286]: https://github.com/DataDog/puppet-datadog-agent/issues/286
+[#288]: https://github.com/DataDog/puppet-datadog-agent/issues/288
+[#290]: https://github.com/DataDog/puppet-datadog-agent/issues/290
+[#291]: https://github.com/DataDog/puppet-datadog-agent/issues/291
+[#292]: https://github.com/DataDog/puppet-datadog-agent/issues/292
+[#293]: https://github.com/DataDog/puppet-datadog-agent/issues/293
+[#296]: https://github.com/DataDog/puppet-datadog-agent/issues/296
+[#297]: https://github.com/DataDog/puppet-datadog-agent/issues/297
+[#299]: https://github.com/DataDog/puppet-datadog-agent/issues/299
+[#302]: https://github.com/DataDog/puppet-datadog-agent/issues/302
+[#309]: https://github.com/DataDog/puppet-datadog-agent/issues/309
+[#310]: https://github.com/DataDog/puppet-datadog-agent/issues/310
+[#311]: https://github.com/DataDog/puppet-datadog-agent/issues/311
+[#313]: https://github.com/DataDog/puppet-datadog-agent/issues/313
+[#315]: https://github.com/DataDog/puppet-datadog-agent/issues/315
 [@BIAndrews]: https://github.com/BIAndrews
+[@DDRBoxman]: https://github.com/DDRBoxman
 [@IanCrouch]: https://github.com/IanCrouch
 [@LeoCavaille]: https://github.com/LeoCavaille
 [@MartinDelta]: https://github.com/MartinDelta
 [@NoodlesNZ]: https://github.com/NoodlesNZ
 [@aaron-miller]: https://github.com/aaron-miller
 [@aepod]: https://github.com/aepod
+[@alexharv074]: https://github.com/alexharv074
+[@alvin-huang]: https://github.com/alvin-huang
 [@b2jrock]: https://github.com/b2jrock
 [@bflad]: https://github.com/bflad
 [@binford2k]: https://github.com/binford2k
+[@craigwatson]: https://github.com/craigwatson
 [@cristianjuve]: https://github.com/cristianjuve
 [@cwood]: https://github.com/cwood
 [@davejrt]: https://github.com/davejrt
 [@davidgibbons]: https://github.com/davidgibbons
 [@degemer]: https://github.com/degemer
 [@denmat]: https://github.com/denmat
+[@dzinek]: https://github.com/dzinek
 [@eddmann]: https://github.com/eddmann
 [@flyinprogrammer]: https://github.com/flyinprogrammer
 [@fzwart]: https://github.com/fzwart
+[@generica]: https://github.com/generica
 [@grubernaut]: https://github.com/grubernaut
 [@jacobbednarz]: https://github.com/jacobbednarz
 [@jangie]: https://github.com/jangie
+[@jdavisp3]: https://github.com/jdavisp3
 [@jniesen]: https://github.com/jniesen
 [@kitchen]: https://github.com/kitchen
 [@mcasper]: https://github.com/mcasper
 [@mraylu]: https://github.com/mraylu
 [@mrunkel-ut]: https://github.com/mrunkel-ut
+[@obi11235]: https://github.com/obi11235
 [@obowersa]: https://github.com/obowersa
 [@pabrahamsson]: https://github.com/pabrahamsson
 [@rooprob]: https://github.com/rooprob
@@ -305,5 +355,7 @@ Changes
 [@sambanks]: https://github.com/sambanks
 [@scottgeary]: https://github.com/scottgeary
 [@sethcleveland]: https://github.com/sethcleveland
+[@stamak]: https://github.com/stamak
 [@swwolf]: https://github.com/swwolf
+[@tdm4]: https://github.com/tdm4
 [@tuxinaut]: https://github.com/tuxinaut

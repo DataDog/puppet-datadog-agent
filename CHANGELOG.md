@@ -1,7 +1,7 @@
 Changes
 =======
 
-# 1.10.0 / Unreleased
+# 1.10.0 / 2017-04-21
 
 ### Notes
 

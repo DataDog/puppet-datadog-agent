@@ -1,10 +1,14 @@
 init_config:
 
 instances:
+<% if @tags and ! @tags.empty? -%>
   - tags:
-    - name:ceph_cluster
+  <%- @tags.each do |tag| -%>
+    - <%= tag %>
+  <%- end -%>
+<% end -%>
 
-    ceph_cmd: /usr/bin/ceph
+    ceph_cmd: <%= @ceph_cmd %>
 
 # If your environment requires sudo, please add a line like:
 #          dd-agent ALL=(ALL) NOPASSWD:/usr/bin/ceph

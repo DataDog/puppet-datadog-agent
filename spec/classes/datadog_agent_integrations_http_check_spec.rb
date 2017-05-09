@@ -30,6 +30,7 @@ describe 'datadog_agent::integrations::http_check' do
     it { should contain_file(conf_file).without_content(%r{window: }) }
     it { should contain_file(conf_file).without_content(%r{include_content: true}) }
     it { should contain_file(conf_file).without_content(%r{collect_response_time: true}) }
+    it { should contain_file(conf_file).without_content(%r{skip_event: true}) }
     it { should contain_file(conf_file).without_content(%r{disable_ssl_validation: false}) }
     it { should contain_file(conf_file).without_content(%r{headers: }) }
     it { should contain_file(conf_file).without_content(%r{tags: }) }
@@ -46,6 +47,7 @@ describe 'datadog_agent::integrations::http_check' do
       window: 789,
       include_content: true,
       collect_response_time: false,
+      skip_event: true,
       disable_ssl_validation: true,
     }}
 
@@ -58,6 +60,7 @@ describe 'datadog_agent::integrations::http_check' do
     it { should contain_file(conf_file).with_content(%r{window: 789}) }
     it { should contain_file(conf_file).with_content(%r{include_content: true}) }
     it { should contain_file(conf_file).without_content(%r{collect_response_time: true}) }
+    it { should contain_file(conf_file).without_content(%r{skip_event: true}) }
     it { should contain_file(conf_file).with_content(%r{disable_ssl_validation: true}) }
   end
 

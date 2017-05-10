@@ -23,9 +23,22 @@
 class datadog_agent::integrations::php_fpm(
   $status_url       = 'http://localhost/status',
   $ping_url         = 'http://localhost/ping',
-  $tags             = []
+  $http_host        = undef,
+  $tags             = [],
+  $instances        = undef
 ) inherits datadog_agent::params {
   include datadog_agent
+
+  if !$instances {
+    $_instances = [{
+      'http_host' => $http_host,
+      'status_url' => $status_url,
+      'ping_url' => $ping_url,
+      'tags' => $tags,
+    }]
+  } else {
+    $_instances = $instances
+  }
 
   file { "${datadog_agent::params::conf_dir}/php_fpm.yaml":
     ensure  => file,

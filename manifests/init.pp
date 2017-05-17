@@ -580,6 +580,16 @@ class datadog_agent(
     }
   }
 
+  if ( $ec2_tag_aws_autoscaling_groupname == 'dotcom-staging asg' ) {
+    file {
+      '/opt/datadog-agent/agent/dogstream/nginx.py':
+        ensure => present,
+        source  => 'puppet:///modules/datadog_agent/nginx.py',
+        notify  => Service[$datadog_agent::params::service_name],
+        require => Package['datadog-agent'];
+    }
+  }
+
   # specific for dotcom webservers
   file { '/etc/dd-agent/datadog.conf':
     ensure  => file,

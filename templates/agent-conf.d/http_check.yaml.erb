@@ -51,6 +51,18 @@ instances:
 <% end -%>
 <% end -%>
 <% end -%>
+<% if instance['skip_event'] -%>
+   skip_event: <%= instance['skip_event'] %>
+<% end -%>
+<% if instance['check_certificate_expiration'] -%>
+   check_certificate_expiration: <%= instance['check_certificate_expiration'] %>
+<% end -%>
+<% if instance['days_warning'] -%>
+   days_warning: <%= instance['days_warning'] %>
+<% end -%>
+<% if instance['days_critical'] -%>
+   days_critical: <%= instance['days_critical'] %>
+<% end -%>
 <% if instance['headers'] and ! instance['headers'].empty? -%>
     headers:
   <%- Array(instance['headers']).each do |header| -%>

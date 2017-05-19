@@ -55,6 +55,10 @@
 #       problematic SSL server certificates. To maintain backwards
 #       compatibility this defaults to false.
 #
+#   ignore_ssl_warning
+#       The (optional) ignore_ssl_warning will instruct the check to ignore
+#       SSL warnings.  Defaults to false.
+#
 #   skip_event
 #       The (optional) skip_event parameter will instruct the check to not
 #       create any event to avoid duplicates with a server side service check.
@@ -154,6 +158,7 @@ class datadog_agent::integrations::http_check (
   $http_response_status_code = undef,
   $collect_response_time = true,
   $disable_ssl_validation = false,
+  $ignore_ssl_warning = false,
   $skip_event = true,
   $no_proxy  = false,
   $check_certificate_expiration = undef,
@@ -180,6 +185,7 @@ class datadog_agent::integrations::http_check (
       'http_response_status_code'    => $http_response_status_code,
       'collect_response_time'        => $collect_response_time,
       'disable_ssl_validation'       => $disable_ssl_validation,
+      'ignore_ssl_warning'           => $ignore_ssl_warning,
       'skip_event'                   => $skip_event,
       'no_proxy'                     => $no_proxy,
       'check_certificate_expiration' => $check_certificate_expiration,

@@ -34,6 +34,9 @@ instances:
 <% if instance['disable_ssl_validation'] -%>
     disable_ssl_validation: <%= instance['disable_ssl_validation'] %>
 <% end -%>
+<% if instance['ignore_ssl_warning'] -%>
+    ignore_ssl_warning: <%= instance['ignore_ssl_warning'] %>
+<% end -%>
 <% if instance['skip_event'] -%>
     skip_event: <%= instance['skip_event'] %>
 <% end -%>

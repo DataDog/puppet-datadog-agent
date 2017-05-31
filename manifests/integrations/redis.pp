@@ -17,6 +17,8 @@
 #       Optional array of tags
 #   $keys
 #       Optional array of keys to check length
+#   $command_stats
+#       Collect INFO COMMANDSTATS output as metrics
 #
 # Sample Usage:
 #
@@ -34,12 +36,15 @@ class datadog_agent::integrations::redis(
   $tags = [],
   $keys = [],
   $warn_on_missing_keys = true,
+  $command_stats = false,
+
 ) inherits datadog_agent::params {
   include datadog_agent
 
   validate_array($tags)
   validate_array($keys)
   validate_bool($warn_on_missing_keys)
+  validate_bool($command_stats)
 
   if $ports == undef {
     $_ports = [ $port ]

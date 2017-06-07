@@ -4,7 +4,6 @@ sudo: false
 bundler_args: --full-index
 cache: bundler
 rvm:
-  - 2.0.0
   - 2.1.0
   - 2.2.3
 script:
@@ -26,10 +25,6 @@ env:
   - PUPPET_VERSION="~> 4.2.1" STRICT_VARIABLES=yes
 matrix:
   exclude:
-  # Ruby 2.0.0
-  - rvm: 2.0.0
-    env: PUPPET_VERSION="~> 2.7.0"
-
   # Ruby 2.1.0
   - rvm: 2.1.0
     env: PUPPET_VERSION="~> 2.7.0"

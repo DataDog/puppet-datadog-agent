@@ -110,7 +110,7 @@ class datadog_agent::integrations::tcp_check (
     $_instances = $instances
   }
 
-  file { "${datadog_agent::params::conf_dir}/http_check.yaml":
+  file { "${datadog_agent::params::conf_dir}/tcp_check.yaml":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

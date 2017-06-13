@@ -5,26 +5,26 @@ instances:
   - name: <%= instance['checkname'] %>
     host: <%= instance['host'] %>
     port: <%= instance['port'] %>
-   <% if instance['timeout'] -%>
+<% if instance['timeout'] -%>
     timeout: <%= instance['timeout'] %>
-   <% end -%>
-   <% if instance['threshold'] -%>
+<% end -%>
+<% if instance['threshold'] -%>
     threshold: <%= instance['threshold'] %>
-   <% end -%>
-   <% if instance['window'] -%>
+<% end -%>
+<% if instance['window'] -%>
     window: <%= instance['window'] %>
-   <% end -%>
-   <% if instance['skip_event'] -%>
-   skip_event: <%= instance['skip_event'] %>
-   <% end -%>
-   <% if instance['collect_response_time'] -%>
-   collect_response_time: <%= instance['collect_response_time'] %>
-   <% end -%>
+<% end -%>
+<% if instance['skip_event'] -%>
+    skip_event: <%= instance['skip_event'] %>
+<% end -%>
+<% if instance['collect_response_time'] -%>
+    collect_response_time: <%= instance['collect_response_time'] %>
+<% end -%>
 <% if instance['tags'] and ! instance['tags'].empty? -%>
-   tags:
+    tags:
   <%- Array(instance['tags']).each do |tag| -%>
     <%- if tag != '' -%>
-     - <%= tag %>
+      - <%= tag %>
     <%- end -%>
   <%- end -%>
 <% end -%>

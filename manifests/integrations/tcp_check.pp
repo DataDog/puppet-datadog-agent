@@ -9,6 +9,9 @@
 #   host
 #       (Required) The hostname/ip to check.
 #
+#   port
+#       (Required) This port to check.
+#
 #   timeout
 #       The (optional) timeout in seconds.
 #
@@ -37,9 +40,9 @@
 # Add a class for each check instance:
 #
 # class { 'datadog_agent::integrations::tcp_check':
-#   checkname  => 'LDAP 389',
-#   host       => '127.0.0.1',
-#   port       => '389',
+#   checkname => 'LDAP 389',
+#   host      => '127.0.0.1',
+#   port      => '389',
 # }
 #
 # class { 'datadog_agent::integrations::tcp_check':
@@ -50,14 +53,14 @@
 # }
 #
 # class { 'datadog_agent::integrations::tcp_check':
-#   checkname              => 'localhost-9001',
-#   host                   => 'localhost',
-#   port                   => '9001',
-#   timeout                => 5,
-#   threshold              => 1,
-#   window                 => 1,
-#   collect_response_time  => true,
-#   tags                   => 'production',
+#   checkname             => 'localhost-9001',
+#   host                  => 'localhost',
+#   port                  => '9001',
+#   timeout               => 5,
+#   threshold             => 1,
+#   window                => 1,
+#   collect_response_time => true,
+#   tags                  => 'production',
 # }
 #
 #
@@ -65,44 +68,44 @@
 #
 #  class { 'datadog_agent::integrations::tcp_check':
 #        instances => [{
-#          'checkname'  => 'ldap 389',
-#          'host'       => 'localhost',
-#          'port'       => '389',
+#          'checkname' => 'ldap 389',
+#          'host'      => 'localhost',
+#          'port'      => '389',
 #        },
 #        {
 #          'checkname' => 'ldap 636',
 #          'host'      => 'localhost',
 #          'port'      => '389',
-#          'tags'      => ['production', 'wordpress']
+#          'tags'      => ['production', 'wordpress'],
 #        }]
 #     }
 
 
 class datadog_agent::integrations::tcp_check (
-  $checkname  = undef,
-  $host       = undef,
-  $port  = undef,
-  $timeout   = 1,
-  $threshold = undef,
-  $window    = undef,
+  $checkname             = undef,
+  $host                  = undef,
+  $port                  = undef,
+  $timeout               = 1,
+  $threshold             = undef,
+  $window                = undef,
   $collect_response_time = true,
-  $skip_event = true,
-  $tags      = [],
-  $instances  = undef,
+  $skip_event            = true,
+  $tags                  = [],
+  $instances             = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 
   if !$instances and $host {
     $_instances = [{
-      'checkname'                    => $checkname,
-      'host'                         => $host,
-      'port'                         => $port,
-      'timeout'                      => $timeout,
-      'threshold'                    => $threshold,
-      'window'                       => $window,
-      'collect_response_time'        => $collect_response_time,
-      'skip_event'                   => $skip_event,
-      'tags'                         => $tags,
+      'checkname'             => $checkname,
+      'host'                  => $host,
+      'port'                  => $port,
+      'timeout'               => $timeout,
+      'threshold'             => $threshold,
+      'window'                => $window,
+      'collect_response_time' => $collect_response_time,
+      'skip_event'            => $skip_event,
+      'tags'                  => $tags,
     }]
   } elsif !$instances{
     $_instances = []

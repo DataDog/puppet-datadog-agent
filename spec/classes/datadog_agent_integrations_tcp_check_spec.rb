@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'datadog_agent::integrations::http_check' do
+describe 'datadog_agent::integrations::tcp_check' do
   let(:facts) {{
     operatingsystem: 'Ubuntu',
   }}
@@ -56,9 +56,9 @@ describe 'datadog_agent::integrations::http_check' do
   context 'with headers parameter empty values' do
     context 'mixed in with other headers' do
       let(:params) {{
-      sitename: 'foo.bar.baz',
-        url: 'http://foo.bar.baz:4096',
-        headers: [ 'foo', '', 'baz' ]
+        checkname: 'foo.bar.baz',
+        host: 'localhost',
+        port: 8080,
       }}
 
       it { should contain_file(conf_file).with_content(/headers:\s+foo\s+baz\s*?[^-]/m) }
@@ -68,7 +68,7 @@ describe 'datadog_agent::integrations::http_check' do
     let(:params) {{
       checkname: 'foo.bar.baz',
       host: '127.0.0.1',
-      port: '8080',
+      port: 8080,
       tags: %w{ foo bar baz },
     }}
     it { should contain_file(conf_file).with_content(/tags:\s+- foo\s+- bar\s+- baz\s*?[^-]/m) }
@@ -79,8 +79,8 @@ describe 'datadog_agent::integrations::http_check' do
       let(:params) {{
         checkname: 'foo.bar.baz',
         host: '127.0.0.1',
-        port: '8080',
-        tags: [ 'foo', '', 'baz' ]
+        port: 8080,
+        tags: [ 'foo', '', 'baz' ],
       }}
 
       it { should contain_file(conf_file).with_content(/tags:\s+- foo\s+- baz\s*?[^-]/m) }

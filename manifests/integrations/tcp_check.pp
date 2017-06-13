@@ -46,18 +46,18 @@
 #   checkname => 'LDAP 636',
 #   host      => '127.0.0.1',
 #   port      => '636',
-#   tags     => ['production', 'wordpress'],
+#   tags      => ['production', 'wordpress'],
 # }
 #
 # class { 'datadog_agent::integrations::tcp_check':
 #   checkname              => 'localhost-9001',
 #   host                   => 'localhost',
 #   port                   => '9001',
-#   timeout               => 5,
-#   threshold             => 1,
-#   window                => 1,
-#   collect_response_time => true,
-#   tags                  => 'production',
+#   timeout                => 5,
+#   threshold              => 1,
+#   window                 => 1,
+#   collect_response_time  => true,
+#   tags                   => 'production',
 # }
 #
 #
@@ -66,14 +66,14 @@
 #  class { 'datadog_agent::integrations::tcp_check':
 #        instances => [{
 #          'checkname'  => 'ldap 389',
-#          'host'      => 'localhost',
-#          'port'      => '389',
+#          'host'       => 'localhost',
+#          'port'       => '389',
 #        },
 #        {
 #          'checkname' => 'ldap 636',
 #          'host'      => 'localhost',
 #          'port'      => '389',
-#          'tags'     => ['production', 'wordpress']
+#          'tags'      => ['production', 'wordpress']
 #        }]
 #     }
 

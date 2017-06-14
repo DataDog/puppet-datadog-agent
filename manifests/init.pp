@@ -362,7 +362,7 @@ class datadog_agent(
   }
 
   file { '/etc/dd-agent':
-    ensure  => present,
+    ensure  => directory,
     owner   => $dd_user,
     group   => $dd_group,
     mode    => '0755',

@@ -136,33 +136,33 @@
 #          'sitename' => 'local',
 #          'url'      => 'http://localhost/',
 #          'headers'  => ['Host: stan.borbat.com', 'DNT: true'],
-#          'tags'     => ['production', 'wordpress']
+#          'tags'     => ['production', 'wordpress'],
 #        }]
 #     }
 
 
 class datadog_agent::integrations::http_check (
-  $sitename  = undef,
-  $url       = undef,
-  $username  = undef,
-  $password  = undef,
-  $timeout   = 1,
-  $threshold = undef,
-  $window    = undef,
-  $content_match = undef,
-  $include_content = false,
-  $http_response_status_code = undef,
-  $collect_response_time = true,
-  $disable_ssl_validation = false,
-  $skip_event = true,
-  $no_proxy  = false,
+  $sitename                     = undef,
+  $url                          = undef,
+  $username                     = undef,
+  $password                     = undef,
+  $timeout                      = 1,
+  $threshold                    = undef,
+  $window                       = undef,
+  $content_match                = undef,
+  $include_content              = false,
+  $http_response_status_code    = undef,
+  $collect_response_time        = true,
+  $disable_ssl_validation       = false,
+  $skip_event                   = true,
+  $no_proxy                     = false,
   $check_certificate_expiration = undef,
-  $days_warning = undef,
-  $days_critical = undef,
-  $headers   = [],
-  $tags      = [],
-  $contact   = [],
-  $instances  = undef,
+  $days_warning                 = undef,
+  $days_critical                = undef,
+  $headers                      = [],
+  $tags                         = [],
+  $contact                      = [],
+  $instances                    = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -202,6 +202,6 @@ class datadog_agent::integrations::http_check (
     mode    => '0600',
     content => template('datadog_agent/agent-conf.d/http_check.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

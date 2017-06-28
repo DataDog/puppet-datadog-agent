@@ -27,7 +27,7 @@ describe 'datadog_agent::integrations::twemproxy' do
 
   context 'with parameters set' do
     let(:params) {{
-      servers: [
+      instances: [
         {
           'host' => 'twemproxy1',
           'port' => '1234',

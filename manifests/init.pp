@@ -362,9 +362,9 @@ class datadog_agent(
   }
 
   file { '/etc/dd-agent':
-    ensure  => present,
-    owner   => 'root',
-    group   => 'root',
+    ensure  => directory,
+    owner   => $dd_user,
+    group   => $dd_group,
     mode    => '0755',
     require => Package['datadog-agent'],
   }

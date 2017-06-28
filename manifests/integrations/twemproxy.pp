@@ -26,7 +26,7 @@
 class datadog_agent::integrations::twemproxy(
   $host = 'localhost',
   $port = '22222',
-  $instances = [],
+  $instances = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 

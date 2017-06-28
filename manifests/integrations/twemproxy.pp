@@ -11,7 +11,7 @@
 # Sample Usage:
 #
 #  class { 'datadog_agent::integrations::twemproxy' :
-#    servers => [
+#    instances => [
 #      {
 #        'host' => 'localhost',
 #        'port' => '22222',
@@ -24,11 +24,22 @@
 #  }
 #
 class datadog_agent::integrations::twemproxy(
-  $servers = [{'host' => 'localhost', 'port' => '22222'}]
+  $host = 'localhost',
+  $port = '22222',
+  $instances = [],
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_array($servers)
+  if !$instances and $host {
+    $_instances = [{
+      'host' => $host,
+      'port' => $port,
+    }]
+  } elsif !$instances{
+    $_instances = []
+  } else {
+    $_instances = $instances
+  }
 
   file { "${datadog_agent::params::conf_dir}/twemproxy.yaml":
     ensure  => file,

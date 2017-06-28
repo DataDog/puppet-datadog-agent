@@ -5,7 +5,7 @@
 init_config:
 
 instances:
-<% @servers.each do |server| -%>
+<% @instances.each do |server| -%>
   - host: <%= server['host'] %>
     port: <%= server['port'] %>
 <% end -%>

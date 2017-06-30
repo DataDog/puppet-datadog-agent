@@ -323,13 +323,13 @@ class datadog_agent(
   validate_string($apm_env)
 
   if $hiera_tags {
-    $local_tags = hiera_array('datadog_agent::tags')
+    $local_tags = hiera_array('datadog_agent::tags', [])
   } else {
     $local_tags = $tags
   }
 
   if $hiera_integrations {
-    $local_integrations = hiera_hash('datadog_agent::integrations')
+    $local_integrations = hiera_hash('datadog_agent::integrations', {})
   } else {
     $local_integrations = $integrations
   }

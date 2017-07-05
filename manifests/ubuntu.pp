@@ -13,9 +13,9 @@
 #
 
 class datadog_agent::ubuntu(
-  $apt_key = '382E94DE',
+  $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
   $agent_version = 'latest',
-  $other_keys = ['C7A7DA52']
+  $other_keys = ['935F5A436A5A6E8788F0765B226AE980C7A7DA52']
 ) {
 
   ensure_packages(['apt-transport-https'])

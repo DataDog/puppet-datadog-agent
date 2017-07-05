@@ -23,7 +23,7 @@ class datadog_agent::integrations::docker_daemon(
   $url = 'unix://var/run/docker.sock',
   $tags = [],
   $group = 'dd-agent',
-  $collect_labels_as_tags = '["appName", "project", "runtime", "runtimeVersion", "webserver", "bookingCluster"]',
+  $collect_labels_as_tags = '["appName", "project", "runtime", "runtimeVersion", "webserver", "booking.cluster"]',
 ) inherits datadog_agent::params {
   include datadog_agent
 

@@ -9,8 +9,19 @@
 # Sample Usage:
 #
 #   class { 'datadog_agent::integrations::elasticsearch' :
-#     url  => "http://localhost:9201"
+#     instances => [{
+#       url  => "http://localhost:9201"
+#     },
+#     {
+#       url  => "http://elastic.acme.com:9201"
+#     }]
 #   }
+#
+# Or for a single instance:
+#
+#  class { 'datadog_agent::integrations::elasticsearch' :
+#    url  => "http://localhost:9201"
+#  }
 #
 class datadog_agent::integrations::elasticsearch(
   $cluster_stats      = false,
@@ -23,6 +34,7 @@ class datadog_agent::integrations::elasticsearch(
   $tags               = [],
   $url                = 'http://localhost:9200',
   $username           = undef,
+  $instances          = undef
 ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -37,6 +49,25 @@ class datadog_agent::integrations::elasticsearch(
   }
   validate_bool($cluster_stats, $pending_task_stats, $pshard_stats)
   validate_string($password, $ssl_cert, $ssl_key, $url, $username)
+
+  if !$instances and $url {
+    $_instances = [{
+      'cluster_stats'      => $cluster_stats,
+      'password'           => $password,
+      'pending_task_stats' => $pending_task_stats,
+      'pshard_stats'       => $pshard_stats,
+      'ssl_cert'           => $ssl_cert,
+      'ssl_key'            => $ssl_key,
+      'ssl_verify'         => $ssl_verify,
+      'tags'               => $tags,
+      'url'                => $url,
+      'username'           => $username
+    }]
+  } elsif !$instances {
+    $_instances = []
+  } else {
+    $_instances = $instances
+  }
 
   file { "${datadog_agent::params::conf_dir}/elastic.yaml":
     ensure  => file,

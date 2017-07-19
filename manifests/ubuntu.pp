@@ -13,9 +13,13 @@
 #
 
 class datadog_agent::ubuntu(
+  $location = '',
+  $release = 'stable',
+  $repos = 'main',
   $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
   $agent_version = 'latest',
-  $other_keys = ['935F5A436A5A6E8788F0765B226AE980C7A7DA52']
+  $other_keys = ['935F5A436A5A6E8788F0765B226AE980C7A7DA52'],
+  $key_server = 'keyserver.ubuntu.com:80'
 ) {
 
   ensure_packages(['apt-transport-https'])
@@ -30,10 +34,18 @@ class datadog_agent::ubuntu(
 
   }
 
-  file { '/etc/apt/sources.list.d/datadog.list':
-    source  => 'puppet:///modules/datadog_agent/datadog.list',
-    owner   => 'root',
-    group   => 'root',
+  apt::source { 'datadog':
+    comment  => 'This is the datadog dd-agent repository',
+    location => $location,
+    release  => $release,
+    repos    => $repos,
+    key      => {
+      'id'     => $apt_key,
+      'server' => 'keyserver.ubuntu.com',
+    },
+    include  => {
+      'deb' => true,
+    },
     notify  => Exec['datadog_apt-get_update'],
     require => Package['apt-transport-https'],
   }
@@ -63,5 +75,4 @@ class datadog_agent::ubuntu(
     pattern   => 'dd-agent',
     require   => Package['datadog-agent'],
   }
-
 }

@@ -12,9 +12,11 @@
 #
 #
 #
-define datadog_agent::ubuntu::install_key() {
+define datadog_agent::ubuntu::install_key(
+  $keyserver = 'keyserver.ubuntu.com:80'
+) {
   exec { "key ${name}":
-    command => "/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys ${name}",
+    command => "/usr/bin/apt-key adv --keyserver hkp://${keyserver} --recv-keys ${name}",
     unless  => "/usr/bin/apt-key list | grep ${name} | grep expires",
   }
 }

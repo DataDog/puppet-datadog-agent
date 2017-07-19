@@ -13,7 +13,7 @@
 #
 
 class datadog_agent::ubuntu(
-  $location = '',
+  $location = 'https://apt.datadoghq.com',
   $release = 'stable',
   $repos = 'main',
   $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
@@ -46,8 +46,8 @@ class datadog_agent::ubuntu(
     include  => {
       'deb' => true,
     },
-    notify  => Exec['datadog_apt-get_update'],
-    require => Package['apt-transport-https'],
+    notify   => Exec['datadog_apt-get_update'],
+    require  => Package['apt-transport-https'],
   }
 
   exec { 'datadog_apt-get_update':

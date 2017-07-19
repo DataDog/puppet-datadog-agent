@@ -2,7 +2,9 @@ require 'spec_helper'
 
 describe 'datadog_agent::integrations::haproxy' do
   let(:facts) {{
+    os: { :family => 'Ubuntu', :name => 'Ubuntu', :release => { :major => '16', :minor => '04', :full => '16.04' } },
     operatingsystem: 'Ubuntu',
+    osfamily: 'Debian',
     ipaddress: '1.2.3.4',
   }}
   let(:conf_dir) { '/etc/dd-agent/conf.d' }

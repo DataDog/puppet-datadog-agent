@@ -5,7 +5,7 @@ bundler_args: --full-index
 cache: bundler
 rvm:
   - 2.0.0
-  - 2.1.0
+  - 2.1.1
   - 2.2.3
 script:
   - bundle exec rake spec
@@ -30,14 +30,14 @@ matrix:
   - rvm: 2.0.0
     env: PUPPET_VERSION="~> 2.7.0"
 
-  # Ruby 2.1.0
-  - rvm: 2.1.0
+  # Ruby 2.1.1
+  - rvm: 2.1.1
     env: PUPPET_VERSION="~> 2.7.0"
-  - rvm: 2.1.0
+  - rvm: 2.1.1
     env: PUPPET_VERSION="~> 3.2.0"
-  - rvm: 2.1.0
+  - rvm: 2.1.1
     env: PUPPET_VERSION="~> 3.3.0"
-  - rvm: 2.1.0
+  - rvm: 2.1.1
     env: PUPPET_VERSION="~> 3.4.0"
 
   # Ruby 2.2.3

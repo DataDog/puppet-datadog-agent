@@ -2,7 +2,9 @@ require 'spec_helper'
 
 describe 'datadog_agent::integrations::riak' do
   let(:facts) {{
+    os: { :family => 'Ubuntu', :name => 'Ubuntu', :release => { :major => '16', :minor => '04', :full => '16.04' } },
     operatingsystem: 'Ubuntu',
+    osfamily: 'Debian',
   }}
   let(:conf_dir) { '/etc/dd-agent/conf.d' }
   let(:dd_user) { 'dd-agent' }

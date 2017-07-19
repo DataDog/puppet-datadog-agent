@@ -3,8 +3,9 @@ require 'spec_helper'
 describe 'datadog_agent::ubuntu' do
   let(:facts) do
     {
-      osfamily: 'debian',
-      operatingsystem: 'Ubuntu'
+      os: { :family => 'Ubuntu', :name => 'Ubuntu', :release => { :major => '16', :minor => '04', :full => '16.04' } },
+      operatingsystem: 'Ubuntu',
+      osfamily: 'Debian',
     }
   end
 

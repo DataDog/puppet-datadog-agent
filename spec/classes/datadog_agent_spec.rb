@@ -26,7 +26,10 @@ describe 'datadog_agent' do
         let(:facts) do
           {
             operatingsystem: operatingsystem,
-            osfamily: DEBIAN_OS.include?(operatingsystem) ? 'debian' : 'redhat'
+            osfamily: DEBIAN_OS.include?(operatingsystem) ? 'debian' : 'redhat',
+            os: { :family => DEBIAN_OS.include?(operatingsystem) ? 'debian' : 'redhat',
+                  :name => DEBIAN_OS.include?(operatingsystem) ? 'debian' : 'redhat',
+                  :release => {} },
           }
         end
 

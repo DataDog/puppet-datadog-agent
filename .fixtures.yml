@@ -9,4 +9,5 @@ fixtures:
     ruby: "git://github.com/puppetlabs/puppetlabs-ruby.git"
     remote_file: "git://github.com/lwf/puppet-remote_file.git"
   symlinks:
+    custom_datadog: "#{source_dir}/spec/custom_fixtures/custom_datadog"
     datadog_agent: "#{source_dir}"

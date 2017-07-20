@@ -14,9 +14,11 @@ group :test do
 end
 
 group :development do
-  gem "beaker", '2.51.0'
   gem "beaker-rspec"
-  gem "puppet-blacksmith"
-  gem "nokogiri", "~> 1.6.0"
+  gem "beaker", '2.51.0'
   gem "guard-rake"
+  gem "hiera-eyaml"
+  gem "nokogiri", "~> 1.6.0"
+  gem "puppet-blacksmith"
+  gem "xmlrpc" if RUBY_VERSION >= '2.3'
 end

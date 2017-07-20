@@ -405,10 +405,21 @@ class datadog_agent(
     order   => '05',
   }
 
+  if ($extra_template != '') {
+    concat::fragment{ 'datadog extra_template footer':
+      target  => '/etc/dd-agent/datadog.conf',
+      content => template($extra_template),
+      order   => '06',
+    }
+    $apm_footer_order = '07'
+  } else {
+    $apm_footer_order = '06'
+  }
+
   concat::fragment{ 'datadog apm footer':
     target  => '/etc/dd-agent/datadog.conf',
     content => template('datadog_agent/datadog_apm_footer.conf.erb'),
-    order   => '06',
+    order   => $apm_footer_order,
   }
 
 

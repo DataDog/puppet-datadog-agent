@@ -568,6 +568,9 @@ describe 'datadog_agent' do
                 it { should contain_concat__fragment('datadog apm footer').with(
                     'content' => /^env: foo\n/,
                 )}
+                it { should contain_concat__fragment('datadog apm footer').with(
+                    'order' => '06',
+                )}
             end
             context 'with service_discovery enabled' do
                 let(:params) {
@@ -591,6 +594,20 @@ describe 'datadog_agent' do
                 )}
                 it { should contain_concat__fragment('datadog footer').with(
                 'content' => /^sd_jmx_enable: true\n/,
+                )}
+            end
+            context 'with extra_template enabled' do
+                let(:params) {
+                    {:extra_template => 'custom_datadog/extra_template_test.erb',
+                }}
+                it { should contain_concat__fragment('datadog extra_template footer').with(
+                'order' => '06',
+                )}
+                it { should contain_concat__fragment('datadog extra_template footer').with(
+                'content' => /^# extra template is here\n/,
+                )}
+                it { should contain_concat__fragment('datadog apm footer').with(
+                'order' => '07',
                 )}
             end
             end

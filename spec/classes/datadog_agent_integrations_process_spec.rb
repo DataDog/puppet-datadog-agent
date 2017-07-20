@@ -38,4 +38,21 @@ describe 'datadog_agent::integrations::process' do
     it { should contain_file(conf_file).with_content(%r{search_string: bar}) }
     it { should contain_file(conf_file).with_content(%r{exact_match: true}) }
   end
+
+  context 'with parameters with threshold set' do
+    let(:params) {{
+      processes: [
+        {
+          'name' => 'foo',
+          'search_string' => 'bar',
+          'exact_match' => true,
+          'thresholds'  =>  {'warning' => [1,4]},
+        }
+      ]
+    }}
+    it { should contain_file(conf_file).with_content(%r{name: foo}) }
+    it { should contain_file(conf_file).with_content(%r{search_string: bar}) }
+    it { should contain_file(conf_file).with_content(%r{exact_match: true}) }
+    it { should contain_file(conf_file).with_content(%r{thresholds:\s*\n    warning:\s*\n    - 1\s*\n    - 4}) }
+  end
 end

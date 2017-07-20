@@ -59,6 +59,59 @@ describe 'datadog_agent::integrations::mongo' do
     it { should contain_file(conf_file).with_content(%r{server:.*127.0.0.1.*server:.*127.0.0.2}m) }
   end
 
+  context 'with custom collections one mongos' do
+    let(:params) {{
+      servers: [
+        {
+          'host' => '127.0.0.1',
+          'port' => '12345',
+          'tags' => %w{ foo bar baz },
+          'collections' => %w{ collection_1 collection_2 },
+        },
+        {
+          'host' => '127.0.0.2',
+          'port' => '45678',
+          'tags' => %w{baz bat},
+          'collections' => %w{ collection_1 collection_2 },
+        }
+      ]
+    }}
+
+    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:12345/\s+tags:\s+- foo\s+- bar\s+- baz\s+collections:\s+- collection_1\s+- collection_2}) }
+    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.2:45678/\s+tags:\s+- baz\s+- bat\s+collections:\s+- collection_1\s+- collection_2}) }
+
+  end
+
+  context 'with custom collections multiple mongo' do
+    let(:params) {{
+      servers: [
+        {
+          'host' => '127.0.0.1',
+          'port' => '12345',
+          'tags' => %w{ foo bar baz },
+          'collections' => %w{ collection_1 collection_2 },
+        }
+      ]
+    }}
+
+    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:12345/\s+tags:\s+- foo\s+- bar\s+- baz\s+collections:\s+- collection_1\s+- collection_2}) }
+  end
+
+  context 'with additional metrics' do
+    let(:params) {{
+      servers: [
+        {
+          'host' => '127.0.0.1',
+          'port' => '12345',
+          'tags' => %w{ foo bar baz },
+          'additional_metrics' => %w{ top },
+        }
+      ]
+    }}
+
+    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:12345/\s+tags:\s+- foo\s+- bar\s+- baz\s+additional_metrics:\s+- top}) }
+  end
+
   context 'without tags' do
     let(:params) {{
       servers: [

@@ -2,6 +2,11 @@
 #
 # This class will install the necessary configuration for the process integration
 #
+# Please note that if you wish to specify thresholds and are on an older puppet (<4.x)
+# you will likely have to enable the future YAML parser due to a known bug:
+#   - https://tickets.puppetlabs.com/browse/PUP-6810
+#   - https://docs.puppet.com/puppet/3.8/experiments_future.html
+#
 # Parameters:
 #   $processes:
 #       Array of process hashes. See example

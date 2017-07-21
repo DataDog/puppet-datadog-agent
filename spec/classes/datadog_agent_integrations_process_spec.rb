@@ -10,6 +10,7 @@ describe 'datadog_agent::integrations::process' do
   let(:dd_package) { 'datadog-agent' }
   let(:dd_service) { 'datadog-agent' }
   let(:conf_file) { "#{conf_dir}/process.yaml" }
+  let(:parser) { 'future' }
 
   it { should compile.with_all_deps }
   it { should contain_file(conf_file).with(
@@ -53,6 +54,7 @@ describe 'datadog_agent::integrations::process' do
     it { should contain_file(conf_file).with_content(%r{name: foo}) }
     it { should contain_file(conf_file).with_content(%r{search_string: bar}) }
     it { should contain_file(conf_file).with_content(%r{exact_match: true}) }
-    it { should contain_file(conf_file).with_content(%r{thresholds:\s*\n    warning:\s*\n    - 1\s*\n    - 4}) }
+    # regex should account for both 3.x future yaml parser and 4.x yaml alignment - different.
+    it { should contain_file(conf_file).with_content(%r{thresholds:\s*\n\s{4}(\s{4})?warning:\s*\n\s{4}(\s{6})?- 1\s*\n\s{4}(\s{6})?- 4}) }
   end
 end

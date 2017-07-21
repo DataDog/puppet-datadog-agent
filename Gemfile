@@ -17,7 +17,6 @@ group :development do
   gem "beaker-rspec"
   gem "beaker", '2.51.0'
   gem "guard-rake"
-  gem "hiera-eyaml"
   gem "nokogiri", "~> 1.6.0"
   gem "puppet-blacksmith"
   gem "xmlrpc" if RUBY_VERSION >= '2.3'

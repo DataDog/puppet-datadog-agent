@@ -17,6 +17,7 @@ describe 'datadog_agent::integrations::memcache' do
     group: dd_group,
     mode: '0600',
   )}
+
   it { should contain_file(conf_file).that_requires("Package[#{dd_package}]") }
   it { should contain_file(conf_file).that_notifies("Service[#{dd_service}]") }
 
@@ -62,7 +63,6 @@ describe 'datadog_agent::integrations::memcache' do
       let(:params) {{
         tags: [ 'foo', '', 'baz' ]
       }}
-
       it { should contain_file(conf_file).with_content(/tags:\s+- foo\s+- baz\s*?[^-]/m) }
     end
 
@@ -81,5 +81,41 @@ describe 'datadog_agent::integrations::memcache' do
 
       skip("doubly undefined behavior")
     end
+  end
+
+  context 'with multiple instances set' do
+    let(:params) {
+      {
+        instances: [
+          {
+            'url'   => 'localhost',
+            'port'  => '11211',
+            'items' => true,
+            'slabs' => true,
+            'tags'  => ['tag1:value1'],
+          },
+          {
+            'url'   => 'foo.bar',
+            'port'  => '11212',
+            'items' => false,
+            'slabs' => false,
+            'tags'  => ['tag2:value2'],
+          }
+        ]
+      }
+    }
+    it { should contain_file(conf_file).with_content(%r{instances:}) }
+    it { should contain_file(conf_file).with_content(%r{  - url: localhost}) }
+    it { should contain_file(conf_file).with_content(%r{    port: 11211}) }
+    it { should contain_file(conf_file).with_content(%r{    items: true}) }
+    it { should contain_file(conf_file).with_content(%r{    slabs: true}) }
+    it { should contain_file(conf_file).with_content(%r{    tags:}) }
+    it { should contain_file(conf_file).with_content(%r{      - tag1:value1}) }
+    it { should contain_file(conf_file).with_content(%r{  - url: foo.bar}) }
+    it { should contain_file(conf_file).with_content(%r{    port: 11212}) }
+    it { should contain_file(conf_file).with_content(%r{    items: false}) }
+    it { should contain_file(conf_file).with_content(%r{    slabs: false}) }
+    it { should contain_file(conf_file).with_content(%r{    tags:}) }
+    it { should contain_file(conf_file).with_content(%r{      - tag2:value2}) }
   end
 end

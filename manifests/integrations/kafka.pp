@@ -29,7 +29,7 @@
 #
 # Sample Usage:
 #
-#  class { 'datadog_agent::integrations::mongo' :
+#  class { 'datadog_agent::integrations::kafka' :
 #    servers => [
 #      {
 #        'host'                 => 'localhost',

@@ -9,23 +9,26 @@
 # Sample Usage:
 #
 #   class { 'datadog_agent::integrations::haproxy' :
-#     url   => 'http://localhost:8080',
-#     creds => { username => 'admin',
-#                password => 'password',
-#              },
+#     url     => 'http://localhost:8080',
+#     creds   => { username => 'admin',
+#                  password => 'password',
+#                },
+#     options => { collect_aggregates_only => 'False' },
 #   }
 #
 class datadog_agent::integrations::haproxy(
   $creds     = {},
   $url       = "http://${::ipaddress}:8080",
+  $options   = {},
   $instances = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 
   if !$instances and $url {
     $_instances = [{
-      'creds' => $creds,
-      'url'   => $url,
+      'creds'   => $creds,
+      'url'     => $url,
+      'options' => $options,
     }]
   } elsif !$instances {
     $_instances = []

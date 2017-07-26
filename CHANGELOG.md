@@ -1,6 +1,31 @@
 Changes
 =======
 
+# 1.11.0 / Unreleased
+
+### Notes
+
+* [FEATURE] Postfix Added integration. See [#323][] (Thanks [@npaufler][])
+* [FEATURE] Twemproxy: Added integration. See [#326][] (Thanks [@swwolf][])
+* [FEATURE] HAproxy: Added integration. See [#326][] (Thanks [@swwolf][])
+
+* [IMPROVEMENT] Memcache: Add multi-instance support for memcache. See [#318][] (Thanks [@npaufler][])
+* [IMPROVEMENT] Elasticsearch: Add support for multiple instances. See [#333][] (Thanks [@stantona][])
+* [IMPROVEMENT] Mongodb: support collection metrics per collection. See [#335][] (Thanks [@jensendw][])
+* [IMPROVEMENT] Redis: Allow command_stats. See [#327][] (Thanks [@IanCrouch][])
+* [IMPROVEMENT] Ceph: Add parameters to integration. See [#322][] (Thanks [@stamak][])
+* [IMPROVEMENT] Ubuntu: apt make repository configurable. See [#340][]
+* [IMPROVEMENT] Ubuntu: use full key ID when adding GPG keys. See [#329][] (Thanks [@pid1][])
+* [IMPROVEMENT] Dd-agent: Change owner/group of /etc/dd-agent. See [#325][] (Thanks [@ColinHebert][])
+* [IMPROVEMENT] Docker_daemon: remove spaces that break resulting yaml. See [#336][] (Thanks [@ckolos][])
+
+* [BUGFIX] Dd-agent: add extra_template back. See [#331][] (Thanks [@flyinprogrammer][])
+* [BUGFIX] Dd-agent: Don't fail if there is no value in hiera. See [#334][] (Thanks [@mtougeron][])
+* [BUGFIX] Core: Addressing metaparam override in datadog_agent::tag. See [#338][] (Thanks [@craigwatson][])
+* [BUGFIX] RHEL/CentOS: fix chatty behavior. See [#341][]
+* [BUGFIX] Dd-agent: ensured etc/dd-agent is directory. See [#332][] (Thanks [@butangero][])
+
+
 # 1.10.0 / 2017-04-21
 
 ### Notes
@@ -313,7 +338,24 @@ Changes
 [#311]: https://github.com/DataDog/puppet-datadog-agent/issues/311
 [#313]: https://github.com/DataDog/puppet-datadog-agent/issues/313
 [#315]: https://github.com/DataDog/puppet-datadog-agent/issues/315
+[#318]: https://github.com/DataDog/puppet-datadog-agent/issues/318
+[#322]: https://github.com/DataDog/puppet-datadog-agent/issues/322
+[#323]: https://github.com/DataDog/puppet-datadog-agent/issues/323
+[#325]: https://github.com/DataDog/puppet-datadog-agent/issues/325
+[#326]: https://github.com/DataDog/puppet-datadog-agent/issues/326
+[#327]: https://github.com/DataDog/puppet-datadog-agent/issues/327
+[#329]: https://github.com/DataDog/puppet-datadog-agent/issues/329
+[#331]: https://github.com/DataDog/puppet-datadog-agent/issues/331
+[#332]: https://github.com/DataDog/puppet-datadog-agent/issues/332
+[#333]: https://github.com/DataDog/puppet-datadog-agent/issues/333
+[#334]: https://github.com/DataDog/puppet-datadog-agent/issues/334
+[#335]: https://github.com/DataDog/puppet-datadog-agent/issues/335
+[#336]: https://github.com/DataDog/puppet-datadog-agent/issues/336
+[#338]: https://github.com/DataDog/puppet-datadog-agent/issues/338
+[#340]: https://github.com/DataDog/puppet-datadog-agent/issues/340
+[#341]: https://github.com/DataDog/puppet-datadog-agent/issues/341
 [@BIAndrews]: https://github.com/BIAndrews
+[@ColinHebert]: https://github.com/ColinHebert
 [@DDRBoxman]: https://github.com/DDRBoxman
 [@IanCrouch]: https://github.com/IanCrouch
 [@LeoCavaille]: https://github.com/LeoCavaille
@@ -326,6 +368,8 @@ Changes
 [@b2jrock]: https://github.com/b2jrock
 [@bflad]: https://github.com/bflad
 [@binford2k]: https://github.com/binford2k
+[@butangero]: https://github.com/butangero
+[@ckolos]: https://github.com/ckolos
 [@craigwatson]: https://github.com/craigwatson
 [@cristianjuve]: https://github.com/cristianjuve
 [@cwood]: https://github.com/cwood
@@ -342,20 +386,25 @@ Changes
 [@jacobbednarz]: https://github.com/jacobbednarz
 [@jangie]: https://github.com/jangie
 [@jdavisp3]: https://github.com/jdavisp3
+[@jensendw]: https://github.com/jensendw
 [@jniesen]: https://github.com/jniesen
 [@kitchen]: https://github.com/kitchen
 [@mcasper]: https://github.com/mcasper
 [@mraylu]: https://github.com/mraylu
 [@mrunkel-ut]: https://github.com/mrunkel-ut
+[@mtougeron]: https://github.com/mtougeron
+[@npaufler]: https://github.com/npaufler
 [@obi11235]: https://github.com/obi11235
 [@obowersa]: https://github.com/obowersa
 [@pabrahamsson]: https://github.com/pabrahamsson
+[@pid1]: https://github.com/pid1
 [@rooprob]: https://github.com/rooprob
 [@rtyler]: https://github.com/rtyler
 [@sambanks]: https://github.com/sambanks
 [@scottgeary]: https://github.com/scottgeary
 [@sethcleveland]: https://github.com/sethcleveland
 [@stamak]: https://github.com/stamak
+[@stantona]: https://github.com/stantona
 [@swwolf]: https://github.com/swwolf
 [@tdm4]: https://github.com/tdm4
 [@tuxinaut]: https://github.com/tuxinaut

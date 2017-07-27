@@ -1,7 +1,7 @@
 Changes
 =======
 
-# 1.11.0 / Unreleased
+# 1.11.0 / 2017-07-27
 
 ### Notes
 
@@ -25,6 +25,7 @@ Changes
 * [BUGFIX] RHEL/CentOS: fix chatty behavior. See [#341][]
 * [BUGFIX] Dd-agent: ensured etc/dd-agent is directory. See [#332][] (Thanks [@butangero][])
 
+* [SANITY] Metadata: set correct apache license ID.
 
 # 1.10.0 / 2017-04-21
 

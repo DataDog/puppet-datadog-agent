@@ -3,7 +3,7 @@
   "version": "1.10.0",
   "author": "James Turnbull (<james@lovedthanlost.net>) and Rob Terhaar (<rob@atlanticdynamic>) for Datadog Inc.",
   "summary": "Install the Datadog monitoring agent and report Puppet runs to Datadog",
-  "license": "Apache License, Version 2.0",
+  "license": "Apache-2.0",
   "source": "git://github.com/DataDog/puppet-datadog-agent.git",
   "project_page": "https://github.com/DataDog/puppet-datadog-agent",
   "issues_url": "https://github.com/DataDog/puppet-datadog-agent/issues",
@@ -66,7 +66,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">=4.6.0"
+      "version_requirement": ">=4.6.0 <5.0.0"
     },
     {
       "name": "puppetlabs/ruby",
@@ -78,7 +78,7 @@
     },
     {
       "name": "lwf/remote_file",
-      "version_requirement": ">=1.1.3"
+      "version_requirement": ">=1.1.3 <2.0.0"
     }
   ]
 }

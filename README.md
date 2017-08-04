@@ -205,7 +205,7 @@ Client Settings
 
 The datadog agent configuration file will be recreated from the template every puppet run. If you need to tag your nodes, add an array entry in hiera
 
-        datadog_agent::local_tags
+        datadog_agent::tags:
         - 'keyname:value'
         - 'anotherkey:%{factname}'
 
@@ -255,4 +255,3 @@ pre-commit install
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
-

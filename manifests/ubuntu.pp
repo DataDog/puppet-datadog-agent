@@ -27,8 +27,9 @@ class datadog_agent::ubuntu(
   if !$::datadog_agent::skip_apt_key_trusting {
     $mykeys = concat($other_keys, [$apt_key])
 
-    ::datadog_agent::ubuntu::install_key { $mykeys:
-      before  => File['/etc/apt/sources.list.d/datadog.list'],
+    ::apt::key { $mykeys:
+      server => 'hkp://keyserver.ubuntu.com:80',
+      before  => File['/etc/apt/sources.list.d/datadog.list']
     }
 
   }

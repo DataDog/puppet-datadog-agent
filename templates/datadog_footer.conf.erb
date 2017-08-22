@@ -336,6 +336,10 @@ sd_jmx_enable: <%= @sd_jmx_enable %>
 consul_token: <%= @consul_token %>
 <% end -%>
 
+<% if @process_agent_enabled -%>
+process_agent_enabled: <%= @process_agent_enabled %>
+<% end -%>
+
 # ========================================================================== #
 # Trace                                                                      #
 # ========================================================================== #

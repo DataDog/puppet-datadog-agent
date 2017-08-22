@@ -22,7 +22,7 @@
 #       The JMX port.
 #     jmx_url:
 #       If the agent needs to connect to a non-default JMX URL, specify it here
-#       instead of a host and a port. If you use this you need to specify a ‘name’
+#       instead of a host and a port. If you use this you need to specify a 'name'
 #       for the instance. Optional.
 #     user:
 #       The username for connecting to the running JVM. Optional.

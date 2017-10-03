@@ -6,3 +6,6 @@
 <% if !@hostname_extraction_regex.nil? -%>
 :hostname_extraction_regex: '<%= @hostname_extraction_regex %>'
 <% end -%>
+<% if !@hostname_whitelist_regex.nil? -%>
+:hostname_whitelist_regex: '<%= @hostname_whitelist_regex %>'
+<% end -%>

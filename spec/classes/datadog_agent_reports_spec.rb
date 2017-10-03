@@ -6,6 +6,7 @@ describe 'datadog_agent::reports' do
       {
         api_key: 'notanapikey',
         hostname_extraction_regex: nil,
+        hostname_whitelist_regex: nil,
         puppetmaster_user: 'puppet',
         dogapi_version: 'installed',
         puppet_gem_provider: 'gem'
@@ -59,6 +60,7 @@ describe 'datadog_agent::reports' do
       {
         api_key: 'notanapikey',
         hostname_extraction_regex: nil,
+        hostname_whitelist_regex: nil,
         puppetmaster_user: 'puppet',
         dogapi_version: '1.2.2',
         puppet_gem_provider: 'gem'

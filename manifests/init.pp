@@ -41,6 +41,9 @@
 #       Instead of reporting the puppet nodename, use this regex to extract the named
 #       'hostname' captured group to report the run in Datadog.
 #       ex.: '^(?<hostname>.*\.datadoghq\.com)(\.i-\w{8}\..*)?$'
+#   $hostname_whitelist_regex
+#       Completely optional.
+#       Only report the host to Datadog if its name matches this regular expression.
 #   $log_to_syslog
 #       Set value of 'log_to_syslog' variable. Default is true -> yes as in dd-agent.
 #       Valid values here are: true or false.
@@ -198,6 +201,7 @@ class datadog_agent(
   $service_enable = true,
   $manage_repo = true,
   $hostname_extraction_regex = nil,
+  $hostname_whitelist_regex = nil,
   $dogstatsd_port = 8125,
   $statsd_forward_host = '',
   $statsd_forward_port = '',
@@ -430,6 +434,7 @@ class datadog_agent(
       puppetmaster_user         => $puppetmaster_user,
       dogapi_version            => $datadog_agent::params::dogapi_version,
       hostname_extraction_regex => $hostname_extraction_regex,
+      hostname_whitelist_regex  => $hostname_whitelist_regex,
     }
   }
 

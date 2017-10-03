@@ -22,6 +22,14 @@ Puppet::Reports.register_report(:datadog_reports) do
     raise(Puppet::ParseError, "Invalid hostname_extraction_regex #{HOSTNAME_REGEX}")
   end
 
+  unless config[:hostname_whitelist_regex].nil?
+    begin
+      HOSTNAME_WHITELIST_REGEX = Regexp.new config[:hostname_whitelist_regex]
+    rescue
+      raise(Puppet::ParseError, "Invalid hostname_whitelist_regex #{config[:hostname_whitelist_regex]}")
+    end
+  end
+
   desc <<-DESC
   Send notification of metrics to Datadog
   DESC
@@ -51,6 +59,11 @@ Puppet::Reports.register_report(:datadog_reports) do
       if !m.nil? && !m[:hostname].nil?
         @msg_host = m[:hostname]
       end
+    end
+
+    if !HOSTNAME_WHITELIST_REGEX.nil? && !@msg_host.match(HOSTNAME_WHITELIST_REGEX)
+      Puppet.info "Not reporting #{@msg_host} to Datadog (does not match white list)"
+      return
     end
 
     event_title = ''
@@ -106,7 +119,7 @@ Puppet::Reports.register_report(:datadog_reports) do
       event_data << "\n@@@\n"
     end
 
-    Puppet.debug "Sending metrics for #{@msg_host} to Datadog"
+    Puppet.info "Sending run info for #{@msg_host} to Datadog"
     @dog = Dogapi::Client.new(API_KEY)
     @dog.batch_metrics do
       self.metrics.each { |metric,data|
@@ -118,7 +131,6 @@ Puppet::Reports.register_report(:datadog_reports) do
       }
     end
 
-    Puppet.debug "Sending events for #{@msg_host} to Datadog"
     @dog.emit_event(Dogapi::Event.new(event_data,
                                       :msg_title => event_title,
                                       :event_type => 'config_management.run',

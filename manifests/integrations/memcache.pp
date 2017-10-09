@@ -58,7 +58,12 @@ class datadog_agent::integrations::memcache (
     $_instances = $instances
   }
 
-  file { "${datadog_agent::params::conf_dir}/mcache.yaml":
+  dst = "${datadog_agent::conf_dir}/mcache.yaml"
+  if $::datadog_agent::agent6_enable {
+    dst = "${datadog_agent::conf6_dir}/mcache.yaml"
+  }
+
+  file { "${dst}":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

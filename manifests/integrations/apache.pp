@@ -39,7 +39,12 @@ class datadog_agent::integrations::apache (
   validate_array($tags)
   validate_bool($disable_ssl_validation)
 
-  file { "${datadog_agent::params::conf_dir}/apache.yaml":
+  dst = "${datadog_agent::conf_dir}/apache.yaml"
+  if $::datadog_agent::agent6_enable {
+    dst = "${datadog_agent::conf6_dir}/apache.yaml"
+  }
+
+  file { "${dst}":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

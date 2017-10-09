@@ -20,7 +20,12 @@ class datadog_agent::integrations::cacti(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  file { "${datadog_agent::params::conf_dir}/cacti.yaml":
+  dst = "${datadog_agent::conf_dir}/cacti.yaml"
+  if $::datadog_agent::agent6_enable {
+    dst = "${datadog_agent::conf6_dir}/cacti.yaml"
+  }
+
+  file { "${dst}":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

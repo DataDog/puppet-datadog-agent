@@ -17,7 +17,12 @@ class datadog_agent::integrations::mesos_slave(
   $url = 'http://localhost:5051'
 ) inherits datadog_agent::params {
 
-  file { "${datadog_agent::params::conf_dir}/mesos_slave.yaml":
+  dst = "${datadog_agent::conf_dir}/mesos_slave.yaml"
+  if $::datadog_agent::agent6_enable {
+    dst = "${datadog_agent::conf6_dir}/mesos_slave.yaml"
+  }
+
+  file { "${dst}":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

@@ -70,12 +70,13 @@ class datadog_agent::integrations::rabbitmq (
   validate_array($vhosts)
   include datadog_agent
 
-  dst = "${datadog_agent::conf_dir}/rabbitmq.yaml"
   if $::datadog_agent::agent6_enable {
-    dst = "${datadog_agent::conf6_dir}/rabbitmq.yaml"
+    $dst = "${datadog_agent::conf6_dir}/rabbitmq.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/rabbitmq.yaml"
   }
 
-  file { "${dst}":
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

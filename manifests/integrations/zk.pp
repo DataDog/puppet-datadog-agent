@@ -34,12 +34,13 @@ class datadog_agent::integrations::zk (
 
   validate_array($servers)
 
-  dst = "${datadog_agent::conf_dir}/zk.yaml"
   if $::datadog_agent::agent6_enable {
-    dst = "${datadog_agent::conf6_dir}/zk.yaml"
+    $dst = "${datadog_agent::conf6_dir}/zk.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/zk.yaml"
   }
 
-  file { "${dst}":
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

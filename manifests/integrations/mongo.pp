@@ -63,12 +63,13 @@ class datadog_agent::integrations::mongo(
 
   validate_array($servers)
 
-  dst = "${datadog_agent::conf_dir}/mongo.yaml"
   if $::datadog_agent::agent6_enable {
-    dst = "${datadog_agent::conf6_dir}/mongo.yaml"
+    $dst = "${datadog_agent::conf6_dir}/mongo.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/mongo.yaml"
   }
 
-  file { "${dst}":
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

@@ -33,21 +33,23 @@ class datadog_agent::integrations::docker_daemon(
     notify  => Service[$datadog_agent::params::service_name]
   }
 
-  legacy_conf = "${datadog_agent::conf_dir}/docker.yaml"
   if $::datadog_agent::agent6_enable {
-    legacy_conf = "${datadog_agent::conf6_dir}/docker.yaml"
+    $legacy_conf = "${datadog_agent::conf6_dir}/docker.yaml"
+  } else {
+    $legacy_conf = "${datadog_agent::conf_dir}/docker.yaml"
   }
 
-  file { "${legacy_conf}":
+  file { $legacy_conf:
     ensure => 'absent'
   }
 
-  dst = "${datadog_agent::conf_dir}/docker_daemon.yaml"
   if $::datadog_agent::agent6_enable {
-    dst = "${datadog_agent::conf6_dir}/docker_daemon.yaml"
+    $dst = "${datadog_agent::conf6_dir}/docker_daemon.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/docker_daemon.yaml"
   }
 
-  file { "${dst}":
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

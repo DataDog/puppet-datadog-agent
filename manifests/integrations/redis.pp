@@ -54,12 +54,13 @@ class datadog_agent::integrations::redis(
 
   validate_array($_ports)
 
-  dst = "${datadog_agent::conf_dir}/redisdb.yaml"
   if $::datadog_agent::agent6_enable {
-    dst = "${datadog_agent::conf6_dir}/redisdb.yaml"
+    $dst = "${datadog_agent::conf6_dir}/redisdb.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/redisdb.yaml"
   }
 
-  file { "${dst}":
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

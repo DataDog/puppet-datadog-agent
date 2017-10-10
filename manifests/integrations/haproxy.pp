@@ -36,12 +36,13 @@ class datadog_agent::integrations::haproxy(
     $_instances = $instances
   }
 
-  dst = "${datadog_agent::conf_dir}/haproxy.yaml"
   if $::datadog_agent::agent6_enable {
-    dst = "${datadog_agent::conf6_dir}/haproxy.yaml"
+    $dst = "${datadog_agent::conf6_dir}/haproxy.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/haproxy.yaml"
   }
 
-  file { "${dst}":
+  file { $dst:
       ensure  => file,
       owner   => $datadog_agent::params::dd_user,
       group   => $datadog_agent::params::dd_group,

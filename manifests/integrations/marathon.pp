@@ -18,12 +18,13 @@ class datadog_agent::integrations::marathon(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  dst = "${datadog_agent::conf_dir}/marathon.yaml"
   if $::datadog_agent::agent6_enable {
-    dst = "${datadog_agent::conf6_dir}/marathon.yaml"
+    $dst = "${datadog_agent::conf6_dir}/marathon.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/marathon.yaml"
   }
 
-  file { "${dst}":
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

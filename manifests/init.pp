@@ -102,6 +102,9 @@
 #   $use_dogstatsd
 #       Enables the dogstatsd server
 #       Boolean. Default: true
+#   $dogstatsd_socket
+#       Specifies the socket file to be used by dogstatsd. Must have use_dogstatsd set
+#       String. Default: empty
 #   $dogstatsd_port
 #       Specifies the port to be used by dogstatsd. Must have use_dogstatsd set
 #       String. Default: empty
@@ -138,6 +141,9 @@
 #       String. Default: empty
 #   $custom_emitters
 #       Specifies a comma seperated list of non standard emitters to be used
+#       String. Default: empty
+#   $agent6_log_file
+#       Specifies the log file location for the agent6
 #       String. Default: empty
 #   $collector_log_file
 #       Specifies the log file location for the collector system
@@ -199,6 +205,7 @@ class datadog_agent(
   $manage_repo = true,
   $hostname_extraction_regex = nil,
   $dogstatsd_port = 8125,
+  $dogstatsd_socket = '',
   $statsd_forward_host = '',
   $statsd_forward_port = '',
   $statsd_histogram_percentiles = '0.95',
@@ -227,6 +234,7 @@ class datadog_agent(
   $dogstatsd_normalize = true,
   $device_blacklist_re = '',
   $custom_emitters = '',
+  $agent6_log_file = '/var/log/datadog/agent.log',
   $collector_log_file = '',
   $forwarder_log_file = '',
   $dogstatsd_log_file = '',
@@ -240,7 +248,9 @@ class datadog_agent(
   $sd_template_dir = '',
   $sd_jmx_enable = false,
   $consul_token = '',
+  $agent6_enable = false,
   $conf_dir = $datadog_agent::params::conf_dir,
+  $conf6_dir = $datadog_agent::params::conf6_dir,
   $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
   $service_name = $datadog_agent::params::service_name,
   $package_name = $datadog_agent::params::package_name,
@@ -306,6 +316,7 @@ class datadog_agent(
   validate_string($statsd_forward_host)
   validate_string($device_blacklist_re)
   validate_string($custom_emitters)
+  validate_string($agent6_log_file)
   validate_string($collector_log_file)
   validate_string($forwarder_log_file)
   validate_string($dogstatsd_log_file)
@@ -320,6 +331,7 @@ class datadog_agent(
   validate_bool($sd_jmx_enable)
   validate_string($consul_token)
   validate_bool($apm_enabled)
+  validate_bool($agent6_enable)
   validate_string($apm_env)
 
   if $hiera_tags {
@@ -352,74 +364,131 @@ class datadog_agent(
   }
 
   case $::operatingsystem {
-    'Ubuntu','Debian' : { include datadog_agent::ubuntu }
+    'Ubuntu','Debian' : {
+      if !$agent6_enable {
+        include datadog_agent::ubuntu
+      } else {
+        include datadog_agent::ubuntu::agent6
+      }
+    }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
-      class { 'datadog_agent::redhat':
-        manage_repo => $manage_repo,
+      if !$agent6_enable {
+        class { 'datadog_agent::redhat':
+          manage_repo => $manage_repo,
+        }
+      } else {
+        class { 'datadog_agent::redhat::agent6':
+          manage_repo => $manage_repo,
+        }
       }
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
 
-  file { '/etc/dd-agent':
-    ensure  => directory,
-    owner   => $dd_user,
-    group   => $dd_group,
-    mode    => '0755',
-    require => Package['datadog-agent'],
-  }
-
-  file { $conf_dir:
-    ensure  => directory,
-    purge   => $conf_dir_purge,
-    recurse => true,
-    force   => $conf_dir_purge,
-    owner   => $dd_user,
-    group   => $dd_group,
-    notify  => Service['datadog-agent']
-  }
-
-  concat {'/etc/dd-agent/datadog.conf':
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
-    mode    => '0640',
-    notify  => Service[$datadog_agent::params::service_name],
-    require => File['/etc/dd-agent'],
-  }
-
-  concat::fragment{ 'datadog header':
-    target  => '/etc/dd-agent/datadog.conf',
-    content => template('datadog_agent/datadog_header.conf.erb'),
-    order   => '01',
-  }
-
-  concat::fragment{ 'datadog tags':
-    target  => '/etc/dd-agent/datadog.conf',
-    content => 'tags: ',
-    order   => '02',
-  }
-
-  concat::fragment{ 'datadog footer':
-    target  => '/etc/dd-agent/datadog.conf',
-    content => template('datadog_agent/datadog_footer.conf.erb'),
-    order   => '05',
-  }
-
-  if ($extra_template != '') {
-    concat::fragment{ 'datadog extra_template footer':
-      target  => '/etc/dd-agent/datadog.conf',
-      content => template($extra_template),
-      order   => '06',
+  if !$agent6_enable {
+    file { '/etc/dd-agent':
+      ensure  => directory,
+      owner   => $dd_user,
+      group   => $dd_group,
+      mode    => '0755',
+      require => Package['datadog-agent'],
     }
-    $apm_footer_order = '07'
   } else {
-    $apm_footer_order = '06'
+    file { '/etc/datadog-agent':
+      ensure  => directory,
+      owner   => $dd_user,
+      group   => $dd_group,
+      mode    => '0755',
+      require => Package['datadog-agent'],
+    }
   }
 
-  concat::fragment{ 'datadog apm footer':
-    target  => '/etc/dd-agent/datadog.conf',
-    content => template('datadog_agent/datadog_apm_footer.conf.erb'),
-    order   => $apm_footer_order,
+  if !$agent6_enable {
+    file { $conf_dir:
+      ensure  => directory,
+      purge   => $conf_dir_purge,
+      recurse => true,
+      force   => $conf_dir_purge,
+      owner   => $dd_user,
+      group   => $dd_group,
+      notify  => Service['datadog-agent']
+    }
+  } else {
+    file { $conf6_dir:
+      ensure  => directory,
+      purge   => $conf_dir_purge,
+      recurse => true,
+      force   => $conf_dir_purge,
+      owner   => $dd_user,
+      group   => $dd_group,
+      notify  => Service['datadog-agent']
+    }
+  }
+
+  if !agent6_enable {
+    concat {'/etc/dd-agent/datadog.conf':
+      owner   => $datadog_agent::params::dd_user,
+      group   => $datadog_agent::params::dd_group,
+      mode    => '0640',
+      notify  => Service[$datadog_agent::params::service_name],
+      require => File['/etc/dd-agent'],
+    }
+
+    concat::fragment{ 'datadog header':
+      target  => '/etc/dd-agent/datadog.conf',
+      content => template('datadog_agent/datadog_header.conf.erb'),
+      order   => '01',
+    }
+
+    concat::fragment{ 'datadog tags':
+      target  => '/etc/dd-agent/datadog.conf',
+      content => 'tags: ',
+      order   => '02',
+    }
+
+    concat::fragment{ 'datadog footer':
+      target  => '/etc/dd-agent/datadog.conf',
+      content => template('datadog_agent/datadog_footer.conf.erb'),
+      order   => '05',
+    }
+
+    if ($extra_template != '') {
+      concat::fragment{ 'datadog extra_template footer':
+        target  => '/etc/dd-agent/datadog.conf',
+        content => template($extra_template),
+        order   => '06',
+      }
+      $apm_footer_order = '07'
+    } else {
+      $apm_footer_order = '06'
+    }
+
+    concat::fragment{ 'datadog apm footer':
+      target  => '/etc/dd-agent/datadog.conf',
+      content => template('datadog_agent/datadog_apm_footer.conf.erb'),
+      order   => $apm_footer_order,
+    }
+  } else {
+    $agent_config = {
+      'api_key' => $api_key,
+      'dd_url' => $dd_url,
+      'cmd_port' => 5001,
+      'conf_path' => $datadog_agent::params::conf6_path,
+      'enable_metadata_collection' => $collect_instance_metadata,
+      'dogstatsd_port' => $dogstatsd_port,
+      'dogstatsd_socket' => $dogstatsd_socket,
+      'dogstatsd_non_local_traffic' => $non_local_traffic,
+      'log_file' => $agent6_log_file,
+      'log_level' => $log_level,
+    }
+    file { '/etc/datadog-agent/datadog.yaml':
+      owner   => 'dd-agent',
+      group   => 'dd-agent',
+      mode    => '0640',
+      content => template('datadog_agent/datadog6.yaml.erb'),
+      notify  => Service[$datadog_agent::params::service_name],
+      require => File['/etc/datadog-agent'],
+    }
   }
 
 

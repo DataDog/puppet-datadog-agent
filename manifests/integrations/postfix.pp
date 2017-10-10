@@ -52,12 +52,13 @@ class datadog_agent::integrations::postfix (
     $_instances = $instances
   }
 
-  dst = "${datadog_agent::conf_dir}/postfix.yaml"
   if $::datadog_agent::agent6_enable {
-    dst = "${datadog_agent::conf6_dir}/postfix.yaml"
+    $dst = "${datadog_agent::conf6_dir}/postfix.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/postfix.yaml"
   }
 
-  file { "${dst}":
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

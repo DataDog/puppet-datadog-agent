@@ -18,21 +18,23 @@ class datadog_agent::integrations::mesos_master(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  dst = "${datadog_agent::conf_dir}/mesos.yaml"
   if $::datadog_agent::agent6_enable {
-    dst = "${datadog_agent::conf6_dir}/mesos.yaml"
+    $dst = "${datadog_agent::conf6_dir}/mesos.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/mesos.yaml"
   }
 
-  file { "${dst}":
+  file { $dst:
     ensure => 'absent'
   }
 
-  dst_master = "${datadog_agent::conf_dir}/mesos_master.yaml"
   if $::datadog_agent::agent6_enable {
-    dst_master = "${datadog_agent::conf6_dir}/mesos_master.yaml"
+    $dst_master = "${datadog_agent::conf6_dir}/mesos_master.yaml"
+  } else {
+    $dst_master = "${datadog_agent::conf_dir}/mesos_master.yaml"
   }
 
-  file { "${dst_master}":
+  file { $dst_master:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

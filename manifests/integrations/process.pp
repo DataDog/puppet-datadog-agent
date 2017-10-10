@@ -45,12 +45,13 @@ class datadog_agent::integrations::process(
 
   validate_array( $processes )
 
-  dst = "${datadog_agent::conf_dir}/process.yaml"
   if $::datadog_agent::agent6_enable {
-    dst = "${datadog_agent::conf6_dir}/process.yaml"
+    $dst = "${datadog_agent::conf6_dir}/process.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/process.yaml"
   }
 
-  file { "${dst}":
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

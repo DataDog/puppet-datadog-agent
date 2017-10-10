@@ -39,12 +39,13 @@ class datadog_agent::integrations::consul(
   validate_bool($new_leader_checks)
   validate_array($service_whitelist)
 
-  dst = "${datadog_agent::conf_dir}/consul.yaml"
   if $::datadog_agent::agent6_enable {
-    dst = "${datadog_agent::conf6_dir}/consul.yaml"
+    $dst = "${datadog_agent::conf6_dir}/consul.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/consul.yaml"
   }
 
-  file { "${dst}":
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

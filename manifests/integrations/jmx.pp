@@ -67,12 +67,13 @@ class datadog_agent::integrations::jmx(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  dst = "${datadog_agent::conf_dir}/jmx.yaml"
   if $::datadog_agent::agent6_enable {
-    dst = "${datadog_agent::conf6_dir}/jmx.yaml"
+    $dst = "${datadog_agent::conf6_dir}/jmx.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/jmx.yaml"
   }
 
-  file { "${dst}":
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 group :test do
   gem "syck"
+  gem "public_suffix", "~> 2.0.5"
   gem "safe_yaml", "~> 1.0.4"
   gem "hiera-eyaml", "~> 2.1.0"
   gem "listen", "~> 3.0.0"

@@ -248,7 +248,7 @@ class datadog_agent(
   $sd_template_dir = '',
   $sd_jmx_enable = false,
   $consul_token = '',
-  $agent6_enable = false,
+  $agent6_enable = $datadog_agent::params::agent6_enable,
   $conf_dir = $datadog_agent::params::conf_dir,
   $conf6_dir = $datadog_agent::params::conf6_dir,
   $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
@@ -385,6 +385,16 @@ class datadog_agent(
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
 
+  # required by reports even in agent5 scenario
+  file { '/etc/datadog-agent':
+    ensure  => directory,
+    owner   => $dd_user,
+    group   => $dd_group,
+    mode    => '0755',
+    require => Package['datadog-agent'],
+  }
+
+
   if !$agent6_enable {
     file { '/etc/dd-agent':
       ensure  => directory,
@@ -393,17 +403,7 @@ class datadog_agent(
       mode    => '0755',
       require => Package['datadog-agent'],
     }
-  } else {
-    file { '/etc/datadog-agent':
-      ensure  => directory,
-      owner   => $dd_user,
-      group   => $dd_group,
-      mode    => '0755',
-      require => Package['datadog-agent'],
-    }
-  }
 
-  if !$agent6_enable {
     file { $conf_dir:
       ensure  => directory,
       purge   => $conf_dir_purge,
@@ -413,19 +413,7 @@ class datadog_agent(
       group   => $dd_group,
       notify  => Service['datadog-agent']
     }
-  } else {
-    file { $conf6_dir:
-      ensure  => directory,
-      purge   => $conf_dir_purge,
-      recurse => true,
-      force   => $conf_dir_purge,
-      owner   => $dd_user,
-      group   => $dd_group,
-      notify  => Service['datadog-agent']
-    }
-  }
 
-  if !agent6_enable {
     concat {'/etc/dd-agent/datadog.conf':
       owner   => $datadog_agent::params::dd_user,
       group   => $datadog_agent::params::dd_group,
@@ -469,11 +457,22 @@ class datadog_agent(
       order   => $apm_footer_order,
     }
   } else {
+
+    file { $conf6_dir:
+      ensure  => directory,
+      purge   => $conf_dir_purge,
+      recurse => true,
+      force   => $conf_dir_purge,
+      owner   => $dd_user,
+      group   => $dd_group,
+      notify  => Service['datadog-agent']
+    }
+
     $agent_config = {
       'api_key' => $api_key,
       'dd_url' => $dd_url,
       'cmd_port' => 5001,
-      'conf_path' => $datadog_agent::params::conf6_path,
+      'conf_path' => $datadog_agent::params::conf6_dir,
       'enable_metadata_collection' => $collect_instance_metadata,
       'dogstatsd_port' => $dogstatsd_port,
       'dogstatsd_socket' => $dogstatsd_socket,
@@ -481,6 +480,7 @@ class datadog_agent(
       'log_file' => $agent6_log_file,
       'log_level' => $log_level,
     }
+
     file { '/etc/datadog-agent/datadog.yaml':
       owner   => 'dd-agent',
       group   => 'dd-agent',

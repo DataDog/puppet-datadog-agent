@@ -40,7 +40,7 @@ class datadog_agent::redhat::agent6(
       require  => Exec['install-gpg-key'],
     }
 
-    Package { require => Yumrepo['datadog']}
+    Package { require => Yumrepo['datadog-beta']}
   }
 
   package { 'datadog-agent-base':

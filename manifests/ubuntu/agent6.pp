@@ -7,7 +7,7 @@ class datadog_agent::ubuntu::agent6(
   $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
   $agent_version = 'latest',
   $other_keys = ['935F5A436A5A6E8788F0765B226AE980C7A7DA52'],
-  $location = 'https://apt.datad0g.com',
+  $location = 'https://apt.datadoghq.com',
   $release = 'beta',
   $repos = 'main',
 ) {
@@ -24,6 +24,10 @@ class datadog_agent::ubuntu::agent6(
 
   }
 
+  file { '/etc/apt/sources.list.d/datadog.list':
+    ensure => absent,
+  }
+
   file { '/etc/apt/sources.list.d/datadog-beta.list':
     owner   => 'root',
     group   => 'root',
@@ -37,6 +41,7 @@ class datadog_agent::ubuntu::agent6(
     refreshonly => true,
     tries       => 2, # https://bugs.launchpad.net/launchpad/+bug/1430011 won't get fixed until 16.04 xenial
     try_sleep   => 30,
+    require     => File['/etc/apt/sources.list.d/datadog.list'],
   }
 
   package { 'datadog-agent-base':

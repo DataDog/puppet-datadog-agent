@@ -42,13 +42,17 @@ class datadog_agent::redhat(
         require => Remote_file['DATADOG_RPM_KEY.public'],
     }
 
+    yumrepo {'datadog-beta':
+      ensure => absent
+    }
+
     yumrepo {'datadog':
       enabled  => 1,
       gpgcheck => 1,
       gpgkey   => 'https://yum.datadoghq.com/DATADOG_RPM_KEY.public',
       descr    => 'Datadog, Inc.',
       baseurl  => $baseurl,
-      require  => Exec['install-gpg-key'],
+      require  => [Exec['install-gpg-key'], Yumrepo['datadog-beta']],
     }
 
     Package { require => Yumrepo['datadog']}

@@ -61,6 +61,7 @@ class datadog_agent::integrations::postgres(
   $tags = [],
   $tables = [],
   $custom_metrics = {},
+  $instances = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -74,7 +75,25 @@ class datadog_agent::integrations::postgres(
     $dst = "${datadog_agent::conf_dir}/postgres.yaml"
   }
 
-  file { $dst:
+  if !$instances and $host {
+    $_instances = [{
+      'host'           => $host,
+      'password'       => $password,
+      'dbname'         => $dbname,
+      'port'           => $port,
+      'username'       => $username,
+      'use_psycopg2'   => $use_psycopg2,
+      'tags'           => $tags,
+      'tables'         => $tables,
+      'custom_metrics' => $custom_metrics,
+    }]
+  } elsif !$instances{
+    $_instances = []
+  } else {
+    $_instances = $instances
+  }
+
+  file { "$dst":
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

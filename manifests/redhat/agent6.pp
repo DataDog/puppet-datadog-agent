@@ -32,19 +32,15 @@ class datadog_agent::redhat::agent6(
     }
 
     yumrepo {'datadog':
-      ensure => absent
-    }
-
-    yumrepo {'datadog-beta':
       enabled  => 1,
       gpgcheck => 1,
       gpgkey   => 'https://yum.datadoghq.com/DATADOG_RPM_KEY.public',
       descr    => 'Datadog, Inc.',
       baseurl  => $baseurl,
-      require  => [Exec['install-gpg-key'], Yumrepo['datadog']],
+      require  => Exec['install-gpg-key'],
     }
 
-    Package { require => Yumrepo['datadog-beta']}
+    Package { require => Yumrepo['datadog']}
   }
 
   package { 'datadog-agent-base':

@@ -43,7 +43,7 @@ class datadog_agent::redhat(
     }
 
     yumrepo {'datadog':
-      enabled  => 1,
+      enabled  => 0, # because Datadog brilliantly shadowed system packages with custom versions
       gpgcheck => 1,
       gpgkey   => 'https://yum.datadoghq.com/DATADOG_RPM_KEY.public',
       descr    => 'Datadog, Inc.',
@@ -51,7 +51,10 @@ class datadog_agent::redhat(
       require  => Exec['install-gpg-key'],
     }
 
-    Package { require => Yumrepo['datadog']}
+    Package {
+      require => Yumrepo['datadog'],
+      install_options => ['--enablerepo', 'datadog'],
+    }
   }
 
   package { 'datadog-agent-base':

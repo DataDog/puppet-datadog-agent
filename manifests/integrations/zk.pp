@@ -6,7 +6,7 @@
 #   $host:
 #       The host zk is running on. Defaults to '127.0.0.1'
 #   $port
-#       The zk password for the datadog user. Defaults to 27017
+#       The port zk is running on. Defaults to 2181
 #   $tags
 #       Optional array of tags
 #

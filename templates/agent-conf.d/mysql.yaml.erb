@@ -5,26 +5,34 @@
 init_config:
 
 instances:
-  - server: <%= @host %>
-    user: <%= @user %>
-    pass: <%= @password %>
-<% if @sock -%>
-    sock: <%= @sock %>
+<%- (Array(@_instances)).each do |instance| -%>
+  - server: <%= instance['host'] %>
+    user: <%= instance['user'] %>
+    pass: <%= instance['password'] %>
+<% if instance['port'] -%>
+    port: <%= instance['port'] %>
 <% end -%>
-#    port: 3306             # Optional
-#    defaults_file: my.cnf  # Alternate configuration mechanism
-<% if !@tags.empty? -%>
-    tags:                  # Optional
-<% @tags.each do |tag| -%>
-        - <%= tag %>
+<% if instance['sock'] and instance['sock'] != :undef -%>
+    sock: <%= instance['sock'] %>
 <% end -%>
+
+<% if instance['tags'] and ! instance['tags'].empty? -%>
+    tags:
+  <%- Array(instance['tags']).each do |tag| -%>
+    <%- if tag != '' -%>
+      - <%= tag %>
+    <%- end -%>
+  <%- end -%>
 <% end -%>
+
     options:               # Optional
-        replication: <%= @replication %>
-        galera_cluster: <%= @galera_cluster %>
-        extra_status_metrics: <%= @extra_status_metrics %>
-        extra_innodb_metrics: <%= @extra_innodb_metrics %>
-        extra_performance_metrics: <%= @extra_performance_metrics %>
-        schema_size_metrics: <%= @schema_size_metrics %>
-        disable_innodb_metrics: <%= @disable_innodb_metrics %>
+        replication: <%= instance['replication'] %>
+        galera_cluster: <%= instance['galera_cluster'] %>
+        extra_status_metrics: <%= instance['extra_status_metrics'] %>
+        extra_innodb_metrics: <%= instance['extra_innodb_metrics'] %>
+        extra_performance_metrics: <%= instance['extra_performance_metrics'] %>
+        schema_size_metrics: <%= instance['schema_size_metrics'] %>
+        disable_innodb_metrics: <%= instance['disable_innodb_metrics'] %>
+
+<% end -%>
 

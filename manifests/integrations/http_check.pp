@@ -37,6 +37,13 @@
 #       check to create a metric 'network.http.response_time', tagged with
 #       the url, reporting the response time in seconds.
 #
+#   http_response_status_code
+#       The (optional) http_response_status_code parameter will instruct the check
+#       to look for a particular HTTP response status code or a Regex identifying
+#       a set of possible status codes.
+#       The check will report as DOWN if status code returned differs.
+#       This defaults to 1xx, 2xx and 3xx HTTP status code: (1|2|3)\d\d.
+#
 #   collect_response_time
 #       The (optional) collect_response_time parameter will instruct the
 #       check to create a metric 'network.http.response_time', tagged with
@@ -47,6 +54,29 @@
 #       the http client to accept self signed, expired and otherwise
 #       problematic SSL server certificates. To maintain backwards
 #       compatibility this defaults to false.
+#
+#   skip_event
+#       The (optional) skip_event parameter will instruct the check to not
+#       create any event to avoid duplicates with a server side service check.
+#       This defaults to True because this is being deprecated.
+#       (See https://github.com/DataDog/dd-agent/blob/master/checks/network_checks.py#L178-L180)
+#
+#   no_proxy
+#       The (optional) no_proxy parameter would bypass any proxy settings enabled
+#       and attempt to reach the the URL directly.
+#       If no proxy is defined at any level, this flag bears no effect.
+#       Defaults to False.
+#
+#   check_certificate_expiration
+#   days_warning
+#   days_critical
+#       The (optional) check_certificate_expiration will instruct the check
+#       to create a service check that checks the expiration of the
+#       ssl certificate. Allow for a warning to occur when x days are
+#       left in the certificate, and alternatively raise a critical
+#       warning if the certificate is y days from the expiration date.
+#       The SSL certificate will always be validated for this additional
+#       service check regardless of the value of disable_ssl_validation
 #
 #   headers
 #       The (optional) headers parameter allows you to send extra headers
@@ -121,8 +151,14 @@ class datadog_agent::integrations::http_check (
   $window    = undef,
   $content_match = undef,
   $include_content = false,
+  $http_response_status_code = undef,
   $collect_response_time = true,
   $disable_ssl_validation = false,
+  $skip_event = true,
+  $no_proxy  = false,
+  $check_certificate_expiration = undef,
+  $days_warning = undef,
+  $days_critical = undef,
   $headers   = [],
   $tags      = [],
   $contact   = [],
@@ -132,20 +168,26 @@ class datadog_agent::integrations::http_check (
 
   if !$instances and $url {
     $_instances = [{
-      'sitename'                 => $sitename,
-      'url'                      => $url,
-      'username'                 => $username,
-      'password'                 => $password,
-      'timeout'                  => $timeout,
-      'threshold'                => $threshold,
-      'window'                   => $window,
-      'content_match'            => $content_match,
-      'include_content'          => $include_content,
-      'collect_response_time'    => $collect_response_time,
-      'disable_ssl_validation'   => $disable_ssl_validation,
-      'headers'                  => $headers,
-      'tags'                     => $tags,
-      'contact'                  => $contact,
+      'sitename'                     => $sitename,
+      'url'                          => $url,
+      'username'                     => $username,
+      'password'                     => $password,
+      'timeout'                      => $timeout,
+      'threshold'                    => $threshold,
+      'window'                       => $window,
+      'content_match'                => $content_match,
+      'include_content'              => $include_content,
+      'http_response_status_code'    => $http_response_status_code,
+      'collect_response_time'        => $collect_response_time,
+      'disable_ssl_validation'       => $disable_ssl_validation,
+      'skip_event'                   => $skip_event,
+      'no_proxy'                     => $no_proxy,
+      'check_certificate_expiration' => $check_certificate_expiration,
+      'days_warning'                 => $days_warning,
+      'days_critical'                => $days_critical,
+      'headers'                      => $headers,
+      'tags'                         => $tags,
+      'contact'                      => $contact,
     }]
   } elsif !$instances{
     $_instances = []

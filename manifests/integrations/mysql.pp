@@ -34,12 +34,30 @@
 #    password => 'some_pass',
 #    user     => 'datadog'
 #  }
+# Sample Usage (Instance):
+#  class { 'datadog_agent::integrations::mysql' :
+#    instances => [{
+#      host                      => 'localhost',
+#      password                  => 'mypassword',
+#      user                      => 'datadog',
+#      port                      => '3306',
+#      tags                      => ['instance:mysql1'],
+#      replication               => '0',
+#      galera_cluster            => '0',
+#      extra_status_metrics      => 'true',
+#      extra_innodb_metrics      => 'true',
+#      extra_performance_metrics => 'true',
+#      schema_size_metrics       => 'true', 
+#      disable_innodb_metrics    => 'false',
+#    }
+#  }
 #
 #
 class datadog_agent::integrations::mysql(
   $password,
   $host = 'localhost',
   $user = 'datadog',
+  $port = 3306,
   $sock = undef,
   $tags = [],
   $replication = '0',
@@ -49,10 +67,33 @@ class datadog_agent::integrations::mysql(
   $extra_performance_metrics = false,
   $schema_size_metrics = false,
   $disable_innodb_metrics = false,
+  $instances = undef,
   ) inherits datadog_agent::params {
   include datadog_agent
 
   validate_array($tags)
+
+  if !$instances and $host {
+    $_instances = [{
+      'host'                      => $host,
+      'password'                  => $password,
+      'user'                      => $user,
+      'port'                      => $port,
+      'sock'                      => $sock,
+      'tags'                      => $tags,
+      'replication'               => $replication,
+      'galera_cluster'            => $galera_cluster,
+      'extra_status_metrics'      => $extra_status_metrics,
+      'extra_innodb_metrics'      => $extra_innodb_metrics,
+      'extra_performance_metrics' => $extra_performance_metrics,
+      'schema_size_metrics'       => $schema_size_metrics,
+      'disable_innodb_metrics'    => $disable_innodb_metrics,
+    }]
+  } elsif !$instances{
+    $_instances = []
+  } else {
+    $_instances = $instances
+  }
 
   file { "${datadog_agent::params::conf_dir}/mysql.yaml":
     ensure  => file,

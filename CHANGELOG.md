@@ -1,6 +1,88 @@
 Changes
 =======
 
+# 1.11.0 / 2017-07-27
+
+### Notes
+
+* [FEATURE] Postfix Added integration. See [#323][] (Thanks [@npaufler][])
+* [FEATURE] Twemproxy: Added integration. See [#326][] (Thanks [@swwolf][])
+* [FEATURE] HAproxy: Added integration. See [#326][] (Thanks [@swwolf][])
+
+* [IMPROVEMENT] Memcache: Add multi-instance support for memcache. See [#318][] (Thanks [@npaufler][])
+* [IMPROVEMENT] Elasticsearch: Add support for multiple instances. See [#333][] (Thanks [@stantona][])
+* [IMPROVEMENT] Mongodb: support collection metrics per collection. See [#335][] (Thanks [@jensendw][])
+* [IMPROVEMENT] Redis: Allow command_stats. See [#327][] (Thanks [@IanCrouch][])
+* [IMPROVEMENT] Ceph: Add parameters to integration. See [#322][] (Thanks [@stamak][])
+* [IMPROVEMENT] Ubuntu: apt make repository configurable. See [#340][]
+* [IMPROVEMENT] Ubuntu: use full key ID when adding GPG keys. See [#329][] (Thanks [@pid1][])
+* [IMPROVEMENT] Dd-agent: Change owner/group of /etc/dd-agent. See [#325][] (Thanks [@ColinHebert][])
+* [IMPROVEMENT] Docker_daemon: remove spaces that break resulting yaml. See [#336][] (Thanks [@ckolos][])
+
+* [BUGFIX] Dd-agent: add extra_template back. See [#331][] (Thanks [@flyinprogrammer][])
+* [BUGFIX] Dd-agent: Don't fail if there is no value in hiera. See [#334][] (Thanks [@mtougeron][])
+* [BUGFIX] Core: Addressing metaparam override in datadog_agent::tag. See [#338][] (Thanks [@craigwatson][])
+* [BUGFIX] RHEL/CentOS: fix chatty behavior. See [#341][]
+* [BUGFIX] Dd-agent: ensured etc/dd-agent is directory. See [#332][] (Thanks [@butangero][])
+
+* [SANITY] Metadata: set correct apache license ID.
+
+# 1.10.0 / 2017-04-21
+
+### Notes
+
+* [FEATURE] Ceph: Adding integration. See [#293][] (Thanks [@stamak][])
+* [FEATURE] Tcp_check: Adding integration. See [#286][] (Thanks [@aepod][])
+* [FEATURE] Trace_agent: Configure APM trace agent. See [#302][] and [#311][] (Thanks [@DDRBoxman][])
+* [FEATURE] Allow hiera defined integrations. See [#261][] (Thanks [@cwood][])
+
+* [IMPROVEMENT] Make tags their own resource. See [#261][] (Thanks [@cwood][])
+* [IMPROVEMENT] Support ports as integers. See [#315][] (Thanks [@alexharv074][])
+* [IMPROVEMENT] PHPfpm: Support for multiple instances and `http_host`. See [#299][] (Thanks [@obi11235][])
+* [IMPROVEMENT] RabbitMQ: Adding additional configuration parameters. See [#288][] (Thanks [@alvin-huang][])
+* [IMPROVEMENT] Http_check: Adding response_status_code. See [#290][] (Thanks [@dzinek][])
+* [IMPROVEMENT] Http_check: Adding no_proxy configuration option. See [#309][]
+* [IMPROVEMENT] Service_discovery: Adding jmx checks for SD. See [#296][] (Thanks [@alvin-huang][])
+* [IMPROVEMENT] Reporting: Fix already initialized warning. See [#292][] and [#310][] (Thanks [@craigwatson][])
+* [IMPROVEMENT] Reporting: Send metrics for hosts as a batch, reducing overhead. See [#313][] (Thanks [@tdm4][])
+
+* [DEPRECATE] Http_check: Slowly deprecate skip_event. See [#291][] (Thanks [@flyinprogrammer][])
+
+* [DOCUMENTATION] Cleanup EC2-related parameter docs. See [#252][] (Thanks [@jdavisp3][])
+* [DOCUMENTATION] Zookeeper: fix comment to match reality. See [#297][] (Thanks [@generica][])
+
+
+# 1.9.0 / 2016-12-20
+
+### Notes
+
+* [BUGFIX] [rpm] fix key rotation for RPMs - install legacy key as well. See [#283][]. (Thanks [@aepod][]).
+* [BUGFIX] Reporting: allow the report processor to run on Puppet Enterprise. See [#266][]. (Thanks [@binford2k][]).
+* [BUGFIX] RHEL/CentOS: Fix gpg and test binary paths. See [#259][]. (Thanks [@sethcleveland][]).
+* [BUGFIX] NTP: fix template. See [#280][]. (Thanks [@MartinDelta][]).
+* [BUGFIX] Multiple integrations: swapped order of optional vs. non-optional parameters. See [#232][]. (Thanks [@sethcleveland][]).
+
+* [IMPROVEMENT] [rpm+deb] repo keys rotated. See [#242][].
+* [IMPROVEMENT] MySQL: Allow multiple MySQL instances See [#267][]. (Thanks [@IanCrouch][]).
+* [IMPROVEMENT] Http check: `allow_redirects` + `check_certificate_expiration` improvement. See [#282][]. (Thanks [@cristianjuve][]).
+* [IMPROVEMENT] Http_check: update to include new attributes. See [#276][]. (Thanks [@aepod][]).
+* [IMPROVEMENT] Http_check: set disable_ssl_validation parameter. See [#258][].
+* [IMPROVEMENT] Postgres: support generic postgres custom metrics. See [#224][]. (Thanks [@sethcleveland][]).
+* [IMPROVEMENT] Postgres: support use_pscopg2 flag for postgres integrations. See [#243][]. (Thanks [@sethcleveland][]).
+* [IMPROVEMENT] Cassandra: support cassandra integration tags. See [#256][]. (Thanks [@sethcleveland][]).
+* [IMPROVEMENT] HAProxy: support multiple instances. See [#279][]. (Thanks [@swwolf][]).
+
+* [FEATURE] Service Discovery: Allow Service Discovery configuration See [#281][]. (Thanks [@scottgeary][]).
+* [FEATURE] Disk integration. See [#263][]. (Thanks [@denmat][]).
+* [FEATURE] Cacti integration. See [#247][]. (Thanks [@sambanks][]).
+* [FEATURE] JMX integration. See [#231][]. (Thanks [@rooprob][]).
+* [FEATURE] Generic define to enable new integrations. See [#233][]. (Thanks [@cwood][])
+
+* [CI] Multiple fixes related to the spec tests on older puppets.
+* [CI] Consul: adding spec tests. See [#264][]. (Thanks [@flyinprogrammer][]).
+
+
+
 # 1.8.1 / 2016-08-15
 
 ### Notes
@@ -220,31 +302,110 @@ Changes
 [#219]: https://github.com/DataDog/puppet-datadog-agent/issues/219
 [#222]: https://github.com/DataDog/puppet-datadog-agent/issues/222
 [#223]: https://github.com/DataDog/puppet-datadog-agent/issues/223
+[#224]: https://github.com/DataDog/puppet-datadog-agent/issues/224
+[#231]: https://github.com/DataDog/puppet-datadog-agent/issues/231
+[#232]: https://github.com/DataDog/puppet-datadog-agent/issues/232
+[#233]: https://github.com/DataDog/puppet-datadog-agent/issues/233
+[#242]: https://github.com/DataDog/puppet-datadog-agent/issues/242
+[#243]: https://github.com/DataDog/puppet-datadog-agent/issues/243
+[#247]: https://github.com/DataDog/puppet-datadog-agent/issues/247
+[#252]: https://github.com/DataDog/puppet-datadog-agent/issues/252
+[#256]: https://github.com/DataDog/puppet-datadog-agent/issues/256
+[#258]: https://github.com/DataDog/puppet-datadog-agent/issues/258
+[#259]: https://github.com/DataDog/puppet-datadog-agent/issues/259
+[#261]: https://github.com/DataDog/puppet-datadog-agent/issues/261
+[#263]: https://github.com/DataDog/puppet-datadog-agent/issues/263
+[#264]: https://github.com/DataDog/puppet-datadog-agent/issues/264
+[#266]: https://github.com/DataDog/puppet-datadog-agent/issues/266
+[#267]: https://github.com/DataDog/puppet-datadog-agent/issues/267
+[#276]: https://github.com/DataDog/puppet-datadog-agent/issues/276
+[#279]: https://github.com/DataDog/puppet-datadog-agent/issues/279
+[#280]: https://github.com/DataDog/puppet-datadog-agent/issues/280
+[#281]: https://github.com/DataDog/puppet-datadog-agent/issues/281
+[#282]: https://github.com/DataDog/puppet-datadog-agent/issues/282
+[#283]: https://github.com/DataDog/puppet-datadog-agent/issues/283
+[#286]: https://github.com/DataDog/puppet-datadog-agent/issues/286
+[#288]: https://github.com/DataDog/puppet-datadog-agent/issues/288
+[#290]: https://github.com/DataDog/puppet-datadog-agent/issues/290
+[#291]: https://github.com/DataDog/puppet-datadog-agent/issues/291
+[#292]: https://github.com/DataDog/puppet-datadog-agent/issues/292
+[#293]: https://github.com/DataDog/puppet-datadog-agent/issues/293
+[#296]: https://github.com/DataDog/puppet-datadog-agent/issues/296
+[#297]: https://github.com/DataDog/puppet-datadog-agent/issues/297
+[#299]: https://github.com/DataDog/puppet-datadog-agent/issues/299
+[#302]: https://github.com/DataDog/puppet-datadog-agent/issues/302
+[#309]: https://github.com/DataDog/puppet-datadog-agent/issues/309
+[#310]: https://github.com/DataDog/puppet-datadog-agent/issues/310
+[#311]: https://github.com/DataDog/puppet-datadog-agent/issues/311
+[#313]: https://github.com/DataDog/puppet-datadog-agent/issues/313
+[#315]: https://github.com/DataDog/puppet-datadog-agent/issues/315
+[#318]: https://github.com/DataDog/puppet-datadog-agent/issues/318
+[#322]: https://github.com/DataDog/puppet-datadog-agent/issues/322
+[#323]: https://github.com/DataDog/puppet-datadog-agent/issues/323
+[#325]: https://github.com/DataDog/puppet-datadog-agent/issues/325
+[#326]: https://github.com/DataDog/puppet-datadog-agent/issues/326
+[#327]: https://github.com/DataDog/puppet-datadog-agent/issues/327
+[#329]: https://github.com/DataDog/puppet-datadog-agent/issues/329
+[#331]: https://github.com/DataDog/puppet-datadog-agent/issues/331
+[#332]: https://github.com/DataDog/puppet-datadog-agent/issues/332
+[#333]: https://github.com/DataDog/puppet-datadog-agent/issues/333
+[#334]: https://github.com/DataDog/puppet-datadog-agent/issues/334
+[#335]: https://github.com/DataDog/puppet-datadog-agent/issues/335
+[#336]: https://github.com/DataDog/puppet-datadog-agent/issues/336
+[#338]: https://github.com/DataDog/puppet-datadog-agent/issues/338
+[#340]: https://github.com/DataDog/puppet-datadog-agent/issues/340
+[#341]: https://github.com/DataDog/puppet-datadog-agent/issues/341
 [@BIAndrews]: https://github.com/BIAndrews
+[@ColinHebert]: https://github.com/ColinHebert
+[@DDRBoxman]: https://github.com/DDRBoxman
 [@IanCrouch]: https://github.com/IanCrouch
 [@LeoCavaille]: https://github.com/LeoCavaille
 [@MartinDelta]: https://github.com/MartinDelta
 [@NoodlesNZ]: https://github.com/NoodlesNZ
 [@aaron-miller]: https://github.com/aaron-miller
+[@aepod]: https://github.com/aepod
+[@alexharv074]: https://github.com/alexharv074
+[@alvin-huang]: https://github.com/alvin-huang
 [@b2jrock]: https://github.com/b2jrock
 [@bflad]: https://github.com/bflad
+[@binford2k]: https://github.com/binford2k
+[@butangero]: https://github.com/butangero
+[@ckolos]: https://github.com/ckolos
+[@craigwatson]: https://github.com/craigwatson
 [@cristianjuve]: https://github.com/cristianjuve
+[@cwood]: https://github.com/cwood
 [@davejrt]: https://github.com/davejrt
 [@davidgibbons]: https://github.com/davidgibbons
 [@degemer]: https://github.com/degemer
+[@denmat]: https://github.com/denmat
+[@dzinek]: https://github.com/dzinek
 [@eddmann]: https://github.com/eddmann
 [@flyinprogrammer]: https://github.com/flyinprogrammer
 [@fzwart]: https://github.com/fzwart
+[@generica]: https://github.com/generica
 [@grubernaut]: https://github.com/grubernaut
 [@jacobbednarz]: https://github.com/jacobbednarz
 [@jangie]: https://github.com/jangie
+[@jdavisp3]: https://github.com/jdavisp3
+[@jensendw]: https://github.com/jensendw
 [@jniesen]: https://github.com/jniesen
 [@kitchen]: https://github.com/kitchen
 [@mcasper]: https://github.com/mcasper
 [@mraylu]: https://github.com/mraylu
 [@mrunkel-ut]: https://github.com/mrunkel-ut
+[@mtougeron]: https://github.com/mtougeron
+[@npaufler]: https://github.com/npaufler
+[@obi11235]: https://github.com/obi11235
 [@obowersa]: https://github.com/obowersa
 [@pabrahamsson]: https://github.com/pabrahamsson
+[@pid1]: https://github.com/pid1
+[@rooprob]: https://github.com/rooprob
 [@rtyler]: https://github.com/rtyler
+[@sambanks]: https://github.com/sambanks
 [@scottgeary]: https://github.com/scottgeary
+[@sethcleveland]: https://github.com/sethcleveland
+[@stamak]: https://github.com/stamak
+[@stantona]: https://github.com/stantona
+[@swwolf]: https://github.com/swwolf
+[@tdm4]: https://github.com/tdm4
 [@tuxinaut]: https://github.com/tuxinaut

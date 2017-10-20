@@ -25,11 +25,31 @@ instances:
 <% if instance['include_content'] -%>
     include_content: <%= instance['include_content'] %>
 <% end -%>
+<% if instance['http_response_status_code'] -%>
+    http_response_status_code: <%= instance['http_response_status_code'] %>
+<% end -%>
 <% if instance['collect_response_time'] -%>
     collect_response_time: <%= instance['collect_response_time'] %>
 <% end -%>
 <% if instance['disable_ssl_validation'] -%>
-   disable_ssl_validation: <%= instance['disable_ssl_validation'] %>
+    disable_ssl_validation: <%= instance['disable_ssl_validation'] %>
+<% end -%>
+<% if instance['skip_event'] -%>
+    skip_event: <%= instance['skip_event'] %>
+<% end -%>
+<% if instance['no_proxy'] -%>
+    no_proxy: <%= instance['no_proxy'] %>
+<% end -%>
+<% if instance['check_certificate_expiration'] -%>
+    check_certificate_expiration: <%= instance['check_certificate_expiration'] %>
+<% if instance['check_certificate_expiration'] == true -%>
+<% if instance['days_warning'] -%>
+    days_warning: <%= instance['days_warning'] %>
+<% end -%>
+<% if instance['days_critical'] -%>
+    days_critical: <%= instance['days_critical'] %>
+<% end -%>
+<% end -%>
 <% end -%>
 <% if instance['headers'] and ! instance['headers'].empty? -%>
     headers:
@@ -38,6 +58,9 @@ instances:
       <%= header %>
     <%- end -%>
   <%- end -%>
+<% end -%>
+<% if instance['allow_redirects'] -%>
+    allow_redirects: <%= instance['allow_redirects'] %>
 <% end -%>
 <% if instance['tags'] and ! instance['tags'].empty? -%>
     tags:

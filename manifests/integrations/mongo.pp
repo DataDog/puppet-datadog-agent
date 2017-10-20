@@ -47,9 +47,11 @@
 #        'username'           => 'mongo_username',
 #      },
 #      {
-#        'host' => 'localhost',
-#        'port' => '27018',
-#        'tags' => [],
+#        'host'               => 'localhost',
+#        'port'               => '27018',
+#        'tags'               => [],
+#        'additional_metrics' => [],
+#        'collections'        => [],
 #      },
 #    ]
 #  }

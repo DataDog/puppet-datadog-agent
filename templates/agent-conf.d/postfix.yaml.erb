@@ -6,8 +6,15 @@ init_config:
 
 instances:
 <%- (Array(@_instances)).each do |instance| -%>
-  - url: <%= instance['url'] %>
-    port: <%= instance['port'] %>
+  - directory: <%= instance['directory'] %>
+<% if instance['queues'] and ! instance['queues'].empty? -%>
+    queues:
+  <%- Array(instance['queues']).each do |queue| -%>
+    <%- if queue != '' -%>
+      - <%= queue %>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>
 <% if instance['tags'] and ! instance['tags'].empty? -%>
     tags:
   <%- Array(instance['tags']).each do |tag| -%>
@@ -16,8 +23,4 @@ instances:
     <%- end -%>
   <%- end -%>
 <% end -%>
-
-    options:               # Optional
-        items: <%= instance['items'] %>
-        slabs: <%= instance['slabs'] %>
 <% end -%>

@@ -11,8 +11,10 @@
 #       Your DataDog API Key. Please replace with your key value.
 #   $collect_ec2_tags
 #       Collect AWS EC2 custom tags as agent tags.
+#       Boolean. Default: false
 #   $collect_instance_metadata
 #       The Agent will try to collect instance metadata for EC2 and GCE instances.
+#       Boolean. Default: true
 #   $tags
 #       Optional array of tags.
 #   $hiera_tags
@@ -73,12 +75,6 @@
 #       Skip SSL validation.
 #   $use_curl_http_client
 #       Uses the curl HTTP client for the forwarder
-#   $collect_ec2_tas
-#       Presents custom EC2 tags as agent tags to datadog
-#       Boolean. Default: False
-#   $collect_instance_metadata
-#       Enables the agent to try and gather instance metadata on EC2/GCE
-#       Boolean. Default: true
 #   $recent_point_threshold
 #       Sets the threshold for accepting points.
 #   String. Default: empty (30 second intervals)
@@ -155,7 +151,12 @@
 #   $pup_log_file
 #       Specifies the log file location for the pup system
 #       String. Default: empty
-#
+#   $apm_enabled
+#       Boolean to enable or disable the trace agent
+#       Boolean. Default: false
+#   $apm_env
+#       String defining the environment for the APM traces
+#       String. Default: empty
 #
 # Actions:
 #
@@ -182,6 +183,8 @@ class datadog_agent(
   $collect_ec2_tags = false,
   $collect_instance_metadata = true,
   $tags = [],
+  $integrations = {},
+  $hiera_integrations = false,
   $hiera_tags = false,
   $facts_to_tags = [],
   $puppet_run_reports = false,
@@ -230,12 +233,33 @@ class datadog_agent(
   $pup_log_file = '',
   $syslog_host  = '',
   $syslog_port  = '',
+  $service_discovery_backend = '',
+  $sd_config_backend = '',
+  $sd_backend_host = '',
+  $sd_backend_port = 0,
+  $sd_template_dir = '',
+  $sd_jmx_enable = false,
+  $consul_token = '',
   $conf_dir = $datadog_agent::params::conf_dir,
+  $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
   $service_name = $datadog_agent::params::service_name,
   $package_name = $datadog_agent::params::package_name,
   $dd_user = $datadog_agent::params::dd_user,
   $dd_group = $datadog_agent::params::dd_group,
+  $apm_enabled = false,
+  $apm_env = '',
 ) inherits datadog_agent::params {
+
+  # Allow ports to be passed as integers or strings.
+  # lint:ignore:only_variable_string
+  $_dogstatsd_port = "${dogstatsd_port}"
+  $_statsd_forward_port = "${statsd_forward_port}"
+  $_proxy_port = "${proxy_port}"
+  $_graphite_listen_port = "${graphite_listen_port}"
+  $_listen_port = "${listen_port}"
+  $_pup_port = "${pup_port}"
+  $_syslog_port = "${syslog_port}"
+  # lint:endignore
 
   validate_string($dd_url)
   validate_string($host)
@@ -251,14 +275,14 @@ class datadog_agent(
   validate_bool($log_to_syslog)
   validate_bool($manage_repo)
   validate_string($log_level)
-  validate_integer($dogstatsd_port)
+  validate_re($_dogstatsd_port, '^\d*$')
   validate_string($statsd_histogram_percentiles)
-  validate_string($statsd_forward_port)
+  validate_re($_statsd_forward_port, '^\d*$')
   validate_string($proxy_host)
-  validate_string($proxy_port)
+  validate_re($_proxy_port, '^\d*$')
   validate_string($proxy_user)
   validate_string($proxy_password)
-  validate_string($graphite_listen_port)
+  validate_re($_graphite_listen_port, '^\d*$')
   validate_string($extra_template)
   validate_string($ganglia_host)
   validate_integer($ganglia_port)
@@ -268,11 +292,11 @@ class datadog_agent(
   validate_bool($collect_ec2_tags)
   validate_bool($collect_instance_metadata)
   validate_string($recent_point_threshold)
-  validate_string($listen_port)
+  validate_re($_listen_port, '^\d*$')
   validate_string($additional_checksd)
   validate_string($bind_host)
   validate_bool($use_pup)
-  validate_string($pup_port)
+  validate_re($_pup_port, '^\d*$')
   validate_string($pup_interface)
   validate_string($pup_url)
   validate_bool($use_dogstatsd)
@@ -287,12 +311,32 @@ class datadog_agent(
   validate_string($dogstatsd_log_file)
   validate_string($pup_log_file)
   validate_string($syslog_host)
-  validate_string($syslog_port)
+  validate_re($_syslog_port, '^\d*$')
+  validate_string($service_discovery_backend)
+  validate_string($sd_config_backend)
+  validate_string($sd_backend_host)
+  validate_integer($sd_backend_port)
+  validate_string($sd_template_dir)
+  validate_bool($sd_jmx_enable)
+  validate_string($consul_token)
+  validate_bool($apm_enabled)
+  validate_string($apm_env)
 
   if $hiera_tags {
-    $local_tags = hiera_array('datadog_agent::tags')
+    $local_tags = hiera_array('datadog_agent::tags', [])
   } else {
     $local_tags = $tags
+  }
+
+  if $hiera_integrations {
+    $local_integrations = hiera_hash('datadog_agent::integrations', {})
+  } else {
+    $local_integrations = $integrations
+  }
+
+  datadog_agent::tag{$local_tags: }
+  datadog_agent::tag{$facts_to_tags:
+    lookup_fact => true,
   }
 
   include datadog_agent::params
@@ -318,32 +362,66 @@ class datadog_agent(
   }
 
   file { '/etc/dd-agent':
-    ensure  => present,
-    owner   => 'root',
-    group   => 'root',
+    ensure  => directory,
+    owner   => $dd_user,
+    group   => $dd_group,
     mode    => '0755',
     require => Package['datadog-agent'],
   }
 
-  # main agent config file
-  # content
-  if ($extra_template != '') {
-    $agent_conf_content = template(
-      'datadog_agent/datadog.conf.erb',
-      $extra_template
-    )
-  } else {
-    $agent_conf_content = template('datadog_agent/datadog.conf.erb')
+  file { $conf_dir:
+    ensure  => directory,
+    purge   => $conf_dir_purge,
+    recurse => true,
+    force   => $conf_dir_purge,
+    owner   => $dd_user,
+    group   => $dd_group,
+    notify  => Service['datadog-agent']
   }
-  file { '/etc/dd-agent/datadog.conf':
-    ensure  => file,
-    content => $agent_conf_content,
+
+  concat {'/etc/dd-agent/datadog.conf':
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
     mode    => '0640',
     notify  => Service[$datadog_agent::params::service_name],
     require => File['/etc/dd-agent'],
   }
+
+  concat::fragment{ 'datadog header':
+    target  => '/etc/dd-agent/datadog.conf',
+    content => template('datadog_agent/datadog_header.conf.erb'),
+    order   => '01',
+  }
+
+  concat::fragment{ 'datadog tags':
+    target  => '/etc/dd-agent/datadog.conf',
+    content => 'tags: ',
+    order   => '02',
+  }
+
+  concat::fragment{ 'datadog footer':
+    target  => '/etc/dd-agent/datadog.conf',
+    content => template('datadog_agent/datadog_footer.conf.erb'),
+    order   => '05',
+  }
+
+  if ($extra_template != '') {
+    concat::fragment{ 'datadog extra_template footer':
+      target  => '/etc/dd-agent/datadog.conf',
+      content => template($extra_template),
+      order   => '06',
+    }
+    $apm_footer_order = '07'
+  } else {
+    $apm_footer_order = '06'
+  }
+
+  concat::fragment{ 'datadog apm footer':
+    target  => '/etc/dd-agent/datadog.conf',
+    content => template('datadog_agent/datadog_apm_footer.conf.erb'),
+    order   => $apm_footer_order,
+  }
+
 
   if $puppet_run_reports {
     class { 'datadog_agent::reports':
@@ -354,4 +432,6 @@ class datadog_agent(
       hostname_extraction_regex => $hostname_extraction_regex,
     }
   }
+
+  create_resources('datadog_agent::integration', $local_integrations)
 }

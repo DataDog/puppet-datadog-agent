@@ -5,7 +5,17 @@
 init_config:
 
 instances:
-    - url: <%= @url %>
-      <% @creds.each do |k,v| %>
+
+<%- (Array(@_instances)).each do |instance| -%>
+    - url: <%= instance['url'] %>
+    <%- if instance['creds'] -%>
+      <%- instance['creds'].each do |k, v| -%>
       <%= k %>: <%= v %>
-      <% end -%>
+      <%- end -%>
+    <%- end -%>
+    <%- if instance['options'] -%>
+      <%- instance['options'].each do |k, v| -%>
+      <%= k %>: <%= v %>
+      <%- end -%>
+    <%- end -%>
+<% end -%>

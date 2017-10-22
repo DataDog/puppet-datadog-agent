@@ -364,7 +364,8 @@ class datadog_agent(
 
   if ($dd_groups) {
     user { "$dd_user":
-      groups => $dd_groups,
+      groups  => $dd_groups,
+      notify  => Service[$datadog_agent::params::service_name],
     }
   }
 
@@ -383,7 +384,7 @@ class datadog_agent(
     force   => $conf_dir_purge,
     owner   => $dd_user,
     group   => $dd_group,
-    notify  => Service['datadog-agent']
+    notify  => Service[$datadog_agent::params::service_name],
   }
 
   concat {'/etc/dd-agent/datadog.conf':

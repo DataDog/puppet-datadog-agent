@@ -18,6 +18,7 @@ class datadog_agent::params {
   $conf_dir       = '/etc/dd-agent/conf.d'
   $dd_user        = 'dd-agent'
   $dd_group       = 'root'
+  $dd_groups      = undef
   $package_name   = 'datadog-agent'
   $service_name   = 'datadog-agent'
   $dogapi_version = 'installed'

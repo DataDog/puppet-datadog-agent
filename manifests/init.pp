@@ -246,6 +246,7 @@ class datadog_agent(
   $package_name = $datadog_agent::params::package_name,
   $dd_user = $datadog_agent::params::dd_user,
   $dd_group = $datadog_agent::params::dd_group,
+  $dd_groups = $datadog_agent::params::dd_groups,
   $apm_enabled = false,
   $apm_env = '',
 ) inherits datadog_agent::params {
@@ -361,6 +362,13 @@ class datadog_agent(
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
 
+  if ($dd_groups) {
+    user { "$dd_user":
+      groups  => $dd_groups,
+      notify  => Service[$datadog_agent::params::service_name],
+    }
+  }
+
   file { '/etc/dd-agent':
     ensure  => directory,
     owner   => $dd_user,
@@ -376,7 +384,7 @@ class datadog_agent(
     force   => $conf_dir_purge,
     owner   => $dd_user,
     group   => $dd_group,
-    notify  => Service['datadog-agent']
+    notify  => Service[$datadog_agent::params::service_name],
   }
 
   concat {'/etc/dd-agent/datadog.conf':

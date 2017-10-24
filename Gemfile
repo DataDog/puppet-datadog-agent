@@ -10,6 +10,7 @@ group :test do
   gem "puppet-lint"
   gem "puppet-syntax"
   gem "puppetlabs_spec_helper"
+  gem "jwt", "~> 1.5.6"
   gem "rake"
   gem "rspec-puppet", '2.3.2'
 end

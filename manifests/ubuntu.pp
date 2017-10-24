@@ -24,7 +24,7 @@ class datadog_agent::ubuntu(
   ensure_packages(['apt-transport-https'])
   validate_array($other_keys)
 
-  if !$::datadog_agent::skip_apt_key_trusting {
+  if ! defined('$::datadog_agent::skip_apt_key_trusting') {
     $mykeys = concat($other_keys, [$apt_key])
 
     ::datadog_agent::ubuntu::install_key { $mykeys:

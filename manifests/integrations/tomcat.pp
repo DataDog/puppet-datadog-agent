@@ -39,7 +39,13 @@ class datadog_agent::integrations::tomcat(
   include datadog_agent
 
 
-  file { "${datadog_agent::params::conf_dir}/tomcat.yaml":
+  if $::datadog_agent::agent6_enable {
+    $dst = "${datadog_agent::conf6_dir}/tomcat.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/tomcat.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

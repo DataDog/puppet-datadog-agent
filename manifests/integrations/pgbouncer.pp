@@ -34,7 +34,13 @@ class datadog_agent::integrations::pgbouncer(
 
   validate_array($tags)
 
-  file { "${datadog_agent::params::conf_dir}/pgbouncer.yaml":
+  if $::datadog_agent::agent6_enable {
+    $dst = "${datadog_agent::conf6_dir}/pgbouncer.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/pgbouncer.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

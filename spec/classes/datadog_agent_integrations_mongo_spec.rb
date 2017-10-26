@@ -1,139 +1,149 @@
 require 'spec_helper'
 
 describe 'datadog_agent::integrations::mongo' do
-  let(:facts) {{
-    operatingsystem: 'Ubuntu',
-  }}
-  let(:conf_dir) { '/etc/dd-agent/conf.d' }
-  let(:dd_user) { 'dd-agent' }
-  let(:dd_group) { 'root' }
-  let(:dd_package) { 'datadog-agent' }
-  let(:dd_service) { 'datadog-agent' }
-  let(:conf_file) { "#{conf_dir}/mongo.yaml" }
+  context 'supported agents - v5 and v6' do
+    agents = { '5' => false, '6' => true }
+    agents.each do |_, enabled|
+      let(:pre_condition) { "class {'::datadog_agent': agent6_enable => #{enabled}}" }
+      let(:facts) {{
+        operatingsystem: 'Ubuntu',
+      }}
+      if !enabled
+        let(:conf_dir) { '/etc/dd-agent/conf.d' }
+      else
+        let(:conf_dir) { '/etc/datadog-agent/conf.d' }
+      end
+      let(:dd_user) { 'dd-agent' }
+      let(:dd_group) { 'root' }
+      let(:dd_package) { 'datadog-agent' }
+      let(:dd_service) { 'datadog-agent' }
+      let(:conf_file) { "#{conf_dir}/mongo.yaml" }
 
-  it { should compile.with_all_deps }
-  it { should contain_file(conf_file).with(
-    owner: dd_user,
-    group: dd_group,
-    mode: '0600',
-  )}
-  it { should contain_file(conf_file).that_requires("Package[#{dd_package}]") }
-  it { should contain_file(conf_file).that_notifies("Service[#{dd_service}]") }
+      it { should compile.with_all_deps }
+      it { should contain_file(conf_file).with(
+        owner: dd_user,
+        group: dd_group,
+        mode: '0600',
+      )}
+      it { should contain_file(conf_file).that_requires("Package[#{dd_package}]") }
+      it { should contain_file(conf_file).that_notifies("Service[#{dd_service}]") }
 
-  context 'with default parameters' do
-    it { should contain_file(conf_file).with_content(%r{- server: mongodb://localhost:27017}) }
-    it { should contain_file(conf_file).without_content(%r{tags:}) }
-  end
+      context 'with default parameters' do
+        it { should contain_file(conf_file).with_content(%r{- server: mongodb://localhost:27017}) }
+        it { should contain_file(conf_file).without_content(%r{tags:}) }
+      end
 
-  context 'with one mongo' do
-    let(:params) {{
-      servers: [
-        {
-          'host' => '127.0.0.1',
-          'port' => '12345',
-          'tags' => %w{ foo bar baz },
-        }
-      ]
-    }}
+      context 'with one mongo' do
+        let(:params) {{
+          servers: [
+            {
+              'host' => '127.0.0.1',
+              'port' => '12345',
+              'tags' => %w{ foo bar baz },
+            }
+          ]
+        }}
 
-    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:12345/\s+tags:\s+- foo\s+- bar\s+- baz}) }
-  end
+        it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:12345/\s+tags:\s+- foo\s+- bar\s+- baz}) }
+      end
 
-  context 'with multiple mongos' do
-    let(:params) {{
-      servers: [
-        {
-          'host' => '127.0.0.1',
-          'port' => '34567',
-          'tags' => %w{foo bar},
-        },
-        {
-          'host' => '127.0.0.2',
-          'port' => '45678',
-          'tags' => %w{baz bat},
-        }
-      ]
-    }}
-    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:34567/\s+tags:\s+- foo\s+- bar}) }
-    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.2:45678/\s+tags:\s+- baz\s+- bat}) }
-    it { should contain_file(conf_file).with_content(%r{server:.*127.0.0.1.*server:.*127.0.0.2}m) }
-  end
+      context 'with multiple mongos' do
+        let(:params) {{
+          servers: [
+            {
+              'host' => '127.0.0.1',
+              'port' => '34567',
+              'tags' => %w{foo bar},
+            },
+            {
+              'host' => '127.0.0.2',
+              'port' => '45678',
+              'tags' => %w{baz bat},
+            }
+          ]
+        }}
+        it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:34567/\s+tags:\s+- foo\s+- bar}) }
+        it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.2:45678/\s+tags:\s+- baz\s+- bat}) }
+        it { should contain_file(conf_file).with_content(%r{server:.*127.0.0.1.*server:.*127.0.0.2}m) }
+      end
 
-  context 'with custom collections one mongos' do
-    let(:params) {{
-      servers: [
-        {
-          'host' => '127.0.0.1',
-          'port' => '12345',
-          'tags' => %w{ foo bar baz },
-          'collections' => %w{ collection_1 collection_2 },
-        },
-        {
-          'host' => '127.0.0.2',
-          'port' => '45678',
-          'tags' => %w{baz bat},
-          'collections' => %w{ collection_1 collection_2 },
-        }
-      ]
-    }}
+      context 'with custom collections one mongos' do
+        let(:params) {{
+          servers: [
+            {
+              'host' => '127.0.0.1',
+              'port' => '12345',
+              'tags' => %w{ foo bar baz },
+              'collections' => %w{ collection_1 collection_2 },
+            },
+            {
+              'host' => '127.0.0.2',
+              'port' => '45678',
+              'tags' => %w{baz bat},
+              'collections' => %w{ collection_1 collection_2 },
+            }
+          ]
+        }}
 
-    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:12345/\s+tags:\s+- foo\s+- bar\s+- baz\s+collections:\s+- collection_1\s+- collection_2}) }
-    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.2:45678/\s+tags:\s+- baz\s+- bat\s+collections:\s+- collection_1\s+- collection_2}) }
+        it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:12345/\s+tags:\s+- foo\s+- bar\s+- baz\s+collections:\s+- collection_1\s+- collection_2}) }
+        it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.2:45678/\s+tags:\s+- baz\s+- bat\s+collections:\s+- collection_1\s+- collection_2}) }
 
-  end
+      end
 
-  context 'with custom collections multiple mongo' do
-    let(:params) {{
-      servers: [
-        {
-          'host' => '127.0.0.1',
-          'port' => '12345',
-          'tags' => %w{ foo bar baz },
-          'collections' => %w{ collection_1 collection_2 },
-        }
-      ]
-    }}
+      context 'with custom collections multiple mongo' do
+        let(:params) {{
+          servers: [
+            {
+              'host' => '127.0.0.1',
+              'port' => '12345',
+              'tags' => %w{ foo bar baz },
+              'collections' => %w{ collection_1 collection_2 },
+            }
+          ]
+        }}
 
-    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:12345/\s+tags:\s+- foo\s+- bar\s+- baz\s+collections:\s+- collection_1\s+- collection_2}) }
-  end
+        it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:12345/\s+tags:\s+- foo\s+- bar\s+- baz\s+collections:\s+- collection_1\s+- collection_2}) }
+      end
 
-  context 'with additional metrics' do
-    let(:params) {{
-      servers: [
-        {
-          'host' => '127.0.0.1',
-          'port' => '12345',
-          'tags' => %w{ foo bar baz },
-          'additional_metrics' => %w{ top },
-        }
-      ]
-    }}
+      context 'with additional metrics' do
+        let(:params) {{
+          servers: [
+            {
+              'host' => '127.0.0.1',
+              'port' => '12345',
+              'tags' => %w{ foo bar baz },
+              'additional_metrics' => %w{ top },
+            }
+          ]
+        }}
 
-    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:12345/\s+tags:\s+- foo\s+- bar\s+- baz\s+additional_metrics:\s+- top}) }
-  end
+        it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:12345/\s+tags:\s+- foo\s+- bar\s+- baz\s+additional_metrics:\s+- top}) }
+      end
 
-  context 'without tags' do
-    let(:params) {{
-      servers: [
-        {
-          'host' => '127.0.0.1',
-          'port' => '12345',
-        }
-      ]
-    }}
+      context 'without tags' do
+        let(:params) {{
+          servers: [
+            {
+              'host' => '127.0.0.1',
+              'port' => '12345',
+            }
+          ]
+        }}
 
-  end
+      end
 
-  context 'weird tags' do
-    let(:params) {{
-      servers: [
-        {
-          'host' => '127.0.0.1',
-          'port' => '56789',
-          'tags' => 'word'
-        }
-      ]
-    }}
-    it { should_not compile }
+      context 'weird tags' do
+        let(:params) {{
+          servers: [
+            {
+              'host' => '127.0.0.1',
+              'port' => '56789',
+              'tags' => 'word'
+            }
+          ]
+        }}
+        it { should_not compile }
+      end
+    end
   end
 end

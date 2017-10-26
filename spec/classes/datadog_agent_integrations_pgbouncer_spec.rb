@@ -48,9 +48,9 @@ describe 'datadog_agent::integrations::pgbouncer' do
         }}
         it { should contain_file(conf_file).with_content(%r{host: localhost}) }
         it { should contain_file(conf_file).with_content(%r{username: foo}) }
-        it { should contain_file(conf_file).with_content(%r{port: 1234}) }
+        it { should contain_file(conf_file).with_content(%r{port: ("|')?1234("|')?}) }
         it { should contain_file(conf_file).with_content(%r{password: bar}) }
-        it { should contain_file(conf_file).with_content(%r{- foo:bar}) }
+        it { should contain_file(conf_file).with_content(%r{- ("|')?foo:bar("|')?}) }
       end
 
       context 'with multiple pgbouncers configured' do
@@ -73,12 +73,12 @@ describe 'datadog_agent::integrations::pgbouncer' do
           ]
         }}
         it { should contain_file(conf_file).with_content(%r{host: localhost}) }
-        it { should contain_file(conf_file).with_content(%r{port: '6432'}) }
+        it { should contain_file(conf_file).with_content(%r{port: ("|')?6432("|')?}) }
         it { should contain_file(conf_file).with_content(%r{password: some_pass}) }
-        it { should contain_file(conf_file).with_content(%r{- instance:one}) }
-        it { should contain_file(conf_file).with_content(%r{port: '6433'}) }
+        it { should contain_file(conf_file).with_content(%r{- ("|')?instance:one("|')?}) }
+        it { should contain_file(conf_file).with_content(%r{port: ("|')?6433("|')?}) }
         it { should contain_file(conf_file).with_content(%r{password: some_pass2}) }
-        it { should contain_file(conf_file).with_content(%r{- instance:two}) }
+        it { should contain_file(conf_file).with_content(%r{- ("|')?instance:two("|')?}) }
       end
     end
   end

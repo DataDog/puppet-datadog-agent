@@ -19,25 +19,26 @@
 # Sample Usage:
 #
 #  class { 'datadog_agent::integrations::pgbouncer' :
-#    host     => 'localhost',
-#    username => 'datadog',
-#    port     => '6432',
-#    password => 'some_pass',
+#    host           => 'localhost',
+#    username       => 'datadog',
+#    port           => '6432',
+#    password       => 'some_pass',
 #  }
 #
 #  class { 'datadog_agent::integrations::pgbouncer' :
-#    pgbouncers => [
+#    pgbouncers     => [
 #      {
-#        'host'      => 'localhost',
-#        'username'  => 'datadog',
-#        'port'      => '6432',
-#        'password'  => 'some_pass',
+#        'host'     => 'localhost',
+#        'username' => 'datadog',
+#        'port'     => '6432',
+#        'password' => 'some_pass',
+#        'tags'     => ['instance:one'],
 #      },
 #      {
-#        'host'      => 'localhost',
-#        'username'  => 'datadog2',
-#        'port'      => '6433',
-#        'password'  => 'some_pass2',
+#        'host'     => 'localhost',
+#        'username' => 'datadog2',
+#        'port'     => '6433',
+#        'password' => 'some_pass2',
 #      },
 #    ],
 #  }

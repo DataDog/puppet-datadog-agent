@@ -31,7 +31,7 @@ class datadog_agent::ubuntu(
     $mykeys.each | String $key | {
       apt::key { "dd-${key}":
         id     => $key,
-        before => Apt::Source['datadog'],
+        before => Apt::Source['datadog-apt'],
       }
     }
   }
@@ -61,7 +61,7 @@ class datadog_agent::ubuntu(
   package { 'datadog-agent':
     ensure  => $agent_version,
     require => [
-      Apt::Source['datadog'],
+      Apt::Source['datadog-apt'],
       Exec['datadog_apt-get_update']
     ],
   }

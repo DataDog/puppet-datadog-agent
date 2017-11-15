@@ -1,8 +1,8 @@
-# Class: datadog_agent::integrations::kubernetes 
+# Class: datadog_agent::integrations::kubernetes
 #
 # This class will install the necessary configuration for the kubernetes integration
 #
-# Parameters:
+# Parameters: 
 #   $url:
 #     The URL for kubernetes API
 #

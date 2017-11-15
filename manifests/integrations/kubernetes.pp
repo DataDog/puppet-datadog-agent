@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::kubernetes
+# Class: datadog_agent::integrations::kubernetes 
 #
 # This class will install the necessary configuration for the kubernetes integration
 #

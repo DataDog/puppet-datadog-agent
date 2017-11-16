@@ -30,9 +30,6 @@ class datadog_agent::integrations::kubernetes(
   $kubelet_client_key = '/path/to/key',
   $tags = [],
 
-  $kube_state_url = 'Enter_State_URL',
-  $state_tags = [],
-
 ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -42,26 +39,12 @@ class datadog_agent::integrations::kubernetes(
     $dst = "${datadog_agent::conf_dir}/kubernetes.yaml"
   }
 
-  if $::datadog_agent::agent6_enable {
-    $dstate = "${datadog_agent::conf6_dir}/kubernetes_state.yaml"
-  } else {
-    $dstate = "${datadog_agent::conf_dir}/kubernetes_state.yaml"
-  }
-
-  File {
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
     mode    => '0644',
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]
-  }
-
-  file { $dstate:
-    content => template('datadog_agent/agent-conf.d/kubernetes_state.yaml.erb'),
-  }
-
-  file { $dst:
     content => template('datadog_agent/agent-conf.d/kubernetes.yaml.erb'),
   }
-}

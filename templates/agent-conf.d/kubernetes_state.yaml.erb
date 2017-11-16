@@ -1,8 +1,5 @@
 init_config:
   # Custom tags can be added to all metrics reported by this integration
-  #    tags:
-  #      - optional_tag1
-  #      - optional_tag2
   <% if @state_tags and ! @state_tags.empty? -%>
       tags:
     <%- Array(@state_tags).each do |tag| -%>

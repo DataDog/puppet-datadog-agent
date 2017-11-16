@@ -29,10 +29,6 @@ class datadog_agent::integrations::kubernetes(
     $dst = "${datadog_agent::conf_dir}/kubernetes.yaml"
   }
 
-  package { 'dd-check-kubernetes':
-    ensure => present,
-  }
-
   file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,

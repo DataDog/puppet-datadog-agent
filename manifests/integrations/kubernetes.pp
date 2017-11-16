@@ -14,12 +14,25 @@
 # Sample Usage:
 #
 #   class { 'datadog_agent::integrations::kubernetes' :
-#     api_server_url  => 'https://kubernetes:443',
+#     api_server_url       => 'https://kubernetes:443',
+#     kube_state_url       => 'http://kubernetes.com:8080/metrics',
+#     apiserver_client_crt => '/etc/ssl/certs/crt',
+#     apiserver_client_key => '/etc/ssl/private/key',
+#     kubelet_client_crt   => '/etc/ssl/certs/crt',
+#     kubelet_client_key   => '/etc/ssl/private/key',
 #   }
 #
 class datadog_agent::integrations::kubernetes(
   $api_server_url = 'Enter_Your_API_url',
-  $tags = []
+  $apiserver_client_crt = '/path/to/crt',
+  $apiserver_client_key = '/path/to/key',
+  $kubelet_client_crt = '/path/to/crt',
+  $kubelet_client_key = '/path/to/key',
+  $tags = [],
+
+  $kube_state_url = 'Enter_State_URL',
+  $state_tags = [],
+
 ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -29,13 +42,26 @@ class datadog_agent::integrations::kubernetes(
     $dst = "${datadog_agent::conf_dir}/kubernetes.yaml"
   }
 
-  file { $dst:
+  if $::datadog_agent::agent6_enable {
+    $dstate = "${datadog_agent::conf6_dir}/kubernetes_state.yaml"
+  } else {
+    $dstate = "${datadog_agent::conf_dir}/kubernetes_state.yaml"
+  }
+
+  File {
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
     mode    => '0644',
-    content => template('datadog_agent/agent-conf.d/kubernetes.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]
+  }
+
+  file { $dstate:
+    content => template('datadog_agent/agent-conf.d/kubernetes_state.yaml.erb'),
+  }
+
+  file { $dst:
+    content => template('datadog_agent/agent-conf.d/kubernetes.yaml.erb'),
   }
 }

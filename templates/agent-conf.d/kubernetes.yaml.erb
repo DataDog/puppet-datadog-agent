@@ -65,12 +65,11 @@ instances:
   # these files to the agent is by using Kubernetes Secrets.
   #
   # bearer_token_path: /var/run/secrets/kubernetes.io/serviceaccount/token
+  apiserver_client_crt: <%= @apiserver_client_crt %>
+  apiserver_client_key: <%= @apiserver_client_key %>
   #
-  # apiserver_client_crt: /path/to/client.crt
-  # apiserver_client_key: /path/to/client.key
-  #
-  # kubelet_client_crt: /path/to/client.crt
-  # kubelet_client_key: /path/to/client.key
+  kubelet_client_crt: <%= @kubelet_client_crt %>
+  kubelet_client_key: <%= @kubelet_client_key %>
 
   # Server Authentication for apiserver and kubelet
   #

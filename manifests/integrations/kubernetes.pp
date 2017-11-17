@@ -15,7 +15,6 @@
 #
 #   class { 'datadog_agent::integrations::kubernetes' :
 #     api_server_url       => 'https://kubernetes:443',
-#     kube_state_url       => 'http://kubernetes.com:8080/metrics',
 #     apiserver_client_crt => '/etc/ssl/certs/crt',
 #     apiserver_client_key => '/etc/ssl/private/key',
 #     kubelet_client_crt   => '/etc/ssl/certs/crt',

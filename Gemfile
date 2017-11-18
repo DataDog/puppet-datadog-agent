@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 group :test do
   gem "syck"
+  gem "public_suffix", "~> 2.0.5"
   gem "safe_yaml", "~> 1.0.4"
   gem "hiera-eyaml", "~> 2.1.0"
   gem "listen", "~> 3.0.0"
@@ -9,6 +10,7 @@ group :test do
   gem "puppet-lint"
   gem "puppet-syntax"
   gem "puppetlabs_spec_helper"
+  gem "jwt", "~> 1.5.6"
   gem "rake"
   gem "rspec-puppet", '2.3.2'
 end

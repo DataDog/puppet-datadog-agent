@@ -39,13 +39,13 @@ class datadog_agent::reports(
     }
   }
 
-  file { '/etc/dd-agent/datadog.yaml':
+  file { '/etc/datadog-agent/datadog-reports.yaml':
     ensure  => file,
-    content => template('datadog_agent/datadog.yaml.erb'),
+    content => template('datadog_agent/datadog-reports.yaml.erb'),
     owner   => $puppetmaster_user,
     group   => 'root',
     mode    => '0640',
-    require => File['/etc/dd-agent'],
+    require => File['/etc/datadog-agent'],
   }
 
   package{'dogapi':

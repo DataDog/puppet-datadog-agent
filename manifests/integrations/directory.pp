@@ -31,7 +31,13 @@ class datadog_agent::integrations::directory (
     fail('you must specify a directory path within the datadog_agent::integrations::directory class')
   }
 
-  file { "${datadog_agent::params::conf_dir}/directory.yaml":
+  if $::datadog_agent::agent6_enable {
+    $dst = "${datadog_agent::conf6_dir}/directory.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/directory.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

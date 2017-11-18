@@ -38,6 +38,7 @@ describe 'datadog_agent' do
           it { should contain_class('datadog_agent::params') }
         end
 
+        it { should contain_file('/etc/datadog-agent') }
         it { should contain_file('/etc/dd-agent') }
         it { should contain_concat('/etc/dd-agent/datadog.conf') }
         it { should contain_file('/etc/dd-agent/conf.d').with_ensure('directory') }
@@ -617,6 +618,64 @@ describe 'datadog_agent' do
           it { should contain_class('datadog_agent::ubuntu') }
         elsif REDHAT_OS.include?(operatingsystem)
           it { should contain_class('datadog_agent::redhat') }
+        end
+      end
+
+      describe "datadog_agent 6 class common actions on #{operatingsystem}" do
+        let(:params) { { puppet_run_reports: true, puppet_gem_provider: 'gem', agent6_enable: true } }
+        let(:facts) do
+          {
+            operatingsystem: operatingsystem,
+            osfamily: DEBIAN_OS.include?(operatingsystem) ? 'debian' : 'redhat'
+          }
+        end
+
+        it { should compile.with_all_deps }
+
+        it { should contain_class('datadog_agent') }
+
+        describe 'datadog_agent imports the default params' do
+          it { should contain_class('datadog_agent::params') }
+        end
+
+        it { should contain_file('/etc/datadog-agent') }
+        it { should_not contain_file('/etc/dd-agent') }
+        it { should_not contain_concat('/etc/dd-agent/datadog.conf') }
+        it { should contain_file('/etc/datadog-agent/datadog.yaml') }
+        it { should_not contain_file('/etc/dd-agent/conf.d').with_ensure('directory') }
+        it { should contain_file('/etc/datadog-agent/conf.d').with_ensure('directory') }
+
+        it { should contain_class('datadog_agent::reports') }
+
+        describe 'agent6 parameter check' do
+          context 'with defaults' do
+            context 'for basic beta settings' do
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^api_key: your_API_key\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^conf_path: \"{0,1}\/etc\/datadog-agent\/conf.d\"{0,1}\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^cmd_port: \"{0,1}5001\"{0,1}\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^dd_url: \"{0,1}https:\/\/app.datadoghq.com\"{0,1}\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^enable_metadata_collection: true\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^dogstatsd_port: \"{0,1}8125\"{0,1}\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^log_file: \"{0,1}\/var\/log\/datadog\/agent.log\"{0,1}\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^log_level: info\n/,
+              )}
+            end
+          end
         end
       end
     end

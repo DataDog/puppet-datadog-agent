@@ -33,14 +33,18 @@ describe 'datadog_agent::integrations::kubernetes' do
       it { should contain_file(conf_file).that_notifies("Service[#{dd_service}]") }
 
       context 'with default parameters' do
-        it { should contain_file(conf_file).with_content(%r{url: Enter_Your_API_url}) }
+        it { should contain_file(conf_file).with_content(%r{api_server_url: Enter_Your_API_url}) }
+        it { should contain_file(conf_file).with_content(%r{apiserver_client_crt: /path/to/crt}) }
+        it { should contain_file(conf_file).with_content(%r{apiserver_client_key: /path/to/key}) }
+        it { should contain_file(conf_file).with_content(%r{kubelet_client_crt: /path/to/crt}) }
+        it { should contain_file(conf_file).with_content(%r{kubelet_client_key: /path/to/key}) }
       end
 
       context 'with parameters set' do
         let(:params) {{
-          url: 'unix://foo/bar/baz.sock',
+          api_server_url: 'unix://foo/bar/baz.sock',
         }}
-        it { should contain_file(conf_file).with_content(%r{url: unix://foo/bar/baz.sock}) }
+        it { should contain_file(conf_file).with_content(%r{api_server_url: unix://foo/bar/baz.sock}) }
       end
 
       context 'with tags parameter array' do

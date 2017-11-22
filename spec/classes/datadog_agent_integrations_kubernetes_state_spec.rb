@@ -33,14 +33,14 @@ describe 'datadog_agent::integrations::kubernetes_state' do
       it { should contain_file(conf_file).that_notifies("Service[#{dd_service}]") }
 
       context 'with default parameters' do
-        it { should contain_file(conf_file).with_content(%r{url: Enter_State_URL}) }
+        it { should contain_file(conf_file).with_content(%r{kube_state_url: Enter_State_URL}) }
       end
 
       context 'with parameters set' do
         let(:params) {{
-          url: 'Enter_State_URL',
+          url: 'Some_Other_State_URL',
         }}
-        it { should contain_file(conf_file).with_content(%r{url: Enter_State_URL}) }
+        it { should contain_file(conf_file).with_content(%r{kube_state_url: Some_Other_State_URL}) }
       end
 
       context 'with tags parameter array' do

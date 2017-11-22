@@ -44,6 +44,7 @@ class datadog_agent::integrations::kubernetes(
     group   => $datadog_agent::params::dd_group,
     mode    => '0644',
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
     content => template('datadog_agent/agent-conf.d/kubernetes.yaml.erb'),
   }
+}

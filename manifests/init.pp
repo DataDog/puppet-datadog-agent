@@ -194,7 +194,7 @@ class datadog_agent(
   $hiera_tags = false,
   $facts_to_tags = [],
   $puppet_run_reports = false,
-  $puppet_gem_provider = 'system_gem',
+  $puppet_gem_provider = 'puppetserver_gem',
   $puppetmaster_user = $settings::user,
   $non_local_traffic = false,
   $dogstreams = [],

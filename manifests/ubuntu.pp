@@ -20,6 +20,7 @@ class datadog_agent::ubuntu(
   $release = 'stable',
   $repos = 'main',
 ) {
+  include apt
 
   ensure_packages(['apt-transport-https'])
   validate_array($other_keys)
@@ -27,21 +28,27 @@ class datadog_agent::ubuntu(
   if !$::datadog_agent::skip_apt_key_trusting {
     $mykeys = concat($other_keys, [$apt_key])
 
-    ::datadog_agent::ubuntu::install_key { $mykeys:
-      before  => File['/etc/apt/sources.list.d/datadog.list'],
+    $mykeys.each | String $key | {
+      apt::key { "dd-${key}":
+        id     => $key,
+        before => Apt::Source['datadog-apt'],
+      }
     }
+  }
+
+  file { '/etc/apt/sources.list.d/datadog.list':
+    ensure => absent,
   }
 
   file { '/etc/apt/sources.list.d/datadog-beta.list':
     ensure => absent,
   }
 
-  file { '/etc/apt/sources.list.d/datadog.list':
-    owner   => 'root',
-    group   => 'root',
-    content => template('datadog_agent/datadog.list.erb'),
-    notify  => Exec['datadog_apt-get_update'],
-    require => Package['apt-transport-https'],
+  apt::source { 'datadog-apt':
+    location => $location,
+    release  => $release,
+    repos    => $repos,
+    notify   => Exec['datadog_apt-get_update'],
   }
 
   exec { 'datadog_apt-get_update':
@@ -49,18 +56,14 @@ class datadog_agent::ubuntu(
     refreshonly => true,
     tries       => 2, # https://bugs.launchpad.net/launchpad/+bug/1430011 won't get fixed until 16.04 xenial
     try_sleep   => 30,
-    require     => File['/etc/apt/sources.list.d/datadog-beta.list'],
-  }
-
-  package { 'datadog-agent-base':
-    ensure => absent,
-    before => Package['datadog-agent'],
   }
 
   package { 'datadog-agent':
     ensure  => $agent_version,
-    require => [File['/etc/apt/sources.list.d/datadog.list'],
-                Exec['datadog_apt-get_update']],
+    require => [
+      Apt::Source['datadog-apt'],
+      Exec['datadog_apt-get_update']
+    ],
   }
 
   service { 'datadog-agent':
@@ -70,5 +73,4 @@ class datadog_agent::ubuntu(
     pattern   => 'dd-agent',
     require   => Package['datadog-agent'],
   }
-
 }

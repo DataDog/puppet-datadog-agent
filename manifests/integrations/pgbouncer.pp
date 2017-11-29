@@ -3,36 +3,57 @@
 # This class will install the necessary configuration for the pgbouncer integration
 #
 # Parameters:
-#   $password
+#   $password:
 #       The password for the datadog user
 #   $host:
 #       The host pgbouncer is listening on
-#   $port
+#   $port:
 #       The pgbouncer port number
-#   $username
+#   $username:
 #       The username for the datadog user
-#   $tags
+#   $tags:
 #       Optional array of tags
+#   $pgbouncers:
+#       Optional array of pgbouncer hashes. See example
 #
 # Sample Usage:
 #
 #  class { 'datadog_agent::integrations::pgbouncer' :
-#    host     => 'localhost',
-#    username => 'datadog',
-#    port     => '6432',
-#    password => 'some_pass',
+#    host           => 'localhost',
+#    username       => 'datadog',
+#    port           => '6432',
+#    password       => 'some_pass',
 #  }
 #
+#  class { 'datadog_agent::integrations::pgbouncer' :
+#    pgbouncers     => [
+#      {
+#        'host'     => 'localhost',
+#        'username' => 'datadog',
+#        'port'     => '6432',
+#        'password' => 'some_pass',
+#        'tags'     => ['instance:one'],
+#      },
+#      {
+#        'host'     => 'localhost',
+#        'username' => 'datadog2',
+#        'port'     => '6433',
+#        'password' => 'some_pass2',
+#      },
+#    ],
+#  }
 #
 class datadog_agent::integrations::pgbouncer(
-  $password,
+  $password = '',
   $host   = 'localhost',
   $port   = '6432',
   $username = 'datadog',
   $tags = [],
+  $pgbouncers = [],
 ) inherits datadog_agent::params {
 
   validate_array($tags)
+  validate_array($pgbouncers)
 
   if $::datadog_agent::agent6_enable {
     $dst = "${datadog_agent::conf6_dir}/pgbouncer.yaml"

@@ -93,7 +93,7 @@ class datadog_agent::integrations::postgres(
     $_instances = $instances
   }
 
-  file { "$dst":
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

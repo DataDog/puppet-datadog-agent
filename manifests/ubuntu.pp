@@ -32,37 +32,57 @@ class datadog_agent::ubuntu(
     }
   }
 
-  file { '/etc/apt/sources.list.d/datadog-beta.list':
-    ensure => absent,
+  # This is a hack - I'm not happy about it, but we should rarely
+  # hit this code path.
+  if $facts['agent6_beta_repo'] and $agent_version == 'latest' {
+    exec { 'datadog_apt-get_remove_agent6':
+      command     => '/usr/bin/apt-get remove -y -q datadog-agent',
+    }
+  } else {
+    exec { 'datadog_apt-get_remove_agent6':
+      command     => ':',  # NOOP builtin
+      noop        => true,
+      refreshonly => true,
+      provider    => 'shell',
+    }
+  }
+
+  if $facts['agent6_beta_repo'] {
+    file { '/etc/apt/sources.list.d/datadog-beta.list':
+      ensure => absent,
+    }
   }
 
   file { '/etc/apt/sources.list.d/datadog.list':
     owner   => 'root',
     group   => 'root',
+    ensure  => file,
     content => template('datadog_agent/datadog.list.erb'),
-    notify  => Exec['datadog_apt-get_update'],
+    notify  => [Exec['datadog_apt-get_remove_agent6'],
+                Exec['datadog_apt-get_update']],
     require => Package['apt-transport-https'],
   }
-
+  
   exec { 'datadog_apt-get_update':
     command     => '/usr/bin/apt-get update',
     refreshonly => true,
     tries       => 2, # https://bugs.launchpad.net/launchpad/+bug/1430011 won't get fixed until 16.04 xenial
     try_sleep   => 30,
-    require     => File['/etc/apt/sources.list.d/datadog-beta.list'],
+    require     => File['/etc/apt/sources.list.d/datadog.list'],
   }
 
+  
   package { 'datadog-agent-base':
     ensure => absent,
     before => Package['datadog-agent'],
   }
-
+ 
   package { 'datadog-agent':
     ensure  => $agent_version,
     require => [File['/etc/apt/sources.list.d/datadog.list'],
                 Exec['datadog_apt-get_update']],
   }
-
+ 
   service { 'datadog-agent':
     ensure    => $::datadog_agent::service_ensure,
     enable    => $::datadog_agent::service_enable,
@@ -70,5 +90,4 @@ class datadog_agent::ubuntu(
     pattern   => 'dd-agent',
     require   => Package['datadog-agent'],
   }
-
 }

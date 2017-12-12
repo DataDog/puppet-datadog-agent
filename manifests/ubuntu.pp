@@ -30,7 +30,10 @@ class datadog_agent::ubuntu(
     ::datadog_agent::ubuntu::install_key { $mykeys:
       before  => File['/etc/apt/sources.list.d/datadog.list'],
     }
+  }
 
+  file { '/etc/apt/sources.list.d/datadog-beta.list':
+    ensure => absent,
   }
 
   file { '/etc/apt/sources.list.d/datadog.list':
@@ -46,6 +49,7 @@ class datadog_agent::ubuntu(
     refreshonly => true,
     tries       => 2, # https://bugs.launchpad.net/launchpad/+bug/1430011 won't get fixed until 16.04 xenial
     try_sleep   => 30,
+    require     => File['/etc/apt/sources.list.d/datadog-beta.list'],
   }
 
   package { 'datadog-agent-base':

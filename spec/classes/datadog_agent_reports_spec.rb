@@ -46,7 +46,7 @@ describe 'datadog_agent::reports' do
         end
 
         it do
-          should contain_file('/etc/dd-agent/datadog.yaml')\
+          should contain_file('/etc/datadog-agent/datadog-reports.yaml')\
             .with_owner('puppet')\
             .with_group('root')
         end
@@ -90,7 +90,7 @@ describe 'datadog_agent::reports' do
       end
 
       it do
-        should contain_file('/etc/dd-agent/datadog.yaml')\
+        should contain_file('/etc/datadog-agent/datadog-reports.yaml')\
           .with_owner('puppet')\
           .with_group('root')
       end

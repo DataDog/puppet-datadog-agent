@@ -11,17 +11,18 @@ instances:
 #            - optional_tag1
 #            - optional_tag2
 #
-  - host: <%= @host %>
-    port: <%= @port %>
-    username: <%= @username %>
-    password: <%= @password %>
-    dbname: <%= @dbname %>
-<% if @use_psycopg2 == true -%>
+<%- (Array(@_instances)).each do |instance| -%>
+  - host: <%= instance['host'] %>
+    port: <%= instance['port']  %>
+    username: <%= instance['username']  %>
+    password: <%= instance['password']  %>
+    dbname: <%= instance['dbname']  %>
+<% if instance['use_psycopg2']  == true -%>
     use_psycopg2: true
 <% end -%>
-<% if @tags and ! @tags.empty? -%>
+<% if instance['tags']  and ! instance['tags'].empty? -%>
     tags:
-  <%- Array(@tags).each do |tag| -%>
+  <%- Array(instance['tags'] ).each do |tag| -%>
     <%- if tag != '' -%>
       - <%= tag %>
     <%- end -%>
@@ -37,9 +38,9 @@ instances:
 #    relations:
 #      - my_table
 #      - my_other_table
-<% if @tables and ! @tables.empty? -%>
+<% if instance['tables']  and ! instance['tables'].empty? -%>
     relations:
-  <%- Array(@tables).each do |table| -%>
+  <%- Array(instance['tables'] ).each do |table| -%>
     <%- if table != '' -%>
         - <%= table %>
     <%- end -%>
@@ -57,9 +58,9 @@ instances:
 #       - [name, name] # captures the content of the "name" column as a tag for the 2 metrics defined
 #       - [address, localisation] # captures the content of "address" column as a tag and renames this tag "localisation"
 #
-<% if @custom_metrics and ! @custom_metrics.empty? -%>
+<% if instance['custom_metrics']  and ! instance['custom_metrics'].empty? -%>
     custom_metrics:
-  <%- Array(@custom_metrics).each do |n, custom_metric| -%>
+  <%- Array(instance['custom_metrics'] ).each do |n, custom_metric| -%>
       - query: <%= custom_metric["query"] %>
         relation: <%= custom_metric["relation"]? "true" : "false" %>
         metrics:
@@ -75,4 +76,5 @@ instances:
       <%- end -%>
     <%- end -%>
   <%- end -%>
+<% end -%>
 <% end -%>

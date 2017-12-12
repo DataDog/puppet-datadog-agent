@@ -211,6 +211,7 @@ describe 'datadog_agent' do
                     'content' => /^apm_enabled: false\n/,
                     )}
                 end
+
             end
 
             context 'with user provided paramaters' do
@@ -611,6 +612,15 @@ describe 'datadog_agent' do
                 'order' => '07',
                 )}
             end
+            context 'with process_agent enabled' do
+                let(:params) {
+                    {:process_agent_enabled => true,
+                }}
+                it { should contain_concat__fragment('datadog footer').with(
+                'content' => /^process_agent_enabled: true\n/,
+                )}
+            end
+
             end
         end
 

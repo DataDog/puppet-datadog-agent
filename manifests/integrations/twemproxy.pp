@@ -41,7 +41,13 @@ class datadog_agent::integrations::twemproxy(
     $_instances = $instances
   }
 
-  file { "${datadog_agent::params::conf_dir}/twemproxy.yaml":
+  if $::datadog_agent::agent6_enable {
+    $dst = "${datadog_agent::conf6_dir}/twemproxy.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/twemproxy.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

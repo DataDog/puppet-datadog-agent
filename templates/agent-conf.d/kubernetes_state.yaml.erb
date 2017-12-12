@@ -1,0 +1,22 @@
+init_config:
+  # Custom tags can be added to all metrics reported by this integration
+  <% if @tags and ! @tags.empty? -%>
+      tags:
+    <%- Array(@tags).each do |tag| -%>
+      <%- if tag != '' -%>
+         - <%= tag %>
+      <%- end -%>
+    <%- end -%>
+  <% end -%>
+
+instances:
+  # To enable Kube State metrics you must specify the url exposing the API
+  #
+  # Note for RHEL and SUSE users: due to compatibility issues, the check does not make use of
+  # the CPP extension to process Protocol buffer messages coming from the api. Depending
+  # on the metrics volume, the check may run very slowly.
+  - kube_state_url: <%= @url %>
+    # Tags are reported as set by kube-state-metrics. If you want to translate
+    # them to other tags, you can use the labels_mapper dictionary
+    # labels_mapper:
+    #   namespace: kube_namespace

@@ -55,18 +55,43 @@
 # }
 
 class datadog_agent::integrations::directory (
-  Array[Struct[{
-    directory   => String,
-    name        => Optional[String],
-    dirtagname  => Optional[String],
-    filetagname => Optional[String],
-    filegauges  => Optional[Boolean],
-    pattern     => Optional[String],
-    recursive   => Optional[Boolean],
-    countonly   => Optional[Boolean],
-  }]] $instances = [],
+  $directory   = '',
+  $filegauges  = false,
+  $recursive   = true,
+  $countonly   = false,
+  $nametag     = '',
+  $dirtagname  = '',
+  $filetagname = '',
+  $pattern     = '',
+  $instances   = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
+
+  validate_string($directory)
+  validate_bool($filegauges)
+  validate_bool($recursive)
+  validate_bool($countonly)
+
+  if !$instances and $directory == '' {
+    fail('bad directory argument and no instances hash provided')
+  }
+
+  if !$instances and $directory {
+    $_instances = [{
+      'directory'   => $directory,
+      'filegauges'  => $filegauges,
+      'recursive'  => $recursive,
+      'countonly' => $countonly,
+      'name' => $nametag,
+      'dirtagname' => $dirtagname,
+      'filetagname' => $filetagname,
+      'pattern' => $pattern,
+    }]
+  } elsif !$instances{
+    $_instances = []
+  } else {
+    $_instances = $instances
+  }
 
   if $::datadog_agent::agent6_enable {
     $dst = "${datadog_agent::conf6_dir}/directory.yaml"

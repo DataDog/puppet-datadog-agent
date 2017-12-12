@@ -1,27 +1,29 @@
 ### MANAGED BY PUPPET
-<%
-require 'yaml'
 
-if RUBY_VERSION < "1.9"
-# Hack to avoid ruby 1.8 always reordering the hashes and
-# changing this template resource at every run
-# See https://github.com/DataDog/puppet-datadog-agent/issues/43
-# Taken from http://www.dzone.com/snippets/generating-yaml-hashes-sorted
-class Hash
-  # Replacing the to_yaml function so it'll serialize hashes sorted (by their keys)
-  #
-  # Original function is in /usr/lib/ruby/1.8/yaml/rubytypes.rb
-  def to_yaml( opts = {} )
-    YAML::quick_emit( object_id, opts ) do |out|
-      out.map( taguri, to_yaml_style ) do |map|
-        sort.each do |k, v|   # <-- here's my addition (the 'sort')
-          map.add( k, v )
-        end
-      end
-    end
-  end
-end
-end
-%>
+init_config:
 
-<%= {'init_config'=>{}, 'instances'=>@instances}.to_yaml %>
+instances:
+<%- (Array(@_instances)).each do |instance| -%>
+  - directory: <%= instance['directory'] %>
+<% if instance.key?('filegauges') -%>
+    filegauges: <%= instance['filegauges'] %>
+<% end -%>
+<% if instance.key?('recursive') -%>
+    recursive: <%= instance['recursive'] %>
+<% end -%>
+<% if instance.key?('countonly') -%>
+    countonly: <%= instance['countonly'] %>
+<% end -%>
+<% unless !instance.key?('name') || instance['name'] == '' -%>
+    name: <%= instance['name'] %>
+<% end -%>
+<% unless !instance.key?('pattern') || instance['pattern'] == '' -%>
+    pattern: <%= instance['pattern'] %>
+<% end -%>
+<% unless !instance.key?('dirtagname') || instance['dirtagname'] == '' -%>
+    dirtagname: <%= instance['dirtagname'] %>
+<% end -%>
+<% unless !instance.key?('filetagname') || instance['filetagname'] == '' -%>
+    filetagname: <%= instance['filetagname'] %>
+<% end -%>
+<% end -%>

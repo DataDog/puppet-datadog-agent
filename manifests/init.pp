@@ -387,9 +387,9 @@ class datadog_agent(
   }
 
   if ($dd_groups) {
-    user { "$dd_user":
-      groups  => $dd_groups,
-      notify  => Service[$datadog_agent::params::service_name],
+    user { $dd_user:
+      groups => $dd_groups,
+      notify => Service[$datadog_agent::params::service_name],
     }
   }
 

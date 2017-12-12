@@ -88,6 +88,10 @@
 #       but may be problematic with some HTTP servers
 #       (See: https://code.google.com/p/httplib2/issues/detail?id=169)
 #
+#   allow_redirects
+#       The (optional) allow_redirects parameter can enable redirection.
+#       Defaults to True.
+#
 #   contact
 #       For service-specific notifications, you can optionally specify
 #       a list of users to notify within the service configuration.
@@ -156,10 +160,11 @@ class datadog_agent::integrations::http_check (
   $disable_ssl_validation = false,
   $skip_event = true,
   $no_proxy  = false,
-  $check_certificate_expiration = undef,
+  $check_certificate_expiration = true,
   $days_warning = undef,
   $days_critical = undef,
   $headers   = [],
+  $allow_redirects = true,
   $tags      = [],
   $contact   = [],
   $instances  = undef,
@@ -186,6 +191,7 @@ class datadog_agent::integrations::http_check (
       'days_warning'                 => $days_warning,
       'days_critical'                => $days_critical,
       'headers'                      => $headers,
+      'allow_redirects'              => $allow_redirects,
       'tags'                         => $tags,
       'contact'                      => $contact,
     }]

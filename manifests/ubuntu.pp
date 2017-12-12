@@ -19,7 +19,7 @@ class datadog_agent::ubuntu(
   $location = 'https://apt.datadoghq.com',
   $release = 'stable',
   $repos = 'main',
-) {
+) inherits datadog_agent::params{
 
   ensure_packages(['apt-transport-https'])
   validate_array($other_keys)
@@ -76,20 +76,20 @@ class datadog_agent::ubuntu(
 
   package { 'datadog-agent-base':
     ensure => absent,
-    before => Package['datadog-agent'],
+    before => Package[$datadog_agent::params::package_name],
   }
 
-  package { 'datadog-agent':
+  package { $datadog_agent::params::package_name:
     ensure  => $agent_version,
     require => [File['/etc/apt/sources.list.d/datadog.list'],
                 Exec['datadog_apt-get_update']],
   }
 
-  service { 'datadog-agent':
+  service { $datadog_agent::params::service_name:
     ensure    => $::datadog_agent::service_ensure,
     enable    => $::datadog_agent::service_enable,
     hasstatus => false,
     pattern   => 'dd-agent',
-    require   => Package['datadog-agent'],
+    require   => Package[$datadog_agent::params::package_name],
   }
 }

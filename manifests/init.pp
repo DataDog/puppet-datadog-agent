@@ -393,23 +393,15 @@ class datadog_agent(
     }
   }
 
-  file { '/etc/dd-agent':
+  # required by reports even in agent5 scenario
+  file { '/etc/datadog-agent':
     ensure  => directory,
     owner   => $dd_user,
     group   => $dd_group,
     mode    => '0755',
-    require => Package['datadog-agent'],
+    require => Package[$datadog_agent::params::package_name],
   }
 
-  file { $conf_dir:
-    ensure  => directory,
-    purge   => $conf_dir_purge,
-    recurse => true,
-    force   => $conf_dir_purge,
-    owner   => $dd_user,
-    group   => $dd_group,
-    notify  => Service[$datadog_agent::params::service_name],
-  }
 
   if !$agent6_enable {
     file { '/etc/dd-agent':
@@ -417,7 +409,7 @@ class datadog_agent(
       owner   => $dd_user,
       group   => $dd_group,
       mode    => '0755',
-      require => Package['datadog-agent'],
+      require => Package[$datadog_agent::params::package_name],
     }
 
     file { $conf_dir:
@@ -427,7 +419,7 @@ class datadog_agent(
       force   => $conf_dir_purge,
       owner   => $dd_user,
       group   => $dd_group,
-      notify  => Service['datadog-agent']
+      notify  => Service[$datadog_agent::params::service_name]
     }
 
     concat {'/etc/dd-agent/datadog.conf':
@@ -481,7 +473,7 @@ class datadog_agent(
       force   => $conf_dir_purge,
       owner   => $dd_user,
       group   => $dd_group,
-      notify  => Service['datadog-agent']
+      notify  => Service[$datadog_agent::params::service_name]
     }
 
     $agent_config = {

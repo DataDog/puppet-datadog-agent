@@ -69,6 +69,7 @@ describe 'datadog_agent::integrations::http_check' do
           check_certificate_expiration: true,
           days_warning: 14,
           days_critical: 7,
+          allow_redirects: true
         }}
 
         it { should contain_file(conf_file).with_content(%r{name: foo.bar.baz}) }
@@ -78,7 +79,7 @@ describe 'datadog_agent::integrations::http_check' do
         it { should contain_file(conf_file).with_content(%r{timeout: 123}) }
         it { should contain_file(conf_file).with_content(%r{threshold: 456}) }
         it { should contain_file(conf_file).with_content(%r{window: 789}) }
-        it { should contain_file(conf_file).with_content(%r{content_match: foomatch}) }
+        it { should contain_file(conf_file).with_content(%r{content_match: 'foomatch'}) }
         it { should contain_file(conf_file).with_content(%r{include_content: true}) }
         it { should contain_file(conf_file).without_content(%r{collect_response_time: true}) }
         it { should contain_file(conf_file).with_content(%r{disable_ssl_validation: true}) }
@@ -88,6 +89,7 @@ describe 'datadog_agent::integrations::http_check' do
         it { should contain_file(conf_file).with_content(%r{check_certificate_expiration: true}) }
         it { should contain_file(conf_file).with_content(%r{days_warning: 14}) }
         it { should contain_file(conf_file).with_content(%r{days_critical: 7}) }
+        it { should contain_file(conf_file).with_content(%r{allow_redirects: true}) }
       end
 
       context 'with headers parameter array' do

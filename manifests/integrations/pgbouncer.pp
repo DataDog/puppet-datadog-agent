@@ -51,6 +51,7 @@ class datadog_agent::integrations::pgbouncer(
   $tags = [],
   $pgbouncers = [],
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   validate_array($tags)
   validate_array($pgbouncers)

@@ -10,7 +10,7 @@ class datadog_agent::ubuntu::agent6(
   $location = 'https://apt.datadoghq.com',
   $release = 'beta',
   $repos = 'main',
-) {
+) inherits datadog_agent::params {
 
   ensure_packages(['apt-transport-https'])
   validate_array($other_keys)

@@ -19,7 +19,7 @@ class datadog_agent::redhat(
   $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
   $manage_repo = true,
   $agent_version = 'latest'
-) {
+) inherits datadog_agent::params {
 
   validate_bool($manage_repo)
   if $manage_repo {

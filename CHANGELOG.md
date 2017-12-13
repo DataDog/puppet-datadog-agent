@@ -1,28 +1,29 @@
 Changes
 =======
 
-# 1.12.0 / Unreleased 
+# 1.12.0 / 2017-12-13
 
-### Notes
+### notes
 
-* [FEATURE] Agent6 Beta support. See #356
-* [FEATURE] Directory integration. See #357 (Thanks @alexfouche)
-* [FEATURE] Linux_proc_extras integration. See #357 (Thanks @alexfouche)
-* [FEATURE] Kafka integration. See #357 (Thanks @alexfouche)
-* [FEATURE] Kubernetes integration. See #369 (Thanks @lowkeyshift)
-* [FEATURE] Kuberentes_state integration. See #369 (Thanks @lowkeyshift)
-* [FEATURE] Network integration. See #346 (Thanks @jameynelson)
-* [FEATURE] System core integration. See #359 (Thanks @dan70402)
-* [FEATURE] Support for process_agent. See #352 (Thanks @jfrost)
+* [FEATURE] agent6 beta support. see [#356][]
+* [FEATURE] directory integration. see [#357][] (thanks [@alexfouche][])
+* [FEATURE] linux_proc_extras integration. see [#357][] (thanks [@alexfouche][])
+* [FEATURE] kafka integration. see [#357][] (thanks [@alexfouche][])
+* [FEATURE] kubernetes integration. see [#369][] (thanks [@lowkeyshift][])
+* [FEATURE] kuberentes_state integration. see [#369][] (thanks [@lowkeyshift][])
+* [FEATURE] network integration. see [#346][] (thanks [@jameynelson][])
+* [FEATURE] system core integration. see [#359][] (thanks [@dan70402][])
+* [FEATURE] support for process_agent. see [#352][] (thanks [@jfrost][])
 
-* [IMPROVEMENT] Better support for puppet 4, 5. See #362 and #370 (Thanks @bittner)
-* [IMPROVEMENT] PGbouncer: support multiple instances. See #361 (Thanks @ajvb)
-* [IMPROVEMENT] General cleanup. See #357 and #376 (Thanks @alexfouche)
+* [IMPROVEMENT] better support for puppet 4, 5. see [#362][] and [#370][] (thanks [@bittner][])
+* [IMPROVEMENT] explicit puppet 5 support + fixes. see [#377][]
+* [IMPROVEMENT] pgbouncer: support multiple instances. see [#361][] (thanks [@ajvb][])
+* [IMPROVEMENT] general cleanup. see [#357][] and [#376][] (thanks [@alexfouche][])
 
-* [BUGFIX] Agent6: Fix downgrade back to agent5 if on `latest` version. See #375 
-* [BUGFIX] APT: only grep for last 8 characters to verify key. See #373 and #374 (Thanks @szponek) 
+* [BUGFIX] agent6: fix downgrade back to agent5 if on `latest` version. see [#375][] 
+* [BUGFIX] apt: only grep for last 8 characters to verify key. see [#373][] and [#374][] (thanks [@szponek][]) 
 
-* [DOCUMENTATION] Fix tagging documentation. See #347 (Thanks @bit-herder) 
+* [DOCUMENTATION] fix tagging documentation. see [#347][] (thanks [@bit-herder][]) 
 
 # 1.11.0 / 2017-07-27
 
@@ -378,6 +379,21 @@ Changes
 [#338]: https://github.com/DataDog/puppet-datadog-agent/issues/338
 [#340]: https://github.com/DataDog/puppet-datadog-agent/issues/340
 [#341]: https://github.com/DataDog/puppet-datadog-agent/issues/341
+[#346]: https://github.com/DataDog/puppet-datadog-agent/issues/346
+[#347]: https://github.com/DataDog/puppet-datadog-agent/issues/347
+[#352]: https://github.com/DataDog/puppet-datadog-agent/issues/352
+[#356]: https://github.com/DataDog/puppet-datadog-agent/issues/356
+[#357]: https://github.com/DataDog/puppet-datadog-agent/issues/357
+[#359]: https://github.com/DataDog/puppet-datadog-agent/issues/359
+[#361]: https://github.com/DataDog/puppet-datadog-agent/issues/361
+[#362]: https://github.com/DataDog/puppet-datadog-agent/issues/362
+[#369]: https://github.com/DataDog/puppet-datadog-agent/issues/369
+[#370]: https://github.com/DataDog/puppet-datadog-agent/issues/370
+[#373]: https://github.com/DataDog/puppet-datadog-agent/issues/373
+[#374]: https://github.com/DataDog/puppet-datadog-agent/issues/374
+[#375]: https://github.com/DataDog/puppet-datadog-agent/issues/375
+[#376]: https://github.com/DataDog/puppet-datadog-agent/issues/376
+[#377]: https://github.com/DataDog/puppet-datadog-agent/issues/377
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
 [@DDRBoxman]: https://github.com/DDRBoxman
@@ -387,16 +403,21 @@ Changes
 [@NoodlesNZ]: https://github.com/NoodlesNZ
 [@aaron-miller]: https://github.com/aaron-miller
 [@aepod]: https://github.com/aepod
+[@ajvb]: https://github.com/ajvb
+[@alexfouche]: https://github.com/alexfouche
 [@alexharv074]: https://github.com/alexharv074
 [@alvin-huang]: https://github.com/alvin-huang
 [@b2jrock]: https://github.com/b2jrock
 [@bflad]: https://github.com/bflad
 [@binford2k]: https://github.com/binford2k
+[@bit-herder]: https://github.com/bit-herder
+[@bittner]: https://github.com/bittner
 [@butangero]: https://github.com/butangero
 [@ckolos]: https://github.com/ckolos
 [@craigwatson]: https://github.com/craigwatson
 [@cristianjuve]: https://github.com/cristianjuve
 [@cwood]: https://github.com/cwood
+[@dan70402]: https://github.com/dan70402
 [@davejrt]: https://github.com/davejrt
 [@davidgibbons]: https://github.com/davidgibbons
 [@degemer]: https://github.com/degemer
@@ -408,11 +429,14 @@ Changes
 [@generica]: https://github.com/generica
 [@grubernaut]: https://github.com/grubernaut
 [@jacobbednarz]: https://github.com/jacobbednarz
+[@jameynelson]: https://github.com/jameynelson
 [@jangie]: https://github.com/jangie
 [@jdavisp3]: https://github.com/jdavisp3
 [@jensendw]: https://github.com/jensendw
+[@jfrost]: https://github.com/jfrost
 [@jniesen]: https://github.com/jniesen
 [@kitchen]: https://github.com/kitchen
+[@lowkeyshift]: https://github.com/lowkeyshift
 [@mcasper]: https://github.com/mcasper
 [@mraylu]: https://github.com/mraylu
 [@mrunkel-ut]: https://github.com/mrunkel-ut
@@ -430,5 +454,6 @@ Changes
 [@stamak]: https://github.com/stamak
 [@stantona]: https://github.com/stantona
 [@swwolf]: https://github.com/swwolf
+[@szponek]: https://github.com/szponek
 [@tdm4]: https://github.com/tdm4
 [@tuxinaut]: https://github.com/tuxinaut

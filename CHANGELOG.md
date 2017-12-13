@@ -1,6 +1,29 @@
 Changes
 =======
 
+# 1.12.0 / Unreleased 
+
+### Notes
+
+* [FEATURE] Agent6 Beta support. See #356
+* [FEATURE] Directory integration. See #357 (Thanks @alexfouche)
+* [FEATURE] Linux_proc_extras integration. See #357 (Thanks @alexfouche)
+* [FEATURE] Kafka integration. See #357 (Thanks @alexfouche)
+* [FEATURE] Kubernetes integration. See #369 (Thanks @lowkeyshift)
+* [FEATURE] Kuberentes_state integration. See #369 (Thanks @lowkeyshift)
+* [FEATURE] Network integration. See #346 (Thanks @jameynelson)
+* [FEATURE] System core integration. See #359 (Thanks @dan70402)
+* [FEATURE] Support for process_agent. See #352 (Thanks @jfrost)
+
+* [IMPROVEMENT] Better support for puppet 4, 5. See #362 and #370 (Thanks @bittner)
+* [IMPROVEMENT] PGbouncer: support multiple instances. See #361 (Thanks @ajvb)
+* [IMPROVEMENT] General cleanup. See #357 and #376 (Thanks @alexfouche)
+
+* [BUGFIX] Agent6: Fix downgrade back to agent5 if on `latest` version. See #375 
+* [BUGFIX] APT: only grep for last 8 characters to verify key. See #373 and #374 (Thanks @szponek) 
+
+* [DOCUMENTATION] Fix tagging documentation. See #347 (Thanks @bit-herder) 
+
 # 1.11.0 / 2017-07-27
 
 ### Notes

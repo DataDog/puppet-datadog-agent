@@ -24,11 +24,47 @@ env:
   - PUPPET_VERSION="~> 4.1.0" STRICT_VARIABLES=yes
   - PUPPET_VERSION="~> 4.2.0" STRICT_VARIABLES=yes
   - PUPPET_VERSION="~> 4.2.1" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 4.5.3" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 4.6.2" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 4.7.1" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 4.8.2" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 4.9.4" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 4.10.9" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 5.0.1" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 5.1.0" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 5.2.0" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 5.3.3" STRICT_VARIABLES=yes
 matrix:
   exclude:
   # Ruby 2.0.0
   - rvm: 2.0.0
     env: PUPPET_VERSION="~> 2.7.0"
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 4.1.0"
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 4.2.0"
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 4.2.1"
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 4.5.3" STRICT_VARIABLES=yes
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 4.6.2" STRICT_VARIABLES=yes
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 4.7.1" STRICT_VARIABLES=yes
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 4.8.2" STRICT_VARIABLES=yes
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 4.9.4" STRICT_VARIABLES=yes
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 4.10.9" STRICT_VARIABLES=yes
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 5.0.1" STRICT_VARIABLES=yes
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 5.1.0" STRICT_VARIABLES=yes
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 5.2.0" STRICT_VARIABLES=yes
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 5.3.3" STRICT_VARIABLES=yes
 
   # Ruby 2.1.1
   - rvm: 2.1.1
@@ -39,6 +75,32 @@ matrix:
     env: PUPPET_VERSION="~> 3.3.0"
   - rvm: 2.1.1
     env: PUPPET_VERSION="~> 3.4.0"
+  - rvm: 2.1.1
+    env: PUPPET_VERSION="~> 4.1.0"
+  - rvm: 2.1.1
+    env: PUPPET_VERSION="~> 4.2.0"
+  - rvm: 2.1.1
+    env: PUPPET_VERSION="~> 4.2.1"
+  - rvm: 2.1.1
+    env: PUPPET_VERSION="~> 4.5.3" STRICT_VARIABLES=yes
+  - rvm: 2.1.1
+    env: PUPPET_VERSION="~> 4.6.2" STRICT_VARIABLES=yes
+  - rvm: 2.1.1
+    env: PUPPET_VERSION="~> 4.7.1" STRICT_VARIABLES=yes
+  - rvm: 2.1.1
+    env: PUPPET_VERSION="~> 4.8.2" STRICT_VARIABLES=yes
+  - rvm: 2.1.1
+    env: PUPPET_VERSION="~> 4.9.4" STRICT_VARIABLES=yes
+  - rvm: 2.1.1
+    env: PUPPET_VERSION="~> 4.10.9" STRICT_VARIABLES=yes
+  - rvm: 2.1.1
+    env: PUPPET_VERSION="~> 5.0.1" STRICT_VARIABLES=yes
+  - rvm: 2.1.1
+    env: PUPPET_VERSION="~> 5.1.0" STRICT_VARIABLES=yes
+  - rvm: 2.1.1
+    env: PUPPET_VERSION="~> 5.2.0" STRICT_VARIABLES=yes
+  - rvm: 2.1.1
+    env: PUPPET_VERSION="~> 5.3.3" STRICT_VARIABLES=yes
 
   # Ruby 2.2.3
   - rvm: 2.2.3

@@ -21,6 +21,7 @@ class datadog_agent::reports(
   $hostname_extraction_regex = nil
 ) {
 
+  include datadog_agent
   include datadog_agent::params
   $rubydev_package = $datadog_agent::params::rubydev_package
 

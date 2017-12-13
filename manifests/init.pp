@@ -407,7 +407,6 @@ class datadog_agent(
     require => Package[$datadog_agent::params::package_name],
   }
 
-
   if !$agent6_enable {
     file { '/etc/dd-agent':
       ensure  => directory,

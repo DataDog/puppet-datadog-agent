@@ -2,23 +2,23 @@ init_config:
   # Change the root directory to look at to get cgroup statistics. Useful when running inside a
   # container with host directories mounted on a different folder. Default: /.
   # Example for the docker-dd-agent container:
-  # docker_root: /host
+  docker_root: <%= @docker_root %>
 
   # Timeout in seconds for the connection to the docker daemon
   # Default: 5 seconds
   #
-  # timeout: 10
+  timeout: <%= @timeout %>
 
   # The version of the API the client will use. Specify 'auto' to use the API version provided by the server.
-  # api_version: auto
+  api_version: <%= @api_version %>
 
   # Use TLS encryption while communicating with the Docker API
   #
-  # tls: False
-  # tls_client_cert: /path/to/client-cert.pem
-  # tls_client_key: /path/to/client-key.pem
-  # tls_cacert: /path/to/ca.pem
-  # tls_verify: True
+  tls: <%= @tls %>
+  tls_client_cert: <%= @tls_client_cert %>
+  tls_client_key: <%= @tls_client_key %>
+  tls_cacert: <%= @tls_cacert %>
+  tls_verify: <%= @tls_verify %>
 
 instances:
   - ## Daemon and system configuration
@@ -35,7 +35,7 @@ instances:
     # Create events whenever a container status change.
     # Defaults to true.
     #
-    # collect_events: false
+    collect_events: <%= @collect_events %>
 
     # Collect disk usage per container with docker.container.size_rw and
     # docker.container.size_rootfs metrics.
@@ -43,20 +43,20 @@ instances:
     # ensure that `docker ps -a -q` run fast before enabling it.
     # Defaults to false.
     #
-    # collect_container_size: false
+    collect_container_size: <%= @collect_container_size %>
 
     # Collect images stats
     # Number of available active images and intermediate images as gauges.
     # Defaults to false.
     #
-    # collect_images_stats: false
+    collect_images_stats: <%= @collect_images_stats %>
 
     # Collect disk usage per image with docker.image.size and docker.image.virtual_size metrics.
     # The check gets this size with the `docker images` command.
     # Requires collect_images_stats to be enabled.
     # Defaults to false.
     #
-    # collect_image_size: false
+    collect_image_size: <%= @collect_image_size %>
 
 
     # Exclude containers based on their tags
@@ -75,28 +75,20 @@ instances:
     #
     # Default: include all containers
 
-
+    exclude: [<%= @exclude && !@exclude.empty? ? '"' + @exclude.join('", "') + '"' : nil %>]
+    include: [<%= @include && !@include.empty? ? '"' + @include.join('", "') + '"' : nil %>]
 
     ## Tagging
     ##
-<% if @tags and ! @tags.empty? -%>
-    tags:
-  <%- Array(@tags).each do |tag| -%>
-    <%- if tag != '' -%>
-       - <%= tag %>
-    <%- end -%>
-  <%- end -%>
-<% end -%>
-
     # You can add extra tags to your Docker metrics with the tags list option.
     # Example: ["extra_tag", "env:testing"]
     #
-    # tags: []
+    tags: [<%= @tags && !@tags.empty? ? '"' + @tags.join('", "') + '"' : nil %>]
 
     # If the agent is running in an Amazon ECS task, tags container metrics with the ECS task name and version.
     # Default: true
     #
-    # ecs_tags: false
+    ecs_tags: <%= @ecs_tags %>
 
     # Custom metrics tagging
     # Define which Docker tags to apply on metrics.
@@ -110,14 +102,14 @@ instances:
     #   - container_name: Name of the container (example: "boring_euclid")
     #   - container_command: Command ran by the container (example: "echo 1")
     #
-    # performance_tags: ["container_name", image_name", "image_tag", "docker_image"]
+    performance_tags: [<%= @performance_tags && !@performance_tags.empty? ? '"' + @performance_tags.join('", "') + '"' : nil %>]
 
     # Tags for containers count metrics.
     # Available: ["image_name", "image_tag", "docker_image", "container_command"]
     #
-    # container_tags: ["image_name", "image_tag", "docker_image"]
+    container_tags: [<%= @container_tags && !@container_tags.empty? ? '"' + @container_tags.join('", "') + '"' : nil %>]
 
     # List of container label names that should be collected and sent as tags.
     # Default to None
     # Example:
-    # collect_labels_as_tags: ["com.docker.compose.service", "com.docker.compose.project"] 
+    collect_labels_as_tags: [<%= @collect_labels_as_tags && !@collect_labels_as_tags.empty? ? '"' + @collect_labels_as_tags.join('", "') + '"' : nil %>]

@@ -29,11 +29,20 @@ class datadog_agent::integrations::docker_daemon(
   $tls_client_key = '/path/to/client-key.pem',
   $tls_cacert = '/path/to/ca.pem',
   $tls_verify = true,
+  $init_retry_interval = 0,
+  $init_retries = 0,
   $url = 'unix://var/run/docker.sock',
   $collect_events = true,
+  $filtered_event_types = [],
   $collect_container_size = false,
+  $custom_cgroups = false,
+  $health_service_check_whitelist = [],
+  $collect_container_count = false,
+  $collect_volume_count = false,
   $collect_images_stats = false,
   $collect_image_size = false,
+  $collect_disk_stats = false,
+  $collect_exit_codes = false,
   $exclude = [],
   $include = [],
   $tags = [],
@@ -44,6 +53,7 @@ class datadog_agent::integrations::docker_daemon(
   $container_tags = [],
   # Ex. "com.docker.compose.service", "com.docker.compose.project"
   $collect_labels_as_tags = [],
+  $event_attributes_as_tags = [],
 ) inherits datadog_agent::params {
   include datadog_agent
 

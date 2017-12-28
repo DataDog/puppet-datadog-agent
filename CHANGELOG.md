@@ -1,29 +1,35 @@
 Changes
 =======
 
+# 1.12.1 / 2017-12-29
+
+### notes
+
+* [BUGFIX] agent6: fix generated YAML. See [#379][]
+
 # 1.12.0 / 2017-12-13
 
 ### notes
 
-* [FEATURE] agent6 beta support. see [#356][]
-* [FEATURE] directory integration. see [#357][] (thanks [@alexfouche][])
-* [FEATURE] linux_proc_extras integration. see [#357][] (thanks [@alexfouche][])
-* [FEATURE] kafka integration. see [#357][] (thanks [@alexfouche][])
-* [FEATURE] kubernetes integration. see [#369][] (thanks [@lowkeyshift][])
-* [FEATURE] kuberentes_state integration. see [#369][] (thanks [@lowkeyshift][])
-* [FEATURE] network integration. see [#346][] (thanks [@jameynelson][])
-* [FEATURE] system core integration. see [#359][] (thanks [@dan70402][])
-* [FEATURE] support for process_agent. see [#352][] (thanks [@jfrost][])
+* [FEATURE] agent6 beta support. See [#356][]
+* [FEATURE] directory integration. See [#357][] (thanks [@alexfouche][])
+* [FEATURE] linux_proc_extras integration. See [#357][] (thanks [@alexfouche][])
+* [FEATURE] kafka integration. See [#357][] (thanks [@alexfouche][])
+* [FEATURE] kubernetes integration. See [#369][] (thanks [@lowkeyshift][])
+* [FEATURE] kuberentes_state integration. See [#369][] (thanks [@lowkeyshift][])
+* [FEATURE] network integration. See [#346][] (thanks [@jameynelson][])
+* [FEATURE] system core integration. See [#359][] (thanks [@dan70402][])
+* [FEATURE] support for process_agent. See [#352][] (thanks [@jfrost][])
 
-* [IMPROVEMENT] better support for puppet 4, 5. see [#362][] and [#370][] (thanks [@bittner][])
-* [IMPROVEMENT] explicit puppet 5 support + fixes. see [#377][]
-* [IMPROVEMENT] pgbouncer: support multiple instances. see [#361][] (thanks [@ajvb][])
-* [IMPROVEMENT] general cleanup. see [#357][] and [#376][] (thanks [@alexfouche][])
+* [IMPROVEMENT] better support for puppet 4, 5. See [#362][] and [#370][] (thanks [@bittner][])
+* [IMPROVEMENT] explicit puppet 5 support + fixes. See [#377][]
+* [IMPROVEMENT] pgbouncer: support multiple instances. See [#361][] (thanks [@ajvb][])
+* [IMPROVEMENT] general cleanup. See [#357][] and [#376][] (thanks [@alexfouche][])
 
-* [BUGFIX] agent6: fix downgrade back to agent5 if on `latest` version. see [#375][] 
-* [BUGFIX] apt: only grep for last 8 characters to verify key. see [#373][] and [#374][] (thanks [@szponek][]) 
+* [BUGFIX] agent6: fix downgrade back to agent5 if on `latest` version. See [#375][] 
+* [BUGFIX] apt: only grep for last 8 characters to verify key. See [#373][] and [#374][] (thanks [@szponek][]) 
 
-* [DOCUMENTATION] fix tagging documentation. see [#347][] (thanks [@bit-herder][]) 
+* [DOCUMENTATION] fix tagging documentation. See [#347][] (thanks [@bit-herder][]) 
 
 # 1.11.0 / 2017-07-27
 
@@ -394,6 +400,7 @@ Changes
 [#375]: https://github.com/DataDog/puppet-datadog-agent/issues/375
 [#376]: https://github.com/DataDog/puppet-datadog-agent/issues/376
 [#377]: https://github.com/DataDog/puppet-datadog-agent/issues/377
+[#379]: https://github.com/DataDog/puppet-datadog-agent/issues/379
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
 [@DDRBoxman]: https://github.com/DDRBoxman

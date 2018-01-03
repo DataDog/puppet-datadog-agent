@@ -77,7 +77,7 @@ Make sure you enable the `puppet_run_reports` option to true in the node
 configuration manifest for your master.
 
 ```ruby
-class { "datadog-agent":
+class { "datadog_agent":
     api_key => "<your_api_key>",
     puppet_run_reports => true
     # ...

@@ -32,8 +32,6 @@ class datadog_agent::ubuntu(
     }
   }
 
-  debug(sprintf("Fact ::apt_agent6_beta_repo=%s type=%s is_true=%s str2bool=%s", $::apt_agent6_beta_repo, type3x($::apt_agent6_beta_repo), ($::apt_agent6_beta_repo and true), str2bool("$::apt_agent6_beta_repo")))
-
   # This is a hack - I'm not happy about it, but we should rarely
   # hit this code path
   #

@@ -2,6 +2,7 @@
 define datadog_agent::tag(
   $tag_name = $name,
   $lookup_fact = false,
+  $agent6 = false,
 ){
 
   if $lookup_fact{
@@ -11,7 +12,7 @@ define datadog_agent::tag(
       $tags = prefix($value, "${tag_name}:")
       datadog_agent::tag{$tags: }
     } else {
-      if $value {
+      if !agent6 and $value {
         concat::fragment{ "datadog tag ${tag_name}:${value}":
           target  => '/etc/dd-agent/datadog.conf',
           content => "${tag_name}:${value}, ",
@@ -19,7 +20,7 @@ define datadog_agent::tag(
         }
       }
     }
-  } else {
+  } elsif !agent6 {
     concat::fragment{ "datadog tag ${tag_name}":
       target  => '/etc/dd-agent/datadog.conf',
       content => "${tag_name}, ",

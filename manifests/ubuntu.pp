@@ -19,27 +19,28 @@ class datadog_agent::ubuntu(
   $location = 'https://apt.datadoghq.com',
   $release = 'stable',
   $repos = 'main',
+  $skip_apt_key_trusting = false,
+  $service_ensure = 'running',
+  $service_enable = true,
 ) inherits datadog_agent::params{
 
   ensure_packages(['apt-transport-https'])
   validate_array($other_keys)
 
-  if !$::datadog_agent::skip_apt_key_trusting {
+  if !$skip_apt_key_trusting {
     $mykeys = concat($other_keys, [$apt_key])
 
     ::datadog_agent::ubuntu::install_key { $mykeys:
-      before  => File['/etc/apt/sources.list.d/datadog.list'],
+      before  => Apt::Source['datadog'],
     }
   }
 
   # This is a hack - I'm not happy about it, but we should rarely
-  # hit this code path
-  #
-  # Also, using $::apt_agent6_beta_repo to access fact instead of
-  # $facts hash - for compatibility with puppet3.x default behavior
-  #
+  # hit this code path. We can't use 'Package' because we later have
+  # to ensure dastadog-agent is present.
+  
   # lint:ignore:only_variable_string
-  if str2bool("${::apt_agent6_beta_repo}") and $agent_version == 'latest' {
+  if str2bool("${facts['apt_agent6_beta_repo']}") and $agent_version == 'latest' {
   # lint:endignore
     exec { 'datadog_apt-get_remove_agent6':
       command     => '/usr/bin/apt-get remove -y -q datadog-agent',
@@ -54,29 +55,21 @@ class datadog_agent::ubuntu(
   }
 
   # lint:ignore:only_variable_string
-  if str2bool("${::apt_agent6_beta_repo}") {
+  if str2bool("${facts['apt_agent6_beta_repo']}") {
   # lint:endignore
-    file { '/etc/apt/sources.list.d/datadog-beta.list':
+    apt::source { 'datadog6':
       ensure => absent,
     }
   }
 
-  file { '/etc/apt/sources.list.d/datadog.list':
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    content => template('datadog_agent/datadog.list.erb'),
-    notify  => [Exec['datadog_apt-get_remove_agent6'],
-                Exec['datadog_apt-get_update']],
+  apt::source { 'datadog':
+    comment  => 'Datadog Agent Repository',
+    location => $location,
+    release  => $release,
+    repos    => $repos, 
     require => Package['apt-transport-https'],
-  }
-
-  exec { 'datadog_apt-get_update':
-    command     => '/usr/bin/apt-get update',
-    refreshonly => true,
-    tries       => 2, # https://bugs.launchpad.net/launchpad/+bug/1430011 won't get fixed until 16.04 xenial
-    try_sleep   => 30,
-    require     => File['/etc/apt/sources.list.d/datadog.list'],
+    notify  => [Exec['datadog_apt-get_remove_agent6'],
+                Exec['apt_update']],
   }
 
   package { 'datadog-agent-base':
@@ -86,13 +79,13 @@ class datadog_agent::ubuntu(
 
   package { $datadog_agent::params::package_name:
     ensure  => $agent_version,
-    require => [File['/etc/apt/sources.list.d/datadog.list'],
-                Exec['datadog_apt-get_update']],
+    require => [Apt::Source['datadog'],
+                Exec['apt_update']],
   }
 
   service { $datadog_agent::params::service_name:
-    ensure    => $::datadog_agent::service_ensure,
-    enable    => $::datadog_agent::service_enable,
+    ensure    => $service_ensure,
+    enable    => $service_enable,
     hasstatus => false,
     pattern   => 'dd-agent',
     require   => Package[$datadog_agent::params::package_name],

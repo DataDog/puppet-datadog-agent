@@ -372,19 +372,31 @@ class datadog_agent(
   case $::operatingsystem {
     'Ubuntu','Debian' : {
       if !$agent6_enable {
-        include datadog_agent::ubuntu
+        class { 'datadog_agent::ubuntu':
+          service_ensure => $service_ensure,
+          service_enable => $service_enable,
+          skip_apt_key_trusting  => $skip_apt_key_trusting,
+        }
       } else {
-        include datadog_agent::ubuntu::agent6
+        class { 'datadog_agent::ubuntu::agent6':
+          service_ensure => $service_ensure,
+          service_enable => $service_enable,
+          skip_apt_key_trusting  => $skip_apt_key_trusting,
+        }
       }
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       if !$agent6_enable {
         class { 'datadog_agent::redhat':
           manage_repo => $manage_repo,
+          service_ensure => $service_ensure,
+          service_enable => $service_enable,
         }
       } else {
         class { 'datadog_agent::redhat::agent6':
           manage_repo => $manage_repo,
+          service_ensure => $service_ensure,
+          service_enable => $service_enable,
         }
       }
     }

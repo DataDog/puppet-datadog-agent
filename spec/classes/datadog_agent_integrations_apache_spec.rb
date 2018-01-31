@@ -5,9 +5,6 @@ describe 'datadog_agent::integrations::apache' do
     agents = { '5' => false, '6' => true }
     agents.each do |_, enabled|
       let(:pre_condition) { "class {'::datadog_agent': agent6_enable => #{enabled}}" }
-      let(:facts) {{
-        operatingsystem: 'Ubuntu',
-      }}
       if !enabled
         let(:conf_dir) { '/etc/dd-agent/conf.d' }
       else

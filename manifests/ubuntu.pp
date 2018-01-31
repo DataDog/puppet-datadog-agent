@@ -66,10 +66,9 @@ class datadog_agent::ubuntu(
     comment  => 'Datadog Agent Repository',
     location => $location,
     release  => $release,
-    repos    => $repos, 
-    require => Package['apt-transport-https'],
-    notify  => [Exec['datadog_apt-get_remove_agent6'],
-                Exec['apt_update']],
+    repos    => $repos,
+    require  => Package['apt-transport-https'],
+    notify   => [Exec['datadog_apt-get_remove_agent6'],Exec['apt_update']],
   }
 
   package { 'datadog-agent-base':

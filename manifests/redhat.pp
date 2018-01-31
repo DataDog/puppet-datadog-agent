@@ -32,7 +32,7 @@ class datadog_agent::redhat(
     file { 'DATADOG_RPM_KEY.public':
         owner  => root,
         group  => root,
-        mode   => '600',
+        mode   => '0600',
         path   => $public_key_local,
         source => $gpgkey
     }

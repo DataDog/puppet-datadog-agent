@@ -37,7 +37,10 @@ class datadog_agent::ubuntu(
   #
   # Also, using $::apt_agent6_beta_repo to access fact instead of
   # $facts hash - for compatibility with puppet3.x default behavior
-  if str2bool("$::apt_agent6_beta_repo") and $agent_version == 'latest' {
+  #
+  # lint:ignore:only_variable_string
+  if str2bool("${::apt_agent6_beta_repo}") and $agent_version == 'latest' {
+  # lint:endignore
     exec { 'datadog_apt-get_remove_agent6':
       command     => '/usr/bin/apt-get remove -y -q datadog-agent',
     }
@@ -50,7 +53,9 @@ class datadog_agent::ubuntu(
     }
   }
 
-  if str2bool("$::apt_agent6_beta_repo") {
+  # lint:ignore:only_variable_string
+  if str2bool("${::apt_agent6_beta_repo}") {
+  # lint:endignore
     file { '/etc/apt/sources.list.d/datadog-beta.list':
       ensure => absent,
     }

@@ -9,6 +9,9 @@ fixtures:
     apt:
       repo: "git://github.com/puppetlabs/puppetlabs-apt.git"
       ref: "4.5.0"
+    puppetserver_gem:
+      repo: "git://github.com/puppetlabs/puppetlabs-puppetserver_gem.git"
+      ref: "1.0.0"
     ruby: "git://github.com/puppetlabs/puppetlabs-ruby.git"
   symlinks:
     custom_datadog: "#{source_dir}/spec/custom_fixtures/custom_datadog"

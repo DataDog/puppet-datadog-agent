@@ -197,7 +197,6 @@ class datadog_agent(
   $hiera_tags = false,
   $facts_to_tags = [],
   $puppet_run_reports = false,
-  $puppet_gem_provider = 'puppetserver_gem',
   $puppetmaster_user = $settings::user,
   $non_local_traffic = false,
   $dogstreams = [],
@@ -284,7 +283,6 @@ class datadog_agent(
   validate_array($dogstreams)
   validate_array($facts_to_tags)
   validate_bool($puppet_run_reports)
-  validate_string($puppet_gem_provider)
   validate_string($puppetmaster_user)
   validate_bool($non_local_traffic)
   validate_bool($log_to_syslog)
@@ -350,11 +348,6 @@ class datadog_agent(
     $local_integrations = hiera_hash('datadog_agent::integrations', {})
   } else {
     $local_integrations = $integrations
-  }
-
-  datadog_agent::tag{$local_tags: }
-  datadog_agent::tag{$facts_to_tags:
-    lookup_fact => true,
   }
 
   include datadog_agent::params
@@ -458,6 +451,11 @@ class datadog_agent(
       order   => '02',
     }
 
+    datadog_agent::tag5{$local_tags: }
+    datadog_agent::tag5{$facts_to_tags:
+      lookup_fact => true,
+    }
+
     concat::fragment{ 'datadog footer':
       target  => '/etc/dd-agent/datadog.conf',
       content => template('datadog_agent/datadog_footer.conf.erb'),
@@ -494,6 +492,9 @@ class datadog_agent(
       notify  => Service[$datadog_agent::params::service_name]
     }
 
+    $_local_tags = datadog_agent::tag6($local_tags, false)
+    $_facts_tags = datadog_agent::tag6($facts_to_tags, true)
+
     $agent_config = {
       'api_key' => $api_key,
       'dd_url' => $dd_url,
@@ -505,6 +506,7 @@ class datadog_agent(
       'dogstatsd_non_local_traffic' => $non_local_traffic,
       'log_file' => $agent6_log_file,
       'log_level' => $log_level,
+      'tags' => union($_local_tags, $_facts_tags),
     }
 
     file { '/etc/datadog-agent/datadog.yaml':
@@ -521,9 +523,8 @@ class datadog_agent(
   if $puppet_run_reports {
     class { 'datadog_agent::reports':
       api_key                   => $api_key,
-      puppet_gem_provider       => $puppet_gem_provider,
-      puppetmaster_user         => $puppetmaster_user,
       dogapi_version            => $datadog_agent::params::dogapi_version,
+      puppetmaster_user         => $puppetmaster_user,
       hostname_extraction_regex => $hostname_extraction_regex,
     }
   }

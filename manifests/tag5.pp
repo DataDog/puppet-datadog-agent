@@ -1,8 +1,7 @@
 # Allow custom tags via a define
-define datadog_agent::tag(
+define datadog_agent::tag5(
   $tag_name = $name,
   $lookup_fact = false,
-  $agent6 = false,
 ){
 
   if $lookup_fact{
@@ -12,7 +11,7 @@ define datadog_agent::tag(
       $tags = prefix($value, "${tag_name}:")
       datadog_agent::tag{$tags: }
     } else {
-      if !agent6 and $value {
+      if $value {
         concat::fragment{ "datadog tag ${tag_name}:${value}":
           target  => '/etc/dd-agent/datadog.conf',
           content => "${tag_name}:${value}, ",
@@ -20,7 +19,7 @@ define datadog_agent::tag(
         }
       }
     }
-  } elsif !agent6 {
+  } else {
     concat::fragment{ "datadog tag ${tag_name}":
       target  => '/etc/dd-agent/datadog.conf',
       content => "${tag_name}, ",

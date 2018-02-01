@@ -22,7 +22,7 @@ describe 'datadog_agent' do
   context 'all supported operating systems' do
     ALL_OS.each do |operatingsystem|
       describe "datadog_agent class common actions on #{operatingsystem}" do
-        let(:params) { { puppet_run_reports: true, puppet_gem_provider: 'gem' } }
+        let(:params) { { puppet_run_reports: true } }
         let(:facts) do
           {
             operatingsystem: operatingsystem,
@@ -665,7 +665,7 @@ describe 'datadog_agent' do
       end
 
       describe "datadog_agent 6 class common actions on #{operatingsystem}" do
-        let(:params) { { puppet_run_reports: true, puppet_gem_provider: 'gem', agent6_enable: true } }
+        let(:params) { { puppet_run_reports: true, agent6_enable: true } }
         let(:facts) do
           {
             operatingsystem: operatingsystem,
@@ -726,7 +726,7 @@ describe 'datadog_agent' do
 
   context "with facts to tags set" do
     describe "ensure facts_array outputs a list of tags" do
-      let(:params) { { puppet_run_reports: true, puppet_gem_provider: 'gem', facts_to_tags: ['osfamily', 'facts_array']} }
+      let(:params) { { puppet_run_reports: true, facts_to_tags: ['osfamily', 'facts_array']} }
       let(:facts) do
         {
             operatingsystem: 'CentOS',

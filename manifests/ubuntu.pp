@@ -38,10 +38,8 @@ class datadog_agent::ubuntu(
   # This is a hack - I'm not happy about it, but we should rarely
   # hit this code path. We can't use 'Package' because we later have
   # to ensure dastadog-agent is present.
-  
-  # lint:ignore:only_variable_string
-  if str2bool("${facts['apt_agent6_beta_repo']}") and $agent_version == 'latest' {
-  # lint:endignore
+
+  if $facts['apt_agent6_beta_repo'] and $agent_version == 'latest' {
     exec { 'datadog_apt-get_remove_agent6':
       command     => '/usr/bin/apt-get remove -y -q datadog-agent',
     }
@@ -54,9 +52,7 @@ class datadog_agent::ubuntu(
     }
   }
 
-  # lint:ignore:only_variable_string
-  if str2bool("${facts['apt_agent6_beta_repo']}") {
-  # lint:endignore
+  if $facts['apt_agent6_beta_repo'] {
     apt::source { 'datadog6':
       ensure => absent,
     }

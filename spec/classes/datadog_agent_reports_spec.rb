@@ -8,7 +8,6 @@ describe 'datadog_agent::reports' do
         hostname_extraction_regex: nil,
         puppetmaster_user: 'puppet',
         dogapi_version: 'installed',
-        puppet_gem_provider: 'gem'
       }
     end
     ALL_OS.each do |operatingsystem|
@@ -43,7 +42,7 @@ describe 'datadog_agent::reports' do
         it do
           should contain_package('dogapi')\
             .with_ensure('installed')
-            .with_provider('gem')
+            .with_provider('puppetserver_gem')
         end
 
         it do
@@ -61,8 +60,7 @@ describe 'datadog_agent::reports' do
         api_key: 'notanapikey',
         hostname_extraction_regex: nil,
         puppetmaster_user: 'puppet',
-        dogapi_version: '1.2.2',
-        puppet_gem_provider: 'gem'
+        dogapi_version: '1.2.2'
       }
     end
     describe "datadog_agent class dogapi version override" do
@@ -87,7 +85,7 @@ describe 'datadog_agent::reports' do
       it do
         should contain_package('dogapi')\
           .with_ensure('1.2.2')
-          .with_provider('gem')
+          .with_provider('puppetserver_gem')
       end
 
       it do

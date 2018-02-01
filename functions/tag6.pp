@@ -1,7 +1,11 @@
+# For compatibility with puppet 4.6 return type is left
+# out of the function signature, but `tag6` should return
+# an Array
+
 function datadog_agent::tag6(
   Variant[Array, String] $tag_names,
   Variant[String, Boolean] $lookup_fact = false,
-) >> Array {
+) {
   if is_array($tag_names) {
     $tags = $tag_names.reduce([]) |$_tags , $tag| {
         concat($_tags, datadog_agent::tag6($tag, lookup_fact))

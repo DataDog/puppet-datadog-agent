@@ -35,7 +35,11 @@ instances:
     # Create events whenever a container status change.
     # Defaults to true.
     #
-    # collect_events: false
+<% if @collect_events != true %>
+    collect_events: false
+<% else %>
+    collect_events: true
+<% end %>
 
     # Collect disk usage per container with docker.container.size_rw and
     # docker.container.size_rootfs metrics.

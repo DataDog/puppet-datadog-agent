@@ -14,7 +14,7 @@
 # Sample Usage:
 #
 #
-class datadog_agent::redhat(
+class datadog_agent::redhat::agent5(
   $baseurl = "https://yum.datadoghq.com/rpm/${::architecture}/",
   $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
   $manage_repo = true,

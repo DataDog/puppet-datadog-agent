@@ -34,7 +34,7 @@ class datadog_agent::integrations::zk (
 
   validate_array($servers)
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/zk.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/zk.yaml"

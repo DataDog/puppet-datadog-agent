@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'datadog_agent::ubuntu' do
+describe 'datadog_agent::ubuntu::agent5' do
   let(:facts) do
     {
       osfamily: 'debian',

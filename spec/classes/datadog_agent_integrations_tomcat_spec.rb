@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe 'datadog_agent::integrations::tomcat' do
   context 'supported agents - v5 and v6' do
-    agents = { '5' => false, '6' => true }
+    agents = { '5' => true, '6' => false }
     agents.each do |_, enabled|
-      let(:pre_condition) { "class {'::datadog_agent': agent6_enable => #{enabled}}" }
+      let(:pre_condition) { "class {'::datadog_agent': agent5_enable => #{enabled}}" }
       let(:facts) {{
         operatingsystem: 'Ubuntu',
       }}
-      if !enabled
+      if enabled
         let(:conf_dir) { '/etc/dd-agent/conf.d' }
       else
         let(:conf_dir) { '/etc/datadog-agent/conf.d' }

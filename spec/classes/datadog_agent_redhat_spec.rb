@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'datadog_agent::redhat' do
+describe 'datadog_agent::redhat::agent5' do
   let(:facts) do
     {
       osfamily: 'redhat',

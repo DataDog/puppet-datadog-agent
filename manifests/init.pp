@@ -250,7 +250,7 @@ class datadog_agent(
   $sd_template_dir = '',
   $sd_jmx_enable = false,
   $consul_token = '',
-  $agent6_enable = $datadog_agent::params::agent6_enable,
+  $agent5_enable = $datadog_agent::params::agent5_enable,
   $conf_dir = $datadog_agent::params::conf_dir,
   $conf6_dir = $datadog_agent::params::conf6_dir,
   $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
@@ -334,7 +334,7 @@ class datadog_agent(
   validate_bool($sd_jmx_enable)
   validate_string($consul_token)
   validate_bool($apm_enabled)
-  validate_bool($agent6_enable)
+  validate_bool($agent5_enable)
   validate_string($apm_env)
   validate_bool($process_agent_enabled)
 
@@ -364,8 +364,8 @@ class datadog_agent(
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {
-      if !$agent6_enable {
-        class { 'datadog_agent::ubuntu':
+      if $agent5_enable {
+        class { 'datadog_agent::ubuntu::agent5':
           service_ensure        => $service_ensure,
           service_enable        => $service_enable,
           skip_apt_key_trusting => $skip_apt_key_trusting,
@@ -379,8 +379,8 @@ class datadog_agent(
       }
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
-      if !$agent6_enable {
-        class { 'datadog_agent::redhat':
+      if $agent5_enable {
+        class { 'datadog_agent::redhat::agent5':
           manage_repo    => $manage_repo,
           service_ensure => $service_ensure,
           service_enable => $service_enable,
@@ -412,7 +412,7 @@ class datadog_agent(
     require => Package[$datadog_agent::params::package_name],
   }
 
-  if !$agent6_enable {
+  if $agent5_enable {
     file { '/etc/dd-agent':
       ensure  => directory,
       owner   => $dd_user,

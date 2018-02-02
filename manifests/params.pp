@@ -15,7 +15,7 @@
 # Sample Usage:
 #
 class datadog_agent::params {
-  $agent6_enable  = false
+  $agent5_enable  = false
   $conf_dir       = '/etc/dd-agent/conf.d'
   $conf6_dir      = '/etc/datadog-agent/conf.d'
   $dd_user        = 'dd-agent'

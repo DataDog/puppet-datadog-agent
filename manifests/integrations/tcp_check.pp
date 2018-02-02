@@ -117,7 +117,7 @@ class datadog_agent::integrations::tcp_check (
     $_instances = $instances
   }
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/tcp_check.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/tcp_check.yaml"

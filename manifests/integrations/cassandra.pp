@@ -35,7 +35,7 @@ class datadog_agent::integrations::cassandra(
   require ::datadog_agent
   validate_hash($tags)
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/cassandra.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/cassandra.yaml"

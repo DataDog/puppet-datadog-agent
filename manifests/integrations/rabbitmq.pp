@@ -70,7 +70,7 @@ class datadog_agent::integrations::rabbitmq (
   validate_array($vhosts)
   include datadog_agent
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/rabbitmq.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/rabbitmq.yaml"

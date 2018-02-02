@@ -22,7 +22,9 @@ describe 'datadog_agent' do
   context 'all supported operating systems' do
     ALL_OS.each do |operatingsystem|
       describe "datadog_agent class common actions on #{operatingsystem}" do
-        let(:params) { { puppet_run_reports: true } }
+        let(:params) { { puppet_run_reports: true,
+                         agent5_enable: true,
+        } }
         let(:facts) do
           {
             operatingsystem: operatingsystem,
@@ -216,261 +218,348 @@ describe 'datadog_agent' do
 
             context 'with user provided paramaters' do
             context 'with a custom dd_url' do
-                let(:params) {{:dd_url => 'https://notaurl.datadoghq.com'}}
+                let(:params) {{ :dd_url => 'https://notaurl.datadoghq.com',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog header').with(
                     'content' => /^dd_url: https:\/\/notaurl.datadoghq.com\n/,
                 )}
             end
             context 'with a custom proxy_host' do
-                let(:params) {{:proxy_host => 'localhost'}}
+                let(:params) {{ :proxy_host => 'localhost',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog header').with(
                     'content' => /^proxy_host: localhost\n/,
                 )}
             end
             context 'with a custom proxy_port' do
-                let(:params) {{:proxy_port => '1234'}}
+                let(:params) {{ :proxy_port => '1234',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog header').with(
                     'content' => /^proxy_port: 1234\n/,
                 )}
             end
             context 'with a custom proxy_port, specified as an integer' do
-                let(:params) {{:proxy_port => 1234}}
+                let(:params) {{ :proxy_port => 1234,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog header').with(
                     'content' => /^proxy_port: 1234\n/,
                 )}
             end
             context 'with a custom proxy_user' do
-                let(:params) {{:proxy_user => 'notauser'}}
+                let(:params) {{ :proxy_user => 'notauser',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog header').with(
                     'content' => /^proxy_user: notauser\n/,
                 )}
             end
             context 'with a custom api_key' do
-                let(:params) {{:api_key => 'notakey'}}
+                let(:params) {{ :api_key => 'notakey',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog header').with(
                     'content' => /^api_key: notakey\n/,
                 )}
             end
             context 'with a custom hostname' do
-                let(:params) {{:host => 'notahost'}}
+                let(:params) {{ :host => 'notahost',
+                                :agent5_enable => true,
+                }}
 
                 it { should contain_concat__fragment('datadog header').with(
                     'content' => /^hostname: notahost\n/,
                 )}
             end
             context 'with non_local_traffic set to true' do
-                let(:params) {{:non_local_traffic => true}}
+                let(:params) {{ :non_local_traffic => true,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^non_local_traffic: true\n/,
                 )}
             end
             #Should expand testing to cover changes to the case upcase
             context 'with log level set to critical' do
-                let(:params) {{:log_level => 'critical'}}
+                let(:params) {{ :log_level => 'critical',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^log_level: CRITICAL\n/,
                 )}
             end
             context 'with a custom hostname' do
-                let(:params) {{:host => 'notahost'}}
+                let(:params) {{ :host => 'notahost',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog header').with(
                     'content' => /^hostname: notahost\n/,
                 )}
             end
             context 'with log_to_syslog set to false' do
-                let(:params) {{:log_to_syslog => false}}
+                let(:params) {{ :log_to_syslog => false,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^log_to_syslog: no\n/,
                 )}
             end
             context 'with skip_ssl_validation set to true' do
-                let(:params) {{:skip_ssl_validation => true }}
+                let(:params) {{ :skip_ssl_validation => true, 
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog header').with(
                     'content' => /^skip_ssl_validation: true\n/,
                 )}
             end
             context 'with collect_ec2_tags set to yes' do
-                let(:params) {{:collect_ec2_tags => true }}
+                let(:params) {{ :collect_ec2_tags => true,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^collect_ec2_tags: true\n/,
                 )}
             end
             context 'with collect_instance_metadata set to no' do
-                let(:params) {{:collect_instance_metadata => false }}
+                let(:params) {{ :collect_instance_metadata => false,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^collect_instance_metadata: false\n/,
                 )}
             end
             context 'with recent_point_threshold set to 60' do
-                let(:params) {{:recent_point_threshold => '60' }}
+                let(:params) {{ :recent_point_threshold => '60',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^recent_point_threshold: 60\n/,
                 )}
             end
             context 'with a custom port set to 17125' do
-                let(:params) {{:listen_port => '17125' }}
+                let(:params) {{ :listen_port => '17125',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^listen_port: 17125\n/,
                 )}
             end
             context 'with a custom port set to 17125, specified as an integer' do
-                let(:params) {{:listen_port => 17125 }}
+                let(:params) {{ :listen_port => 17125,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^listen_port: 17125\n/,
                 )}
             end
             context 'listening for graphite data on port 17124' do
-                let(:params) {{:graphite_listen_port => '17124' }}
+                let(:params) {{ :graphite_listen_port => '17124',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^graphite_listen_port: 17124\n/,
                 )}
             end
             context 'listening for graphite data on port 17124, port specified as an integer' do
-                let(:params) {{:graphite_listen_port => 17124 }}
+                let(:params) {{ :graphite_listen_port => 17124,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^graphite_listen_port: 17124\n/,
                 )}
             end
             context 'with configuration for a custom checks.d' do
-                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d' }}
+                let(:params) {{ :additional_checksd => '/etc/dd-agent/checks_custom.d',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^additional_checksd: \/etc\/dd-agent\/checks_custom.d\n/,
                 )}
             end
             context 'with configuration for a custom checks.d' do
-                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d' }}
+                let(:params) {{ :additional_checksd => '/etc/dd-agent/checks_custom.d',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^additional_checksd: \/etc\/dd-agent\/checks_custom.d\n/,
                 )}
             end
             context 'with configuration for a custom checks.d' do
-                let(:params) {{:additional_checksd => '/etc/dd-agent/checks_custom.d' }}
+                let(:params) {{ :additional_checksd => '/etc/dd-agent/checks_custom.d',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^additional_checksd: \/etc\/dd-agent\/checks_custom.d\n/,
                 )}
             end
             context 'with using the Tornado HTTP client' do
-                let(:params) {{:use_curl_http_client => true }}
+                let(:params) {{ :use_curl_http_client => true,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^use_curl_http_client: true\n/,
                 )}
             end
             context 'with a custom bind_host' do
-                let(:params) {{:bind_host => 'test'  }}
+                let(:params) {{ :bind_host => 'test',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^bind_host: test\n/,
                 )}
             end
             context 'with pup enabled' do
-                let(:params) {{:use_pup => true }}
+                let(:params) {{ :use_pup => true,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^use_pup: yes\n/,
                 )}
             end
             context 'with a custom pup_port' do
-                let(:params) {{:pup_port => '17126' }}
+                let(:params) {{ :pup_port => '17126',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^pup_port: 17126\n/,
                 )}
             end
             context 'with a custom pup_port, specified as an integer' do
-                let(:params) {{:pup_port => 17126 }}
+                let(:params) {{ :pup_port => 17126,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^pup_port: 17126\n/,
                 )}
             end
             context 'with a custom pup_interface' do
-                let(:params) {{:pup_interface => 'notalocalhost' }}
+                let(:params) {{ :pup_interface => 'notalocalhost',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^pup_interface: notalocalhost\n/,
                 )}
             end
             context 'with a custom pup_url' do
-                let(:params) {{:pup_url => 'http://localhost:17126' }}
+                let(:params) {{ :pup_url => 'http://localhost:17126',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^pup_url: http:\/\/localhost:17126\n/,
                 )}
             end
             context 'with use_dogstatsd set to no' do
-                let(:params) {{:use_dogstatsd => false}}
+                let(:params) {{ :use_dogstatsd => false,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^use_dogstatsd: no\n/,
                 )}
             end
             context 'with use_dogstatsd set to yes' do
-                let(:params) {{:use_dogstatsd => true}}
+                let(:params) {{ :use_dogstatsd => true,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^use_dogstatsd: yes\n/,
                 )}
             end
             context 'with dogstatsd_port set to 8126 - must be specified as an integer!' do
-                let(:params) {{:dogstatsd_port => 8126 }}
+                let(:params) {{ :dogstatsd_port => 8126,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^dogstatsd_port: 8126\n/,
                 )}
             end
             context 'with dogstatsd_port set to 8126' do
-                let(:params) {{:dogstatsd_port  => 8126}}
+                let(:params) {{ :dogstatsd_port  => 8126,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^dogstatsd_port: 8126\n/,
                 )}
             end
             context 'with dogstatsd_target set to localhost:17124' do
-                let(:params) {{:dogstatsd_target  => 'http://localhost:17124'}}
+                let(:params) {{ :dogstatsd_target  => 'http://localhost:17124',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^dogstatsd_target: http:\/\/localhost:17124\n/,
                 )}
             end
             context 'with dogstatsd_interval set to 5' do
-                let(:params) {{:dogstatsd_interval  => '5' }}
+                let(:params) {{ :dogstatsd_interval  => '5',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^dogstatsd_interval: 5\n/,
                 )}
             end
             context 'with dogstatsd_interval set to 5' do
-                let(:params) {{:dogstatsd_interval  => '5' }}
+                let(:params) {{ :dogstatsd_interval  => '5',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^dogstatsd_interval: 5\n/,
                 )}
             end
             context 'with dogstatsd_normalize set to false' do
-                let(:params) {{:dogstatsd_normalize  => false }}
+                let(:params) {{ :dogstatsd_normalize  => false,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^dogstatsd_normalize: no\n/,
                 )}
             end
             context 'with statsd_forward_host set to localhost:3958' do
-                let(:params) {{:statsd_forward_host  => 'localhost:3958' }}
+                let(:params) {{ :statsd_forward_host  => 'localhost:3958',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^statsd_forward_host: localhost:3958\n/,
                 )}
             end
             context 'with statsd_forward_port set to 8126' do
-                let(:params) {{:statsd_forward_port => '8126' }}
+                let(:params) {{ :statsd_forward_port => '8126',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^statsd_forward_port: 8126\n/,
                 )}
             end
             context 'with statsd_forward_port set to 8126, specified as an integer' do
-                let(:params) {{:statsd_forward_port => 8126 }}
+                let(:params) {{ :statsd_forward_port => 8126,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^statsd_forward_port: 8126\n/,
                 )}
             end
             context 'with device_blacklist_re set to test' do
-                let(:params) {{:device_blacklist_re  => 'test' }}
+                let(:params) {{ :device_blacklist_re  => 'test',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^device_blacklist_re: test\n/,
                 )}
             end
             context 'with device_blacklist_re set to test' do
-                let(:params) {{:device_blacklist_re  => 'test' }}
+                let(:params) {{ :device_blacklist_re  => 'test',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^device_blacklist_re: test\n/,
                 )}
             end
             context 'with ganglia_host set to localhost and ganglia_port set to 12345' do
-                let(:params) {{:ganglia_host => 'testhost', :ganglia_port => '12345' }}
+                let(:params) {{ :ganglia_host => 'testhost', 
+                                :ganglia_port => '12345',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^ganglia_port: 12345\n/,
                 )}
@@ -479,87 +568,114 @@ describe 'datadog_agent' do
                 )}
             end
             context 'with ganglia_host set to localhost and ganglia_port set to 12345, port specified as an integer' do
-                let(:params) {{:ganglia_host => 'testhost', :ganglia_port => 12345 }}
+                let(:params) {{ :ganglia_host => 'testhost',
+                                :ganglia_port => 12345,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^ganglia_port: 12345\n/,
                 )}
             end
             context 'with dogstreams set to /path/to/log1:/path/to/parser' do
-                let(:params) {{:dogstreams  => ['/path/to/log1:/path/to/parser'] }}
+                let(:params) {{ :dogstreams  => ['/path/to/log1:/path/to/parser'],
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^dogstreams: \/path\/to\/log1:\/path\/to\/parser\n/,
                 )}
             end
             context 'with custom_emitters set to /test/emitter' do
-                let(:params) {{:custom_emitters  => '/test/emitter/' }}
+                let(:params) {{ :custom_emitters  => '/test/emitter/',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^custom_emitters: \/test\/emitter\/\n/,
                 )}
             end
             context 'with custom_emitters set to /test/emitter' do
-                let(:params) {{:custom_emitters  => '/test/emitter/' }}
+                let(:params) {{ :custom_emitters  => '/test/emitter/',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^custom_emitters: \/test\/emitter\/\n/,
                 )}
             end
             context 'with collector_log_file set to /test/log' do
-                let(:params) {{:collector_log_file  => '/test/log' }}
+                let(:params) {{ :collector_log_file  => '/test/log',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^collector_log_file: \/test\/log\n/,
                 )}
             end
             context 'with forwarder_log_file set to /test/log' do
-                let(:params) {{:forwarder_log_file  => '/test/log' }}
+                let(:params) {{ :forwarder_log_file  => '/test/log',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^forwarder_log_file: \/test\/log\n/,
                 )}
             end
             context 'with forwarder_log_file set to /test/log' do
-                let(:params) {{:forwarder_log_file  => '/test/log' }}
+                let(:params) {{ :forwarder_log_file  => '/test/log',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^forwarder_log_file: \/test\/log\n/,
                 )}
             end
             context 'with dogstatsd_log_file set to /test/log' do
-                let(:params) {{:dogstatsd_log_file  => '/test/log' }}
+                let(:params) {{ :dogstatsd_log_file  => '/test/log',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^dogstatsd_log_file: \/test\/log\n/,
                 )}
             end
             context 'with pup_log_file set to /test/log' do
-                let(:params) {{:pup_log_file  => '/test/log' }}
+                let(:params) {{ :pup_log_file  => '/test/log',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^pup_log_file: \/test\/log\n/,
                 )}
             end
             context 'with syslog location set to localhost' do
-                let(:params) {{:syslog_host  => 'localhost' }}
+                let(:params) {{ :syslog_host  => 'localhost',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^syslog_host: localhost\n/,
                 )}
             end
             context 'with syslog port set to 8080' do
-                let(:params) {{:syslog_port => '8080' }}
+                let(:params) {{ :syslog_port => '8080',
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^syslog_port: 8080\n/,
                 )}
             end
             context 'with syslog port set to 8080, specified as an integer' do
-                let(:params) {{:syslog_port => 8080 }}
+                let(:params) {{ :syslog_port => 8080,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^syslog_port: 8080\n/,
                 )}
             end
             context 'with apm_enabled set to true' do
-                let(:params) {{:apm_enabled  => true }}
+                let(:params) {{ :apm_enabled  => true,
+                                :agent5_enable => true,
+                }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^apm_enabled: true\n/,
                 )}
             end
             context 'with apm_enabled set to true and env specified' do
-                let(:params) {
-                    {:apm_enabled  => true,
-                     :apm_env => 'foo',
+                let(:params) {{ :apm_enabled  => true,
+                                :apm_env => 'foo',
+                                :agent5_enable => true,
                 }}
                 it { should contain_concat__fragment('datadog footer').with(
                     'content' => /^apm_enabled: true\n/,
@@ -575,12 +691,12 @@ describe 'datadog_agent' do
                 )}
             end
             context 'with service_discovery enabled' do
-                let(:params) {
-                    {:service_discovery_backend  => 'docker',
-                     :sd_config_backend          => 'etcd',
-                     :sd_backend_host            => 'localhost',
-                     :sd_backend_port            => '8080',
-                     :sd_jmx_enable              =>  true,
+                let(:params) {{ :service_discovery_backend  => 'docker', 
+                                :sd_config_backend          => 'etcd', 
+                                :sd_backend_host            => 'localhost', 
+                                :sd_backend_port            => '8080', 
+                                :sd_jmx_enable              =>  true,
+                                :agent5_enable => true,
                 }}
                 it { should contain_concat__fragment('datadog footer').with(
                 'content' => /^service_discovery_backend: docker\n/,
@@ -599,8 +715,8 @@ describe 'datadog_agent' do
                 )}
             end
             context 'with extra_template enabled' do
-                let(:params) {
-                    {:extra_template => 'custom_datadog/extra_template_test.erb',
+                let(:params) {{ :extra_template => 'custom_datadog/extra_template_test.erb',
+                                :agent5_enable => true,
                 }}
                 it { should contain_concat__fragment('datadog extra_template footer').with(
                 'order' => '06',
@@ -646,8 +762,8 @@ describe 'datadog_agent' do
                 )}
             end
             context 'with process_agent enabled' do
-                let(:params) {
-                    {:process_agent_enabled => true,
+                let(:params) {{ :process_agent_enabled => true,
+                                :agent5_enable => true,
                 }}
                 it { should contain_concat__fragment('datadog footer').with(
                 'content' => /^process_agent_enabled: true\n/,
@@ -658,14 +774,14 @@ describe 'datadog_agent' do
         end
 
         if DEBIAN_OS.include?(operatingsystem)
-          it { should contain_class('datadog_agent::ubuntu') }
+          it { should contain_class('datadog_agent::ubuntu::agent5') }
         elsif REDHAT_OS.include?(operatingsystem)
-          it { should contain_class('datadog_agent::redhat') }
+          it { should contain_class('datadog_agent::redhat::agent5') }
         end
       end
 
       describe "datadog_agent 6 class common actions on #{operatingsystem}" do
-        let(:params) { { puppet_run_reports: true, agent6_enable: true } }
+        let(:params) { { puppet_run_reports: true } }
         let(:facts) do
           {
             operatingsystem: operatingsystem,

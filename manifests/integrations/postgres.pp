@@ -69,7 +69,7 @@ class datadog_agent::integrations::postgres(
   validate_array($tables)
   validate_bool($use_psycopg2)
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/postgres.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/postgres.yaml"

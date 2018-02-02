@@ -47,7 +47,7 @@ class datadog_agent::integrations::disk (
     validate_re($all_partitions, '^(no|yes)$', "all_partitions should be either 'yes' or 'no'")
   }
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/disk.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/disk.yaml"

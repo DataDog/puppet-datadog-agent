@@ -37,7 +37,7 @@ class datadog_agent::integrations::dns_check (
 
   validate_array($checks)
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/dns_check.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/dns_check.yaml"

@@ -608,6 +608,39 @@ describe 'datadog_agent' do
                 it { should contain_concat__fragment('datadog extra_template footer').with(
                 'content' => /^# extra template is here\n/,
                 )}
+                it { should_not contain_concat__fragment('datadog apm footer').with(
+                'order' => '07',
+                )}
+            end
+            context 'with APM enabled' do
+                let(:params) {{
+                    :apm_enabled => true,
+                    :apm_env => 'foo',
+                }}
+                it { should contain_concat__fragment('datadog apm footer').with(
+                'order' => '06',
+                )}
+            end
+            context 'with APM enabled but no APM env' do
+                let(:params) {{
+                    :apm_enabled => true,
+                }}
+                it { should_not contain_concat__fragment('datadog apm footer').with(
+                'order' => '06',
+                )}
+            end
+            context 'with extra_template and APM enabled' do
+                let(:params) {{
+                    :extra_template => 'custom_datadog/extra_template_test.erb',
+                    :apm_enabled => true,
+                    :apm_env => 'foo',
+                }}
+                it { should contain_concat__fragment('datadog extra_template footer').with(
+                'order' => '06',
+                )}
+                it { should contain_concat__fragment('datadog extra_template footer').with(
+                'content' => /^# extra template is here\n/,
+                )}
                 it { should contain_concat__fragment('datadog apm footer').with(
                 'order' => '07',
                 )}

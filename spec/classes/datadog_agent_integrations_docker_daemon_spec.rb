@@ -47,7 +47,7 @@ describe 'datadog_agent::integrations::docker_daemon' do
         let(:params) {{
           tags: %w{ foo bar baz },
         }}
-        it { should contain_file(conf_file).with_content(/tags:\s+- foo\s+- bar\s+- baz\s*?[^-]/m) }
+        it { should contain_file(conf_file).with_content(%r{tags: \["foo", "bar", "baz"\]}) }
       end
 
       context 'with tags parameter with an empty tag' do
@@ -59,7 +59,7 @@ describe 'datadog_agent::integrations::docker_daemon' do
             tags: [ 'foo', '', 'baz' ]
           }}
 
-          it { should contain_file(conf_file).with_content(/tags:\s+- foo\s+- baz\s*?[^-]/m) }
+          it { should contain_file(conf_file).with_content(%r{tags: \["foo", "baz"\]}) }
         end
 
         context 'single element array of an empty string' do
@@ -67,7 +67,7 @@ describe 'datadog_agent::integrations::docker_daemon' do
             tags: [''],
           }}
 
-          skip("undefined behavior")
+          it { should contain_file(conf_file).with_content(%r{tags: \[\]}) }
         end
 
         context 'single value empty string' do
@@ -75,7 +75,7 @@ describe 'datadog_agent::integrations::docker_daemon' do
             tags: '',
           }}
 
-          skip("doubly undefined behavior")
+          it { should contain_file(conf_file).with_content(%r{tags: \[\]}) }
         end
       end
     end

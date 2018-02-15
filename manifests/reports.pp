@@ -50,6 +50,6 @@ class datadog_agent::reports(
 
   package{ 'dogapi':
     ensure   => $dogapi_version,
-    provider => 'system_gem',
+    provider => 'puppetserver_gem',
   }
 }

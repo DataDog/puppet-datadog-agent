@@ -15,6 +15,6 @@
 define datadog_agent::ubuntu::install_key() {
   apt::key { $name:
     id     => $name,
-    server => 'keyserver.ubuntu.com:80',
+    server => 'hkp://keyserver.ubuntu.com:80',
   }
 }

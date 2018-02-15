@@ -8,7 +8,7 @@ class datadog_agent::ubuntu::agent6(
   $agent_version = 'latest',
   $other_keys = ['935F5A436A5A6E8788F0765B226AE980C7A7DA52'],
   $location = 'https://apt.datadoghq.com',
-  $release = 'beta',
+  $release = 'stable',
   $repos = 'main',
   $skip_apt_key_trusting = false,
   $service_ensure = 'running',

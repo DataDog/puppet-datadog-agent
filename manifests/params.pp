@@ -15,16 +15,18 @@
 # Sample Usage:
 #
 class datadog_agent::params {
-  $agent5_enable  = false
-  $conf_dir       = '/etc/dd-agent/conf.d'
-  $conf6_dir      = '/etc/datadog-agent/conf.d'
-  $dd_user        = 'dd-agent'
-  $dd_group       = 'root'
-  $dd_groups      = undef
-  $package_name   = 'datadog-agent'
-  $service_name   = 'datadog-agent'
-  $dogapi_version = 'installed'
-  $conf_dir_purge = false
+  $agent5_enable    = false
+  $agent5_rhel_repo = 'https://yum.datadoghq.com/rpm/${::architecture}/'
+  $agent6_rhel_repo = 'https://yum.datadoghq.com/rpm/6/${::architecture}/'
+  $conf_dir         = '/etc/dd-agent/conf.d'
+  $conf6_dir        = '/etc/datadog-agent/conf.d'
+  $dd_user          = 'dd-agent'
+  $dd_group         = 'root'
+  $dd_groups        = undef
+  $package_name     = 'datadog-agent'
+  $service_name     = 'datadog-agent'
+  $dogapi_version   = 'installed'
+  $conf_dir_purge   = false
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {

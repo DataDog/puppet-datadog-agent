@@ -262,6 +262,8 @@ class datadog_agent(
   $apm_enabled = false,
   $apm_env = '',
   $process_agent_enabled = false,
+  $agent5_repo_uri = $datadog_agent::params::agent5_rhel_repo,
+  $agent6_repo_uri = $datadog_agent::params::agent6_rhel_repo,
 ) inherits datadog_agent::params {
 
   # Allow ports to be passed as integers or strings.
@@ -337,6 +339,8 @@ class datadog_agent(
   validate_bool($agent5_enable)
   validate_string($apm_env)
   validate_bool($process_agent_enabled)
+  validate_string($agent5_repo_uri)
+  validate_string($agent6_repo_uri)
 
   if $hiera_tags {
     $local_tags = hiera_array('datadog_agent::tags', [])
@@ -381,12 +385,14 @@ class datadog_agent(
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       if $agent5_enable {
         class { 'datadog_agent::redhat::agent5':
+          baseurl        => $agent5_repo_uri,
           manage_repo    => $manage_repo,
           service_ensure => $service_ensure,
           service_enable => $service_enable,
         }
       } else {
         class { 'datadog_agent::redhat::agent6':
+          baseurl        => $agent6_repo_uri,
           manage_repo    => $manage_repo,
           service_ensure => $service_ensure,
           service_enable => $service_enable,

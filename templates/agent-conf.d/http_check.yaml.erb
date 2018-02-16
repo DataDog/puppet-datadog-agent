@@ -51,6 +51,9 @@ instances:
 <% if instance['days_critical'] -%>
     days_critical: <%= instance['days_critical'] %>
 <% end -%>
+<% if instance['ca_certs'] -%>
+    ca_certs: <%= instance['ca_certs'] %>
+<% end -%>
 <% end -%>
 <% end -%>
 <% if instance['headers'] and ! instance['headers'].empty? -%>

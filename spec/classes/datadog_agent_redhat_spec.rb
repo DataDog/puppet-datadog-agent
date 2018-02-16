@@ -18,8 +18,6 @@ describe 'datadog_agent::redhat::agent5' do
         .with_gpgcheck(1)\
           .with_gpgkey('https://yum.datadoghq.com/DATADOG_RPM_KEY.public')\
         .with_baseurl('https://yum.datadoghq.com/rpm/x86_64/')
-      should_not contain_yumrepo('datadog')
-      should_not contain_yumrepo('datadog6')
     end
   end
   context 'with manage_repo => false' do
@@ -67,9 +65,7 @@ describe 'datadog_agent::redhat::agent6' do
         .with_enabled(1)\
         .with_gpgcheck(1)\
           .with_gpgkey('https://yum.datadoghq.com/DATADOG_RPM_KEY.public')\
-        .with_baseurl('https://yum.datadoghq.com/beta/x86_64/')
-      should_not contain_yumrepo('datadog')
-      should_not contain_yumrepo('datadog5')
+        .with_baseurl('https://yum.datadoghq.com/rpm/6/x86_64/')
     end
   end
   context 'with manage_repo => false' do

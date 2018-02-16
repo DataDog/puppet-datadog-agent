@@ -474,16 +474,13 @@ class datadog_agent(
         content => template($extra_template),
         order   => '06',
       }
-      $apm_footer_order = '07'
-    } else {
-      $apm_footer_order = '06'
     }
 
     if ($apm_enabled == true) and ($apm_env != '') {
       concat::fragment{ 'datadog apm footer':
         target  => '/etc/dd-agent/datadog.conf',
         content => template('datadog_agent/datadog_apm_footer.conf.erb'),
-        order   => $apm_footer_order,
+        order   => '07',
       }
     }
   } else {

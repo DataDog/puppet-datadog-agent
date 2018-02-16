@@ -687,7 +687,7 @@ describe 'datadog_agent' do
                     'content' => /^env: foo\n/,
                 )}
                 it { should contain_concat__fragment('datadog apm footer').with(
-                    'order' => '06',
+                    'order' => '07',
                 )}
             end
             context 'with service_discovery enabled' do
@@ -732,17 +732,19 @@ describe 'datadog_agent' do
                 let(:params) {{
                     :apm_enabled => true,
                     :apm_env => 'foo',
+                    :agent5_enable => true,
                 }}
                 it { should contain_concat__fragment('datadog apm footer').with(
-                'order' => '06',
+                'order' => '07',
                 )}
             end
             context 'with APM enabled but no APM env' do
                 let(:params) {{
                     :apm_enabled => true,
+                    :agent5_enable => true,
                 }}
                 it { should_not contain_concat__fragment('datadog apm footer').with(
-                'order' => '06',
+                'order' => '07',
                 )}
             end
             context 'with extra_template and APM enabled' do
@@ -750,6 +752,7 @@ describe 'datadog_agent' do
                     :extra_template => 'custom_datadog/extra_template_test.erb',
                     :apm_enabled => true,
                     :apm_env => 'foo',
+                    :agent5_enable => true,
                 }}
                 it { should contain_concat__fragment('datadog extra_template footer').with(
                 'order' => '06',

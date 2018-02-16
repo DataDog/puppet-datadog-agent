@@ -44,12 +44,28 @@ class datadog_agent::redhat::agent5(
         require => File['DATADOG_RPM_KEY.public'],
     }
 
+    if ($facts['yum_agent6_beta_repo'] or $facts['yum_agent6_repo']) and $agent_version == 'latest' {
+      exec { 'datadog_yum_remove_agent6':
+        command     => '/usr/bin/yum -y -q remove datadog-agent',
+      }
+    } else {
+      exec { 'datadog_yum_remove_agent6':
+        command     => ':',  # NOOP builtin
+        noop        => true,
+        refreshonly => true,
+        provider    => 'shell',
+      }
+    }
+
+
     yumrepo {'datadog':
       ensure   => absent,
+      notify   => Exec['datadog_yum_remove_agent6'],
     }
 
     yumrepo {'datadog6':
       ensure   => absent,
+      notify   => Exec['datadog_yum_remove_agent6'],
     }
 
     yumrepo {'datadog5':

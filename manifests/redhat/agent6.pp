@@ -34,6 +34,14 @@ class datadog_agent::redhat::agent6(
     }
 
     yumrepo {'datadog':
+      ensure   => absent,
+    }
+
+    yumrepo {'datadog5':
+      ensure   => absent,
+    }
+
+    yumrepo {'datadog6':
       enabled  => 1,
       gpgcheck => 1,
       gpgkey   => 'https://yum.datadoghq.com/DATADOG_RPM_KEY.public',

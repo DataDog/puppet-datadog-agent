@@ -264,6 +264,7 @@ class datadog_agent(
   $process_agent_enabled = false,
   $agent5_repo_uri = $datadog_agent::params::agent5_default_repo,
   $agent6_repo_uri = $datadog_agent::params::agent6_default_repo,
+  $apt_release = $datadog_agent::params::apt_default_release,
 ) inherits datadog_agent::params {
 
   # Allow ports to be passed as integers or strings.
@@ -341,6 +342,7 @@ class datadog_agent(
   validate_bool($process_agent_enabled)
   validate_string($agent5_repo_uri)
   validate_string($agent6_repo_uri)
+  validate_string($apt_release)
 
   if $hiera_tags {
     $local_tags = hiera_array('datadog_agent::tags', [])
@@ -373,6 +375,7 @@ class datadog_agent(
           service_ensure        => $service_ensure,
           service_enable        => $service_enable,
           location              => $agent5_repo_uri,
+          release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
         }
       } else {
@@ -380,6 +383,7 @@ class datadog_agent(
           service_ensure        => $service_ensure,
           service_enable        => $service_enable,
           location              => $agent6_repo_uri,
+          release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
         }
       }

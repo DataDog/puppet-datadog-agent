@@ -8,7 +8,7 @@ class datadog_agent::ubuntu::agent6(
   $agent_version = 'latest',
   $other_keys = ['935F5A436A5A6E8788F0765B226AE980C7A7DA52'],
   $location = $datadog_agent::params::agent6_default_repo,
-  $release = 'stable',
+  $release = $datadog_agent::params::apt_default_release,
   $repos = '6',
   $skip_apt_key_trusting = false,
   $service_ensure = 'running',

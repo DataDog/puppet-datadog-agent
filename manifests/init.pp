@@ -159,13 +159,13 @@
 #       String. Default: empty
 #   $apm_enabled
 #       Boolean to enable or disable the trace agent
-#       Boolean. Default: false
+#       Boolean. Default: true
 #   $apm_env
 #       String defining the environment for the APM traces
 #       String. Default: empty
-#   $process_agent_enabled
-#       Boolean to enable the process/container agent
-#       Boolean. Default: false
+#   $process_enabled
+#       String to enable the process/container agent
+#       Boolean. Default: true
 #
 # Actions:
 #
@@ -259,9 +259,11 @@ class datadog_agent(
   $dd_user = $datadog_agent::params::dd_user,
   $dd_group = $datadog_agent::params::dd_group,
   $dd_groups = $datadog_agent::params::dd_groups,
-  $apm_enabled = false,
+  $apm_enabled = $datadog_agent::params::apm_default_enabled,
   $apm_env = '',
-  $process_agent_enabled = false,
+  Hash[String, Data] $apm_extra_options = {},
+  $process_enabled = $datadog_agent::params::process_default_enabled,
+  Hash[String, Data] $process_extra_options = {},
   $agent5_repo_uri = $datadog_agent::params::agent5_default_repo,
   $agent6_repo_uri = $datadog_agent::params::agent6_default_repo,
   $apt_release = $datadog_agent::params::apt_default_release,
@@ -339,7 +341,7 @@ class datadog_agent(
   validate_bool($apm_enabled)
   validate_bool($agent5_enable)
   validate_string($apm_env)
-  validate_bool($process_agent_enabled)
+  validate_bool($process_enabled)
   validate_string($agent5_repo_uri)
   validate_string($agent6_repo_uri)
   validate_string($apt_release)
@@ -355,6 +357,13 @@ class datadog_agent(
   } else {
     $local_integrations = $integrations
   }
+
+  $base_apm_config = {'apm_config' => { 'apm_enabled' => $apm_enabled }}
+  $apm_config = deep_merge($base_apm_config, $apm_extra_options)
+
+  $process_enabled_str = $process_enabled ? { true => "true" , default => "false" }
+  $base_process_config = {'process_config' => { 'process_enabled' => $process_enabled_str }}
+  $process_config = deep_merge($base_process_config, $process_extra_options)
 
   include datadog_agent::params
   case upcase($log_level) {
@@ -504,7 +513,7 @@ class datadog_agent(
     $_local_tags = datadog_agent::tag6($local_tags, false)
     $_facts_tags = datadog_agent::tag6($facts_to_tags, true)
 
-    $agent_config = {
+    $_agent_config = {
       'api_key' => $api_key,
       'dd_url' => $dd_url,
       'cmd_port' => 5001,
@@ -517,6 +526,8 @@ class datadog_agent(
       'log_level' => $log_level,
       'tags' => union($_local_tags, $_facts_tags),
     }
+
+    $agent_config = deep_merge($_agent_config, $apm_config, $process_config)
 
     file { '/etc/datadog-agent/datadog.yaml':
       owner   => 'dd-agent',

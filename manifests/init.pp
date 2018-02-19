@@ -372,12 +372,14 @@ class datadog_agent(
         class { 'datadog_agent::ubuntu::agent5':
           service_ensure        => $service_ensure,
           service_enable        => $service_enable,
+          location              => $agent5_repo_uri,
           skip_apt_key_trusting => $skip_apt_key_trusting,
         }
       } else {
         class { 'datadog_agent::ubuntu::agent6':
           service_ensure        => $service_ensure,
           service_enable        => $service_enable,
+          location              => $agent6_repo_uri,
           skip_apt_key_trusting => $skip_apt_key_trusting,
         }
       }

@@ -262,8 +262,8 @@ class datadog_agent(
   $apm_enabled = false,
   $apm_env = '',
   $process_agent_enabled = false,
-  $agent5_repo_uri = $datadog_agent::params::agent5_rhel_repo,
-  $agent6_repo_uri = $datadog_agent::params::agent6_rhel_repo,
+  $agent5_repo_uri = $datadog_agent::params::agent5_default_repo,
+  $agent6_repo_uri = $datadog_agent::params::agent6_default_repo,
 ) inherits datadog_agent::params {
 
   # Allow ports to be passed as integers or strings.

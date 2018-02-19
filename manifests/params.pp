@@ -16,8 +16,6 @@
 #
 class datadog_agent::params {
   $agent5_enable    = false
-  $agent5_rhel_repo = "https://yum.datadoghq.com/rpm/${::architecture}/"
-  $agent6_rhel_repo = "https://yum.datadoghq.com/rpm/6/${::architecture}/"
   $conf_dir         = '/etc/dd-agent/conf.d'
   $conf6_dir        = '/etc/datadog-agent/conf.d'
   $dd_user          = 'dd-agent'
@@ -31,9 +29,13 @@ class datadog_agent::params {
   case $::operatingsystem {
     'Ubuntu','Debian' : {
       $rubydev_package   =  'ruby-dev'
+      $agent5_default_repo = "https://apt.datadoghq.com"
+      $agent6_default_repo = "https://apt.datadoghq.com"
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       $rubydev_package   = 'ruby-devel'
+      $agent5_default_repo = "https://yum.datadoghq.com/rpm/${::architecture}/"
+      $agent6_default_repo = "https://yum.datadoghq.com/rpm/6/${::architecture}/"
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }

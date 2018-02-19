@@ -4,7 +4,7 @@
 #
 
 class datadog_agent::redhat::agent6(
-  $baseurl = $datadog_agent::params::agent6_rhel_repo,
+  $baseurl = $datadog_agent::params::agent6_default_repo,
   $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
   $manage_repo = true,
   $agent_version = 'latest',

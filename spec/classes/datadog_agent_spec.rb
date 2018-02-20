@@ -850,6 +850,87 @@ describe 'datadog_agent' do
               )}
             end
           end
+
+          context 'with apm_extra_config' do
+            context 'with extra_options and APM enabled' do
+              let(:params) {{
+                  :apm_enabled => true,
+                  :apm_env => 'foo',
+                  :agent6_extra_options => {
+                      'apm_config' => {
+                          'foo' => 'bar',
+                          'bar' => 'haz',
+                      }
+                  }
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^apm_config:\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ apm_enabled: true\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ foo: bar\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ bar: haz\n/,
+              )}
+            end
+            context 'with extra_options and Process enabled' do
+              let(:params) {{
+                  :apm_enabled => false,
+                  :process_enabled => true,
+                  :agent6_extra_options => {
+                      'process_config' => {
+                          'foo' => 'bar',
+                          'bar' => 'haz',
+                      }
+                  }
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^apm_config:\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ apm_enabled: false\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^process_config:\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ process_enabled: 'true'\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ foo: bar\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ bar: haz\n/,
+              )}
+            end
+            context 'with extra_options and process options overriden' do
+              let(:params) {{
+                  :process_enabled => true,
+                  :agent6_extra_options => {
+                      'process_config' => {
+                          'process_enabled' => 'disabled',
+                          'foo' => 'bar',
+                          'bar' => 'haz',
+                      }
+                  }
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^process_config:\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ process_enabled: disabled\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ foo: bar\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ bar: haz\n/,
+              )}
+            end
+          end
         end
       end
     end

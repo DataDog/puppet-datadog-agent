@@ -261,9 +261,8 @@ class datadog_agent(
   $dd_groups = $datadog_agent::params::dd_groups,
   $apm_enabled = $datadog_agent::params::apm_default_enabled,
   $apm_env = '',
-  Hash[String, Data] $apm_extra_options = {},
   $process_enabled = $datadog_agent::params::process_default_enabled,
-  Hash[String, Data] $process_extra_options = {},
+  Hash[String, Data] $agent6_extra_options = {},
   $agent5_repo_uri = $datadog_agent::params::agent5_default_repo,
   $agent6_repo_uri = $datadog_agent::params::agent6_default_repo,
   $apt_release = $datadog_agent::params::apt_default_release,
@@ -357,13 +356,6 @@ class datadog_agent(
   } else {
     $local_integrations = $integrations
   }
-
-  $base_apm_config = {'apm_config' => { 'apm_enabled' => $apm_enabled }}
-  $apm_config = deep_merge($base_apm_config, $apm_extra_options)
-
-  $process_enabled_str = $process_enabled ? { true => "true" , default => "false" }
-  $base_process_config = {'process_config' => { 'process_enabled' => $process_enabled_str }}
-  $process_config = deep_merge($base_process_config, $process_extra_options)
 
   include datadog_agent::params
   case upcase($log_level) {
@@ -500,6 +492,13 @@ class datadog_agent(
     }
   } else {
 
+    $process_enabled_str = $process_enabled ? { true => "true" , default => "false" }
+    $base_extra_config = {
+        'apm_config' => { 'apm_enabled' => $apm_enabled },
+        'process_config' => { 'process_enabled' => $process_enabled_str },
+    }
+    $extra_config = deep_merge($base_extra_config, $agent6_extra_options)
+
     file { $conf6_dir:
       ensure  => directory,
       purge   => $conf_dir_purge,
@@ -527,7 +526,7 @@ class datadog_agent(
       'tags' => union($_local_tags, $_facts_tags),
     }
 
-    $agent_config = deep_merge($_agent_config, $apm_config, $process_config)
+    $agent_config = deep_merge($_agent_config, $extra_config)
 
     file { '/etc/datadog-agent/datadog.yaml':
       owner   => 'dd-agent',

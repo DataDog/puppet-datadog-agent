@@ -492,7 +492,9 @@ class datadog_agent(
     }
   } else {
 
-    $process_enabled_str = $process_enabled ? { true => "true" , default => "false" }
+    # lint:ignore:quoted_booleans
+    $process_enabled_str = $process_enabled ? { true => 'true' , default => 'false' }
+    # lint:endignore
     $base_extra_config = {
         'apm_config' => { 'apm_enabled' => $apm_enabled },
         'process_config' => { 'process_enabled' => $process_enabled_str },

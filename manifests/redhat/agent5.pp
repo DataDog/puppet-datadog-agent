@@ -58,13 +58,13 @@ class datadog_agent::redhat::agent5(
     }
 
     yumrepo {'datadog':
-      ensure   => absent,
-      notify   => Exec['datadog_yum_remove_agent6'],
+      ensure => absent,
+      notify => Exec['datadog_yum_remove_agent6'],
     }
 
     yumrepo {'datadog6':
-      ensure   => absent,
-      notify   => Exec['datadog_yum_remove_agent6'],
+      ensure => absent,
+      notify => Exec['datadog_yum_remove_agent6'],
     }
 
     yumrepo {'datadog5':

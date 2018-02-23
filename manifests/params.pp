@@ -27,13 +27,13 @@ class datadog_agent::params {
   $conf_dir_purge          = false
   $apt_default_release     = 'stable'
   $apm_default_enabled     = true
-  $process_default_enabled = true 
+  $process_default_enabled = true
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {
       $rubydev_package   =  'ruby-dev'
-      $agent5_default_repo = "https://apt.datadoghq.com"
-      $agent6_default_repo = "https://apt.datadoghq.com"
+      $agent5_default_repo = 'https://apt.datadoghq.com'
+      $agent6_default_repo = 'https://apt.datadoghq.com'
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       $rubydev_package   = 'ruby-devel'

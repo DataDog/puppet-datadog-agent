@@ -18,7 +18,9 @@ instances:
     username: <%= instance['username']  %>
     password: <%= instance['password']  %>
     dbname: <%= instance['dbname']  %>
-    ssl: <% instance['ssl'] %>
+<% if instance['ssl']  == true -%>
+    ssl: true
+<% end -%>
 <% if instance['use_psycopg2']  == true -%>
     use_psycopg2: true
 <% end -%>

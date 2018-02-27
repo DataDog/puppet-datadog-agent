@@ -1,4 +1,6 @@
-### MANAGED BY PUPPET
+#
+# MANAGED BY PUPPET
+#
 
 ##########
 # WARNING
@@ -6,46 +8,50 @@
 # This sample works only for Kafka >= 0.8.2.
 # If you are running a version older than that, you can refer to agent 5.2.x released
 # sample files, https://raw.githubusercontent.com/DataDog/dd-agent/5.2.1/conf.d/kafka.yaml.example
-
 instances:
-  - host: <%= @host %>
-    port: <%= @port %> # This is the JMX port on which Kafka exposes its metrics (usually 9999)
-<% if @tags.length > 0 -%>
+<% @servers.each do |server| -%>
+  - host: <%= server['host'] %>
+    port: <%= server['port'] %>
+  <%- if !server['tags'].nil? && server['tags'].any? -%>
     tags:
-<%- @tags.each do |tag_name, tag_value| -%>
-      <%= tag_name %>: <%= tag_value %>
+    <%- server['tags'].each do |tag| -%>
+      - <%= tag %>
+    <%- end -%>
+  <%- end -%>
+  <%- if !server['username'].nil? -%>
+    user: <%= server['username'] %>
+  <%- end -%>
+  <%- if !server['password'].nil? -%>
+    password: <%= server['password'] %>
+  <%- end -%>
+  <%- if !server['process_name_regex'].nil? -%>
+    process_name_regex: <%= server['process_name_regex'] %>
+  <%- end -%>
+  <%- if !server['tools_jar_path'].nil? -%>
+    tools_jar_path: <%= server['tools_jar_path'] %>
+  <%- end -%>
+  <%- if !server['name'].nil? -%>
+    name: <%= server['name'] %>
+  <%- end -%>
+  <%- if !server['java_bin_path'].nil? -%>
+    java_bin_path: <%= server['java_bin_path'] %>
+  <%- end -%>
+  <%- if !server['trust_store_path'].nil? -%>
+    trust_store_path: <%= server['trust_store_path'] %>
+  <%- end -%>
+  <%- if !server['trust_store_password'].nil? -%>
+    trust_store_password: <%= server['trust_store_password'] %>
+  <%- end -%>
 <% end -%>
-<% end -%>
-<% if @user -%>
-    user: <%= @user %>
-    password: <%= @password %>
-<% end -%>
-    # process_name_regex: .*process_name.* # Instead of specifying a host, and port. The agent can connect using the attach api.
-    #                                                                       #   This requires the JDK to be installed and the path to tools.jar to be set below.
-    # tools_jar_path: /usr/lib/jvm/java-7-openjdk-amd64/lib/tools.jar # To be set when process_name_regex is set
-    # name: kafka_instance
-    # java_bin_path: /path/to/java # Optional, should be set if the agent cannot find your java executable
-    # trust_store_path: /path/to/trustStore.jks # Optional, should be set if ssl is enabled
-    # trust_store_password: password
-  # - host: remotehost
-  #   port: 9998 # Producer
-  #   tags:
-  #     kafka: producer0
-  #     env: stage
-  #     newTag: test
-  # - host: remotehost
-  #   port: 9997 # Consumer
-  #   tags:
-  #     kafka: consumer0
-  #     env: stage
-  #     newTag: test
 
 init_config:
   is_jmx: true
 
   # Metrics collected by this check. You should not have to modify this.
   conf:
-    # v0.8.2.x Producers
+    #
+    # Producers (only v0.8.2.x)
+    #
     - include:
         domain: 'kafka.producer'
         bean_regex: 'kafka\.producer:type=ProducerRequestMetrics,name=ProducerRequestRateAndTimeMs,clientId=.*'
@@ -75,8 +81,9 @@ init_config:
             metric_type: rate
             alias: kafka.producer.message_rate
 
-
-    # v0.9.0.x Producers
+    #
+    # Producers (v0.9.0.x to v0.10.2.x)
+    #
     - include:
         domain: 'kafka.producer'
         bean_regex: 'kafka\.producer:type=producer-metrics,client-id=.*'
@@ -113,8 +120,9 @@ init_config:
             metric_type: gauge
             alias: kafka.producer.io_wait
 
-
-    # v0.8.2.x Consumers
+    #
+    # Consumers (only v0.8.2.x)
+    #
     - include:
         domain: 'kafka.consumer'
         bean_regex: 'kafka\.consumer:type=ConsumerFetcherManager,name=MaxLag,clientId=.*'
@@ -143,17 +151,16 @@ init_config:
           Count:
             metric_type: rate
             alias: kafka.consumer.messages_in
-
-    # Offsets committed to ZooKeeper
     - include:
+        # Offsets committed to ZooKeeper
         domain: 'kafka.consumer'
         bean_regex: 'kafka\.consumer:type=ZookeeperConsumerConnector,name=ZooKeeperCommitsPerSec,clientId=.*'
         attribute:
           Count:
             metric_type: rate
             alias: kafka.consumer.zookeeper_commits
-    # Offsets committed to Kafka
     - include:
+        # Offsets committed to Kafka
         domain: 'kafka.consumer'
         bean_regex: 'kafka\.consumer:type=ZookeeperConsumerConnector,name=KafkaCommitsPerSec,clientId=.*'
         attribute:
@@ -161,7 +168,9 @@ init_config:
             metric_type: rate
             alias: kafka.consumer.kafka_commits
 
-    # v0.9.0.x Consumers
+    #
+    # Consumers (v0.9.0.x to v0.10.2.x)
+    #
     - include:
         domain: 'kafka.consumer'
         bean_regex: 'kafka\.consumer:type=consumer-fetch-manager-metrics,client-id=.*'
@@ -311,8 +320,8 @@ init_config:
         domain: 'kafka.server'
         bean: 'kafka.server:type=KafkaRequestHandlerPool,name=RequestHandlerAvgIdlePercent'
         attribute:
-          Count:
-            metric_type: rate
+          OneMinuteRate:
+            metric_type: gauge
             alias: kafka.request.handler.avg.idle.pct.rate
     - include:
         domain: 'kafka.server'

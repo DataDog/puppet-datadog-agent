@@ -159,13 +159,13 @@
 #       String. Default: empty
 #   $apm_enabled
 #       Boolean to enable or disable the trace agent
-#       Boolean. Default: true
+#       Boolean. Default: false
 #   $apm_env
 #       String defining the environment for the APM traces
 #       String. Default: empty
 #   $process_enabled
 #       String to enable the process/container agent
-#       Boolean. Default: true
+#       Boolean. Default: false
 #
 # Actions:
 #
@@ -493,7 +493,7 @@ class datadog_agent(
   } else {
 
     # lint:ignore:quoted_booleans
-    $process_enabled_str = $process_enabled ? { true => 'true' , default => 'false' }
+    $process_enabled_str = $process_enabled ? { true => 'true' , default => 'disabled' }
     # lint:endignore
     $base_extra_config = {
         'apm_config' => { 'apm_enabled' => $apm_enabled },

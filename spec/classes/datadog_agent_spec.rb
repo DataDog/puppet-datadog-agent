@@ -210,7 +210,7 @@ describe 'datadog_agent' do
 
                 context 'for APM' do
                     it { should contain_concat__fragment('datadog footer').with(
-                    'content' => /^apm_enabled: true\n/,
+                    'content' => /^apm_enabled: false\n/,
                     )}
                 end
 
@@ -840,13 +840,13 @@ describe 'datadog_agent' do
               'content' => /^apm_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ apm_enabled: true\n/,
+              'content' => /^\ \ apm_enabled: false\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ process_enabled: 'true'\n/,
+              'content' => /^\ \ process_enabled: disabled\n/,
               )}
             end
           end

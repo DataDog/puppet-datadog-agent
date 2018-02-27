@@ -26,8 +26,8 @@ class datadog_agent::params {
   $dogapi_version          = 'installed'
   $conf_dir_purge          = false
   $apt_default_release     = 'stable'
-  $apm_default_enabled     = true
-  $process_default_enabled = true
+  $apm_default_enabled     = false
+  $process_default_enabled = false
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {

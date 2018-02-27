@@ -28,7 +28,7 @@ describe 'datadog_agent::integrations::kafka' do
 
   context 'with one kafka broker' do
     let(:params) {{
-      servers: [
+      instances: [
         {
           'host' => 'localhost',
           'port' => '9997',
@@ -42,7 +42,7 @@ describe 'datadog_agent::integrations::kafka' do
 
   context 'with two kafka brokers' do
     let(:params) {{
-      servers: [
+      instances: [
         {
           'host' => 'localhost',
           'port' => '9997',
@@ -63,7 +63,7 @@ describe 'datadog_agent::integrations::kafka' do
 
   context 'one kafka broker all options' do
     let(:params) {{
-      servers: [
+      instances: [
         {
           'host' => 'localhost',
           'port' => '9997',
@@ -82,50 +82,4 @@ describe 'datadog_agent::integrations::kafka' do
 
     it { should contain_file(conf_file).with_content(%r{host: localhost\s+port: 9997\s+tags:\s+- kafka:broker\s+- tag1:value1\s+user: username\s+password: password\s+process_name_regex: regex\s+tools_jar_path: tools.jar\s+name: kafka_instance\s+java_bin_path: /path/to/java\s+trust_store_path: /path/to/trustStore.jks\s+trust_store_password: password}) }
   end
-=begin
-  context 'with multiple mongos' do
-    let(:params) {{
-      servers: [
-        {
-          'host' => '127.0.0.1',
-          'port' => '34567',
-          'tags' => %w{foo bar},
-        },
-        {
-          'host' => '127.0.0.2',
-          'port' => '45678',
-          'tags' => %w{baz bat},
-        }
-      ]
-    }}
-    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.1:34567/\s+tags:\s+- foo\s+- bar}) }
-    it { should contain_file(conf_file).with_content(%r{server: mongodb://127.0.0.2:45678/\s+tags:\s+- baz\s+- bat}) }
-    it { should contain_file(conf_file).with_content(%r{server:.*127.0.0.1.*server:.*127.0.0.2}m) }
-  end
-
-  context 'without tags' do
-    let(:params) {{
-      servers: [
-        {
-          'host' => '127.0.0.1',
-          'port' => '12345',
-        }
-      ]
-    }}
-
-  end
-
-  context 'weird tags' do
-    let(:params) {{
-      servers: [
-        {
-          'host' => '127.0.0.1',
-          'port' => '56789',
-          'tags' => 'word'
-        }
-      ]
-    }}
-    it { should_not compile }
-  end
-=end
 end

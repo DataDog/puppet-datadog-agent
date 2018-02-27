@@ -37,7 +37,7 @@
   "requirements": [
     {
       "name": "pe",
-      "version_requirement": "2016.4.x"
+      "version_requirement": ">=2016.4.x"
     },
     {
       "name": "puppet",

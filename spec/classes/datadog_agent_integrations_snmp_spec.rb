@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 describe 'datadog_agent::integrations::snmp' do
-  let(:facts) {{
-    operatingsystem: 'Ubuntu',
-  }}
   let(:conf_dir) { '/etc/dd-agent/conf.d' }
   let(:dd_user) { 'dd-agent' }
   let(:dd_group) { 'root' }

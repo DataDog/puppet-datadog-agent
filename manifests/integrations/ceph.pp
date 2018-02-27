@@ -25,7 +25,7 @@ class datadog_agent::integrations::ceph(
     content => "# This file is required for dd ceph \ndd-agent ALL=(ALL) NOPASSWD:/usr/bin/ceph\n"
   }
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/ceph.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/ceph.yaml"

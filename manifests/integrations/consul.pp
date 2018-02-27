@@ -39,7 +39,7 @@ class datadog_agent::integrations::consul(
   validate_bool($new_leader_checks)
   validate_array($service_whitelist)
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/consul.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/consul.yaml"

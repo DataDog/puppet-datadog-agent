@@ -12,7 +12,7 @@ define datadog_agent::integration (
   }
   validate_string($integration)
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/${integration}.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/${integration}.yaml"

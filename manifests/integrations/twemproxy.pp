@@ -41,7 +41,7 @@ class datadog_agent::integrations::twemproxy(
     $_instances = $instances
   }
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/twemproxy.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/twemproxy.yaml"

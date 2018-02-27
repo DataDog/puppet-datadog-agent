@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'datadog_agent::ubuntu' do
+describe 'datadog_agent::ubuntu::agent5' do
   let(:facts) do
     {
       osfamily: 'debian',
@@ -9,7 +9,7 @@ describe 'datadog_agent::ubuntu' do
   end
 
   it do
-    contain_file('/etc/apt/sources.list.d/datadog-beta.list')
+    contain_file('/etc/apt/sources.list.d/datadog6.list')
       .with_ensure('absent')
     contain_file('/etc/apt/sources.list.d/datadog.list')\
       .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+main})
@@ -20,9 +20,9 @@ describe 'datadog_agent::ubuntu' do
   it { should contain_datadog_agent__ubuntu__install_key('A2923DFF56EDA6E76E55E492D3A80E30382E94DE') }
   it do
     should contain_file('/etc/apt/sources.list.d/datadog.list')\
-      .that_notifies('exec[datadog_apt-get_update]')
+      .that_notifies('exec[apt_update]')
   end
-  it { should contain_exec('datadog_apt-get_update') }
+  it { should contain_exec('apt_update') }
 
   # it should install the packages
   it do
@@ -37,7 +37,7 @@ describe 'datadog_agent::ubuntu' do
   it do
     should contain_package('datadog-agent')\
       .that_requires('file[/etc/apt/sources.list.d/datadog.list]')\
-      .that_requires('exec[datadog_apt-get_update]')
+      .that_requires('exec[apt_update]')
   end
 
   # it should be able to start the service and enable the service by default
@@ -58,7 +58,7 @@ describe 'datadog_agent::ubuntu::agent6' do
   it do
     contain_file('/etc/apt/sources.list.d/datadog.list')
       .with_ensure('absent')
-    contain_file('/etc/apt/sources.list.d/datadog-beta.list')\
+    contain_file('/etc/apt/sources.list.d/datadog6.list')\
       .with_content(%r{deb\s+https://apt.datadoghq.com/\s+beta\s+main})
   end
 
@@ -67,15 +67,15 @@ describe 'datadog_agent::ubuntu::agent6' do
   it { should contain_datadog_agent__ubuntu__install_key('A2923DFF56EDA6E76E55E492D3A80E30382E94DE') }
 
   it do
-    should contain_file('/etc/apt/sources.list.d/datadog-beta.list')\
-      .that_notifies('exec[datadog_apt-get_update]')
+    should contain_file('/etc/apt/sources.list.d/datadog6.list')\
+      .that_notifies('exec[apt_update]')
   end
-  it { should contain_exec('datadog_apt-get_update') }
+  it { should contain_exec('apt_update') }
 
   # it should install the packages
   it do
     should contain_package('apt-transport-https')\
-      .that_comes_before('file[/etc/apt/sources.list.d/datadog-beta.list]')
+      .that_comes_before('file[/etc/apt/sources.list.d/datadog6.list]')
   end
   it do
     should contain_package('datadog-agent-base')\
@@ -84,8 +84,8 @@ describe 'datadog_agent::ubuntu::agent6' do
   end
   it do
     should contain_package('datadog-agent')\
-      .that_requires('file[/etc/apt/sources.list.d/datadog-beta.list]')\
-      .that_requires('exec[datadog_apt-get_update]')
+      .that_requires('file[/etc/apt/sources.list.d/datadog6.list]')\
+      .that_requires('exec[apt_update]')
   end
 
   # it should be able to start the service and enable the service by default

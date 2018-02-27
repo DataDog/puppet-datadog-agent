@@ -25,7 +25,7 @@ class datadog_agent::integrations::generic(
   validate_string($integration_name)
   validate_string($integration_contents)
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/${integration_name}.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/${integration_name}.yaml"

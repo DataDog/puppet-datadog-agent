@@ -39,7 +39,7 @@ class datadog_agent::integrations::apache (
   validate_array($tags)
   validate_bool($disable_ssl_validation)
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/apache.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/apache.yaml"

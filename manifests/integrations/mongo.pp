@@ -63,7 +63,7 @@ class datadog_agent::integrations::mongo(
 
   validate_array($servers)
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/mongo.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/mongo.yaml"

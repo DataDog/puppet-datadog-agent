@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'datadog_agent::redhat' do
+describe 'datadog_agent::redhat::agent5' do
   let(:facts) do
     {
       osfamily: 'redhat',
@@ -13,7 +13,7 @@ describe 'datadog_agent::redhat' do
   context 'with manage_repo => true' do
     let(:params){ {:manage_repo => true} }
     it do
-      should contain_yumrepo('datadog')
+      should contain_yumrepo('datadog5')
         .with_enabled(1)\
         .with_gpgcheck(1)\
           .with_gpgkey('https://yum.datadoghq.com/DATADOG_RPM_KEY.public')\
@@ -24,6 +24,8 @@ describe 'datadog_agent::redhat' do
     let(:params){ {:manage_repo => false} }
     it do
       should_not contain_yumrepo('datadog')
+      should_not contain_yumrepo('datadog5')
+      should_not contain_yumrepo('datadog6')
     end
   end
 
@@ -59,17 +61,19 @@ describe 'datadog_agent::redhat::agent6' do
   context 'with manage_repo => true' do
     let(:params){ {:manage_repo => true} }
     it do
-      should contain_yumrepo('datadog')
+      should contain_yumrepo('datadog6')
         .with_enabled(1)\
         .with_gpgcheck(1)\
           .with_gpgkey('https://yum.datadoghq.com/DATADOG_RPM_KEY.public')\
-        .with_baseurl('https://yum.datadoghq.com/beta/x86_64/')
+        .with_baseurl('https://yum.datadoghq.com/rpm/6/x86_64/')
     end
   end
   context 'with manage_repo => false' do
     let(:params){ {:manage_repo => false} }
     it do
       should_not contain_yumrepo('datadog')
+      should_not contain_yumrepo('datadog5')
+      should_not contain_yumrepo('datadog6')
     end
   end
 

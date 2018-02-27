@@ -52,7 +52,7 @@ class datadog_agent::integrations::postfix (
     $_instances = $instances
   }
 
-  if $::datadog_agent::agent6_enable {
+  if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/postfix.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/postfix.yaml"

@@ -1,5 +1,5 @@
 # Allow custom tags via a define
-define datadog_agent::tag(
+define datadog_agent::tag5(
   $tag_name = $name,
   $lookup_fact = false,
 ){

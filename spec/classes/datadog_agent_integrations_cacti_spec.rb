@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe 'datadog_agent::integrations::cacti' do
   context 'supported agents - v5 and v6' do
-    agents = { '5' => false, '6' => true }
+    agents = { '5' => true, '6' => false }
     agents.each do |agent, enabled|
-      let(:pre_condition) { "class {'::datadog_agent': agent6_enable => #{enabled}}" }
+      let(:pre_condition) { "class {'::datadog_agent': agent5_enable => #{enabled}}" }
       let(:facts) {{
         operatingsystem: 'Ubuntu',
       }}
-      if !enabled
+      if enabled
         let(:conf_dir) { '/etc/dd-agent/conf.d' }
       else
         let(:conf_dir) { '/etc/datadog-agent/conf.d' }
@@ -17,7 +17,7 @@ describe 'datadog_agent::integrations::cacti' do
       let(:dd_group) { 'root' }
       let(:dd_package) { 'datadog-agent' }
       let(:dd_service) { 'datadog-agent' }
-      let(:agent6_enable) { enabled }
+      let(:agent5_enable) { enabled }
       let(:conf_file) { "#{conf_dir}/cacti.yaml" }
 
       context 'with default parameters' do

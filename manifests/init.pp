@@ -262,7 +262,7 @@ class datadog_agent(
   $apm_enabled = $datadog_agent::params::apm_default_enabled,
   $apm_env = '',
   $process_enabled = $datadog_agent::params::process_default_enabled,
-  Hash[String, Data] $agent6_extra_options = {},
+  Hash[String[1], Data] $agent6_extra_options = {},
   $agent5_repo_uri = $datadog_agent::params::agent5_default_repo,
   $agent6_repo_uri = $datadog_agent::params::agent6_default_repo,
   $apt_release = $datadog_agent::params::apt_default_release,

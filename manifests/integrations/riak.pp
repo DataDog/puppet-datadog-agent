@@ -27,8 +27,14 @@ class datadog_agent::integrations::riak(
   validate_string($url)
   validate_array($tags)
 
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/riak.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/riak.yaml"
+  }
+
   file {
-    "${datadog_agent::params::conf_dir}/riak.yaml":
+    $dst:
       ensure  => file,
       owner   => $datadog_agent::params::dd_user,
       group   => $datadog_agent::params::dd_group,

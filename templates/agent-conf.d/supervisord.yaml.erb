@@ -1,3 +1,5 @@
+### MANAGED BY PUPPET
+
 #
 #   There are two ways to get started with the supervisord check.
 #
@@ -51,31 +53,31 @@ init_config:
 
 instances:
 <%- (Array(@instances)).each do |instance| -%>
-    -   name: <%= instance['servername'] %>
+  - name: <%= instance['servername'] %>
 <% if instance['socket'] -%>
-        socket: <%= instance['socket'] %>
+    socket: <%= instance['socket'] %>
 <% end -%>
 <% if instance['hostname'] -%>
-        host: <%= instance['hostname'] %>
+    host: <%= instance['hostname'] %>
 <% end -%>
 <% if instance['port'] -%>
-        port: <%= instance['port'] %>
+    port: <%= instance['port'] %>
 <% end -%>
 <% if instance['username'] -%>
-        user: <%= instance['username'] %>
+    user: <%= instance['username'] %>
 <% end -%>
 <% if instance['password'] -%>
-        pass: <%= instance['password'] %>
+    pass: <%= instance['password'] %>
 <% end -%>
 <% if instance['proc_names'] and ! instance['proc_names'].empty? -%>
-        proc_names:
-  <%- Array(instance['proc_names']).each do |proc_name| -%>
-    <%- if proc_name != '' -%>
-         - <%= proc_name %>
-    <%- end -%>
-  <%- end -%>
+    proc_names:
+<%- Array(instance['proc_names']).each do |proc_name| -%>
+<%- if proc_name != '' -%>
+      - <%= proc_name %>
+<%- end -%>
+<%- end -%>
 <% end -%>
 <% if instance['server_check'] -%>
-        server_check: <%= instance['server_check'] %>
+    server_check: <%= instance['server_check'] %>
 <% end -%>
 <% end -%>

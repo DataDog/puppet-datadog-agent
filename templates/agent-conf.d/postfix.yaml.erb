@@ -1,0 +1,26 @@
+#
+# MANAGED BY PUPPET
+#
+
+init_config:
+
+instances:
+<%- (Array(@_instances)).each do |instance| -%>
+  - directory: <%= instance['directory'] %>
+<% if instance['queues'] and ! instance['queues'].empty? -%>
+    queues:
+  <%- Array(instance['queues']).each do |queue| -%>
+    <%- if queue != '' -%>
+      - <%= queue %>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>
+<% if instance['tags'] and ! instance['tags'].empty? -%>
+    tags:
+  <%- Array(instance['tags']).each do |tag| -%>
+    <%- if tag != '' -%>
+      - <%= tag %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
+<% end -%>

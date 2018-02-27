@@ -13,6 +13,8 @@
 #       The postgres port number
 #   $username
 #       The username for the datadog user
+#   $ssl
+#       Boolean to enable SSL
 #   $use_psycopg2
 #       Boolean to flag connecting to postgres with psycopg2 instead of pg8000.
 #       Warning, psycopg2 doesn't support ssl mode.
@@ -36,6 +38,7 @@
 #    dbname   => 'postgres'
 #    username => 'datadog',
 #    password => 'some_pass',
+#    ssl      => false,
 #    custom_metrics => {
 #      a_custom_query => {
 #        query => "select tag_column, %s from table",
@@ -57,10 +60,12 @@ class datadog_agent::integrations::postgres(
   $dbname = 'postgres',
   $port   = '5432',
   $username = 'datadog',
+  $ssl = false,
   $use_psycopg2 = false,
   $tags = [],
   $tables = [],
   $custom_metrics = {},
+  $instances = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -68,7 +73,32 @@ class datadog_agent::integrations::postgres(
   validate_array($tables)
   validate_bool($use_psycopg2)
 
-  file { "${datadog_agent::params::conf_dir}/postgres.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/postgres.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/postgres.yaml"
+  }
+
+  if !$instances and $host {
+    $_instances = [{
+      'host'           => $host,
+      'password'       => $password,
+      'dbname'         => $dbname,
+      'port'           => $port,
+      'username'       => $username,
+      'ssl'            => $ssl,
+      'use_psycopg2'   => $use_psycopg2,
+      'tags'           => $tags,
+      'tables'         => $tables,
+      'custom_metrics' => $custom_metrics,
+    }]
+  } elsif !$instances{
+    $_instances = []
+  } else {
+    $_instances = $instances
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

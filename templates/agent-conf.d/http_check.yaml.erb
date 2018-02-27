@@ -1,3 +1,5 @@
+### MANAGED BY PUPPET
+
 init_config:
 
 instances:
@@ -20,27 +22,27 @@ instances:
     window: <%= instance['window'] %>
 <% end -%>
 <% if instance['content_match'] -%>
-    content_match: <%= instance['content_match'] %>
+    content_match: '<%= instance["content_match"] %>'
 <% end -%>
-<% if instance['include_content'] -%>
+<% unless instance['include_content'].nil? -%>
     include_content: <%= instance['include_content'] %>
 <% end -%>
 <% if instance['http_response_status_code'] -%>
     http_response_status_code: <%= instance['http_response_status_code'] %>
 <% end -%>
-<% if instance['collect_response_time'] -%>
+<% unless instance['collect_response_time'].nil? -%>
     collect_response_time: <%= instance['collect_response_time'] %>
 <% end -%>
-<% if instance['disable_ssl_validation'] -%>
+<% unless instance['disable_ssl_validation'].nil? -%>
     disable_ssl_validation: <%= instance['disable_ssl_validation'] %>
 <% end -%>
-<% if instance['skip_event'] -%>
+<% unless instance['skip_event'].nil? -%>
     skip_event: <%= instance['skip_event'] %>
 <% end -%>
-<% if instance['no_proxy'] -%>
+<% unless instance['no_proxy'].nil? -%>
     no_proxy: <%= instance['no_proxy'] %>
 <% end -%>
-<% if instance['check_certificate_expiration'] -%>
+<% unless instance['check_certificate_expiration'].nil? -%>
     check_certificate_expiration: <%= instance['check_certificate_expiration'] %>
 <% if instance['check_certificate_expiration'] == true -%>
 <% if instance['days_warning'] -%>
@@ -59,7 +61,7 @@ instances:
     <%- end -%>
   <%- end -%>
 <% end -%>
-<% if instance['allow_redirects'] -%>
+<% unless instance['allow_redirects'].nil? -%>
     allow_redirects: <%= instance['allow_redirects'] %>
 <% end -%>
 <% if instance['tags'] and ! instance['tags'].empty? -%>

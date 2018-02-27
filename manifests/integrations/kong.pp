@@ -34,7 +34,13 @@ class datadog_agent::integrations::kong (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  file { "${datadog_agent::params::conf_dir}/kong.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/kong.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/kong.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

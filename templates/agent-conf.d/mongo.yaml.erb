@@ -34,4 +34,10 @@ instances:
       - <%= additional_metric %>
     <%- end -%>
   <%- end -%>
+  <%- if !server['collections'].nil? && server['collections'].any? -%>
+    collections:
+    <%- server['collections'].each do |collection| -%>
+      - <%= collection %>
+    <%- end -%>
+  <%- end -%>
 <% end -%>

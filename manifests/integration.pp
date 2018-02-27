@@ -12,7 +12,13 @@ define datadog_agent::integration (
   }
   validate_string($integration)
 
-  file { "${datadog_agent::conf_dir}/${integration}.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/${integration}.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/${integration}.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::dd_user,
     group   => $datadog_agent::dd_group,

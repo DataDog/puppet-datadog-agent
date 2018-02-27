@@ -1,0 +1,11 @@
+#
+# MANAGED BY PUPPET
+#
+
+init_config:
+
+instances:
+<%- (Array(@_instances)).each do |instance| -%>
+  - host: <%= instance['host'] %>
+    port: <%= instance['port'] %>
+<% end -%>

@@ -20,9 +20,40 @@
 #   }
 #
 class datadog_agent::integrations::docker_daemon(
-  $url = 'unix://var/run/docker.sock',
-  $tags = [],
   $group = 'docker',
+  $docker_root = '/',
+  $timeout = 10,
+  $api_version = 'auto',
+  $tls = false,
+  $tls_client_cert = '/path/to/client-cert.pem',
+  $tls_client_key = '/path/to/client-key.pem',
+  $tls_cacert = '/path/to/ca.pem',
+  $tls_verify = true,
+  $init_retry_interval = 0,
+  $init_retries = 0,
+  $url = 'unix://var/run/docker.sock',
+  $collect_events = true,
+  $filtered_event_types = [],
+  $collect_container_size = false,
+  $custom_cgroups = false,
+  $health_service_check_whitelist = [],
+  $collect_container_count = false,
+  $collect_volume_count = false,
+  $collect_images_stats = false,
+  $collect_image_size = false,
+  $collect_disk_stats = false,
+  $collect_exit_codes = false,
+  $exclude = [],
+  $include = [],
+  $tags = [],
+  $ecs_tags = true,
+  # Possible values: "container_name", "image_name", "image_tag", "docker_image"
+  $performance_tags = [],
+  # Possible values: "image_name", "image_tag", "docker_image"
+  $container_tags = [],
+  # Ex. "com.docker.compose.service", "com.docker.compose.project"
+  $collect_labels_as_tags = [],
+  $event_attributes_as_tags = [],
 ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -33,11 +64,23 @@ class datadog_agent::integrations::docker_daemon(
     notify  => Service[$datadog_agent::params::service_name]
   }
 
-  file { "${datadog_agent::params::conf_dir}/docker.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $legacy_conf = "${datadog_agent::conf6_dir}/docker_daemon.yaml"
+  } else {
+    $legacy_conf = "${datadog_agent::conf_dir}/docker.yaml"
+  }
+
+  file { $legacy_conf:
     ensure => 'absent'
   }
 
-  file { "${datadog_agent::params::conf_dir}/docker_daemon.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/docker.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/docker_daemon.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

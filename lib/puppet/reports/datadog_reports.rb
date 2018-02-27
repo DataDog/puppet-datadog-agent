@@ -127,5 +127,9 @@ Puppet::Reports.register_report(:datadog_reports) do
                                       :priority => event_priority,
                                       :source_type_name => 'puppet'
                                       ), :host => @msg_host)
+
+    Puppet.debug "Sending service check #{@msg_host} to Datadog"
+    service_check_status = if @status == 'failed' then 2 else 0 end
+    @dog.service_check('config_management.run.ok', @msg_host, service_check_status, :message => event_title)
   end
 end

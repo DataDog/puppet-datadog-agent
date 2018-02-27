@@ -27,10 +27,11 @@
 #   }
 #
 class datadog_agent::integrations::consul(
-  $url               = 'http://localhost:8500',
-  $catalog_checks    = true,
-  $new_leader_checks = true,
-  $service_whitelist = []
+  $url                    = 'http://localhost:8500',
+  $catalog_checks         = true,
+  $network_latency_checks = true,
+  $new_leader_checks      = true,
+  $service_whitelist      = []
 ) inherits datadog_agent::params {
   include datadog_agent
 

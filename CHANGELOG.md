@@ -1,6 +1,12 @@
 Changes
 =======
 
+# 2.0.1 / 2018-2-28
+
+### Notes
+
+* [BUGFIX] RHEL: fix bad default agent6 repo url. See [#397][]
+
 # 2.0.0 / 2018-2-27
 
 ### Overview 
@@ -23,14 +29,14 @@ Please read the [docs]() for more details.
 
 ### Notes
 
-* [MAJOR] Datadog agent defaults to 6.x. Puppet >=4.6. See #387 and [docs](https://github.com/DataDog/puppet-datadog-agent/blob/master/README.md)
-* [FEATURE] Postgresl: adding SSL parameter support. See #391 (thanks @com6056)
-* [FEATURE] Docker_daemon: parametrize integration. See #378 (thanks @flyinprogrammer)
-* [FEATURE] Kafka: added support for multiple instances. See #343, #395 (thanks @jensendw)
-* [BUGFIX] Tomcat: fix broken metrics yaml. See #390 (thanks @oshmyrko)
-* [BUGFIX] Agent6: fix Agent6 beta fact. See #384 (thanks @scottgeary)
-* [CI] APM: fix APM spec tests. See #389
-* [CI] APM: do not apply footer if empty string. See #381 (thanks @rothgar)
+* [MAJOR] Datadog agent defaults to 6.x. Puppet >=4.6. See [#387][] and [docs](https://github.com/DataDog/puppet-datadog-agent/blob/master/README.md)
+* [FEATURE] Postgresl: adding SSL parameter support. See [#391][] (thanks [@com6056][])
+* [FEATURE] Docker_daemon: parametrize integration. See [#378][] (thanks [@flyinprogrammer][])
+* [FEATURE] Kafka: added support for multiple instances. See [#343][], [#395][] (thanks [@jensendw][])
+* [BUGFIX] Tomcat: fix broken metrics yaml. See [#390][] (thanks [@oshmyrko][])
+* [BUGFIX] Agent6: fix Agent6 beta fact. See [#384][] (thanks [@scottgeary][])
+* [CI] APM: fix APM spec tests. See [#389][]
+* [CI] APM: do not apply footer if empty string. See [#381][] (thanks [@rothgar][])
 
 # 1.12.1 / 2017-12-29
 
@@ -418,6 +424,7 @@ Please read the [docs]() for more details.
 [#338]: https://github.com/DataDog/puppet-datadog-agent/issues/338
 [#340]: https://github.com/DataDog/puppet-datadog-agent/issues/340
 [#341]: https://github.com/DataDog/puppet-datadog-agent/issues/341
+[#343]: https://github.com/DataDog/puppet-datadog-agent/issues/343
 [#346]: https://github.com/DataDog/puppet-datadog-agent/issues/346
 [#347]: https://github.com/DataDog/puppet-datadog-agent/issues/347
 [#352]: https://github.com/DataDog/puppet-datadog-agent/issues/352
@@ -433,7 +440,16 @@ Please read the [docs]() for more details.
 [#375]: https://github.com/DataDog/puppet-datadog-agent/issues/375
 [#376]: https://github.com/DataDog/puppet-datadog-agent/issues/376
 [#377]: https://github.com/DataDog/puppet-datadog-agent/issues/377
+[#378]: https://github.com/DataDog/puppet-datadog-agent/issues/378
 [#379]: https://github.com/DataDog/puppet-datadog-agent/issues/379
+[#381]: https://github.com/DataDog/puppet-datadog-agent/issues/381
+[#384]: https://github.com/DataDog/puppet-datadog-agent/issues/384
+[#387]: https://github.com/DataDog/puppet-datadog-agent/issues/387
+[#389]: https://github.com/DataDog/puppet-datadog-agent/issues/389
+[#390]: https://github.com/DataDog/puppet-datadog-agent/issues/390
+[#391]: https://github.com/DataDog/puppet-datadog-agent/issues/391
+[#395]: https://github.com/DataDog/puppet-datadog-agent/issues/395
+[#397]: https://github.com/DataDog/puppet-datadog-agent/issues/397
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
 [@DDRBoxman]: https://github.com/DDRBoxman
@@ -454,6 +470,7 @@ Please read the [docs]() for more details.
 [@bittner]: https://github.com/bittner
 [@butangero]: https://github.com/butangero
 [@ckolos]: https://github.com/ckolos
+[@com6056]: https://github.com/com6056
 [@craigwatson]: https://github.com/craigwatson
 [@cristianjuve]: https://github.com/cristianjuve
 [@cwood]: https://github.com/cwood
@@ -484,9 +501,11 @@ Please read the [docs]() for more details.
 [@npaufler]: https://github.com/npaufler
 [@obi11235]: https://github.com/obi11235
 [@obowersa]: https://github.com/obowersa
+[@oshmyrko]: https://github.com/oshmyrko
 [@pabrahamsson]: https://github.com/pabrahamsson
 [@pid1]: https://github.com/pid1
 [@rooprob]: https://github.com/rooprob
+[@rothgar]: https://github.com/rothgar
 [@rtyler]: https://github.com/rtyler
 [@sambanks]: https://github.com/sambanks
 [@scottgeary]: https://github.com/scottgeary

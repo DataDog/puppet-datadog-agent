@@ -65,7 +65,7 @@ describe 'datadog_agent::redhat::agent6' do
         .with_enabled(1)\
         .with_gpgcheck(1)\
           .with_gpgkey('https://yum.datadoghq.com/DATADOG_RPM_KEY.public')\
-        .with_baseurl('https://yum.datadoghq.com/rpm/6/x86_64/')
+        .with_baseurl('https://yum.datadoghq.com/stable/6/x86_64/')
     end
   end
   context 'with manage_repo => false' do

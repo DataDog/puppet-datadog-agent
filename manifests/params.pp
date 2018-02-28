@@ -38,7 +38,7 @@ class datadog_agent::params {
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       $rubydev_package   = 'ruby-devel'
       $agent5_default_repo = "https://yum.datadoghq.com/rpm/${::architecture}/"
-      $agent6_default_repo = "https://yum.datadoghq.com/rpm/6/${::architecture}/"
+      $agent6_default_repo = "https://yum.datadoghq.com/stable/6/${::architecture}/"
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }

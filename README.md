@@ -45,6 +45,8 @@ Most of the manifests should be backward compatible. However, there are importan
 - Enhanced support for our APM tracing agent
 - Enhanced support for our Process agent
 - Enhanced support for additional agent6 options
+- APM tracing and Process agents are now opt-in options and will be disabled by default.
+  - Main `datadog_agent` class has parameters to enable and configure the agents easily.
 - Increased granularity for apt/yum repo configuration 
 - New location for datadog puppet reporting configuration
 
@@ -106,7 +108,7 @@ that needs to be done.
         ```
 
   __To support reporting, your Puppet master needs to have the [dogapi](https://github.com/DataDog/dogapi-rb) gem installed, to do that either run the puppet agent on your master with this configuration or install it manually with `gem`.__
-  __Please note, you may have two restart your `puppetserver` service for the freshly installed gem to be picked up.__
+  __Please note, you may have two restart your `puppetserver` service for the freshly installed `dogapi-rb` gem to be picked up.__
   _Please note, on version 2.x of the module `puppetserver_gem` is defined as a module dependency, it should be installed automatically when the module is installed._
   _Please note, on version 1.x and if on Puppet Enterprise or POSS (ie. >=3.7.0) there is a soft dependency for reporting on the `puppetserver_gem` module. Install with `puppet module install puppetlabs-puppetserver_gem` - installing manually with `gem` will *not* work._
   _Please note, on version 1.x and older puppets you may install `dogapi-rb` with `gem` as the system-level ruby is used_

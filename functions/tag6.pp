@@ -17,7 +17,7 @@ function datadog_agent::tag6(
       $tags = prefix($value, "${tag_name}:")
     }
   } else {
-    $tags = [$tag_name]
+    $tags = [$tag_names]
   }
 
   $tags

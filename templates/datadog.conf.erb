@@ -37,7 +37,7 @@ proxy_password: <%= @proxy_password %>
 # https://app.datadoghq.com/account/settings
 api_key: <%= @api_key %>
 
-<% if !defined?(@histogram_percentiles) || @histogram_percentiles.empty? -%>
+<% if @histogram_percentiles.empty? -%>
 # histogram_percentiles:
 <% else -%>
 histogram_percentiles: <%= @histogram_percentiles %>

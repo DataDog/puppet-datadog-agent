@@ -61,6 +61,7 @@ class datadog_agent(
   $dd_url = 'https://app.datadoghq.com',
   $host = '',
   $api_key = 'your_API_key',
+  $histogram_percentiles = '',
   $tags = [],
   $facts_to_tags = [],
   $puppet_run_reports = false,
@@ -81,6 +82,7 @@ class datadog_agent(
   validate_string($dd_url)
   validate_string($host)
   validate_string($api_key)
+  validate_string($histogram_percentiles)
   validate_array($tags)
   validate_array($facts_to_tags)
   validate_bool($puppet_run_reports)

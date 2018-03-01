@@ -27,6 +27,12 @@ proxy_user: <%= @proxy_user %>
 <% else -%>
 proxy_password: <%= @proxy_password %>
 <% end -%>
+<% if @histogram_percentiles.empty? -%>
+# histogram_percentiles:
+<% else -%>
+histogram_percentiles: <%= @histogram_percentiles %>
+<% end -%>
+
 
 # If you run the agent behind haproxy, you might want to set this to yes
 # skip_ssl_validation: no

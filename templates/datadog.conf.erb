@@ -27,11 +27,6 @@ proxy_user: <%= @proxy_user %>
 <% else -%>
 proxy_password: <%= @proxy_password %>
 <% end -%>
-<% if @histogram_percentiles.empty? -%>
-# histogram_percentiles:
-<% else -%>
-histogram_percentiles: <%= @histogram_percentiles %>
-<% end -%>
 
 
 # If you run the agent behind haproxy, you might want to set this to yes
@@ -41,6 +36,12 @@ histogram_percentiles: <%= @histogram_percentiles %>
 # Can be found here:
 # https://app.datadoghq.com/account/settings
 api_key: <%= @api_key %>
+
+<% if !defined?(@histogram_percentiles) || @histogram_percentiles.empty? -%>
+# histogram_percentiles:
+<% else -%>
+histogram_percentiles: <%= @histogram_percentiles %>
+<% end -%>
 
 # Force the hostname to whatever you want.
 <% if @host.empty? -%>

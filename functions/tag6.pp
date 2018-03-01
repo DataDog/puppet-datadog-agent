@@ -14,7 +14,9 @@ function datadog_agent::tag6(
     $value = getvar($tag_names)
 
     if validate_legacy('Optional[Array]', 'is_array', $value){
-      $tags = prefix($value, "${tag_name}:")
+      $tags = prefix($value, "${tag_names}:")
+    } else {
+      $tags = [$tag_names]
     }
   } else {
     $tags = [$tag_names]

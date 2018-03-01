@@ -346,13 +346,13 @@ class datadog_agent(
   validate_legacy(String, 'validate_string', $apt_release)
 
   if $hiera_tags {
-    $local_tags = hiera_array('datadog_agent::tags', [])
+    $local_tags = lookup({ 'name' => 'datadog_agent::tags', 'default_value' => []})
   } else {
     $local_tags = $tags
   }
 
   if $hiera_integrations {
-    $local_integrations = hiera_hash('datadog_agent::integrations', {})
+    $local_integrations = lookup({ 'name' => 'datadog_agent::integrations', 'default_value' => {}})
   } else {
     $local_integrations = $integrations
   }

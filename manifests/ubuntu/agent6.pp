@@ -16,7 +16,7 @@ class datadog_agent::ubuntu::agent6(
 ) inherits datadog_agent::params {
 
   ensure_packages(['apt-transport-https'])
-  validate_array($other_keys)
+  validate_legacy(Array, 'validate_array', $other_keys)
 
   if !$skip_apt_key_trusting {
     $mykeys = concat($other_keys, [$apt_key])

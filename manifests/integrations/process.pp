@@ -50,7 +50,7 @@ class datadog_agent::integrations::process(
   validate_array( $processes )
 
   if $hiera_processes {
-    $local_processes = hiera_array('datadog_agent::integrations::process::processes')
+    $local_processes = lookup({ 'name' => 'datadog_agent::integrations::process::processes', 'default_value' => []})
   } else {
     $local_processes = $processes
   }

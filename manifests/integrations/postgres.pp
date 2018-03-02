@@ -55,23 +55,23 @@
 #
 #
 class datadog_agent::integrations::postgres(
-  $password,
-  $host   = 'localhost',
-  $dbname = 'postgres',
-  $port   = '5432',
-  $username = 'datadog',
-  $ssl = false,
-  $use_psycopg2 = false,
-  $tags = [],
-  $tables = [],
-  $custom_metrics = {},
-  $instances = undef,
+  String $password,
+  String $host                   = 'localhost',
+  String $dbname                 = 'postgres',
+  Variant[String, Integer] $port = '5432',
+  String $username               = 'datadog',
+  Boolean $ssl                   = false,
+  Boolean $use_psycopg2          = false,
+  Array[String] $tags            = [],
+  Array[String] $tables          = [],
+  Hash $custom_metrics           = {},
+  Optional[Array] $instances     = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_array($tags)
-  validate_array($tables)
-  validate_bool($use_psycopg2)
+  validate_legacy('Array[String]', 'validate_array', $tags)
+  validate_legacy('Array[String]', 'validate_array', $tables)
+  validate_legacy('Boolean', 'validate_bool', $use_psycopg2)
 
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/postgres.yaml"

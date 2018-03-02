@@ -18,12 +18,12 @@
 # }
 #
 class datadog_agent::integrations::generic(
-  $integration_name     = undef,
-  $integration_contents = undef,
+  Optional[String] $integration_name     = undef,
+  Optional[String] $integration_contents = undef,
 ) inherits datadog_agent::params {
 
-  validate_string($integration_name)
-  validate_string($integration_contents)
+  validate_legacy('Optional[String]', 'validate_string', $integration_name)
+  validate_legacy('Optional[String]', 'validate_string', $integration_contents)
 
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/${integration_name}.yaml"

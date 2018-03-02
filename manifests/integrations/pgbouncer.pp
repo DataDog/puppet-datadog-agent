@@ -44,17 +44,17 @@
 #  }
 #
 class datadog_agent::integrations::pgbouncer(
-  $password = '',
-  $host   = 'localhost',
-  $port   = '6432',
-  $username = 'datadog',
-  $tags = [],
-  $pgbouncers = [],
+  String $password               = '',
+  String $host                   = 'localhost',
+  Variant[String, Integer] $port = '6432',
+  String $username               = 'datadog',
+  Array $tags = [],
+  Array $pgbouncers = [],
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_array($tags)
-  validate_array($pgbouncers)
+  validate_legacy('Array', 'validate_array', $tags)
+  validate_legacy('Array', 'validate_array', $pgbouncers)
 
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/pgbouncer.yaml"

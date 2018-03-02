@@ -19,11 +19,11 @@
 #
 class datadog_agent::integrations::fluentd(
   $monitor_agent_url = 'http://localhost:24220/api/plugins.json',
-  $plugin_ids = [],
+  Optional[Array] $plugin_ids = [],
 ) inherits datadog_agent::params {
   include ::datadog_agent
 
-  validate_array($plugin_ids)
+  validate_legacy('Optional[Array]', 'validate_array', $plugin_ids)
 
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/fluentd.yaml"

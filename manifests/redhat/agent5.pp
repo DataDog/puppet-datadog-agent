@@ -15,19 +15,20 @@
 #
 #
 class datadog_agent::redhat::agent5(
-  $baseurl = $datadog_agent::params::agent5_default_repo,
-  $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
-  $manage_repo = true,
-  $agent_version = 'latest',
-  $service_ensure = 'running',
-  $service_enable = true,
+  String $baseurl = $datadog_agent::params::agent5_default_repo,
+  String $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
+  Boolean $manage_repo = true,
+  String $agent_version = 'latest',
+  String $service_ensure = 'running',
+  Boolean $service_enable = true,
 ) inherits datadog_agent::params {
 
-  validate_bool($manage_repo)
+  validate_legacy('Boolean', 'validate_bool', $manage_repo)
+  validate_legacy('Boolean', 'validate_bool', $service_enable)
   if $manage_repo {
     $public_key_local = '/etc/pki/rpm-gpg/DATADOG_RPM_KEY.public'
 
-    validate_string($baseurl)
+    validate_legacy('String', 'validate_string', $baseurl)
 
     file { 'DATADOG_RPM_KEY.public':
         owner  => root,

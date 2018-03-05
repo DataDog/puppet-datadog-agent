@@ -55,22 +55,22 @@
 # }
 
 class datadog_agent::integrations::directory (
-  $directory   = '',
-  $filegauges  = false,
-  $recursive   = true,
-  $countonly   = false,
-  $nametag     = '',
-  $dirtagname  = '',
-  $filetagname = '',
-  $pattern     = '',
-  $instances   = undef,
+  String $directory          = '',
+  Boolean $filegauges        = false,
+  Boolean $recursive         = true,
+  Boolean $countonly         = false,
+  String $nametag            = '',
+  String $dirtagname         = '',
+  String $filetagname        = '',
+  String $pattern            = '',
+  Optional[Array] $instances = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_string($directory)
-  validate_bool($filegauges)
-  validate_bool($recursive)
-  validate_bool($countonly)
+  validate_legacy(String, 'validate_string', $directory)
+  validate_legacy(Boolean, 'validate_bool', $filegauges)
+  validate_legacy(Boolean, 'validate_bool', $recursive)
+  validate_legacy(Boolean, 'validate_bool', $countonly)
 
   if !$instances and $directory == '' {
     fail('bad directory argument and no instances hash provided')

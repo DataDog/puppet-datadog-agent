@@ -19,13 +19,13 @@
 #   }
 #
 class datadog_agent::integrations::riak(
-  $url   = 'http://localhost:8098/stats',
-  $tags  = [],
+  String $url  = 'http://localhost:8098/stats',
+  Array $tags  = [],
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_string($url)
-  validate_array($tags)
+  validate_legacy('String', 'validate_string', $url)
+  validate_legacy('Array', 'validate_array', $tags)
 
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/riak.yaml"

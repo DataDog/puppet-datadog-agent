@@ -13,19 +13,19 @@
 #
 
 class datadog_agent::ubuntu::agent5(
-  $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
-  $agent_version = 'latest',
-  $other_keys = ['935F5A436A5A6E8788F0765B226AE980C7A7DA52'],
-  $location = $datadog_agent::params::agent5_default_repo,
-  $release = $datadog_agent::params::apt_default_release,
-  $repos = 'main',
-  $skip_apt_key_trusting = false,
-  $service_ensure = 'running',
-  $service_enable = true,
+  String $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
+  String $agent_version = 'latest',
+  Array $other_keys = ['935F5A436A5A6E8788F0765B226AE980C7A7DA52'],
+  String $location = $datadog_agent::params::agent5_default_repo,
+  String $release = $datadog_agent::params::apt_default_release,
+  String $repos = 'main',
+  Boolean $skip_apt_key_trusting = false,
+  String $service_ensure = 'running',
+  Boolean $service_enable = true,
 ) inherits datadog_agent::params{
 
   ensure_packages(['apt-transport-https'])
-  validate_array($other_keys)
+  validate_legacy('Array', 'validate_array', $other_keys)
 
   if !$skip_apt_key_trusting {
     $mykeys = concat($other_keys, [$apt_key])

@@ -41,13 +41,13 @@
 #
 #
 class datadog_agent::integrations::process(
-  $hiera_processes = false,
-  $processes = [],
+  Boolean $hiera_processes = false,
+  Array $processes = [],
   ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_bool( $hiera_processes )
-  validate_array( $processes )
+  validate_legacy('Boolean', 'validate_bool', $hiera_processes)
+  validate_legacy('Array', 'validate_array', $processes)
 
   if $hiera_processes {
     $local_processes = lookup({ 'name' => 'datadog_agent::integrations::process::processes', 'default_value' => []})

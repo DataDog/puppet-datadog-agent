@@ -27,6 +27,34 @@ describe 'datadog_agent::integrations::consul' do
       )}
       it { should contain_file(conf_file).that_requires("Package[#{dd_package}]") }
       it { should contain_file(conf_file).that_notifies("Service[#{dd_service}]") }
+
+      context 'with defaults' do
+        it { should contain_file(conf_file).with_content(%r{url: http://localhost:8500}) }
+        it { should contain_file(conf_file).with_content(%r{catalog_checks: yes}) }
+        it { should contain_file(conf_file).with_content(%r{new_leader_checks: yes}) }
+        it { should contain_file(conf_file).with_content(%r{network_latency_checks: yes}) }
+      end
+
+      context 'with everything disabled' do
+        let(:params) {{
+          'url' => 'http://localhost:8005',
+          'catalog_checks' => false,
+          'new_leader_checks' => false,
+          'network_latency_checks' => false,
+        }}
+        it { should contain_file(conf_file).with_content(%r{url: http://localhost:8005}) }
+        it { should contain_file(conf_file).with_content(%r{catalog_checks: no}) }
+        it { should contain_file(conf_file).with_content(%r{new_leader_checks: no}) }
+        it { should contain_file(conf_file).with_content(%r{network_latency_checks: no}) }
+      end
+
+      context 'with service whitelist' do
+        let(:params) {{
+          'service_whitelist' => ['foo', 'bar']
+        }}
+        it { should contain_file(conf_file).with_content(%r{url: http://localhost:8500}) }
+        it { should contain_file(conf_file).with_content(%r{service_whitelist:\n\s+- foo\n\s+- bar}) }
+      end
     end
   end
 end

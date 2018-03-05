@@ -22,14 +22,14 @@
 #
 #
 class datadog_agent::integrations::network(
-  $collect_connection_state = false,
-  $excluded_interfaces = ['lo','lo0'],
-  $excluded_interface_re = [],
-  $combine_connection_states = true,
+  Boolean $collect_connection_state = false,
+  Array[String] $excluded_interfaces = ['lo','lo0'],
+  Array $excluded_interface_re = [],
+  Boolean $combine_connection_states = true,
 ) inherits datadog_agent::params {
   include ::datadog_agent
 
-  validate_array($excluded_interfaces)
+  validate_legacy('Array', 'validate_array', $excluded_interfaces)
 
   file { "${datadog_agent::params::conf_dir}/network.yaml":
     ensure  => file,

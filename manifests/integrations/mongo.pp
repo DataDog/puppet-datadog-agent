@@ -61,7 +61,8 @@ class datadog_agent::integrations::mongo(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_array($servers)
+
+  validate_legacy('Array', 'validate_array', $servers)
 
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/mongo.yaml"

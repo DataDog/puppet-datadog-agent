@@ -31,18 +31,17 @@
 #  }
 #
 class datadog_agent::integrations::memcache (
-  $url                    = 'localhost',
-  $port                   = 11211,
-  $tags                   = [],
-  $items                  = false,
-  $slabs                  = false,
-  $instances = undef,
+  String $url                     = 'localhost',
+  Variant[String, Integer] $port  = 11211,
+  Array $tags                     = [],
+  Variant[Boolean, String] $items = false,
+  Variant[Boolean, String] $slabs = false,
+  Optional[Array] $instances      = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_string($url)
-  validate_array($tags)
-  validate_integer($port)
+  validate_legacy('String', 'validate_string', $url)
+  validate_legacy('Array', 'validate_array', $tags)
 
   if !$instances and $url {
     $_instances = [{

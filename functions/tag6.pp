@@ -6,20 +6,27 @@ function datadog_agent::tag6(
   Variant[Array, String] $tag_names,
   Variant[String, Boolean] $lookup_fact = false,
 ) {
-  if validate_legacy('Optional[Array]', 'is_array', $tag_names) {
+  if $tag_names =~ Array {
     $tags = $tag_names.reduce([]) |$_tags , $tag| {
-        concat($_tags, datadog_agent::tag6($tag, lookup_fact))
+        concat($_tags, datadog_agent::tag6($tag, $lookup_fact))
     }
-  } elsif str2bool($lookup_fact) {
-    $value = getvar($tag_names)
+  } else {
+    if $lookup_fact =~ String {
+      $lookup = str2bool($lookup_fact)
+    } else {
+      $lookup = $lookup_fact
+    }
 
-    if validate_legacy('Optional[Array]', 'is_array', $value){
-      $tags = prefix($value, "${tag_names}:")
+    if $lookup {
+      $value = getvar($tag_names)
+      if $value =~ Array {
+        $tags = prefix($value, "${tag_names}:")
+      } else {
+        $tags = [$tag_names]
+      }
     } else {
       $tags = [$tag_names]
     }
-  } else {
-    $tags = [$tag_names]
   }
 
   $tags

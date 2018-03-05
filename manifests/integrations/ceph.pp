@@ -14,12 +14,13 @@
 #  }
 #
 class datadog_agent::integrations::ceph(
-  $tags = [ 'name:ceph_cluster' ],
-  $ceph_cmd = '/usr/bin/ceph',
+  Array $tags = [ 'name:ceph_cluster' ],
+  String $ceph_cmd = '/usr/bin/ceph',
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_array($tags)
+  validate_legacy('Array', 'validate_array', $tags)
+  validate_legacy('String', 'validate_string', $ceph_cmd)
 
   file { '/etc/sudoers.d/datadog_ceph':
     content => "# This file is required for dd ceph \ndd-agent ALL=(ALL) NOPASSWD:/usr/bin/ceph\n"

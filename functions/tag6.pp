@@ -8,7 +8,7 @@ function datadog_agent::tag6(
 ) {
   if $tag_names =~ Array {
     $tags = $tag_names.reduce([]) |$_tags , $tag| {
-        concat($_tags, datadog_agent::tag6($tag, lookup_fact))
+        concat($_tags, datadog_agent::tag6($tag, $lookup_fact))
     }
   } else {
     if $lookup_fact =~ String {

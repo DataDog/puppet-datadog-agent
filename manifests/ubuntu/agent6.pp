@@ -6,7 +6,6 @@
 class datadog_agent::ubuntu::agent6(
   $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
   $agent_version = 'latest',
-  $other_keys = ['935F5A436A5A6E8788F0765B226AE980C7A7DA52'],
   $location = $datadog_agent::params::agent6_default_repo,
   $release = $datadog_agent::params::apt_default_release,
   $repos = '6',
@@ -16,12 +15,8 @@ class datadog_agent::ubuntu::agent6(
 ) inherits datadog_agent::params {
 
   ensure_packages(['apt-transport-https'])
-  validate_legacy(Array, 'validate_array', $other_keys)
-
   if !$skip_apt_key_trusting {
-    $mykeys = concat($other_keys, [$apt_key])
-
-    ::datadog_agent::ubuntu::install_key { $mykeys:
+    ::datadog_agent::ubuntu::install_key { [$apt_key]:
       before  => Apt::Source['datadog6'],
     }
   }

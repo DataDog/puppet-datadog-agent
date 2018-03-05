@@ -37,10 +37,10 @@ describe 'datadog_agent::integrations::consul' do
 
       context 'with everything disabled' do
         let(:params) {{
-          'url': 'http://localhost:8005',
-          'catalog_checks': false,
-          'new_leader_checks': false,
-          'network_latency_checks': false,
+          'url' => 'http://localhost:8005',
+          'catalog_checks' => false,
+          'new_leader_checks' => false,
+          'network_latency_checks' => false,
         }}
         it { should contain_file(conf_file).with_content(%r{url: http://localhost:8005}) }
         it { should contain_file(conf_file).with_content(%r{catalog_checks: no}) }
@@ -50,7 +50,7 @@ describe 'datadog_agent::integrations::consul' do
 
       context 'with service whitelist' do
         let(:params) {{
-          'service_whitelist': ['foo', 'bar']
+          'service_whitelist' => ['foo', 'bar']
         }}
         it { should contain_file(conf_file).with_content(%r{url: http://localhost:8500}) }
         it { should contain_file(conf_file).with_content(%r{service_whitelist:\n\s+- foo\n\s+- bar}) }

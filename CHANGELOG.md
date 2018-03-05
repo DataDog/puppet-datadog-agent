@@ -1,13 +1,24 @@
 Changes
 =======
 
-# 2.0.1 / 2018-2-28
+# 2.1.0 / Unreleased
+
+### Notes
+
+* [FEATURE] Kafka: support multiple instances. See [#404][]
+* [FEATURE] Consul: add network latency check support. See [#394][] (Thanks [@Aramack][])
+* [BUGFIX] Stdlib: fix deprecations after stdlib 4.24.0. See [#403][] and [#404][] (Thanks [@teintuc][])
+* [BUGFIX] RHEL: stop specifying service resource provider `redhat`. See [#401][] (Thanks [@milescrabill][])
+* [IMPROVEMENT] Add types to multiple manifest parameters. See [#404][]
+* [COMPATIBILITY] Drop puppetlabs-apt dependency lower bound to `2.4.0`. See [#404][] and 400 (Thanks [@samueljamesmarshall][])
+
+# 2.0.1 / 2018-02-28
 
 ### Notes
 
 * [BUGFIX] RHEL: fix bad default agent6 repo url. See [#397][]
 
-# 2.0.0 / 2018-2-27
+# 2.0.0 / 2018-02-27
 
 ### Overview 
 This release is a mejor release, there are a some breaking changes. We have 
@@ -448,8 +459,13 @@ Please read the [docs]() for more details.
 [#389]: https://github.com/DataDog/puppet-datadog-agent/issues/389
 [#390]: https://github.com/DataDog/puppet-datadog-agent/issues/390
 [#391]: https://github.com/DataDog/puppet-datadog-agent/issues/391
+[#394]: https://github.com/DataDog/puppet-datadog-agent/issues/394
 [#395]: https://github.com/DataDog/puppet-datadog-agent/issues/395
 [#397]: https://github.com/DataDog/puppet-datadog-agent/issues/397
+[#401]: https://github.com/DataDog/puppet-datadog-agent/issues/401
+[#403]: https://github.com/DataDog/puppet-datadog-agent/issues/403
+[#404]: https://github.com/DataDog/puppet-datadog-agent/issues/404
+[@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
 [@DDRBoxman]: https://github.com/DDRBoxman
@@ -495,6 +511,7 @@ Please read the [docs]() for more details.
 [@kitchen]: https://github.com/kitchen
 [@lowkeyshift]: https://github.com/lowkeyshift
 [@mcasper]: https://github.com/mcasper
+[@milescrabill]: https://github.com/milescrabill
 [@mraylu]: https://github.com/mraylu
 [@mrunkel-ut]: https://github.com/mrunkel-ut
 [@mtougeron]: https://github.com/mtougeron
@@ -508,6 +525,7 @@ Please read the [docs]() for more details.
 [@rothgar]: https://github.com/rothgar
 [@rtyler]: https://github.com/rtyler
 [@sambanks]: https://github.com/sambanks
+[@samueljamesmarshall]: https://github.com/samueljamesmarshall
 [@scottgeary]: https://github.com/scottgeary
 [@sethcleveland]: https://github.com/sethcleveland
 [@stamak]: https://github.com/stamak
@@ -515,4 +533,5 @@ Please read the [docs]() for more details.
 [@swwolf]: https://github.com/swwolf
 [@szponek]: https://github.com/szponek
 [@tdm4]: https://github.com/tdm4
+[@teintuc]: https://github.com/teintuc
 [@tuxinaut]: https://github.com/tuxinaut

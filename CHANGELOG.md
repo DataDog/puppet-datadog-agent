@@ -1,7 +1,7 @@
 Changes
 =======
 
-# 2.1.0 / Unreleased
+# 2.1.0 / 2018-03-06
 
 ### Notes
 

@@ -20,6 +20,7 @@ class datadog_agent::params {
   $dd_group       = 'root'
   $package_name   = 'datadog-agent'
   $service_name   = 'datadog-agent'
+  $checks_dir     = '/etc/dd-agent/checks.d'
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {

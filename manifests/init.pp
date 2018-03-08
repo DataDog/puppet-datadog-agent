@@ -523,6 +523,8 @@ class datadog_agent(
       'dogstatsd_port' => $dogstatsd_port,
       'dogstatsd_socket' => $dogstatsd_socket,
       'dogstatsd_non_local_traffic' => $non_local_traffic,
+      'statsd_forward_host' => $statsd_forward_host,
+      'statsd_forward_port' => $statsd_forward_port,
       'log_file' => $agent6_log_file,
       'log_level' => $log_level,
       'tags' => unique(flatten(union($_local_tags, $_facts_tags))),

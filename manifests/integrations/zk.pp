@@ -32,9 +32,15 @@ class datadog_agent::integrations::zk (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_array($servers)
+  validate_legacy('Array', 'validate_array', $servers)
 
-  file { "${datadog_agent::params::conf_dir}/zk.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/zk.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/zk.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

@@ -3,6 +3,10 @@
 # This class will install the necessary configuration for the ceph integration
 #
 # Parameters:
+#   $tags
+#       Optional array of tags
+#   $ceph_cmd
+#       Optional ceph cmd
 
 # Sample Usage:
 #
@@ -10,14 +14,25 @@
 #  }
 #
 class datadog_agent::integrations::ceph(
+  Array $tags = [ 'name:ceph_cluster' ],
+  String $ceph_cmd = '/usr/bin/ceph',
 ) inherits datadog_agent::params {
   include datadog_agent
+
+  validate_legacy('Array', 'validate_array', $tags)
+  validate_legacy('String', 'validate_string', $ceph_cmd)
 
   file { '/etc/sudoers.d/datadog_ceph':
     content => "# This file is required for dd ceph \ndd-agent ALL=(ALL) NOPASSWD:/usr/bin/ceph\n"
   }
 
-  file { "${datadog_agent::params::conf_dir}/ceph.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/ceph.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/ceph.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

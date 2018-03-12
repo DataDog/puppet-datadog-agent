@@ -13,4 +13,9 @@ instances:
       <%= k %>: <%= v %>
       <%- end -%>
     <%- end -%>
+    <%- if instance['options'] -%>
+      <%- instance['options'].each do |k, v| -%>
+      <%= k %>: <%= v %>
+      <%- end -%>
+    <%- end -%>
 <% end -%>

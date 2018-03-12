@@ -5,6 +5,8 @@
 # Parameters:
 #   $processes:
 #       Array of process hashes. See example
+#   $hiera_processes:
+#       Boolean to grab processes from hiera to allow merging
 #
 # Process hash keys:
 #   search_strings
@@ -39,13 +41,27 @@
 #
 #
 class datadog_agent::integrations::process(
-  $processes = [],
-) inherits datadog_agent::params {
+  Boolean $hiera_processes = false,
+  Array $processes = [],
+  ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_array( $processes )
+  validate_legacy('Boolean', 'validate_bool', $hiera_processes)
+  validate_legacy('Array', 'validate_array', $processes)
 
-  file { "${datadog_agent::params::conf_dir}/process.yaml":
+  if $hiera_processes {
+    $local_processes = lookup({ 'name' => 'datadog_agent::integrations::process::processes', 'default_value' => []})
+  } else {
+    $local_processes = $processes
+  }
+
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/process.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/process.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

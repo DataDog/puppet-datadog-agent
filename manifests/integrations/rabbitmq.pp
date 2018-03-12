@@ -46,31 +46,37 @@
 #
 
 class datadog_agent::integrations::rabbitmq (
-  $url            = undef,
-  $username       = 'guest',
-  $password       = 'guest',
-  $ssl_verify     = true,
-  $tag_families   = false,
-  $nodes          = [],
-  $nodes_regexes  = [],
-  $queues         = [],
-  $queues_regexes = [],
-  $vhosts         = [],
+  Optional[String] $url      = undef,
+  Optional[String] $username = 'guest',
+  Optional[String] $password = 'guest',
+  Boolean $ssl_verify        = true,
+  Boolean $tag_families      = false,
+  Array $nodes               = [],
+  Array $nodes_regexes       = [],
+  Array $queues              = [],
+  Array $queues_regexes      = [],
+  Array $vhosts              = [],
 ) inherits datadog_agent::params {
 
-  validate_string($url)
-  validate_string($username)
-  validate_string($password)
-  validate_bool($ssl_verify)
-  validate_bool($tag_families)
-  validate_array($nodes)
-  validate_array($nodes_regexes)
-  validate_array($queues)
-  validate_array($queues_regexes)
-  validate_array($vhosts)
+  validate_legacy('String', 'validate_string', $url)
+  validate_legacy('Optional[String]', 'validate_string', $username)
+  validate_legacy('Optional[String]', 'validate_string', $password)
+  validate_legacy('Boolean', 'validate_bool', $ssl_verify)
+  validate_legacy('Boolean', 'validate_bool', $tag_families)
+  validate_legacy('Array', 'validate_array', $nodes)
+  validate_legacy('Array', 'validate_array', $nodes_regexes)
+  validate_legacy('Array', 'validate_array', $queues)
+  validate_legacy('Array', 'validate_array', $queues_regexes)
+  validate_legacy('Array', 'validate_array', $vhosts)
   include datadog_agent
 
-  file { "${datadog_agent::params::conf_dir}/rabbitmq.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/rabbitmq.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/rabbitmq.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

@@ -33,9 +33,16 @@ class datadog_agent::integrations::cassandra(
   $tags = {},
 ) inherits datadog_agent::params {
   require ::datadog_agent
-  validate_hash($tags)
 
-  file { "${datadog_agent::params::conf_dir}/cassandra.yaml":
+  validate_legacy(Optional[Hash], 'validate_hash', $tags)
+
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/cassandra.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/cassandra.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

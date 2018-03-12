@@ -16,12 +16,15 @@
 #   an array that maps an sql column's to a tag. Each descriptor consists of two
 #   fields -- column name, and datadog tag.
 define datadog_agent::integrations::postgres_custom_metric(
-  $query,
-  $metrics,
-  $relation = false,
-  $descriptors = [],
+  String $query,
+  Hash $metrics,
+  Boolean $relation = false,
+  Array $descriptors = [],
 ) {
-  validate_re($query, '^.*%s.*$', 'custom_metrics require %s for metric substitution')
-  validate_hash($metrics)
-  validate_array($descriptors)
+  validate_legacy('Hash', 'validate_hash', $metrics)
+  validate_legacy('Array', 'validate_array', $descriptors)
+
+  if $query !~ '^.*%s.*$' {
+    fail('custom_metrics require %s for metric substitution')
+  }
 }

@@ -19,13 +19,13 @@ end
 Facter.add('yum_agent6_repo') do
   setcode do
       yumpath = '/etc/yum.repos.d/datadog6.repo'
-      File.exist? yumpath or !File.zero? yumpath
+      File.exist? yumpath and !File.zero? yumpath
   end
 end
 
 Facter.add('yum_datadog_legacy_repo') do
   setcode do
       yumpath = '/etc/yum.repos.d/datadog.repo'
-      File.exist? yumpath  or !File.zero? yumpath
+      File.exist? yumpath and !File.zero? yumpath
   end
 end

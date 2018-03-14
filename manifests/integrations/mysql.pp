@@ -54,25 +54,30 @@
 #
 #
 class datadog_agent::integrations::mysql(
-  String $password,
-  String $host                       = 'localhost',
-  String $user                       = 'datadog',
-  Variant[String, Integer] $port     = 3306,
-  Optional[String] $sock             = undef,
-  Array $tags                        = [],
-  $replication                       = '0',
-  $galera_cluster                    = '0',
-  Boolean $extra_status_metrics      = false,
-  Boolean $extra_innodb_metrics      = false,
-  Boolean $extra_performance_metrics = false,
-  Boolean $schema_size_metrics       = false,
-  Boolean $disable_innodb_metrics    = false,
-  Optional[Array] $instances         = undef,
+  String $host                             = 'localhost',
+  Optional[String] $user                   = 'datadog',
+  Optional[Variant[String, Integer]] $port = 3306,
+  Optional[String] $password               = undef,
+  Optional[String] $sock                   = undef,
+  Array $tags                              = [],
+  $replication                             = '0',
+  $galera_cluster                          = '0',
+  Boolean $extra_status_metrics            = false,
+  Boolean $extra_innodb_metrics            = false,
+  Boolean $extra_performance_metrics       = false,
+  Boolean $schema_size_metrics             = false,
+  Boolean $disable_innodb_metrics          = false,
+  Optional[Array] $instances               = undef,
   ) inherits datadog_agent::params {
   include datadog_agent
 
   validate_legacy('Optional[String]', 'validate_string', $sock)
   validate_legacy('Array', 'validate_array', $tags)
+
+  if ($host == undef and $sock == undef) or
+    ($host != undef and $port == undef and $sock == undef) {
+    fail('invalid MySQL configuration')
+  }
 
   if !$instances and $host {
     $_instances = [{

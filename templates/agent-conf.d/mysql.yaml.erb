@@ -7,10 +7,14 @@ init_config:
 instances:
 <%- (Array(@_instances)).each do |instance| -%>
   - server: <%= instance['host'] %>
+<% if instance['user'] and instance['user'] != :undef -%>
     user: <%= instance['user'] %>
+<% end -%>
+<% if instance['password'] and instance['password'] != :undef -%>
     pass: <%= instance['password'] %>
+<% end -%>
 <% if instance['port'] -%>
-    port: <%= instance['port'] %>
+    port: <%= instance['port'] and instance['port'] != :undef %>
 <% end -%>
 <% if instance['sock'] and instance['sock'] != :undef -%>
     sock: <%= instance['sock'] %>

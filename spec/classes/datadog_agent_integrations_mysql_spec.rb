@@ -20,7 +20,7 @@ describe 'datadog_agent::integrations::mysql' do
       let(:conf_file) { "#{conf_dir}/mysql.yaml" }
 
       context 'with default parameters' do
-        it { should_not compile }
+        it { should compile }
       end
 
       context 'with password set' do

@@ -1,6 +1,13 @@
 Changes
 =======
 
+# 2.1.1 / 2018-03-14
+
+### Notes
+
+* [BUGFIX] RHEL: fix faulty check prompting agent reinstalls. See [#412][] (Thanks [@jcarr-sailthru][])
+* [BUGFIX] MySQL: fix broken parameters to manifest. See [#411][]
+
 # 2.1.0 / 2018-03-06
 
 ### Notes
@@ -465,6 +472,8 @@ Please read the [docs]() for more details.
 [#401]: https://github.com/DataDog/puppet-datadog-agent/issues/401
 [#403]: https://github.com/DataDog/puppet-datadog-agent/issues/403
 [#404]: https://github.com/DataDog/puppet-datadog-agent/issues/404
+[#411]: https://github.com/DataDog/puppet-datadog-agent/issues/411
+[#412]: https://github.com/DataDog/puppet-datadog-agent/issues/412
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
@@ -504,6 +513,7 @@ Please read the [docs]() for more details.
 [@jacobbednarz]: https://github.com/jacobbednarz
 [@jameynelson]: https://github.com/jameynelson
 [@jangie]: https://github.com/jangie
+[@jcarr-sailthru]: https://github.com/jcarr-sailthru
 [@jdavisp3]: https://github.com/jdavisp3
 [@jensendw]: https://github.com/jensendw
 [@jfrost]: https://github.com/jfrost

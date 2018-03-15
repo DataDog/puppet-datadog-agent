@@ -497,7 +497,7 @@ class datadog_agent(
     # lint:endignore
     $base_extra_config = {
         'apm_config' => { 'apm_enabled' => $apm_enabled },
-        'process_config' => { 'process_enabled' => $process_enabled_str },
+        'process_config' => { 'enabled' => $process_enabled_str },
     }
     $extra_config = deep_merge($base_extra_config, $agent6_extra_options)
 

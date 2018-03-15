@@ -1,7 +1,29 @@
+### MANAGED BY PUPPET
+
 init_config:
 
 instances:
-    -   directory: "<%= @directory %>"
-        name: "<%= @tag_name %>"
-        pattern: "<%= @pattern %>"
-        recursive: <%= @recursive %>
+<%- (Array(@_instances)).each do |instance| -%>
+  - directory: <%= instance['directory'] %>
+<% if instance.key?('filegauges') -%>
+    filegauges: <%= instance['filegauges'] %>
+<% end -%>
+<% if instance.key?('recursive') -%>
+    recursive: <%= instance['recursive'] %>
+<% end -%>
+<% if instance.key?('countonly') -%>
+    countonly: <%= instance['countonly'] %>
+<% end -%>
+<% unless !instance.key?('name') || instance['name'] == '' -%>
+    name: <%= instance['name'] %>
+<% end -%>
+<% unless !instance.key?('pattern') || instance['pattern'] == '' -%>
+    pattern: <%= instance['pattern'] %>
+<% end -%>
+<% unless !instance.key?('dirtagname') || instance['dirtagname'] == '' -%>
+    dirtagname: <%= instance['dirtagname'] %>
+<% end -%>
+<% unless !instance.key?('filetagname') || instance['filetagname'] == '' -%>
+    filetagname: <%= instance['filetagname'] %>
+<% end -%>
+<% end -%>

@@ -25,7 +25,7 @@
 #  }
 #
 class datadog_agent::integrations::dns_check (
-  $checks = [
+  Array $checks = [
     {
       'hostname'   => 'google.com',
       'nameserver' => '8.8.8.8',
@@ -35,9 +35,15 @@ class datadog_agent::integrations::dns_check (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_array($checks)
+  validate_legacy('Array', 'validate_array', $checks)
 
-  file { "${datadog_agent::params::conf_dir}/dns_check.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/dns_check.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/dns_check.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

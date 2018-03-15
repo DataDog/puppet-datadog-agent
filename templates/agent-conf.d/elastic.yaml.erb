@@ -5,28 +5,30 @@
 init_config:
 
 instances:
-    - url: <%= @url %>
-<%- if @username -%>
-      username: <%= @username %>
+<%- (Array(@_instances)).each do |instance| -%>
+    - url: <%= instance['url'] %>
+<%- if instance['username'] && instance['username'] != :undef -%>
+      username: <%= instance['username'] %>
 <%- end -%>
-<%- if @password -%>
-      password: <%= @password %>
+<%- if instance['password'] && instance['password'] != :undef -%>
+      password: <%= instance['password'] %>
 <%- end -%>
-      cluster_stats: <%= @cluster_stats %>
-      pshard_stats: <%= @pshard_stats %>
-      pending_task_stats: <%= @pending_task_stats %>
-<%- if @url.match(/^https/) -%>
-      ssl_verify: <%= @ssl_verify %>
+      cluster_stats: <%= instance['cluster_stats'] %>
+      pshard_stats: <%= instance['pshard_stats'] %>
+      pending_task_stats: <%= instance['pending_task_stats'] %>
+<%- if instance['url'].match(/^https/) -%>
+      ssl_verify: <%= instance['ssl_verify'] %>
 <%- end -%>
-<%- if @ssl_cert -%>
-      ssl_cert: <%= @ssl_cert %>
+<%- if instance['ssl_cert'] && instance['ssl_cert'] != :undef -%>
+      ssl_cert: <%= instance['ssl_cert'] %>
 <%- end -%>
-<%- if @ssl_key -%>
-      ssl_key: <%= @ssl_key %>
+<%- if instance['ssl_key'] && instance['ssl_key'] != :undef -%>
+      ssl_key: <%= instance['ssl_key'] %>
 <%- end -%>
-<%- unless @tags.empty? -%>
+<%- unless instance['tags'].empty? -%>
       tags:
-  <%- @tags.each do |tag| -%>
+  <%- instance['tags'].each do |tag| -%>
         - <%= tag %>
   <%- end -%>
+<%- end -%>
 <%- end -%>

@@ -47,9 +47,11 @@
 #        'username'           => 'mongo_username',
 #      },
 #      {
-#        'host' => 'localhost',
-#        'port' => '27018',
-#        'tags' => [],
+#        'host'               => 'localhost',
+#        'port'               => '27018',
+#        'tags'               => [],
+#        'additional_metrics' => [],
+#        'collections'        => [],
 #      },
 #    ]
 #  }
@@ -59,9 +61,16 @@ class datadog_agent::integrations::mongo(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_array($servers)
 
-  file { "${datadog_agent::params::conf_dir}/mongo.yaml":
+  validate_legacy('Array', 'validate_array', $servers)
+
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/mongo.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/mongo.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

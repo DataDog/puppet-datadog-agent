@@ -17,6 +17,8 @@
 #       Optional array of tags
 #   $keys
 #       Optional array of keys to check length
+#   $command_stats
+#       Collect INFO COMMANDSTATS output as metrics
 #
 # Sample Usage:
 #
@@ -26,20 +28,24 @@
 #
 #
 class datadog_agent::integrations::redis(
-  $host = 'localhost',
-  $password = '',
-  $port = '6379',
-  $ports = undef,
-  $slowlog_max_len = '',
-  $tags = [],
-  $keys = [],
-  $warn_on_missing_keys = true,
+  String $host                              = 'localhost',
+  String $password                          = '',
+  Variant[String, Integer] $port            = '6379',
+  Optional[Array] $ports                    = undef,
+  Variant[String, Integer] $slowlog_max_len = '',
+  Array $tags                               = [],
+  Array $keys                               = [],
+  Boolean $warn_on_missing_keys             = true,
+  Boolean $command_stats                    = false,
+
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_array($tags)
-  validate_array($keys)
-  validate_bool($warn_on_missing_keys)
+  validate_legacy('Array', 'validate_array', $tags)
+  validate_legacy('Array', 'validate_array', $keys)
+  validate_legacy('Boolean', 'validate_bool', $warn_on_missing_keys)
+  validate_legacy('Boolean', 'validate_bool', $command_stats)
+  validate_legacy('Optional[Array]', 'validate_array', $ports)
 
   if $ports == undef {
     $_ports = [ $port ]
@@ -47,9 +53,15 @@ class datadog_agent::integrations::redis(
     $_ports = $ports
   }
 
-  validate_array($_ports)
+  validate_legacy('Array', 'validate_array', $_ports)
 
-  file { "${datadog_agent::params::conf_dir}/redisdb.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/redisdb.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/redisdb.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

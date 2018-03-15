@@ -35,11 +35,17 @@ class datadog_agent::integrations::apache (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_string($url)
-  validate_array($tags)
-  validate_bool($disable_ssl_validation)
+  validate_legacy('String', 'validate_string', $url)
+  validate_legacy('Array', 'validate_array', $tags)
+  validate_legacy('Boolean', 'validate_bool', $disable_ssl_validation)
 
-  file { "${datadog_agent::params::conf_dir}/apache.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/apache.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/apache.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

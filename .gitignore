@@ -4,3 +4,6 @@ spec/fixtures
 .bundle
 vendor
 Gemfile.lock
+
+.rbenv-gemsets
+.ruby-version

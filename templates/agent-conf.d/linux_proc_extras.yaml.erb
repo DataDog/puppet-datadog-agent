@@ -1,0 +1,14 @@
+### MANAGED BY PUPPET
+
+# There's no configuration necessary for this check.
+init_config:
+
+instances:
+<% if @tags.empty? -%>
+  - tags: []
+<% else -%>
+  - tags:
+<% @tags.each do |tag| -%>
+    - <%= tag %>
+<% end -%>
+<% end -%>

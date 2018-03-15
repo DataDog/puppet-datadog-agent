@@ -3,38 +3,66 @@
 # This class will install the necessary configuration for the pgbouncer integration
 #
 # Parameters:
-#   $password
+#   $password:
 #       The password for the datadog user
 #   $host:
 #       The host pgbouncer is listening on
-#   $port
+#   $port:
 #       The pgbouncer port number
-#   $username
+#   $username:
 #       The username for the datadog user
-#   $tags
+#   $tags:
 #       Optional array of tags
+#   $pgbouncers:
+#       Optional array of pgbouncer hashes. See example
 #
 # Sample Usage:
 #
 #  class { 'datadog_agent::integrations::pgbouncer' :
-#    host     => 'localhost',
-#    username => 'datadog',
-#    port     => '6432',
-#    password => 'some_pass',
+#    host           => 'localhost',
+#    username       => 'datadog',
+#    port           => '6432',
+#    password       => 'some_pass',
 #  }
 #
+#  class { 'datadog_agent::integrations::pgbouncer' :
+#    pgbouncers     => [
+#      {
+#        'host'     => 'localhost',
+#        'username' => 'datadog',
+#        'port'     => '6432',
+#        'password' => 'some_pass',
+#        'tags'     => ['instance:one'],
+#      },
+#      {
+#        'host'     => 'localhost',
+#        'username' => 'datadog2',
+#        'port'     => '6433',
+#        'password' => 'some_pass2',
+#      },
+#    ],
+#  }
 #
 class datadog_agent::integrations::pgbouncer(
-  $password,
-  $host   = 'localhost',
-  $port   = '6432',
-  $username = 'datadog',
-  $tags = [],
+  String $password               = '',
+  String $host                   = 'localhost',
+  Variant[String, Integer] $port = '6432',
+  String $username               = 'datadog',
+  Array $tags = [],
+  Array $pgbouncers = [],
 ) inherits datadog_agent::params {
+  include datadog_agent
 
-  validate_array($tags)
+  validate_legacy('Array', 'validate_array', $tags)
+  validate_legacy('Array', 'validate_array', $pgbouncers)
 
-  file { "${datadog_agent::params::conf_dir}/pgbouncer.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/pgbouncer.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/pgbouncer.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

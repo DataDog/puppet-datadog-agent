@@ -27,19 +27,26 @@
 #   }
 #
 class datadog_agent::integrations::consul(
-  $url               = 'http://localhost:8500',
-  $catalog_checks    = true,
-  $new_leader_checks = true,
-  $service_whitelist = []
+  String $url                        = 'http://localhost:8500',
+  Boolean $catalog_checks            = true,
+  Boolean $network_latency_checks    = true,
+  Boolean $new_leader_checks         = true,
+  Optional[Array] $service_whitelist = []
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_string($url)
-  validate_bool($catalog_checks)
-  validate_bool($new_leader_checks)
-  validate_array($service_whitelist)
+  validate_legacy('String', 'validate_string', $url)
+  validate_legacy('Boolean', 'validate_bool', $catalog_checks)
+  validate_legacy('Boolean', 'validate_bool', $new_leader_checks)
+  validate_legacy('Optional[Array]', 'validate_array', $service_whitelist)
 
-  file { "${datadog_agent::params::conf_dir}/consul.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/consul.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/consul.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

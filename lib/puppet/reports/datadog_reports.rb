@@ -13,6 +13,7 @@ Puppet::Reports.register_report(:datadog_reports) do
   raise(Puppet::ParseError, "Datadog report config file #{configfile} not readable") unless File.readable?(configfile)
   config = YAML.load_file(configfile)
   API_KEY = config[:datadog_api_key]
+  HOST_FILTER = Regexp.new(config[:host_filter])
 
   # if need be initialize the regex
   HOSTNAME_REGEX = config[:hostname_extraction_regex]

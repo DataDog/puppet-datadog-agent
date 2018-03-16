@@ -1,0 +1,21 @@
+#
+# MANAGED BY PUPPET
+#
+
+init_config:
+
+instances:
+
+<%- (Array(@_instances)).each do |instance| -%>
+    - url: <%= instance['url'] %>
+    <%- if instance['creds'] -%>
+      <%- instance['creds'].each do |k, v| -%>
+      <%= k %>: <%= v %>
+      <%- end -%>
+    <%- end -%>
+    <%- if instance['options'] -%>
+      <%- instance['options'].each do |k, v| -%>
+      <%= k %>: <%= v %>
+      <%- end -%>
+    <%- end -%>
+<% end -%>

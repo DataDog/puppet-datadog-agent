@@ -2,6 +2,9 @@ init_config:
 
 instances:
     -   varnishstat: <%= @varnishstat %>
+<% if @instance_name -%>
+        name: <%= @instance_name %>
+<% end -%>
 <% if @tags and ! @tags.empty? -%>
         tags:
   <%- Array(@tags).each do |tag| -%>

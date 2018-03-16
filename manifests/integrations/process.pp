@@ -5,6 +5,8 @@
 # Parameters:
 #   $processes:
 #       Array of process hashes. See example
+#   $hiera_processes:
+#       Boolean to grab processes from hiera to allow merging
 #
 # Process hash keys:
 #   search_strings
@@ -12,7 +14,7 @@
 #       return the counter of all the processes that contain the string
 #
 #   exact_match
-#       True/False, default to False, if you want to look for an arbitrary
+#       True/False, default to True, if you want to look for an arbitrary
 #       string, use exact_match: False, unless use the exact base name of the process
 #
 #   cpu_check_interval
@@ -39,16 +41,31 @@
 #
 #
 class datadog_agent::integrations::process(
+  $hiera_processes = false,
   $processes = [],
-) inherits datadog_agent::params {
+  ) inherits datadog_agent::params {
+  include datadog_agent
 
+  validate_bool( $hiera_processes )
   validate_array( $processes )
 
-  file { "${conf_dir}/process.yaml":
+  if $hiera_processes {
+    $local_processes = hiera_array('datadog_agent::integrations::process::processes')
+  } else {
+    $local_processes = $processes
+  }
+
+  if $::datadog_agent::agent6_enable {
+    $dst = "${datadog_agent::conf6_dir}/process.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/process.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
-    mode    => 0600,
+    mode    => '0600',
     content => template('datadog_agent/agent-conf.d/process.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]

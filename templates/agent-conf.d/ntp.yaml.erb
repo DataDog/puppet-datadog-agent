@@ -1,0 +1,26 @@
+### MANAGED BY PUPPET
+
+# http://docs.datadoghq.com/integrations/ntp/
+
+init_config:
+
+instances:
+  - offset_threshold: <%= @offset_threshold %>
+<% if @host -%>
+    host: <%= @host %>
+<% end -%>
+<% if @port -%>
+    port: <%= @port %>
+<% end -%>
+<% if @version -%>
+    version: <%= @version %>
+<% end -%>
+<% if @timeout -%>
+    timeout: <%= @timeout %>
+<% end -%>
+    # Optional params:
+    #
+    # host: pool.ntp.org
+    # port: ntp
+    # version: 3
+    # timeout: 5

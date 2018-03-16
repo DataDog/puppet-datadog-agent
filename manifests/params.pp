@@ -15,13 +15,18 @@
 # Sample Usage:
 #
 class datadog_agent::params {
-  $conf_dir     = '/etc/dd-agent/conf.d'
-  $dd_user      = 'dd-agent'
-  $dd_group     = 'root'
-  $package_name = 'datadog-agent'
-  $service_name = 'datadog-agent'
+  $agent6_enable  = false
+  $conf_dir       = '/etc/dd-agent/conf.d'
+  $conf6_dir      = '/etc/datadog-agent/conf.d'
+  $dd_user        = 'dd-agent'
+  $dd_group       = 'root'
+  $dd_groups      = undef
+  $package_name   = 'datadog-agent'
+  $service_name   = 'datadog-agent'
+  $dogapi_version = 'installed'
+  $conf_dir_purge = false
 
-  case $operatingsystem {
+  case $::operatingsystem {
     'Ubuntu','Debian' : {
       $rubydev_package   =  'ruby-dev'
     }

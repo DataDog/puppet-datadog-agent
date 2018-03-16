@@ -9,11 +9,19 @@ end
 
 Puppet::Reports.register_report(:datadog_reports) do
 
-  configfile = "/etc/dd-agent/datadog.yaml"
-  raise(Puppet::ParseError, "Datadog report config file #{configfile} not readable") unless File.exist?(configfile)
+  configfile = "/etc/datadog-agent/datadog-reports.yaml"
+  raise(Puppet::ParseError, "Datadog report config file #{configfile} not readable") unless File.readable?(configfile)
   config = YAML.load_file(configfile)
   API_KEY = config[:datadog_api_key]
   HOST_FILTER = Regexp.new(config[:host_filter])
+
+  # if need be initialize the regex
+  HOSTNAME_REGEX = config[:hostname_extraction_regex]
+  begin
+    HOSTNAME_EXTRACTION_REGEX = Regexp.new HOSTNAME_REGEX unless HOSTNAME_REGEX.nil?
+  rescue
+    raise(Puppet::ParseError, "Invalid hostname_extraction_regex #{HOSTNAME_REGEX}")
+  end
 
   desc <<-DESC
   Send notification of metrics to Datadog
@@ -39,8 +47,12 @@ Puppet::Reports.register_report(:datadog_reports) do
   def process
     @summary = self.summary
     @msg_host = self.host
-    
-    return unless HOST_FILTER.match(@msg_host)
+    unless HOSTNAME_EXTRACTION_REGEX.nil?
+      m = @msg_host.match(HOSTNAME_EXTRACTION_REGEX)
+      if !m.nil? && !m[:hostname].nil?
+        @msg_host = m[:hostname]
+      end
+    end
 
     event_title = ''
     alert_type = ''
@@ -57,10 +69,11 @@ Puppet::Reports.register_report(:datadog_reports) do
       elsif @status == 'changed'
         event_title = "Puppet changed resources on #{@msg_host}"
         alert_type = "success"
+        event_priority = "normal"
       elsif @status == "unchanged"
         event_title = "Puppet ran on, and left #{@msg_host} unchanged"
         alert_type = "success"
-      else 
+      else
         event_title = "Puppet ran on #{@msg_host}"
         alert_type = "success"
       end
@@ -79,7 +92,7 @@ Puppet::Reports.register_report(:datadog_reports) do
     config_version_blurb = if defined?(self.configuration_version) then "applied version #{self.configuration_version} and" else "" end
 
     event_data << "Puppet #{config_version_blurb} changed #{pluralize(changed_resources.length, 'resource')} out of #{total_resource_count}."
-    
+
     # List changed resources
     if changed_resources.length > 0
       event_data << "\nThe resources that changed are:\n@@@\n"
@@ -96,13 +109,15 @@ Puppet::Reports.register_report(:datadog_reports) do
 
     Puppet.debug "Sending metrics for #{@msg_host} to Datadog"
     @dog = Dogapi::Client.new(API_KEY)
-    self.metrics.each { |metric,data|
-      data.values.each { |val|
-        name = "puppet.#{val[1].gsub(/ /, '_')}.#{metric}".downcase
-        value = val[2]
-        @dog.emit_point("#{name}", value, :host => "#{@msg_host}")
+    @dog.batch_metrics do
+      self.metrics.each { |metric,data|
+        data.values.each { |val|
+          name = "puppet.#{val[1].gsub(/ /, '_')}.#{metric}".downcase
+          value = val[2]
+          @dog.emit_point("#{name}", value, :host => "#{@msg_host}")
+        }
       }
-    }
+    end
 
     Puppet.debug "Sending events for #{@msg_host} to Datadog"
     @dog.emit_event(Dogapi::Event.new(event_data,

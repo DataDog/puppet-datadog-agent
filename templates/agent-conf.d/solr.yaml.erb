@@ -17,10 +17,8 @@ instances:
 <% end -%>
 <% if @tags and ! @tags.empty? -%>
         tags:
-  <%- Array(@tags).each do |tag| -%>
-    <%- if tag != '' -%>
-            - <%= tag %>
-    <%- end -%>
+  <%- @tags.each do |key, val| -%>
+          <%= "#{key}: #{val}" %>
   <%- end -%>
 <% end -%>
 

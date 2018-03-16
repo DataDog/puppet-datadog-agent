@@ -15,10 +15,13 @@
 #
 class datadog_agent::reports(
   $api_key,
+  $puppet_gem_provider,
   $puppetmaster_user,
-  $puppetmaster_report_host_filter
+  $dogapi_version,
+  $hostname_extraction_regex = nil
 ) {
 
+  include datadog_agent
   include datadog_agent::params
   $rubydev_package = $datadog_agent::params::rubydev_package
 
@@ -30,24 +33,25 @@ class datadog_agent::reports(
     }
   }
 
-  # Ensure rubygems is installed
-  class { 'ruby':
-    # rubygems_update => false
+  if (! defined(Package['rubygems'])) {
+    # Ensure rubygems is installed
+    class { 'ruby':
+      rubygems_update => false
+    }
   }
   # TODO upgrade ruby module to a version with parameter rubygems_update
 
-  file { '/etc/dd-agent/datadog.yaml':
-    ensure   => file,
-    content  => template('datadog_agent/datadog.yaml.erb'),
-    owner    => $puppetmaster_user,
-    group    => 'root',
-    mode     => 0640,
-    require  => File['/etc/dd-agent'],
+  file { '/etc/datadog-agent/datadog-reports.yaml':
+    ensure  => file,
+    content => template('datadog_agent/datadog-reports.yaml.erb'),
+    owner   => $puppetmaster_user,
+    group   => 'root',
+    mode    => '0640',
+    require => File['/etc/datadog-agent'],
   }
 
   package{'dogapi':
-    ensure    => 'installed',
-    provider  => 'gem',
+    ensure   => $dogapi_version,
+    provider => $puppet_gem_provider,
   }
-
 }

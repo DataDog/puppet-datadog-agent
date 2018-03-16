@@ -1,0 +1,43 @@
+init_config:
+
+instances:
+    -  rabbitmq_api_url: <%= @url %>
+       rabbitmq_user: <%= @username %>
+       rabbitmq_pass: <%= @password %>
+       ssl_verify: <%= @ssl_verify %>
+       tag_families: <%= @tag_families %>
+
+<% unless @nodes.empty?  -%>
+       nodes:
+<% @nodes.each do |x| -%>
+         - <%= x %>
+<% end -%>
+<% end -%>
+
+<% unless @nodes_regexes.empty?  -%>
+       nodes_regexes:
+<% @nodes_regexes.each do |x| -%>
+         - <%= x %>
+<% end -%>
+<% end -%>
+
+<% unless @queues.empty?  -%>
+       queues:
+<% @queues.each do |x| -%>
+         - <%= x %>
+<% end -%>
+<% end -%>
+
+<% unless @queues_regexes.empty?  -%>
+       queues_regexes:
+<% @queues_regexes.each do |x| -%>
+         - <%= x %>
+<% end -%>
+<% end -%>
+
+<% unless @vhosts.empty? -%>
+       vhosts:
+<% @vhosts.each do |x| -%>
+         - <%= x %>
+<% end -%>
+<% end -%>

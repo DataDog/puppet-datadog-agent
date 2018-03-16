@@ -1,0 +1,8 @@
+#
+# MANAGED BY PUPPET
+#
+---
+:datadog_api_key: '<%= @api_key %>'
+<% if !@hostname_extraction_regex.nil? -%>
+:hostname_extraction_regex: '<%= @hostname_extraction_regex %>'
+<% end -%>

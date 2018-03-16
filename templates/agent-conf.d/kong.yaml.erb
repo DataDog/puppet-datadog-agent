@@ -1,0 +1,16 @@
+#
+# MANAGED BY PUPPET
+#
+
+init_config:
+
+instances:
+<% @instances.each do |instance| -%>
+  - kong_status_url: <%= instance["status_url"] %>
+  <%- if instance.key?("tags") and not instance["tags"].empty? -%>
+    tags:
+    <%- instance["tags"].each do |tag| -%>
+      - <%= tag %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>

@@ -1,0 +1,80 @@
+init_config:
+
+instances:
+#   -   host: localhost
+#       port: 5432
+#       username: my_username
+#       password: my_password
+#       dbname: db_name
+#       use_psycopg2: false # Force using psycogp2 instead of pg8000 to connect. WARNING: psycopg2 doesn't support ssl mode.
+#       tags:
+#            - optional_tag1
+#            - optional_tag2
+#
+<%- (Array(@_instances)).each do |instance| -%>
+  - host: <%= instance['host'] %>
+    port: <%= instance['port']  %>
+    username: <%= instance['username']  %>
+    password: <%= instance['password']  %>
+    dbname: <%= instance['dbname']  %>
+<% if instance['use_psycopg2']  == true -%>
+    use_psycopg2: true
+<% end -%>
+<% if instance['tags']  and ! instance['tags'].empty? -%>
+    tags:
+  <%- Array(instance['tags'] ).each do |tag| -%>
+    <%- if tag != '' -%>
+      - <%= tag %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
+
+#  Custom-metrics section
+
+#  You can now track per-relation (table) metrics
+#  You need to specify the list. Each relation
+#  generates a lot of metrics (10 + 10 per index)
+#  so you want to only use the ones you really care about
+#    relations:
+#      - my_table
+#      - my_other_table
+<% if instance['tables']  and ! instance['tables'].empty? -%>
+    relations:
+  <%- Array(instance['tables'] ).each do |table| -%>
+    <%- if table != '' -%>
+        - <%= table %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
+# https://help.datadoghq.com/hc/en-us/articles/208385813-Postgres-custom-metric-collection-explained
+# custom_metrics:
+#   - # Capture simple data
+#   query: SELECT name, address, %s from company where name = 'Paul'; # this query will be run and "%s" replaced with the parameters defined in the metrics section just below
+#   metrics:
+#       age: [postgresql.employee_age, GAUGE] # the value contained in column "age" will be captured and submitted as a gauge metric named "postgresql.employee.age"
+#       salary: [postgresql.employee_salary, GAUGE]
+#   relation: false #  when relation is not an empty list, it gathers per-relation metrics on top of that.
+#   descriptors:
+#       - [name, name] # captures the content of the "name" column as a tag for the 2 metrics defined
+#       - [address, localisation] # captures the content of "address" column as a tag and renames this tag "localisation"
+#
+<% if instance['custom_metrics']  and ! instance['custom_metrics'].empty? -%>
+    custom_metrics:
+  <%- Array(instance['custom_metrics'] ).each do |n, custom_metric| -%>
+      - query: <%= custom_metric["query"] %>
+        relation: <%= custom_metric["relation"]? "true" : "false" %>
+        metrics:
+    <%- Array(custom_metric["metrics"]).each do |metric_name, metric_descriptor| -%>
+          "<%= metric_name %>": [<%= metric_descriptor[0] %>, <%= metric_descriptor[1] %>]
+    <%- end -%>
+    <%- if custom_metric["descriptors"] == nil || custom_metric["descriptors"].empty? -%>
+        descriptors: []
+    <%- else -%>
+        descriptors:
+      <%- Array(custom_metric["descriptors"]).each do |descriptor| -%>
+          - [<%=descriptor[0]%>, <%=descriptor[1] %>]
+      <%- end -%>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
+<% end -%>

@@ -54,7 +54,7 @@ describe 'datadog_agent::integrations::php_fpm' do
         }}
         it { should contain_file(conf_file).with_content(/http_host: php_fpm_server/) }
         it { should contain_file(conf_file).with_content(/status_url: http:\/\/localhost\/fpm_status/) }
-        it { should contain_file(conf_file).with_content(/ping_reply: success/)
+        it { should contain_file(conf_file).with_content(/ping_reply: success/) }
         it { should contain_file(conf_file).with_content(/ping_url: http:\/\/localhost\/fpm_ping/) }
       end
 

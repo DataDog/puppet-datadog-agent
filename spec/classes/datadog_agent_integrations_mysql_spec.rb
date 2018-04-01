@@ -98,7 +98,6 @@ describe 'datadog_agent::integrations::mysql' do
         ]
       }}
 
-      #it { should contain_file(conf_file).with_content(/queries:[^-]query/m) }
       it { should contain_file(conf_file).with_content(/- query/) }
       it { should contain_file(conf_file).with_content(%r{query: SELECT TIMESTAMPDIFF\(second,MAX\(create_time\),NOW\(\)\) as last_accessed FROM requests}) }
       it { should contain_file(conf_file).with_content(%r{metric: app.seconds_since_last_request}) }

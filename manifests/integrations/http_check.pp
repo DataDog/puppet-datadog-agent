@@ -49,6 +49,9 @@
 #       check to create a metric 'network.http.response_time', tagged with
 #       the url, reporting the response time in seconds.
 #
+#   ca_certs
+#       An optional string representing the path to CA certificates.
+#
 #   disable_ssl_validation
 #       The setting disable_ssl_validation parameter to true will instruct
 #       the http client to accept self signed, expired and otherwise
@@ -168,6 +171,7 @@ class datadog_agent::integrations::http_check (
   $tags      = [],
   $contact   = [],
   $instances  = undef,
+  $ca_certs  = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -194,6 +198,7 @@ class datadog_agent::integrations::http_check (
       'allow_redirects'              => $allow_redirects,
       'tags'                         => $tags,
       'contact'                      => $contact,
+      'ca_certs'                     => $ca_certs,
     }]
   } elsif !$instances{
     $_instances = []

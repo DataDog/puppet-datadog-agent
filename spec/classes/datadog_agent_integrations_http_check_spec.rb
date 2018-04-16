@@ -69,7 +69,8 @@ describe 'datadog_agent::integrations::http_check' do
           check_certificate_expiration: true,
           days_warning: 14,
           days_critical: 7,
-          allow_redirects: true
+          allow_redirects: true,
+          ca_certs: '/dev/null'
         }}
 
         it { should contain_file(conf_file).with_content(%r{name: foo.bar.baz}) }
@@ -90,6 +91,7 @@ describe 'datadog_agent::integrations::http_check' do
         it { should contain_file(conf_file).with_content(%r{days_warning: 14}) }
         it { should contain_file(conf_file).with_content(%r{days_critical: 7}) }
         it { should contain_file(conf_file).with_content(%r{allow_redirects: true}) }
+        it { should contain_file(conf_file).with_content(%r{ca_certs: /dev/null}) }
       end
 
       context 'with headers parameter array' do

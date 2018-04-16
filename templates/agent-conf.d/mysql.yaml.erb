@@ -13,8 +13,8 @@ instances:
 <% if instance['password'] and instance['password'] != :undef -%>
     pass: <%= instance['password'] %>
 <% end -%>
-<% if instance['port'] -%>
-    port: <%= instance['port'] and instance['port'] != :undef %>
+<% if instance['port'] and instance['port'] != :undef -%>
+    port: <%= instance['port'] %>
 <% end -%>
 <% if instance['sock'] and instance['sock'] != :undef -%>
     sock: <%= instance['sock'] %>

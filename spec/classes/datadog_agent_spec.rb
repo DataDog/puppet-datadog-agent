@@ -779,11 +779,11 @@ describe 'datadog_agent' do
                   :agent5_enable => true,
                   :scrub_args => false
               }}
-              it { should contain_concat__fragment('datadog process agent footer').with(
+              it { should contain_concat__fragment('datadog footer').with(
                 'content' => /^process_agent_enabled: true\n/,
               )}
               it { should contain_concat__fragment('datadog process agent footer').with(
-                'content' => /^[process.config]\n/,
+                'content' => /^\[process.config\]\n/,
               )}
               it { should contain_concat__fragment('datadog process agent footer').with(
                 'content' => /^scrub_args: false\n/,
@@ -799,11 +799,11 @@ describe 'datadog_agent' do
                   :agent5_enable => true,
                   :custom_sensitive_words => ['consul_token','dd_key']
               }}
-              it { should contain_concat__fragment('datadog process agent footer').with(
+              it { should contain_concat__fragment('datadog footer').with(
                 'content' => /^process_agent_enabled: true\n/,
               )}
               it { should contain_concat__fragment('datadog process agent footer').with(
-                'content' => /^[process.config]\n/,
+                'content' => /^\[process.config\]\n/,
               )}
               it { should contain_concat__fragment('datadog process agent footer').with(
                 'content' => /^scrub_args: true\n/,
@@ -892,7 +892,7 @@ describe 'datadog_agent' do
               'content' => /^\ \ scrub_args: true\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ custom_sensitive_words:\n/,
+              'content' => /^\ \ custom_sensitive_words: \[\]\n/,
               )}
             end
           end
@@ -988,13 +988,13 @@ describe 'datadog_agent' do
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ process_enabled: true\n/,
+              'content' => /^\ \ process_enabled: 'true'\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ scrub_args: false\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ custom_sensitive_words:\n/,
+              'content' => /^\ \ custom_sensitive_words: \[\]\n/,
               )}
             end
 
@@ -1007,7 +1007,7 @@ describe 'datadog_agent' do
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ process_enabled: true\n/,
+              'content' => /^\ \ process_enabled: 'true'\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ scrub_args: true\n/,

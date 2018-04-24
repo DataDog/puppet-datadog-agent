@@ -846,7 +846,7 @@ describe 'datadog_agent' do
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ process_enabled: disabled\n/,
+              'content' => /^\ \ enabled: disabled\n/,
               )}
             end
           end
@@ -897,7 +897,7 @@ describe 'datadog_agent' do
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ process_enabled: 'true'\n/,
+              'content' => /^\ \ enabled: 'true'\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ foo: bar\n/,
@@ -911,7 +911,7 @@ describe 'datadog_agent' do
                   :process_enabled => true,
                   :agent6_extra_options => {
                       'process_config' => {
-                          'process_enabled' => 'disabled',
+                          'enabled' => 'disabled',
                           'foo' => 'bar',
                           'bar' => 'haz',
                       }
@@ -921,7 +921,7 @@ describe 'datadog_agent' do
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ process_enabled: disabled\n/,
+              'content' => /^\ \ enabled: disabled\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ foo: bar\n/,

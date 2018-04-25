@@ -988,7 +988,7 @@ describe 'datadog_agent' do
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ process_enabled: 'true'\n/,
+              'content' => /^\ \ enabled: 'true'\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ scrub_args: false\n/,
@@ -1007,7 +1007,7 @@ describe 'datadog_agent' do
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ process_enabled: 'true'\n/,
+              'content' => /^\ \ enabled: 'true'\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ scrub_args: true\n/,

@@ -308,7 +308,7 @@ describe 'datadog_agent' do
                 )}
             end
             context 'with skip_ssl_validation set to true' do
-                let(:params) {{ :skip_ssl_validation => true, 
+                let(:params) {{ :skip_ssl_validation => true,
                                 :agent5_enable => true,
                 }}
                 it { should contain_concat__fragment('datadog header').with(
@@ -556,7 +556,7 @@ describe 'datadog_agent' do
                 )}
             end
             context 'with ganglia_host set to localhost and ganglia_port set to 12345' do
-                let(:params) {{ :ganglia_host => 'testhost', 
+                let(:params) {{ :ganglia_host => 'testhost',
                                 :ganglia_port => '12345',
                                 :agent5_enable => true,
                 }}
@@ -691,10 +691,10 @@ describe 'datadog_agent' do
                 )}
             end
             context 'with service_discovery enabled' do
-                let(:params) {{ :service_discovery_backend  => 'docker', 
-                                :sd_config_backend          => 'etcd', 
-                                :sd_backend_host            => 'localhost', 
-                                :sd_backend_port            => '8080', 
+                let(:params) {{ :service_discovery_backend  => 'docker',
+                                :sd_config_backend          => 'etcd',
+                                :sd_backend_host            => 'localhost',
+                                :sd_backend_port            => '8080',
                                 :sd_jmx_enable              =>  true,
                                 :agent5_enable => true,
                 }}
@@ -773,7 +773,47 @@ describe 'datadog_agent' do
                 )}
             end
 
+            context 'with data scrubbing disabled' do
+              let(:params) {{
+                  :process_enabled => true,
+                  :agent5_enable => true,
+                  :scrub_args => false
+              }}
+              it { should contain_concat__fragment('datadog footer').with(
+                'content' => /^process_agent_enabled: true\n/,
+              )}
+              it { should contain_concat__fragment('datadog process agent footer').with(
+                'content' => /^\[process.config\]\n/,
+              )}
+              it { should contain_concat__fragment('datadog process agent footer').with(
+                'content' => /^scrub_args: false\n/,
+              )}
+              it { should contain_concat__fragment('datadog process agent footer').with(
+                'content' => /^custom_sensitive_words: \n/,
+              )}
             end
+
+            context 'with data scrubbing enabled with custom sensitive_words' do
+              let(:params) {{
+                  :process_enabled => true,
+                  :agent5_enable => true,
+                  :custom_sensitive_words => ['consul_token','dd_key']
+              }}
+              it { should contain_concat__fragment('datadog footer').with(
+                'content' => /^process_agent_enabled: true\n/,
+              )}
+              it { should contain_concat__fragment('datadog process agent footer').with(
+                'content' => /^\[process.config\]\n/,
+              )}
+              it { should contain_concat__fragment('datadog process agent footer').with(
+                'content' => /^scrub_args: true\n/,
+              )}
+              it { should contain_concat__fragment('datadog process agent footer').with(
+                'content' => /^custom_sensitive_words: consul_token,dd_key\n/,
+              )}
+            end
+
+          end
         end
 
         if DEBIAN_OS.include?(operatingsystem)
@@ -847,6 +887,12 @@ describe 'datadog_agent' do
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ enabled: disabled\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ scrub_args: true\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ custom_sensitive_words: \[\]\n/,
               )}
             end
           end
@@ -929,6 +975,50 @@ describe 'datadog_agent' do
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ bar: haz\n/,
               )}
+            end
+          end
+
+          context 'with data scrubbing custom options' do
+            context 'with data scrubbing disabled' do
+              let(:params) {{
+                  :process_enabled => true,
+                  :scrub_args => false
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^process_config:\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ enabled: 'true'\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ scrub_args: false\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ custom_sensitive_words: \[\]\n/,
+              )}
+            end
+
+            context 'with data scrubbing enabled with custom sensitive_words' do
+              let(:params) {{
+                  :process_enabled => true,
+                  :custom_sensitive_words => ['consul_token','dd_key']
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^process_config:\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ enabled: 'true'\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ scrub_args: true\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ -\ consul_token\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ -\ dd_key\n/,
+              )}
+
             end
           end
         end

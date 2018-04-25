@@ -516,7 +516,7 @@ class datadog_agent(
     $base_extra_config = {
         'apm_config' => { 'apm_enabled' => $apm_enabled },
         'process_config' => {
-          'process_enabled' => $process_enabled_str,
+          'enabled' => $process_enabled_str,
           'scrub_args' => $scrub_args,
           'custom_sensitive_words' => $custom_sensitive_words,
         },

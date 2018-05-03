@@ -44,5 +44,12 @@ class datadog_agent::params {
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
+  if $::operatingsystem == 'Amazon' {
+    $service_provider = 'upstart'
+  }
+  else {
+    $service_provider               = undef
+  }
+
 
 }

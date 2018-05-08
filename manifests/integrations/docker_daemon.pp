@@ -31,6 +31,7 @@ class datadog_agent::integrations::docker_daemon(
   $tls_verify = true,
   $init_retry_interval = 0,
   $init_retries = 0,
+  $logs = false,
   $url = 'unix://var/run/docker.sock',
   $collect_events = true,
   $filtered_event_types = [],

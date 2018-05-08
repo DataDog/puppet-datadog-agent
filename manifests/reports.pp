@@ -32,7 +32,7 @@ class datadog_agent::reports(
     }
   }
 
-  if (! defined(Package['rubygems'])) {
+  if (! defined(Class['ruby'])) {
     # Ensure rubygems is installed
     class { 'ruby':
       rubygems_update => false

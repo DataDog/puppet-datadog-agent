@@ -166,6 +166,12 @@
 #   $process_enabled
 #       String to enable the process/container agent
 #       Boolean. Default: false
+#   $scrub_args
+#       Boolean to enable or disable the process cmdline scrubbing by the process-agent
+#       Boolean. Default: true
+#   $custom_sensitive_words
+#       Array to add more words to be used on the process cdmline scrubbing by the process-agent
+#       Array. Default: []
 #
 # Actions:
 #
@@ -262,6 +268,8 @@ class datadog_agent(
   $apm_enabled = $datadog_agent::params::apm_default_enabled,
   $apm_env = '',
   $process_enabled = $datadog_agent::params::process_default_enabled,
+  $scrub_args = $datadog_agent::params::process_default_scrub_args,
+  $custom_sensitive_words = $datadog_agent::params::process_default_custom_words,
   Hash[String[1], Data] $agent6_extra_options = {},
   $agent5_repo_uri = $datadog_agent::params::agent5_default_repo,
   $agent6_repo_uri = $datadog_agent::params::agent6_default_repo,
@@ -341,6 +349,8 @@ class datadog_agent(
   validate_legacy(Boolean, 'validate_bool', $agent5_enable)
   validate_legacy(String, 'validate_string', $apm_env)
   validate_legacy(Boolean, 'validate_bool', $process_enabled)
+  validate_legacy(Boolean, 'validate_bool', $scrub_args)
+  validate_legacy(Array, 'validate_array', $custom_sensitive_words)
   validate_legacy(String, 'validate_string', $agent5_repo_uri)
   validate_legacy(String, 'validate_string', $agent6_repo_uri)
   validate_legacy(String, 'validate_string', $apt_release)
@@ -490,6 +500,14 @@ class datadog_agent(
         order   => '07',
       }
     }
+
+    if ($process_enabled == true) {
+      concat::fragment{ 'datadog process agent footer':
+        target  => '/etc/dd-agent/datadog.conf',
+        content => template('datadog_agent/datadog_process_footer.conf.erb'),
+        order   => '08',
+      }
+    }
   } else {
 
     # lint:ignore:quoted_booleans
@@ -497,7 +515,11 @@ class datadog_agent(
     # lint:endignore
     $base_extra_config = {
         'apm_config' => { 'apm_enabled' => $apm_enabled },
-        'process_config' => { 'process_enabled' => $process_enabled_str },
+        'process_config' => {
+          'enabled' => $process_enabled_str,
+          'scrub_args' => $scrub_args,
+          'custom_sensitive_words' => $custom_sensitive_words,
+        },
     }
     $extra_config = deep_merge($base_extra_config, $agent6_extra_options)
 

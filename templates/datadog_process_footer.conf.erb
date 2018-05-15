@@ -1,0 +1,5 @@
+<% if @process_enabled -%>
+[process.config]
+scrub_args: <%= @scrub_args %>
+custom_sensitive_words: <%= @custom_sensitive_words.join(',') %>
+<% end -%>

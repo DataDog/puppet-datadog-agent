@@ -349,7 +349,7 @@ class datadog_agent(
   validate_legacy(Boolean, 'validate_bool', $sd_jmx_enable)
   validate_legacy(String, 'validate_string', $consul_token)
   validate_legacy(Boolean, 'validate_bool', $apm_enabled)
-  validate_legacy(Bookean, 'validate_bool', $apm_non_local_traffic)
+  validate_legacy(Boolean, 'validate_bool', $apm_non_local_traffic)
   validate_legacy(Boolean, 'validate_bool', $agent5_enable)
   validate_legacy(String, 'validate_string', $apm_env)
   validate_legacy(Boolean, 'validate_bool', $process_enabled)

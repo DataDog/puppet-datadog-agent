@@ -163,6 +163,8 @@
 #   $apm_env
 #       String defining the environment for the APM traces
 #       String. Default: empty
+#   $apm_non_local_traffic
+#       Accept non local apm traffic. Defaults to false.
 #   $process_enabled
 #       String to enable the process/container agent
 #       Boolean. Default: false
@@ -267,6 +269,7 @@ class datadog_agent(
   $dd_groups = $datadog_agent::params::dd_groups,
   $apm_enabled = $datadog_agent::params::apm_default_enabled,
   $apm_env = '',
+  $apm_non_local_traffic = false,
   $process_enabled = $datadog_agent::params::process_default_enabled,
   $scrub_args = $datadog_agent::params::process_default_scrub_args,
   $custom_sensitive_words = $datadog_agent::params::process_default_custom_words,
@@ -346,6 +349,7 @@ class datadog_agent(
   validate_legacy(Boolean, 'validate_bool', $sd_jmx_enable)
   validate_legacy(String, 'validate_string', $consul_token)
   validate_legacy(Boolean, 'validate_bool', $apm_enabled)
+  validate_legacy(Bookean, 'validate_bool', $apm_non_local_traffic)
   validate_legacy(Boolean, 'validate_bool', $agent5_enable)
   validate_legacy(String, 'validate_string', $apm_env)
   validate_legacy(Boolean, 'validate_bool', $process_enabled)
@@ -514,7 +518,11 @@ class datadog_agent(
     $process_enabled_str = $process_enabled ? { true => 'true' , default => 'disabled' }
     # lint:endignore
     $base_extra_config = {
-        'apm_config' => { 'apm_enabled' => $apm_enabled },
+        'apm_config' => { 
+          'apm_enabled'           => $apm_enabled,
+          'apm_env'               => $apm_env,
+          'apm_non_local_traffic' => $apm_non_local_traffic
+        },
         'process_config' => {
           'enabled' => $process_enabled_str,
           'scrub_args' => $scrub_args,

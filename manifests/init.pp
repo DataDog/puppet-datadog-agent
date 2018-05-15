@@ -520,7 +520,7 @@ class datadog_agent(
     $base_extra_config = {
         'apm_config' => { 
           'apm_enabled'           => $apm_enabled,
-          'apm_env'               => $apm_env,
+          'env'               => $apm_env,
           'apm_non_local_traffic' => $apm_non_local_traffic
         },
         'process_config' => {

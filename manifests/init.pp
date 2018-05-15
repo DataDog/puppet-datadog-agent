@@ -162,7 +162,7 @@
 #       Boolean. Default: false
 #   $apm_env
 #       String defining the environment for the APM traces
-#       String. Default: empty
+#       String. Default: non
 #   $apm_non_local_traffic
 #       Accept non local apm traffic. Defaults to false.
 #   $process_enabled
@@ -268,7 +268,7 @@ class datadog_agent(
   $dd_group = $datadog_agent::params::dd_group,
   $dd_groups = $datadog_agent::params::dd_groups,
   $apm_enabled = $datadog_agent::params::apm_default_enabled,
-  $apm_env = '',
+  $apm_env = 'none',
   $apm_non_local_traffic = false,
   $process_enabled = $datadog_agent::params::process_default_enabled,
   $scrub_args = $datadog_agent::params::process_default_scrub_args,
@@ -520,7 +520,7 @@ class datadog_agent(
     $base_extra_config = {
         'apm_config' => { 
           'apm_enabled'           => $apm_enabled,
-          'env'               => $apm_env,
+          'env'                   => $apm_env,
           'apm_non_local_traffic' => $apm_non_local_traffic
         },
         'process_config' => {

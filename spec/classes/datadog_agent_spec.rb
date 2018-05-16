@@ -883,6 +883,9 @@ describe 'datadog_agent' do
               'content' => /^\ \ apm_enabled: false\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ apm_non_local_traffic: false\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
@@ -920,6 +923,23 @@ describe 'datadog_agent' do
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ bar: haz\n/,
+              )}
+            end
+            
+            context 'with APM non local traffic enabled' do
+              let(:params) {{
+                  :apm_enabled => true,
+                  :apm_env => 'foo',
+                  :apm_non_local_traffic => true,
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^apm_config:\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ apm_enabled: true\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ apm_non_local_traffic: true\n/,
               )}
             end
             context 'with extra_options and Process enabled' do

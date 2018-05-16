@@ -1,6 +1,19 @@
 Changes
 =======
 
+# 2.2.0 / 2018-05-16
+
+### Notes
+
+* [FEATURE] APM: enable apm non-local traffic. See [#431][] (Thanks [@dschaaff][])
+* [FEATURE] APM: add environment config parameter. See [#431][] (Thanks [@dschaaff][])
+* [FEATURE] Process: add config fields for process agent scrubbing. See [#426][]
+* [FEATURE] HTTP check: allow specification of CA cert. See [#418][] (Thanks [@ffleming][])
+* [BUGFIX] PgBouncer: fix indentation in output configuration file. See [#427][] (Thanks [@fwelschen][])
+* [BUGFIX] Process: fixes bad enabling directive. See [#420][] (Thanks [@dschaaff][])
+* [BUGFIX] MySQL check: render port number correctly in output YAML. See [#424][] (Thanks [@kevin-bowers][])
+* [DEPRECATE] DEB: stop installing old APT key. See [#406][]
+
 # 2.1.1 / 2018-03-14
 
 ### Notes
@@ -472,8 +485,15 @@ Please read the [docs]() for more details.
 [#401]: https://github.com/DataDog/puppet-datadog-agent/issues/401
 [#403]: https://github.com/DataDog/puppet-datadog-agent/issues/403
 [#404]: https://github.com/DataDog/puppet-datadog-agent/issues/404
+[#406]: https://github.com/DataDog/puppet-datadog-agent/issues/406
 [#411]: https://github.com/DataDog/puppet-datadog-agent/issues/411
 [#412]: https://github.com/DataDog/puppet-datadog-agent/issues/412
+[#418]: https://github.com/DataDog/puppet-datadog-agent/issues/418
+[#420]: https://github.com/DataDog/puppet-datadog-agent/issues/420
+[#424]: https://github.com/DataDog/puppet-datadog-agent/issues/424
+[#426]: https://github.com/DataDog/puppet-datadog-agent/issues/426
+[#427]: https://github.com/DataDog/puppet-datadog-agent/issues/427
+[#431]: https://github.com/DataDog/puppet-datadog-agent/issues/431
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
@@ -504,9 +524,12 @@ Please read the [docs]() for more details.
 [@davidgibbons]: https://github.com/davidgibbons
 [@degemer]: https://github.com/degemer
 [@denmat]: https://github.com/denmat
+[@dschaaff]: https://github.com/dschaaff
 [@dzinek]: https://github.com/dzinek
 [@eddmann]: https://github.com/eddmann
+[@ffleming]: https://github.com/ffleming
 [@flyinprogrammer]: https://github.com/flyinprogrammer
+[@fwelschen]: https://github.com/fwelschen
 [@fzwart]: https://github.com/fzwart
 [@generica]: https://github.com/generica
 [@grubernaut]: https://github.com/grubernaut
@@ -518,6 +541,7 @@ Please read the [docs]() for more details.
 [@jensendw]: https://github.com/jensendw
 [@jfrost]: https://github.com/jfrost
 [@jniesen]: https://github.com/jniesen
+[@kevin-bowers]: https://github.com/kevin-bowers
 [@kitchen]: https://github.com/kitchen
 [@lowkeyshift]: https://github.com/lowkeyshift
 [@mcasper]: https://github.com/mcasper

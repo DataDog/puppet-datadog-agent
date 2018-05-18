@@ -7,6 +7,8 @@
 #       The host of the Datadog intake server to send agent data to.
 #       Defaults to https://app.datadoghq.com.
 #   $host:
+#       Optional name to be reported by the agent.
+#       Defaults to the actual hostname/puppet certname.
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value.
 #   $collect_ec2_tags
@@ -483,6 +485,7 @@ class datadog_agent(
     $agent_config = {
       'api_key' => $api_key,
       'dd_url' => $dd_url,
+      'hostname' => $host,
       'cmd_port' => 5001,
       'conf_path' => $datadog_agent::params::conf6_dir,
       'enable_metadata_collection' => $collect_instance_metadata,

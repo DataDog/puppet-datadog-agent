@@ -354,9 +354,11 @@ class datadog_agent(
     $local_tags = $tags
   }
 
-  datadog_agent::tag{ $local_tags: }
-  datadog_agent::tag{ $facts_to_tags:
-    lookup_fact => true,
+  if !$agent6_enable {
+    datadog_agent::tag{ $local_tags: }
+    datadog_agent::tag{ $facts_to_tags:
+      lookup_fact => true,
+    }
   }
 
   include datadog_agent::params
@@ -506,7 +508,6 @@ class datadog_agent(
       require => File['/etc/datadog-agent'],
     }
   }
-
 
   if $puppet_run_reports {
     class { 'datadog_agent::reports':

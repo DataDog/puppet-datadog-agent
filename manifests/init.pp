@@ -6,7 +6,7 @@
 #   $dd_url:
 #       The host of the Datadog intake server to send agent data to.
 #       Defaults to https://app.datadoghq.com.
-#   $host:
+#   $hostname:
 #       Optional name to be reported by the agent.
 #       Defaults to the actual hostname/puppet certname.
 #   $api_key:
@@ -189,7 +189,7 @@
 #
 class datadog_agent(
   $dd_url = 'https://app.datadoghq.com',
-  $host = '',
+  $hostname = '',
   $api_key = 'your_API_key',
   $collect_ec2_tags = false,
   $collect_instance_metadata = true,
@@ -279,7 +279,7 @@ class datadog_agent(
   # lint:endignore
 
   validate_string($dd_url)
-  validate_string($host)
+  validate_string($hostname)
   validate_string($api_key)
   validate_array($tags)
   validate_bool($hiera_tags)
@@ -342,20 +342,20 @@ class datadog_agent(
   validate_string($apm_env)
   validate_bool($process_agent_enabled)
 
-  if $hiera_tags {
-    $local_tags = hiera_array('datadog_agent::tags', [])
-  } else {
-    $local_tags = $tags
-  }
-
   if $hiera_integrations {
     $local_integrations = hiera_hash('datadog_agent::integrations', {})
   } else {
     $local_integrations = $integrations
   }
 
-  datadog_agent::tag{$local_tags: }
-  datadog_agent::tag{$facts_to_tags:
+  if $hiera_tags {
+    $local_tags = concat($tags, hiera_array('datadog_agent::tags', []))
+  } else {
+    $local_tags = $tags
+  }
+
+  datadog_agent::tag{ $local_tags: }
+  datadog_agent::tag{ $facts_to_tags:
     lookup_fact => true,
   }
 
@@ -485,7 +485,8 @@ class datadog_agent(
     $agent_config = {
       'api_key' => $api_key,
       'dd_url' => $dd_url,
-      'hostname' => $host,
+      'hostname' => $hostname,
+      'tags' => $tags,
       'cmd_port' => 5001,
       'conf_path' => $datadog_agent::params::conf6_dir,
       'enable_metadata_collection' => $collect_instance_metadata,

@@ -4,7 +4,7 @@
 #
 
 class datadog_agent::redhat::agent6(
-  $baseurl = "https://yum.datadoghq.com/beta/${::architecture}/",
+  $baseurl = "https://yum.datadoghq.com/stable/6/x86_64/",
   $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
   $manage_repo = true,
   $agent_version = 'latest'

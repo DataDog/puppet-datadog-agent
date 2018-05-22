@@ -484,6 +484,9 @@ class datadog_agent(
       notify  => Service[$datadog_agent::params::service_name]
     }
 
+    $agent_process_config = {
+      'enabled' => bool2str($process_agent_enabled),
+    }
     $agent_config = {
       'api_key' => $api_key,
       'dd_url' => $dd_url,
@@ -497,6 +500,7 @@ class datadog_agent(
       'dogstatsd_non_local_traffic' => $non_local_traffic,
       'log_file' => $agent6_log_file,
       'log_level' => $log_level,
+      'process_config' => $agent_process_config,
     }
 
     file { '/etc/datadog-agent/datadog.yaml':

@@ -1,4 +1,4 @@
-# Class: datadog_agent::ubuntu
+# Class: datadog_agent::ubuntu::agent5
 #
 # This class contains the DataDog agent installation mechanism for Ubuntu
 #
@@ -21,6 +21,7 @@ class datadog_agent::ubuntu::agent5(
   Boolean $skip_apt_key_trusting = false,
   String $service_ensure = 'running',
   Boolean $service_enable = true,
+  String $service_provider = 'ubuntu',
 ) inherits datadog_agent::params{
 
   ensure_packages(['apt-transport-https'])
@@ -85,5 +86,6 @@ class datadog_agent::ubuntu::agent5(
     hasstatus => false,
     pattern   => 'dd-agent',
     require   => Package[$datadog_agent::params::package_name],
+    provider  => $service_provider,
   }
 }

@@ -12,6 +12,7 @@ class datadog_agent::ubuntu::agent6(
   $skip_apt_key_trusting = false,
   $service_ensure = 'running',
   $service_enable = true,
+  $service_provider = 'ubuntu',
 ) inherits datadog_agent::params {
 
   ensure_packages(['apt-transport-https'])
@@ -51,5 +52,6 @@ class datadog_agent::ubuntu::agent6(
     hasstatus => false,
     pattern   => 'dd-agent',
     require   => Package['datadog-agent'],
+    provider  => $service_provider,
   }
 }

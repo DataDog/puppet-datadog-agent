@@ -13,6 +13,8 @@
 #       Connect mysql via unix socket
 #   $tags
 #       Optional array of tags
+#   $queries
+#       Optional array of queries
 #   $replication
 #       replication option
 #   $galera_cluster
@@ -60,6 +62,7 @@ class datadog_agent::integrations::mysql(
   Optional[String] $password               = undef,
   Optional[String] $sock                   = undef,
   Array $tags                              = [],
+  Array $queries                           = [],
   $replication                             = '0',
   $galera_cluster                          = '0',
   Boolean $extra_status_metrics            = false,
@@ -87,6 +90,7 @@ class datadog_agent::integrations::mysql(
       'port'                      => $port,
       'sock'                      => $sock,
       'tags'                      => $tags,
+      'queries'                   => $queries,
       'replication'               => $replication,
       'galera_cluster'            => $galera_cluster,
       'extra_status_metrics'      => $extra_status_metrics,

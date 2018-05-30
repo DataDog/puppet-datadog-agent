@@ -38,5 +38,17 @@ instances:
         schema_size_metrics: <%= instance['schema_size_metrics'] %>
         disable_innodb_metrics: <%= instance['disable_innodb_metrics'] %>
 
+<% if instance['queries'] and ! instance['queries'].empty? -%>
+    queries:
+  <%- Array(instance['queries']).each do |query| -%>
+    <%- if ! query.empty? -%>
+      - query: <%= query['query'] %>
+        metric: <%= query['metric'] %>
+        type: <%= query['type'] %>
+        field: <%= query['field'] %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
+
 <% end -%>
 

@@ -35,7 +35,6 @@ class datadog_agent::integrations::dns_check (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('Array', 'validate_array', $checks)
 
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/dns_check.yaml"

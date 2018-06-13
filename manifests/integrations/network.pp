@@ -29,7 +29,6 @@ class datadog_agent::integrations::network(
 ) inherits datadog_agent::params {
   include ::datadog_agent
 
-  validate_legacy('Array', 'validate_array', $excluded_interfaces)
 
   file { "${datadog_agent::params::conf_dir}/network.yaml":
     ensure  => file,

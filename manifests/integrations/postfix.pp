@@ -36,9 +36,6 @@ class datadog_agent::integrations::postfix (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('String', 'validate_string', $directory)
-  validate_legacy('Optional[Array]', 'validate_array', $queues)
-  validate_legacy('Optional[Array]', 'validate_array', $tags)
 
   if !$instances and $directory {
     $_instances = [{

@@ -23,7 +23,6 @@ class datadog_agent::integrations::fluentd(
 ) inherits datadog_agent::params {
   include ::datadog_agent
 
-  validate_legacy('Optional[Array]', 'validate_array', $plugin_ids)
 
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/fluentd.yaml"

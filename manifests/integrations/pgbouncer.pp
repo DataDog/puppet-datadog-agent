@@ -53,8 +53,6 @@ class datadog_agent::integrations::pgbouncer(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('Array', 'validate_array', $tags)
-  validate_legacy('Array', 'validate_array', $pgbouncers)
 
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/pgbouncer.yaml"

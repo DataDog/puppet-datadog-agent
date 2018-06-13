@@ -67,10 +67,6 @@ class datadog_agent::integrations::directory (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy(String, 'validate_string', $directory)
-  validate_legacy(Boolean, 'validate_bool', $filegauges)
-  validate_legacy(Boolean, 'validate_bool', $recursive)
-  validate_legacy(Boolean, 'validate_bool', $countonly)
 
   if !$instances and $directory == '' {
     fail('bad directory argument and no instances hash provided')

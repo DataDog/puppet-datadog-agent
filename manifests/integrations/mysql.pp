@@ -71,8 +71,6 @@ class datadog_agent::integrations::mysql(
   ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('Optional[String]', 'validate_string', $sock)
-  validate_legacy('Array', 'validate_array', $tags)
 
   if ($host == undef and $sock == undef) or
     ($host != undef and $port == undef and $sock == undef) {

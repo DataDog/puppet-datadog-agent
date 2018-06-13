@@ -42,8 +42,6 @@ class datadog_agent::integrations::disk (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('Optional[String]', 'validate_re', $all_partitions, '^(no|yes)$')
-
   if $use_mount !~ '^(no|yes)$' {
     fail('error during compilation')
   }

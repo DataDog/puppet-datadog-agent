@@ -38,22 +38,13 @@ class datadog_agent::integrations::elasticsearch(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy(Array, 'validate_array', $tags)
   # $ssl_verify can be a bool or a string
   # https://github.com/DataDog/dd-agent/blob/master/checks.d/elastic.py#L454-L455
-  if validate_legacy('Variant[Boolean, String]', 'is_string', $ssl_verify){
     validate_absolute_path($ssl_verify)
   }
 
 
-  validate_legacy('Boolean', 'validate_bool', $cluster_stats)
-  validate_legacy('Boolean', 'validate_bool', $pending_task_stats)
-  validate_legacy('Boolean', 'validate_bool', $pshard_stats)
 
-  validate_legacy('Optional[String]', 'validate_string', $password)
-  validate_legacy('Optional[String]', 'validate_string', $ssl_cert)
-  validate_legacy('Optional[String]', 'validate_string', $ssl_key)
-  validate_legacy('Optional[String]', 'validate_string', $username)
 
   if !$instances and $url {
     $_instances = [{

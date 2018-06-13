@@ -58,16 +58,6 @@ class datadog_agent::integrations::rabbitmq (
   Array $vhosts              = [],
 ) inherits datadog_agent::params {
 
-  validate_legacy('String', 'validate_string', $url)
-  validate_legacy('Optional[String]', 'validate_string', $username)
-  validate_legacy('Optional[String]', 'validate_string', $password)
-  validate_legacy('Boolean', 'validate_bool', $ssl_verify)
-  validate_legacy('Boolean', 'validate_bool', $tag_families)
-  validate_legacy('Array', 'validate_array', $nodes)
-  validate_legacy('Array', 'validate_array', $nodes_regexes)
-  validate_legacy('Array', 'validate_array', $queues)
-  validate_legacy('Array', 'validate_array', $queues_regexes)
-  validate_legacy('Array', 'validate_array', $vhosts)
   include datadog_agent
 
   if !$::datadog_agent::agent5_enable {

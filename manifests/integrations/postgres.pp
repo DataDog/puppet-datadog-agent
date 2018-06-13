@@ -69,9 +69,6 @@ class datadog_agent::integrations::postgres(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('Array[String]', 'validate_array', $tags)
-  validate_legacy('Array[String]', 'validate_array', $tables)
-  validate_legacy('Boolean', 'validate_bool', $use_psycopg2)
 
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/postgres.yaml"

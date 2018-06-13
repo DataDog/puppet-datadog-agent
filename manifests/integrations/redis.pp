@@ -41,11 +41,6 @@ class datadog_agent::integrations::redis(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('Array', 'validate_array', $tags)
-  validate_legacy('Array', 'validate_array', $keys)
-  validate_legacy('Boolean', 'validate_bool', $warn_on_missing_keys)
-  validate_legacy('Boolean', 'validate_bool', $command_stats)
-  validate_legacy('Optional[Array]', 'validate_array', $ports)
 
   if $ports == undef {
     $_ports = [ $port ]
@@ -53,7 +48,6 @@ class datadog_agent::integrations::redis(
     $_ports = $ports
   }
 
-  validate_legacy('Array', 'validate_array', $_ports)
 
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/redisdb.yaml"

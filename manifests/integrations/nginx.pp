@@ -27,7 +27,6 @@ class datadog_agent::integrations::nginx(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('Array', 'validate_array', $instances)
 
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/nginx.yaml"

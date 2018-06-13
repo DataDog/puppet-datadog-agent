@@ -24,8 +24,6 @@ class datadog_agent::integrations::riak(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('String', 'validate_string', $url)
-  validate_legacy('Array', 'validate_array', $tags)
 
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/riak.yaml"

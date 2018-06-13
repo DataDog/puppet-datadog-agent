@@ -4,8 +4,7 @@ class datadog_agent::trace() {
     baseurl  => 'http://yum-trace.datad0g.com.s3.amazonaws.com/x86_64/',
     enabled  => 1,
     priority => 1,
-    gpgcheck => 1,
-    gpgkey   => 'https://yum.datadoghq.com/DATADOG_RPM_KEY.public.E09422B3',
+    gpgcheck => 0
   }
 
   package { 'dd-trace-agent':

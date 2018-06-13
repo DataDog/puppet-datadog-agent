@@ -6,10 +6,6 @@ define datadog_agent::integration (
 
   include datadog_agent
 
-  validate_legacy(Array, 'validate_array', $instances)
-  validate_legacy(Optional[Hash], 'validate_hash', $init_config)
-  validate_legacy(String, 'validate_string', $integration)
-
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/${integration}.yaml"
   } else {

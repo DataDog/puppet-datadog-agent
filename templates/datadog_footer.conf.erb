@@ -126,7 +126,11 @@ dogstatsd_interval: <%= @dogstatsd_interval -%>
 ## by the dogstatsd_interval) before being sent to the server. Defaults to 'yes'
 dogstatsd_normalize: <%= @dogstatsd_normalize ? "yes" : "no" %>
 
+<% if @histogram_percentiles.empty? -%>
+# histogram_percentiles:
+<% else -%>    
 histogram_percentiles: <%= @statsd_histogram_percentiles %>
+<% end -%>
 
 # If you want to forward every packet received by the dogstatsd server
 # to another statsd server, uncomment these lines.

@@ -197,6 +197,7 @@ class datadog_agent(
   $dd_url = 'https://app.datadoghq.com',
   $host = '',
   $api_key = 'your_API_key',
+  $histogram_percentiles = '',
   $collect_ec2_tags = false,
   $collect_instance_metadata = true,
   $tags = [],
@@ -291,6 +292,7 @@ class datadog_agent(
   # lint:endignore
 
   validate_legacy(String, 'validate_string', $dd_url)
+  validate_legacy(String, 'validate_string', $histogram_percentiles)
   validate_legacy(String, 'validate_string', $host)
   validate_legacy(String, 'validate_string', $api_key)
   validate_legacy(Array, 'validate_array', $tags)

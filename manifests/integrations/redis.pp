@@ -8,11 +8,17 @@
 #   $password
 #       The redis password (optional)
 #   $port
-#       The redis port
+#       The main redis port.
+#   $ports
+#       Array of redis ports: overrides port (optional)
+#   $slowlog_max_len
+#       The max length of the slow-query log (optional)
 #   $tags
 #       Optional array of tags
 #   $keys
 #       Optional array of keys to check length
+#   $command_stats
+#       Collect INFO COMMANDSTATS output as metrics
 #
 # Sample Usage:
 #
@@ -22,18 +28,40 @@
 #
 #
 class datadog_agent::integrations::redis(
-  $host = 'localhost',
-  $password = '',
-  $port = 6379,
-  $tags = [],
-  $keys = [],
+  String $host                              = 'localhost',
+  String $password                          = '',
+  Variant[String, Integer] $port            = '6379',
+  Optional[Array] $ports                    = undef,
+  Variant[String, Integer] $slowlog_max_len = '',
+  Array $tags                               = [],
+  Array $keys                               = [],
+  Boolean $warn_on_missing_keys             = true,
+  Boolean $command_stats                    = false,
+
 ) inherits datadog_agent::params {
+  include datadog_agent
 
-  validate_re($port, '^\d+$')
-  validate_array($tags)
-  validate_array($keys)
+  validate_legacy('Array', 'validate_array', $tags)
+  validate_legacy('Array', 'validate_array', $keys)
+  validate_legacy('Boolean', 'validate_bool', $warn_on_missing_keys)
+  validate_legacy('Boolean', 'validate_bool', $command_stats)
+  validate_legacy('Optional[Array]', 'validate_array', $ports)
 
-  file { "${datadog_agent::params::conf_dir}/redisdb.yaml":
+  if $ports == undef {
+    $_ports = [ $port ]
+  } else {
+    $_ports = $ports
+  }
+
+  validate_legacy('Array', 'validate_array', $_ports)
+
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/redisdb.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/redisdb.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

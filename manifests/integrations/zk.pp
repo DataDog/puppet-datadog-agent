@@ -6,7 +6,7 @@
 #   $host:
 #       The host zk is running on. Defaults to '127.0.0.1'
 #   $port
-#       The zk password for the datadog user. Defaults to 27017
+#       The port zk is running on. Defaults to 2181
 #   $tags
 #       Optional array of tags
 #
@@ -30,10 +30,17 @@
 class datadog_agent::integrations::zk (
   $servers = [{'host' => 'localhost', 'port' => '2181'}]
 ) inherits datadog_agent::params {
+  include datadog_agent
 
-  validate_array($servers)
+  validate_legacy('Array', 'validate_array', $servers)
 
-  file { "${datadog_agent::params::conf_dir}/zk.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/zk.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/zk.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

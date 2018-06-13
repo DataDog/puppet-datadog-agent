@@ -6,6 +6,9 @@
 #   varnishstat
 #       Path to the varnishstat binary
 #
+#   instance_name
+#       Used in the varnishstat command for the -n argument
+#
 #   tags
 #       DataDog tags
 #
@@ -19,11 +22,19 @@
 # }
 #
 class datadog_agent::integrations::varnish (
-  $varnishstat = '/usr/bin/varnishstat',
-  $tags      = [],
+  $varnishstat   = '/usr/bin/varnishstat',
+  $instance_name = undef,
+  $tags          = [],
 ) inherits datadog_agent::params {
+  include datadog_agent
 
-  file { "${datadog_agent::params::conf_dir}/varnish.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/varnish.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/varnish.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

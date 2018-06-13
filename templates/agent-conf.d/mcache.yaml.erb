@@ -1,0 +1,23 @@
+#
+# MANAGED BY PUPPET
+#
+
+init_config:
+
+instances:
+<%- (Array(@_instances)).each do |instance| -%>
+  - url: <%= instance['url'] %>
+    port: <%= instance['port'] %>
+<% if instance['tags'] and ! instance['tags'].empty? -%>
+    tags:
+  <%- Array(instance['tags']).each do |tag| -%>
+    <%- if tag != '' -%>
+      - <%= tag %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
+
+    options:               # Optional
+        items: <%= instance['items'] %>
+        slabs: <%= instance['slabs'] %>
+<% end -%>

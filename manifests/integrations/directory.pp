@@ -1,37 +1,105 @@
 # Class: datadog_agent::integrations::directory
 #
-# This class will install the necessary config to hook the directory check
+# This class will install the necessary config to hook the directory in the agent
 #
 # Parameters:
-#   $directory
-#       The directory to gather stats for
-#   $name
-#       The name used to tag the metrics (directory alias)
-#   $pattern
-#       The `fnmatch` pattern to use when reading the "directory"'s files. default "*"
-#   $recursive
-#       Boolean, when true the stats will recurse into directories
+#   directory
+#       (Required) - string, the directory path to monitor
+#       This will be included as a tag: name:<name>.
+#
+#   name
+#       (Optional) - string, tag metrics with specified name. defaults to the "directory"
+#
+#   dirtagname
+#       (Optional) - string, the name of the key for the tag used for the directory, the value will be the value of "name" (see above). The resulting tag will be "<dirtagname>:<name>". defaults to "name"
+#
+#   filetagname
+#       (Optional) - string, the name of the key for the tag used for each file, the value will be the filename. The resulting tag will be "<filetagname>:<filename>". defaults to "filename"
+#
+#   filegauges
+#       (Optional) - boolean, when true stats will be an individual gauge per file (max. 20 files!) and not a histogram of the whole directory. default False
+#
+#   pattern
+#       (Optional) - string, the `fnmatch` pattern to use when reading the "directory"'s files. The pattern will be matched against the files' absolute paths and relative paths in "directory". default "*"
+#
+#   recursive
+#       (Optional) - boolean, when true the stats will recurse into directories. default False
+#
+#   countonly
+#       (Optional) - boolean, when true the stats will only count the number of files matching the pattern. Useful for very large directories.
+#
 #
 # Sample Usage:
 #
-#  class { 'datadog_agent::integrations::directory' :
-#      directory     => '/mnt/media',
-#      name          => 'name,
-#      pattern       => '*',
-#      recursive     => true,
-#  }
-class datadog_agent::integrations::directory (
-  $directory = undef,
-  $name      = '',
-  $pattern   = '*',
-  $recursive = false
-) inherits datadog_agent::params {
+# Add a class for each check instance:
+#
+# class { 'datadog_agent::integrations::directory':
+#   directory => '/opt/ftp_data',
+#   recursive => true,
+#   countonly => true,
+# }
+#
+# Add multiple instances in one class declaration:
+#
+# class { 'datadog_agent::integrations::directory':
+#   instances => [{
+#     'directory' => '/opt/ftp_data',
+#     'recursive' => true,
+#     'countonly' => true,
+#     },
+#     'directory' => '/opt/ftp_data-staging',
+#     'recursive' => true,
+#     'countonly' => true,
+#     },
+#   ]
+# }
 
-  if $directory == undef {
-    fail('you must specify a directory path within the datadog_agent::integrations::directory class')
+class datadog_agent::integrations::directory (
+  String $directory          = '',
+  Boolean $filegauges        = false,
+  Boolean $recursive         = true,
+  Boolean $countonly         = false,
+  String $nametag            = '',
+  String $dirtagname         = '',
+  String $filetagname        = '',
+  String $pattern            = '',
+  Optional[Array] $instances = undef,
+) inherits datadog_agent::params {
+  include datadog_agent
+
+  validate_legacy(String, 'validate_string', $directory)
+  validate_legacy(Boolean, 'validate_bool', $filegauges)
+  validate_legacy(Boolean, 'validate_bool', $recursive)
+  validate_legacy(Boolean, 'validate_bool', $countonly)
+
+  if !$instances and $directory == '' {
+    fail('bad directory argument and no instances hash provided')
   }
 
-  file { "${datadog_agent::params::conf_dir}/directory.yaml":
+  if !$instances and $directory {
+    $_instances = [{
+      'directory'   => $directory,
+      'filegauges'  => $filegauges,
+      'recursive'  => $recursive,
+      'countonly' => $countonly,
+      'name' => $nametag,
+      'dirtagname' => $dirtagname,
+      'filetagname' => $filetagname,
+      'pattern' => $pattern,
+    }]
+  } elsif !$instances{
+    $_instances = []
+  } else {
+    $_instances = $instances
+  }
+
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/directory.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/directory.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

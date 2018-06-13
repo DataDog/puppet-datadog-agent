@@ -1,0 +1,183 @@
+init_config:
+  # Change the root directory to look at to get cgroup statistics. Useful when running inside a
+  # container with host directories mounted on a different folder. Default: /.
+  # Example for the docker-dd-agent container:
+  docker_root: <%= @docker_root %>
+
+  # Timeout in seconds for the connection to the docker daemon
+  # Default: 5 seconds
+  #
+  timeout: <%= @timeout %>
+
+  # The version of the API the client will use. Specify 'auto' to use the API version provided by the server.
+  api_version: <%= @api_version %>
+
+  # Use TLS encryption while communicating with the Docker API
+  #
+  tls: <%= @tls %>
+  tls_client_cert: <%= @tls_client_cert %>
+  tls_client_key: <%= @tls_client_key %>
+  tls_cacert: <%= @tls_cacert %>
+  tls_verify: <%= @tls_verify %>
+
+  # Initialization retries
+  #
+  # if the agent is expected to start before Docker,
+  # use these settings to configure the retry policy.
+
+  # init_retry_interval defines how long (in seconds) the docker client
+  # will wait before retrying initialization.
+  # Defaults to 0.
+  #
+  init_retry_interval: <%= @init_retry_interval %>
+
+  # init_retries configures how many retries are made before failing permanently.
+  # Defaults to 0.
+  #
+  init_retries: <%= @init_retries %>
+
+instances:
+  - ## Daemon and system configuration
+    ##
+
+    # URL of the Docker daemon socket to reach the Docker API. HTTP/HTTPS also works.
+    # Warning: if that's a non-local daemon, we won't be able to collect performance metrics.
+    #
+    url: <%= @url %>
+
+    ## Data collection
+    ##
+
+    # Create events whenever a container status change.
+    # Defaults to true.
+    #
+    collect_events: <%= @collect_events %>
+
+    # By default we do not collect events with a status ['top', 'exec_start', 'exec_create'].
+    # Here can be added additional statuses to be filtered.
+    # List of available statuses can be found here https://docs.docker.com/engine/reference/commandline/events/#object-types
+    filtered_event_types: [<%= @filtered_event_types && !@filtered_event_types.empty? ? '"' + @filtered_event_types.reject(&:empty?).join('", "') + '"' : nil %>]
+
+    # Collect disk usage per container with docker.container.size_rw and
+    # docker.container.size_rootfs metrics.
+    # Warning: This might take time for Docker daemon to generate,
+    # ensure that `docker ps -a -q` run fast before enabling it.
+    # Defaults to false.
+    #
+    collect_container_size: <%= @collect_container_size %>
+
+    # Do you use custom cgroups for this particular instance?
+    # Note: enabling this option modifies the way in which we inspect the containers and causes
+    #       some overhead - if you run a high volume of containers we may timeout.
+    #
+    custom_cgroups: <%= @custom_cgroups %>
+
+    # Report docker container healthcheck events as service checks
+    # Note: enabling this option modifies the way in which we inspect the containers and causes
+    #       some overhead - if you run a high volume of containers we may timeout.
+    #       Container Healthchecks are available starting with docker 1.12, enabling with older
+    #       versions will result in an UNKNOWN state for the service check.
+    #
+    # You must whitelist the containers you wish to submit health service checks for.
+    # Use the same mechanism as the tagging system (see Tag:performance_tags section).
+    # Example: ["docker_image:tomcat", "container_name:web_front_nginx"]
+    #
+    health_service_check_whitelist: [<%= @health_service_check_whitelist && !@health_service_check_whitelist.empty? ? '"' + @health_service_check_whitelist.reject(&:empty?).join('", "') + '"' : nil %>]
+
+    # Collect the container count tagged by state (running, paused, exited, dead)
+    # Defaults to false.
+    #
+    collect_container_count: <%= @collect_container_count %>
+
+    # Collect the volume count for attached and dangling volumes.
+    # Defaults to false.
+    #
+    collect_volume_count: <%= @collect_volume_count %>
+
+    # Collect images stats
+    # Number of available active images and intermediate images as gauges.
+    # Defaults to false.
+    #
+    collect_images_stats: <%= @collect_images_stats %>
+
+    # Collect disk usage per image with docker.image.size and docker.image.virtual_size metrics.
+    # The check gets this size with the `docker images` command.
+    # Requires collect_images_stats to be enabled.
+    # Defaults to false.
+    #
+    collect_image_size: <%= @collect_image_size %>
+
+    # Collect disk metrics (total, used, free) through the docker info command for data and metadata.
+    # This is useful when these values can't be obtained by the disk check.
+    # Example: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html
+    # Note that it only works when the storage driver is devicemapper.
+    # Explanation of these metrics can be found here:
+    # https://github.com/docker/docker/blob/v1.11.1/daemon/graphdriver/devmapper/README.md
+    # Defaults to false.
+    #
+    collect_disk_stats: <%= @collect_disk_stats %>
+
+    # Collect containers exit codes and send service checks critical when exit code is not 0
+    # Defaults to false.
+    #
+    collect_exit_codes: <%= @collect_exit_codes %>
+
+    # Exclude containers based on their tags
+    # An excluded container will be completely ignored. The rule is a regex on the tags.
+    #
+    # How it works: exclude first.
+    # If a tag matches an exclude rule, it won't be included unless it also matches an include rule.
+    # Examples:
+    # exclude all, except ubuntu and debian.
+    # exclude: [".*"]
+    # include: ["docker_image:ubuntu", "docker_image:debian"]
+    #
+    # include all, except ubuntu and debian.
+    # exclude: ["docker_image:ubuntu", "docker_image:debian"]
+    # include: []
+    #
+    # Default: include all containers
+
+    exclude: [<%= @exclude && !@exclude.empty? ? '"' + @exclude.reject(&:empty?).join('", "') + '"' : nil %>]
+    include: [<%= @include && !@include.empty? ? '"' + @include.reject(&:empty?).join('", "') + '"' : nil %>]
+
+    ## Tagging
+    ##
+    # You can add extra tags to your Docker metrics with the tags list option.
+    # Example: ["extra_tag", "env:testing"]
+    #
+    tags: [<%= @tags && !@tags.empty? ? '"' + @tags.reject(&:empty?).join('", "') + '"' : nil %>]
+
+    # If the agent is running in an Amazon ECS task, tags container metrics with the ECS task name and version.
+    # Default: true
+    #
+    ecs_tags: <%= @ecs_tags %>
+
+    # Custom metrics tagging
+    # Define which Docker tags to apply on metrics.
+    # Since it impacts the aggregation, modify it carefully (only if you really need it).
+    #
+    # Tags for performance metrics.
+    # Available:
+    #   - image_name: Name of the image (example: "nginx")
+    #   - image_tag: Tag of the image (example: "latest")
+    #   - docker_image: LEGACY. The full image name:tag string (example: "nginx:latest")
+    #   - container_name: Name of the container (example: "boring_euclid")
+    #   - container_command: Command ran by the container (example: "echo 1")
+    #
+    performance_tags: [<%= @performance_tags && !@performance_tags.empty? ? '"' + @performance_tags.reject(&:empty?).join('", "') + '"' : nil %>]
+
+    # Tags for containers count metrics.
+    # Available: ["image_name", "image_tag", "docker_image", "container_command"]
+    #
+    container_tags: [<%= @container_tags && !@container_tags.empty? ? '"' + @container_tags.reject(&:empty?).join('", "') + '"' : nil %>]
+
+    # List of container label names that should be collected and sent as tags.
+    # Default to None
+    # Example:
+    collect_labels_as_tags: [<%= @collect_labels_as_tags && !@collect_labels_as_tags.empty? ? '"' + @collect_labels_as_tags.reject(&:empty?).join('", "') + '"' : nil %>]
+
+    # List of docker event attributes to add as tags of the datadog events
+    # Defaults to None.
+    #
+    event_attributes_as_tags: [<%= @event_attributes_as_tags && !@event_attributes_as_tags.empty? ? '"' + @event_attributes_as_tags.reject(&:empty?).join('", "') + '"' : nil %>]

@@ -1,0 +1,48 @@
+#
+# MANAGED BY PUPPET
+#
+[Main]
+
+# The host of the Datadog intake server to send agent data to
+dd_url: <%= @dd_url %>
+
+# If you need a proxy to connect to the Internet, provide the settings here
+<% if @proxy_host.empty? -%>
+# proxy_host:
+<% else -%>
+proxy_host: <%= @proxy_host %>
+<% end -%>
+<% if @_proxy_port.empty? -%>
+# proxy_port:
+<% else -%>
+proxy_port: <%= @_proxy_port %>
+<% end -%>
+<% if @proxy_user.empty? -%>
+# proxy_user:
+<% else -%>
+proxy_user: <%= @proxy_user %>
+<% end -%>
+<% if @proxy_password.empty? -%>
+# proxy_password:
+<% else -%>
+proxy_password: <%= @proxy_password %>
+<% end -%>
+
+# If you run the agent behind haproxy, you might want to set this to yes
+<% if @skip_ssl_validation -%>
+skip_ssl_validation: <%= @skip_ssl_validation %>
+<% else -%>
+# skip_ssl_validation: no
+<% end -%>
+
+# The Datadog api key to associate your Agent's data with your organization.
+# Can be found here:
+# https://app.datadoghq.com/account/settings
+api_key: <%= @api_key %>
+
+# Force the hostname to whatever you want.
+<% if @host.empty? -%>
+# hostname:
+<% else -%>
+hostname: <%= @host %>
+<% end -%>

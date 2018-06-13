@@ -2,6 +2,9 @@ init_config:
 
 instances:
     -   apache_status_url: <%= @url %>
+<% if @disable_ssl_validation -%>
+        disable_ssl_validation: <%= @disable_ssl_validation %>
+<% end -%>
 <% if @username -%>
         apache_user: <%= @username %>
 <% end -%>

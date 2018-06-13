@@ -1,0 +1,17 @@
+init_config:
+
+instances:
+<% if @tags and ! @tags.empty? -%>
+  - tags:
+  <%- @tags.each do |tag| -%>
+    - <%= tag %>
+  <%- end -%>
+<% end -%>
+
+    ceph_cmd: <%= @ceph_cmd %>
+
+# If your environment requires sudo, please add a line like:
+#          dd-agent ALL=(ALL) NOPASSWD:/usr/bin/ceph
+# to your sudoers file, and uncomment the below option.
+
+    use_sudo: True

@@ -1,52 +1,86 @@
+### MANAGED BY PUPPET
+
 init_config:
 
 instances:
-    -   name: <%= @name %>
-        url: <%= @url %>
-<% if @timeout -%>
-        timeout: <%= @timeout %>
+<%- (Array(@_instances)).each do |instance| -%>
+  - name: <%= instance['sitename'] %>
+    url: <%= instance['url'] %>
+<% if instance['timeout'] -%>
+    timeout: <%= instance['timeout'] %>
 <% end -%>
-<% if @username -%>
-        username: <%= @username %>
+<% if instance['username'] -%>
+    username: <%= instance['username'] %>
 <% end -%>
-<% if @password -%>
-        password: <%= @password %>
+<% if instance['password'] -%>
+    password: <%= instance['password'] %>
 <% end -%>
-<% if @threshold -%>
-        threshold: <%= @threshold %>
+<% if instance['threshold'] -%>
+    threshold: <%= instance['threshold'] %>
 <% end -%>
-<% if @window -%>
-        window: <%= @window %>
+<% if instance['window'] -%>
+    window: <%= instance['window'] %>
 <% end -%>
-<% if @include_content -%>
-        include_content: <%= @include_content %>
+<% if instance['content_match'] -%>
+    content_match: '<%= instance["content_match"] %>'
 <% end -%>
-<% if @collect_response_time -%>
-        collect_response_time: <%= @collect_response_time %>
+<% unless instance['include_content'].nil? -%>
+    include_content: <%= instance['include_content'] %>
 <% end -%>
-        disable_ssl_validation: <%= @disable_ssl_validation %>
-<% if @headers and ! @headers.empty? -%>
-        headers:
-  <%- Array(@headers).each do |header| -%>
+<% if instance['http_response_status_code'] -%>
+    http_response_status_code: <%= instance['http_response_status_code'] %>
+<% end -%>
+<% unless instance['collect_response_time'].nil? -%>
+    collect_response_time: <%= instance['collect_response_time'] %>
+<% end -%>
+<% unless instance['disable_ssl_validation'].nil? -%>
+    disable_ssl_validation: <%= instance['disable_ssl_validation'] %>
+<% end -%>
+<% unless instance['skip_event'].nil? -%>
+    skip_event: <%= instance['skip_event'] %>
+<% end -%>
+<% unless instance['no_proxy'].nil? -%>
+    no_proxy: <%= instance['no_proxy'] %>
+<% end -%>
+<% if instance['ca_certs'] -%>
+    ca_certs: <%= instance['ca_certs'] %>
+<% end -%>
+<% unless instance['check_certificate_expiration'].nil? -%>
+    check_certificate_expiration: <%= instance['check_certificate_expiration'] %>
+<% if instance['check_certificate_expiration'] == true -%>
+<% if instance['days_warning'] -%>
+    days_warning: <%= instance['days_warning'] %>
+<% end -%>
+<% if instance['days_critical'] -%>
+    days_critical: <%= instance['days_critical'] %>
+<% end -%>
+<% end -%>
+<% end -%>
+<% if instance['headers'] and ! instance['headers'].empty? -%>
+    headers:
+  <%- Array(instance['headers']).each do |header| -%>
     <%- if header != '' -%>
-           <%= header %>
+      <%= header %>
     <%- end -%>
   <%- end -%>
 <% end -%>
-<% if @tags and ! @tags.empty? -%>
-        tags:
-  <%- Array(@tags).each do |tag| -%>
+<% unless instance['allow_redirects'].nil? -%>
+    allow_redirects: <%= instance['allow_redirects'] %>
+<% end -%>
+<% if instance['tags'] and ! instance['tags'].empty? -%>
+    tags:
+  <%- Array(instance['tags']).each do |tag| -%>
     <%- if tag != '' -%>
-            - <%= tag %>
+      - <%= tag %>
     <%- end -%>
   <%- end -%>
 <% end -%>
-<% if @contacts and ! @contacts.empty? -%>
-        notify:
-  <%- Array(@contacts).each do |contact| -%>
+<% if instance['contacts'] and ! instance['contacts'].empty? -%>
+    notify:
+  <%- Array(instance['contacts']).each do |contact| -%>
     <%- if contact != '' -%>
-           - <%= contact %>
+      - <%= contact %>
     <%- end -%>
   <%- end -%>
 <% end -%>
-
+<% end -%>

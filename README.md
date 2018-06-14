@@ -292,7 +292,9 @@ Here are some of the other variables that be set in the datadog_agent class to c
 | process_enabled | boolean to enable the process agent; defaults to true | 
 | scrub_args | boolean to enable the process cmdline scrubbing; defaults to true |
 | custom_sensitive_words| an array to add more words beyond the default ones used by the scrubbing feature; defaults to [] |
-| agent6_extra_options | hash to provide additional configuration options to agent6. | 
+| logs_enabled | boolean to enable the logs agent; defaults to false |
+| container_collect_all | boolean to enable logs collection for all containers |
+| agent6_extra_options | hash to provide additional configuration options to agent6 |
 
 _NOTE: `agent6_extra_options` may be used to provide a fine grain control of additional agent6 config options. A deep merge is performed that may override options provided in the `datadog_agent` class parameters_
 

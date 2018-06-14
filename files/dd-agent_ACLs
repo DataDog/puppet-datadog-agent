@@ -1,0 +1,9 @@
+{
+  postrotate
+    /usr/bin/setfacl -m g:dd-agent:rx /var/log/secure
+    /usr/bin/setfacl -m g:dd-agent:rx /var/log/messages
+    /usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi.log
+    /usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-gk.log
+    /usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-report.log
+  endscript
+}

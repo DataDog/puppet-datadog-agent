@@ -564,4 +564,11 @@ class datadog_agent(
     notify  => Service[$datadog_agent::params::service_name],
     require => Package['datadog-agent'];
   }
+  
+  file { '/etc/logrotate.d/dd-agent_ACLs':
+    ensure => present,
+    source => 'puppet:///modules/datadog_agent/dd-agent_ACLs',
+    notify  => Service[$datadog_agent::params::service_name],
+    require => Package['datadog-agent'];
+  }
 }

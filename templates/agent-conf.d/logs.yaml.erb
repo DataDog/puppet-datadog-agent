@@ -2,66 +2,8 @@
 # MANAGED BY PUPPET
 #
 
-logs:
-<% @logs.each do |source| -%>
-  - type: <%= source['type'] %>
-  <%- if !source['path'].nil? -%>
-    path: <%= source['path'] %>
-  <%- end -%>
-  <%- if !source['port'].nil? -%>
-    port: <%= source['port'] %>
-  <%- end -%>
-  <%- if !source['image'].nil? -%>
-    image: <%= source['image'] %>
-  <%- end -%>
-  <%- if !source['label'].nil? -%>
-    label: <%= source['label'] %>
-  <%- end -%>
-  <%- if !source['name'].nil? -%>
-    name: <%= source['name'] %>
-  <%- end -%>
-  <%- if !source['channel_path'].nil? -%>
-    channel_path: <%= source['channel_path'] %>
-  <%- end -%>
-  <%- if !source['query'].nil? -%>
-    query: <%= source['query'] %>
-  <%- end -%>
-  <%- if !source['include_units'].nil? -%>
-    include_units:
-    <%- source['include_units'].each do |unit| -%>
-      - <%= unit %>
-    <%- end -%>
-  <%- end -%>
-  <%- if !source['exclude_units'].nil? -%>
-    exclude_units:
-    <%- source['exclude_units'].each do |unit| -%>
-      - <%= unit %>
-    <%- end -%>
-  <%- end -%>
-  <%- if !source['service'].nil? -%>
-    service: <%= source['service'] %>
-  <%- end -%>
-  <%- if !source['source'].nil? -%>
-    source: <%= source['source'] %>
-  <%- end -%>
-  <%- if !source['sourcecategory'].nil? -%>
-    sourcecategory: <%= source['sourcecategory'] %>
-  <%- end -%>
-  <%- if !source['tags'].nil? -%>
-    tags:
-    <%- source['tags'].each do |tag| -%>
-      - <%= tag %>
-    <%- end -%>
-  <%- end -%>
-  <%- if !source['log_processing_rules'].nil? -%>
-    log_processing_rules:
-    <%- source['log_processing_rules'].each do |processing_rule| -%>
-      - type: <%= processing_rule['type'] %>
-        name: <%= processing_rule['name'] %>
-        pattern: <%= processing_rule['pattern'] %>
-      <%- if !processing_rule['replace_placeholder'].nil? -%>
-        replace_placeholder: <%= processing_rule['replace_placeholder'] %>
-      <%- end -%>
-    <%- end -%>
-  <%- end -%>
-<% end -%>
+<%
+require 'yaml'
+%>
+
+<%= {'logs'=>@logs}.to_yaml %>

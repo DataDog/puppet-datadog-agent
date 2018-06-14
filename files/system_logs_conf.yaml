@@ -1,0 +1,21 @@
+init_config:
+
+instances:
+    [{}]
+
+logs:
+  - type: file
+    path: /var/log/secure
+    service: secure
+    source: adroll-base
+
+  - type: file
+    path: /var/log/dmesg
+    service: dmesg
+    source: adroll-base
+
+  - type: file
+    path: /var/log/messages
+    service: messages
+    source: adroll-base
+

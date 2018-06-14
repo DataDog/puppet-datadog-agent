@@ -541,10 +541,26 @@ class datadog_agent(
     owner   => $dd_user,
     group   => $dd_group,
   }
+  
+  file { '/etc/datadog-agent/conf.d/system_logs.d':
+    ensure  => directory,
+    purge   => $false,
+    recurse => true,
+    force   => $false,
+    owner   => $dd_user,
+    group   => $dd_group,
+  }
 
   file { '/etc/datadog-agent/conf.d/carabiner.d/conf.yaml':
     ensure => present,
-    source => 'puppet:///modules/datadog_agent/conf.yaml',
+    source => 'puppet:///modules/datadog_agent/carabiner_conf.yaml',
+    notify  => Service[$datadog_agent::params::service_name],
+    require => Package['datadog-agent'];
+  }
+  
+  file { '/etc/datadog-agent/conf.d/system_logs.d/conf.yaml':
+    ensure => present,
+    source => 'puppet:///modules/datadog_agent/system_logs_conf.yaml',
     notify  => Service[$datadog_agent::params::service_name],
     require => Package['datadog-agent'];
   }

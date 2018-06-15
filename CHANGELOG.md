@@ -1,6 +1,13 @@
 Changes
 =======
 
+# 2.3.0 / 2018-06-15
+
+### Notes
+
+* [FEATURE] Logs: support logs configuration. See [#382][] (Thanks [@NoodlesNZ][])
+
+
 # 2.2.0 / 2018-05-16
 
 ### Notes
@@ -474,6 +481,7 @@ Please read the [docs]() for more details.
 [#378]: https://github.com/DataDog/puppet-datadog-agent/issues/378
 [#379]: https://github.com/DataDog/puppet-datadog-agent/issues/379
 [#381]: https://github.com/DataDog/puppet-datadog-agent/issues/381
+[#382]: https://github.com/DataDog/puppet-datadog-agent/issues/382
 [#384]: https://github.com/DataDog/puppet-datadog-agent/issues/384
 [#387]: https://github.com/DataDog/puppet-datadog-agent/issues/387
 [#389]: https://github.com/DataDog/puppet-datadog-agent/issues/389

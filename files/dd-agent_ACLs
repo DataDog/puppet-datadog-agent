@@ -10,8 +10,20 @@ postrotate
   endscript
 }
 
-/var/log/adroll {
+/var/log/adroll/uwsgi.log {
   postrotate
-    /usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll
+    /usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi.log
+  endscript
+}
+
+/var/log/adroll/uwsgi-gk.log {
+  postrotate
+    /usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-gk.log
+  endscript
+}
+
+/var/log/adroll/uwsgi-report.log {
+  postrotate
+    /usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-report.log
   endscript
 }

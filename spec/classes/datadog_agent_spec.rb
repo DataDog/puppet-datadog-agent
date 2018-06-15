@@ -897,6 +897,10 @@ describe 'datadog_agent' do
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ custom_sensitive_words: \[\]\n/,
               )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^logs_enabled: false\n/,
+              'content' => /^\ \ container_collect_all: false\n/,
+              )}
             end
           end
 
@@ -1038,8 +1042,19 @@ describe 'datadog_agent' do
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ -\ dd_key\n/,
               )}
-
             end
+
+            context 'with logs enabled' do
+              let(:params) {{
+                  :logs_enabled => true,
+                  :container_collect_all => true
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^logs_enabled: true\n/,
+              'content' => /^\ \ container_collect_all: true\n/,
+              )}
+            end
+
           end
         end
       end

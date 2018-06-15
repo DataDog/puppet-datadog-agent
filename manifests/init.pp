@@ -174,6 +174,12 @@
 #   $custom_sensitive_words
 #       Array to add more words to be used on the process cdmline scrubbing by the process-agent
 #       Array. Default: []
+#   $logs_enabled
+#       Boolean to enable or disable the logs agent
+#       Boolean. Default: false
+#   $container_collect_all
+#       Boolean to enable logs collection for all containers
+#       Boolean. Default: false
 #
 # Actions:
 #
@@ -273,6 +279,8 @@ class datadog_agent(
   $process_enabled = $datadog_agent::params::process_default_enabled,
   $scrub_args = $datadog_agent::params::process_default_scrub_args,
   $custom_sensitive_words = $datadog_agent::params::process_default_custom_words,
+  $logs_enabled = $datadog_agent::params::logs_enabled,
+  $container_collect_all = $datadog_agent::params::container_collect_all,
   Hash[String[1], Data] $agent6_extra_options = {},
   $agent5_repo_uri = $datadog_agent::params::agent5_default_repo,
   $agent6_repo_uri = $datadog_agent::params::agent6_default_repo,
@@ -355,6 +363,8 @@ class datadog_agent(
   validate_legacy(Boolean, 'validate_bool', $process_enabled)
   validate_legacy(Boolean, 'validate_bool', $scrub_args)
   validate_legacy(Array, 'validate_array', $custom_sensitive_words)
+  validate_legacy(Boolean, 'validate_bool', $logs_enabled)
+  validate_legacy(Boolean, 'validate_bool', $container_collect_all)
   validate_legacy(String, 'validate_string', $agent5_repo_uri)
   validate_legacy(String, 'validate_string', $agent6_repo_uri)
   validate_legacy(String, 'validate_string', $apt_release)
@@ -527,6 +537,10 @@ class datadog_agent(
           'enabled' => $process_enabled_str,
           'scrub_args' => $scrub_args,
           'custom_sensitive_words' => $custom_sensitive_words,
+        },
+        'logs_enabled' => $logs_enabled,
+        'logs_config' => {
+          'container_collect_all' => $container_collect_all,
         },
     }
     $extra_config = deep_merge($base_extra_config, $agent6_extra_options)

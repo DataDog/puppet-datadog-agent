@@ -30,6 +30,8 @@ class datadog_agent::params {
   $process_default_enabled        = false
   $process_default_scrub_args     = true
   $process_default_custom_words   = []
+  $logs_enabled                   = false
+  $container_collect_all          = false
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {

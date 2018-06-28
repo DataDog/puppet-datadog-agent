@@ -564,11 +564,21 @@ class datadog_agent(
     notify  => Service[$datadog_agent::params::service_name],
     require => Package['datadog-agent'];
   }
-  
-  file { '/etc/logrotate.d/dd-agent_ACLs':
-    ensure => present,
-    source => 'puppet:///modules/datadog_agent/dd-agent_ACLs',
-    notify  => Service[$datadog_agent::params::service_name],
-    require => Package['datadog-agent'];
+
+  # Set initial permissions on log files
+  exec { 'messages_permissions':
+    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/messages';
+  }
+  exec { 'secure_permissions':
+    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/secure';
+  }
+  exec { 'uwsgi_permissions':
+    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi.log';
+  }
+  exec { 'uwsgi-gk_permissions':
+    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-gk.log';
+  }
+  exec { 'uwsgi-report_permissions':
+    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-report.log';
   }
 }

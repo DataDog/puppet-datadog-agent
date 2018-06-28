@@ -7,45 +7,45 @@ logs:
   - type: file
     path: /var/log/secure
     service: secure
-    source: adroll
+    source: syslog
 
   - type: file
     path: /var/log/dmesg
     service: dmesg
-    source: adroll
+    source: syslog
 
   - type: file
     path: /var/log/messages
     service: messages
-    source: adroll
+    source: syslog
   
   - type: file
     path: /var/log/adroll/uwsgi.log
     service: webserver-uwsgi
-    source: adroll
+    source: nginx
   
   - type: file
     path: /var/log/adroll/uwsgi-gk.log
     service: webserver-uwsgi-gk
-    source: adroll
+    source: nginx
   
   - type: file
     path: /var/log/adroll/uwsgi-report.log
     service: webserver-uwsgi-report
-    source: adroll
+    source: nginx
   
   - type: file
     path: /var/log/nginx/error.log
     service: websever-nginx_error
-    source: adroll
+    source: nginx
   
   - type: file
     path: /var/log/puppet/agent.log
     service: webserver-puppet
-    source: adroll
+    source: puppet
   
   - type: file
     path: /var/log/nginx/access.log
     service: webserver-nginx-access
-    source: adroll
+    source: nginx
 

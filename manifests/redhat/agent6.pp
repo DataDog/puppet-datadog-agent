@@ -10,6 +10,7 @@ class datadog_agent::redhat::agent6(
   String $agent_version = 'latest',
   String $service_ensure = 'running',
   Boolean $service_enable = true,
+  String $service_provider = 'redhat',
 ) inherits datadog_agent::params {
 
   validate_legacy('Boolean', 'validate_bool', $manage_repo)
@@ -69,6 +70,7 @@ class datadog_agent::redhat::agent6(
     hasstatus => false,
     pattern   => 'dd-agent',
     require   => Package[$datadog_agent::params::package_name],
+    provider  => $service_provider,
   }
 
 }

@@ -285,6 +285,7 @@ class datadog_agent(
   $agent5_repo_uri = $datadog_agent::params::agent5_default_repo,
   $agent6_repo_uri = $datadog_agent::params::agent6_default_repo,
   $apt_release = $datadog_agent::params::apt_default_release,
+  $service_provider = 'service',
 ) inherits datadog_agent::params {
 
   # Allow ports to be passed as integers or strings.
@@ -402,6 +403,7 @@ class datadog_agent(
           location              => $agent5_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
+          service_provider      => $service_provider,
         }
       } else {
         class { 'datadog_agent::ubuntu::agent6':
@@ -410,23 +412,26 @@ class datadog_agent(
           location              => $agent6_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
+          service_provider      => $service_provider,
         }
       }
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       if $agent5_enable {
         class { 'datadog_agent::redhat::agent5':
-          baseurl        => $agent5_repo_uri,
-          manage_repo    => $manage_repo,
-          service_ensure => $service_ensure,
-          service_enable => $service_enable,
+          baseurl          => $agent5_repo_uri,
+          manage_repo      => $manage_repo,
+          service_ensure   => $service_ensure,
+          service_enable   => $service_enable,
+          service_provider => $service_provider,
         }
       } else {
         class { 'datadog_agent::redhat::agent6':
-          baseurl        => $agent6_repo_uri,
-          manage_repo    => $manage_repo,
-          service_ensure => $service_ensure,
-          service_enable => $service_enable,
+          baseurl          => $agent6_repo_uri,
+          manage_repo      => $manage_repo,
+          service_ensure   => $service_ensure,
+          service_enable   => $service_enable,
+          service_provider => $service_provider,
         }
       }
     }

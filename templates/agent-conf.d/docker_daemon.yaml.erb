@@ -35,7 +35,13 @@ init_config:
   # Defaults to 0.
   #
   init_retries: <%= @init_retries %>
-
+  
+# Add logging to datadog because they do logging now
+<% if @logs %> 
+logs:
+  - type: docker
+    service: docker
+<% end %>
 instances:
   - ## Daemon and system configuration
     ##

@@ -45,6 +45,22 @@ describe 'datadog_agent::ubuntu::agent5' do
     should contain_service('datadog-agent')\
       .that_requires('package[datadog-agent]')
   end
+
+  context 'overriding provider' do
+    let(:params) {{
+      service_provider: 'upstart',
+    }}
+    it do
+      should contain_service('datadog-agent')\
+        .that_requires('package[datadog-agent]')
+    end
+    it do
+      should contain_service('datadog-agent').with(
+        'provider' => 'upstart',
+        'ensure' => 'running',
+      )
+    end
+  end
 end
 
 describe 'datadog_agent::ubuntu::agent6' do
@@ -92,5 +108,21 @@ describe 'datadog_agent::ubuntu::agent6' do
   it do
     should contain_service('datadog-agent')\
       .that_requires('package[datadog-agent]')
+  end
+
+  context 'overriding provider' do
+    let(:params) {{
+      service_provider: 'upstart',
+    }}
+    it do
+      should contain_service('datadog-agent')\
+        .that_requires('package[datadog-agent]')
+    end
+    it do
+      should contain_service('datadog-agent').with(
+        'provider' => 'upstart',
+        'ensure' => 'running',
+      )
+    end
   end
 end

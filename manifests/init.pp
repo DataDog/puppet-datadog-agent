@@ -271,7 +271,7 @@ class datadog_agent(
   $dd_group = $datadog_agent::params::dd_group,
   $dd_groups = $datadog_agent::params::dd_groups,
   $apm_enabled = $datadog_agent::params::apm_default_enabled,
-  $apm_env = $environment,
+  $apm_env = 'none',
   $apm_non_local_traffic = true,
   $process_enabled = $datadog_agent::params::process_default_enabled,
   $scrub_args = $datadog_agent::params::process_default_scrub_args,

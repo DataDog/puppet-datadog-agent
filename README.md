@@ -288,8 +288,8 @@ Here are some of the other variables that be set in the datadog_agent class to c
 | local_tags    | an array of key:value strings that will be set as tags for the node |
 | non_local_traffic | set this to allow other nodes to relay their traffic through this one |
 | agent5_enable | boolean to install agent5 and override agent6 default | 
-| apm_enabled | boolean to enable the APM agent; defaults to true | 
-| process_enabled | boolean to enable the process agent; defaults to true | 
+| apm_enabled | boolean to enable the APM agent; defaults to false | 
+| process_enabled | boolean to enable the process agent; defaults to false | 
 | scrub_args | boolean to enable the process cmdline scrubbing; defaults to true |
 | custom_sensitive_words| an array to add more words beyond the default ones used by the scrubbing feature; defaults to [] |
 | logs_enabled | boolean to enable the logs agent; defaults to false |

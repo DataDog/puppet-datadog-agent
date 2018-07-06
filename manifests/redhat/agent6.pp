@@ -68,6 +68,7 @@ class datadog_agent::redhat::agent6(
     enable    => $service_enable,
     hasstatus => false,
     pattern   => 'dd-agent',
+    provider  => $datadog_agent::params::service_provider,
     require   => Package[$datadog_agent::params::package_name],
   }
 

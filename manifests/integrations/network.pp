@@ -31,7 +31,13 @@ class datadog_agent::integrations::network(
 
   validate_legacy('Array', 'validate_array', $excluded_interfaces)
 
-  file { "${datadog_agent::params::conf_dir}/network.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/network.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/network.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

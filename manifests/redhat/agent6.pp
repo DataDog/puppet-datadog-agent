@@ -4,12 +4,12 @@
 #
 
 class datadog_agent::redhat::agent6(
-  String $baseurl = $datadog_agent::params::agent6_default_repo,
-  String $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
-  Boolean $manage_repo = true,
-  String $agent_version = 'latest',
-  String $service_ensure = 'running',
-  Boolean $service_enable = true,
+  $baseurl = $datadog_agent::params::agent6_default_repo,
+  $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
+  $manage_repo = true,
+  $agent_version = 'latest',
+  $service_ensure = 'running',
+  service_enable = true,
 ) inherits datadog_agent::params {
 
   if $manage_repo {

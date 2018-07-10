@@ -922,7 +922,18 @@ describe 'datadog_agent' do
             end
           end
 
-          context 'with apm_extra_config' do
+          context 'with modified defaults' do
+            context 'hostname override' do
+              let(:params) {{
+                  :host => 'my_custom_hostname',
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^hostname: my_custom_hostname\n/,
+              )}
+            end
+          end
+
+          context 'with additional agents config' do
             context 'with extra_options and APM enabled' do
               let(:params) {{
                   :apm_enabled => true,

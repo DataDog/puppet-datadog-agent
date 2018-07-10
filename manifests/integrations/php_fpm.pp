@@ -9,6 +9,9 @@
 #   $ping_url
 #        URL to get a reliable check of the FPM pool. Default: http://localhost/ping
 #
+#   $ping_reply
+#        Expected response from ping_url. Default: pong
+#
 #   $tags
 #        Optional array of tags
 #
@@ -23,6 +26,7 @@
 class datadog_agent::integrations::php_fpm(
   $status_url       = 'http://localhost/status',
   $ping_url         = 'http://localhost/ping',
+  $ping_reply       = 'pong',
   $http_host        = undef,
   $tags             = [],
   $instances        = undef
@@ -34,6 +38,7 @@ class datadog_agent::integrations::php_fpm(
       'http_host' => $http_host,
       'status_url' => $status_url,
       'ping_url' => $ping_url,
+      'ping_reply' => $ping_reply,
       'tags' => $tags,
     }]
   } else {

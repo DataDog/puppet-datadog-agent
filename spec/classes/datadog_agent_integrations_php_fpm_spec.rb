@@ -31,25 +31,30 @@ describe 'datadog_agent::integrations::php_fpm' do
       context 'with default parameters' do
         it { should contain_file(conf_file).with_content(/status_url: http:\/\/localhost\/status/) }
         it { should contain_file(conf_file).with_content(/ping_url: http:\/\/localhost\/ping/) }
+        it { should contain_file(conf_file).with_content(/ping_reply: pong/) }
       end
 
       context 'with parameters set' do
         let(:params) {{
           status_url: 'http://localhost/fpm_status',
           ping_url: 'http://localhost/fpm_ping',
+          ping_reply: 'success',
         }}
         it { should contain_file(conf_file).with_content(/status_url: http:\/\/localhost\/fpm_status/) }
         it { should contain_file(conf_file).with_content(/ping_url: http:\/\/localhost\/fpm_ping/) }
+        it { should contain_file(conf_file).with_content(/ping_reply: success/) }
       end
 
       context 'with http_host set' do
         let(:params) {{
           status_url: 'http://localhost/fpm_status',
           ping_url: 'http://localhost/fpm_ping',
+          ping_reply: 'success',
           http_host: 'php_fpm_server',
         }}
         it { should contain_file(conf_file).with_content(/http_host: php_fpm_server/) }
         it { should contain_file(conf_file).with_content(/status_url: http:\/\/localhost\/fpm_status/) }
+        it { should contain_file(conf_file).with_content(/ping_reply: success/) }
         it { should contain_file(conf_file).with_content(/ping_url: http:\/\/localhost\/fpm_ping/) }
       end
 
@@ -63,13 +68,16 @@ describe 'datadog_agent::integrations::php_fpm' do
             {
               'status_url'   => 'http://localhost/b/fpm_status',
               'ping_url'   => 'http://localhost/b/fpm_ping',
+              'ping_reply' => 'success',
             },
           ]
         }}
         it { should contain_file(conf_file).with_content(/status_url: http:\/\/localhost\/a\/fpm_status/) }
         it { should contain_file(conf_file).with_content(/ping_url: http:\/\/localhost\/a\/fpm_ping/) }
+        it { should contain_file(conf_file).with_content(/ping_reply: pong/) }
         it { should contain_file(conf_file).with_content(/status_url: http:\/\/localhost\/b\/fpm_status/) }
         it { should contain_file(conf_file).with_content(/ping_url: http:\/\/localhost\/b\/fpm_ping/) }
+        it { should contain_file(conf_file).with_content(/ping_reply: success/) }
       end
     end
   end

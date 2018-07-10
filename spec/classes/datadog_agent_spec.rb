@@ -878,6 +878,9 @@ describe 'datadog_agent' do
               'content' => /^cmd_port: \"{0,1}5001\"{0,1}\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^collect_ec2_tags: false\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^dd_url: \"{0,1}https:\/\/app.datadoghq.com\"{0,1}\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
@@ -919,6 +922,12 @@ describe 'datadog_agent' do
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^logs_config:\n\ \ container_collect_all: false\n/,
               )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').without(
+              'content' => /^statsd_forward_host: .*\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').without(
+              'content' => /^statsd_forward_port: ,*\n/,
+              )}
             end
           end
 
@@ -926,10 +935,46 @@ describe 'datadog_agent' do
             context 'hostname override' do
               let(:params) {{
                   :host => 'my_custom_hostname',
+                  :collect_ec2_tags => true,
               }}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^hostname: my_custom_hostname\n/,
               )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^collect_ec2_tags: true\n/,
+              )}
+            end
+            context 'forward statsd settings set' do
+              let(:params) {{
+                  :statsd_forward_host => 'foo',
+                  :statsd_forward_port => 1234,
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^statsd_forward_host: foo\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^statsd_forward_port: 1234\n/,
+              )}
+            end
+            context 'deprecated proxy settings' do
+              let(:params) {{
+                  :proxy_host => 'foo',
+                  :proxy_port => 1234,
+                  :proxy_user => 'bar',
+                  :proxy_password => 'abcd1234',
+              }}
+              it { is_expected.to contain_notify(
+                  'Setting proxy_host will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+              }
+              it { is_expected.to contain_notify(
+                  'Setting proxy_port will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+              }
+              it { is_expected.to contain_notify(
+                  'Setting proxy_user will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+              }
+              it { is_expected.to contain_notify(
+                  'Setting proxy_password will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+              }
             end
           end
 

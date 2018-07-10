@@ -922,6 +922,12 @@ describe 'datadog_agent' do
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^logs_config:\n\ \ container_collect_all: false\n/,
               )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').without(
+              'content' => /^statsd_forward_host: .*\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').without(
+              'content' => /^statsd_forward_port: ,*\n/,
+              )}
             end
           end
 
@@ -936,6 +942,18 @@ describe 'datadog_agent' do
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^collect_ec2_tags: true\n/,
+              )}
+            end
+            context 'forward statsd settings set' do
+              let(:params) {{
+                  :statsd_forward_host => 'foo',
+                  :statsd_forward_port => 1234,
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^statsd_forward_host: foo\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^statsd_forward_port: 1234\n/,
               )}
             end
           end

@@ -530,16 +530,16 @@ class datadog_agent(
   } else {
     # notify of broken params on agent6
     if $proxy_host {
-        notify { "Setting proxy_host will have no effect on agent6 please use agent6_extra_options to set your proxy": }
+        notify { 'Setting proxy_host will have no effect on agent6 please use agent6_extra_options to set your proxy': }
     }
     if $_proxy_port {
-        notify { "Setting proxy_port will have no effect on agent6 please use agent6_extra_options to set your proxy": }
+        notify { 'Setting proxy_port will have no effect on agent6 please use agent6_extra_options to set your proxy': }
     }
     if $proxy_user {
-        notify { "Setting proxy_user will have no effect on agent6 please use agent6_extra_options to set your proxy": }
+        notify { 'Setting proxy_user will have no effect on agent6 please use agent6_extra_options to set your proxy': }
     }
     if $proxy_password {
-        notify { "Setting proxy_password will have no effect on agent6 please use agent6_extra_options to set your proxy": }
+        notify { 'Setting proxy_password will have no effect on agent6 please use agent6_extra_options to set your proxy': }
     }
 
     # lint:ignore:quoted_booleans
@@ -561,7 +561,22 @@ class datadog_agent(
           'container_collect_all' => $container_collect_all,
         },
     }
-    $extra_config = deep_merge($base_extra_config, $agent6_extra_options)
+
+    if $statsd_forward_host != '' {
+        if $_statsd_forward_port != '' {
+            $statsd_forward_config = {
+              'statsd_forward_host' => $statsd_forward_host,
+              'statsd_forward_port' => $statsd_forward_port,
+            }
+        } else {
+            $statsd_forward_config = {
+              'statsd_forward_host' => $statsd_forward_host,
+            }
+        }
+    } else {
+        $statsd_forward_config = {}
+    }
+    $extra_config = deep_merge($base_extra_config, $agent6_extra_options, $statsd_forward_config)
 
     file { $conf6_dir:
       ensure  => directory,
@@ -587,8 +602,6 @@ class datadog_agent(
       'dogstatsd_port' => $dogstatsd_port,
       'dogstatsd_socket' => $dogstatsd_socket,
       'dogstatsd_non_local_traffic' => $non_local_traffic,
-      'statsd_forward_host' => $statsd_forward_host,
-      'statsd_forward_port' => $statsd_forward_port,
       'log_file' => $agent6_log_file,
       'log_level' => $log_level,
       'tags' => unique(flatten(union($_local_tags, $_facts_tags))),

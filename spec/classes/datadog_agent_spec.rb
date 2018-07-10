@@ -813,6 +813,22 @@ describe 'datadog_agent' do
               )}
             end
 
+            context 'with service provider override' do
+              let(:params) {{
+                  :service_provider => 'upstart',
+              }}
+              it do
+                should contain_service('datadog-agent')\
+                  .that_requires('package[datadog-agent]')
+              end
+              it do
+                should contain_service('datadog-agent').with(
+                  'provider' => 'upstart',
+                  'ensure' => 'running',
+                )
+              end
+            end
+
           end
         end
 
@@ -899,7 +915,9 @@ describe 'datadog_agent' do
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^logs_enabled: false\n/,
-              'content' => /^\ \ container_collect_all: false\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^logs_config:\n\ \ container_collect_all: false\n/,
               )}
             end
           end
@@ -1051,8 +1069,26 @@ describe 'datadog_agent' do
               }}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^logs_enabled: true\n/,
-              'content' => /^\ \ container_collect_all: true\n/,
               )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^logs_config:\n\ \ container_collect_all: true\n/,
+              )}
+            end
+
+            context 'with service provider override' do
+              let(:params) {{
+                  :service_provider => 'upstart',
+              }}
+              it do
+                should contain_service('datadog-agent')\
+                  .that_requires('package[datadog-agent]')
+              end
+              it do
+                should contain_service('datadog-agent').with(
+                  'provider' => 'upstart',
+                  'ensure' => 'running',
+                )
+              end
             end
 
           end

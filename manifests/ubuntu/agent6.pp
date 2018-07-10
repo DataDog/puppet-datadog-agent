@@ -12,6 +12,7 @@ class datadog_agent::ubuntu::agent6(
   $skip_apt_key_trusting = false,
   $service_ensure = 'running',
   $service_enable = true,
+  Optional[String] $service_provider = undef,
 ) inherits datadog_agent::params {
 
   ensure_packages(['apt-transport-https'])
@@ -45,11 +46,22 @@ class datadog_agent::ubuntu::agent6(
                 Exec['apt_update']],
   }
 
-  service { $datadog_agent::params::service_name:
-    ensure    => $service_ensure,
-    enable    => $service_enable,
-    hasstatus => false,
-    pattern   => 'dd-agent',
-    require   => Package['datadog-agent'],
+  if $service_provider {
+    service { $datadog_agent::params::service_name:
+      ensure    => $service_ensure,
+      enable    => $service_enable,
+      provider  => $service_provider,
+      hasstatus => false,
+      pattern   => 'dd-agent',
+      require   => Package['datadog-agent'],
+    }
+  } else {
+    service { $datadog_agent::params::service_name:
+      ensure    => $service_ensure,
+      enable    => $service_enable,
+      hasstatus => false,
+      pattern   => 'dd-agent',
+      require   => Package['datadog-agent'],
+    }
   }
 }

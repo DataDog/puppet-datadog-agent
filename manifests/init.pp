@@ -285,6 +285,7 @@ class datadog_agent(
   $agent5_repo_uri = $datadog_agent::params::agent5_default_repo,
   $agent6_repo_uri = $datadog_agent::params::agent6_default_repo,
   $apt_release = $datadog_agent::params::apt_default_release,
+  Optional[String] $service_provider = undef,
 ) inherits datadog_agent::params {
 
   # Allow ports to be passed as integers or strings.
@@ -399,6 +400,7 @@ class datadog_agent(
         class { 'datadog_agent::ubuntu::agent5':
           service_ensure        => $service_ensure,
           service_enable        => $service_enable,
+          service_provider      => $service_provider,
           location              => $agent5_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
@@ -407,6 +409,7 @@ class datadog_agent(
         class { 'datadog_agent::ubuntu::agent6':
           service_ensure        => $service_ensure,
           service_enable        => $service_enable,
+          service_provider      => $service_provider,
           location              => $agent6_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
@@ -416,17 +419,19 @@ class datadog_agent(
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       if $agent5_enable {
         class { 'datadog_agent::redhat::agent5':
-          baseurl        => $agent5_repo_uri,
-          manage_repo    => $manage_repo,
-          service_ensure => $service_ensure,
-          service_enable => $service_enable,
+          baseurl          => $agent5_repo_uri,
+          manage_repo      => $manage_repo,
+          service_ensure   => $service_ensure,
+          service_enable   => $service_enable,
+          service_provider => $service_provider,
         }
       } else {
         class { 'datadog_agent::redhat::agent6':
-          baseurl        => $agent6_repo_uri,
-          manage_repo    => $manage_repo,
-          service_ensure => $service_ensure,
-          service_enable => $service_enable,
+          baseurl          => $agent6_repo_uri,
+          manage_repo      => $manage_repo,
+          service_ensure   => $service_ensure,
+          service_enable   => $service_enable,
+          service_provider => $service_provider,
         }
       }
     }

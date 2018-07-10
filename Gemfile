@@ -14,6 +14,7 @@ group :test do
 end
 
 group :development do
+  gem "fog-openstack", "0.1.25" if RUBY_VERSION < '2.2.0'
   gem "beaker-rspec"
   gem "beaker", '3.31.0'
   gem "guard-rake"

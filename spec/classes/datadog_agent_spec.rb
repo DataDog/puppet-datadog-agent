@@ -878,6 +878,9 @@ describe 'datadog_agent' do
               'content' => /^cmd_port: \"{0,1}5001\"{0,1}\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^collect_ec2_tags: false\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^dd_url: \"{0,1}https:\/\/app.datadoghq.com\"{0,1}\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
@@ -926,9 +929,13 @@ describe 'datadog_agent' do
             context 'hostname override' do
               let(:params) {{
                   :host => 'my_custom_hostname',
+                  :collect_ec2_tags => true,
               }}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^hostname: my_custom_hostname\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^collect_ec2_tags: true\n/,
               )}
             end
           end

@@ -528,6 +528,19 @@ class datadog_agent(
       }
     }
   } else {
+    # notify of broken params on agent6
+    if $proxy_host {
+        notify { "Setting proxy_host will have no effect on agent6 please use agent6_extra_options to set your proxy": }
+    }
+    if $_proxy_port {
+        notify { "Setting proxy_port will have no effect on agent6 please use agent6_extra_options to set your proxy": }
+    }
+    if $proxy_user {
+        notify { "Setting proxy_user will have no effect on agent6 please use agent6_extra_options to set your proxy": }
+    }
+    if $proxy_password {
+        notify { "Setting proxy_password will have no effect on agent6 please use agent6_extra_options to set your proxy": }
+    }
 
     # lint:ignore:quoted_booleans
     $process_enabled_str = $process_enabled ? { true => 'true' , default => 'disabled' }
@@ -568,6 +581,7 @@ class datadog_agent(
       'dd_url' => $dd_url,
       'hostname' => $host,
       'cmd_port' => 5001,
+      'collect_ec2_tags' => $collect_ec2_tags,
       'conf_path' => $datadog_agent::params::conf6_dir,
       'enable_metadata_collection' => $collect_instance_metadata,
       'dogstatsd_port' => $dogstatsd_port,

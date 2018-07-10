@@ -566,6 +566,7 @@ class datadog_agent(
     $_agent_config = {
       'api_key' => $api_key,
       'dd_url' => $dd_url,
+      'hostname' => $host,
       'cmd_port' => 5001,
       'conf_path' => $datadog_agent::params::conf6_dir,
       'enable_metadata_collection' => $collect_instance_metadata,

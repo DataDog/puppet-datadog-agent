@@ -956,6 +956,26 @@ describe 'datadog_agent' do
               'content' => /^statsd_forward_port: 1234\n/,
               )}
             end
+            context 'deprecated proxy settings' do
+              let(:params) {{
+                  :proxy_host => 'foo',
+                  :proxy_port => 1234,
+                  :proxy_user => 'bar',
+                  :proxy_password => 'abcd1234',
+              }}
+              it { is_expected.to contain_notify(
+                  'Setting proxy_host will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+              }
+              it { is_expected.to contain_notify(
+                  'Setting proxy_port will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+              }
+              it { is_expected.to contain_notify(
+                  'Setting proxy_user will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+              }
+              it { is_expected.to contain_notify(
+                  'Setting proxy_password will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+              }
+            end
           end
 
           context 'with additional agents config' do

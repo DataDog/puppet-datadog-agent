@@ -27,6 +27,8 @@
 #       schema size metrics
 #   $disable_innodb_metrics
 #       disable innodb metrics, used with older versions of MySQL without innodb engine support.
+#   $queries
+#       Custom metrics based on MySQL query
 # Sample Usage:
 #
 #  class { 'datadog_agent::integrations::mysql' :
@@ -49,6 +51,14 @@
 #      extra_performance_metrics => 'true',
 #      schema_size_metrics       => 'true', 
 #      disable_innodb_metrics    => 'false',
+#      queries                   => [
+#        {
+#          query  => 'SELECT TIMESTAMPDIFF(second,MAX(create_time),NOW()) as last_accessed FROM requests',
+#          metric => 'app.seconds_since_last_request',
+#          type   => 'gauge',
+#          field  => 'last_accessed',
+#        },
+#      ],
 #    }
 #  }
 #
@@ -68,6 +78,7 @@ class datadog_agent::integrations::mysql(
   Boolean $schema_size_metrics             = false,
   Boolean $disable_innodb_metrics          = false,
   Optional[Array] $instances               = undef,
+  Array $queries                           = [],
   ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -94,6 +105,7 @@ class datadog_agent::integrations::mysql(
       'extra_performance_metrics' => $extra_performance_metrics,
       'schema_size_metrics'       => $schema_size_metrics,
       'disable_innodb_metrics'    => $disable_innodb_metrics,
+      'queries'                   => $queries,
     }]
   } elsif !$instances{
     $_instances = []

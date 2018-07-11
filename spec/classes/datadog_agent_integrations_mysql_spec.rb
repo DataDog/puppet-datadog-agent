@@ -84,5 +84,25 @@ describe 'datadog_agent::integrations::mysql' do
         end
       end
     end
+
+    context 'with queries parameter set' do
+      let(:params) {{
+        password: 'foobar',
+        queries: [
+          {
+            'query'  => 'SELECT TIMESTAMPDIFF(second,MAX(create_time),NOW()) as last_accessed FROM requests',
+            'metric' => 'app.seconds_since_last_request',
+            'type'   => 'gauge',
+            'field'  => 'last_accessed'
+          }
+        ]
+      }}
+
+      it { should contain_file(conf_file).with_content(/- query/) }
+      it { should contain_file(conf_file).with_content(%r{query: SELECT TIMESTAMPDIFF\(second,MAX\(create_time\),NOW\(\)\) as last_accessed FROM requests}) }
+      it { should contain_file(conf_file).with_content(%r{metric: app.seconds_since_last_request}) }
+      it { should contain_file(conf_file).with_content(%r{type: gauge}) }
+      it { should contain_file(conf_file).with_content(%r{field: last_accessed}) }
+    end
   end
 end

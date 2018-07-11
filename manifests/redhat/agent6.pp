@@ -47,9 +47,9 @@ class datadog_agent::redhat::agent6(
     hasstatus => false,
     pattern   => 'dd-agent',
     require   => Package[$datadog_agent::params::package_name],
-    start     => 'initctl start datadog-agent',
-    stop      => 'initctl stop datadog-agent',
-    status    => 'initctl status datadog-agent',
-    restart   => 'initctl restart datadog-agent',
+    start     => 'initctl start datadog-agent || true',
+    stop      => 'initctl stop datadog-agent || true',
+    status    => 'initctl status datadog-agent || true',
+    restart   => 'initctl restart datadog-agent || true',
   }
 }

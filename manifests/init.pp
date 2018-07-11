@@ -199,7 +199,7 @@ class datadog_agent(
   $host = '',
   $api_key = 'your_API_key',
   $histogram_percentiles = '',
-  $collect_ec2_tags = false,
+  $collect_ec2_tags = true,
   $collect_instance_metadata = true,
   $tags = [],
   $integrations = {},

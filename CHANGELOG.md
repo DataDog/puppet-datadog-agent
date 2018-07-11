@@ -1,6 +1,24 @@
 Changes
 =======
 
+# 2.3.0 / 2018-07-11
+
+### Notes
+
+* [FEATURE] Logs: enable log configuration management. See [#439][]
+* [FEATURE] MySQL: enable custom queries/metrics. See [#316][] (Thanks [@yrcjaya][])
+* [FEATURE] PHP-fpm: add parameter for ping-reply. See [#417][] (Thanks [@Aramack][])
+* [FEATURE] Agents: allow version pinning from the main manifest. See [#446][]
+* [BUGFIX] Agent 5: fix user/group override for config file. See [#438][] (Thanks [@arkpoah][])
+* [BUGFIX] Agent 6: honor statsd forwarding parameters. See [#408][] (Thanks [@djova][])
+* [BUGFIX] Agent 6: honor hostname configuration override. See [#445][]
+* [BUGFIX] Agent 6: honor `collect_ec2_tags` parameter. See [#446][]
+* [BUGFIX] Agents: (Amazon Linux bug) allow service provider override. See [#444][]
+* [BUGFIX] Network: fix configuration path. See [#433][] (Thanks [@ewansteele][])
+* [BUGFIX] Reporting: fix `hostname_extraction_regex` config option. See [#443][] (Thanks [@ColinHerbert][])
+* [DEPRECATED] Agent 6: `proxy_*` options are deprecated use `agent6_extra_options`. See [#446][]
+* [DOCS] README: fix apm, process config options. See [#437][] (Thanks [@pulkitsethi][])
+
 # 2.2.0 / 2018-05-16
 
 ### Notes
@@ -439,6 +457,7 @@ Please read the [docs]() for more details.
 [#311]: https://github.com/DataDog/puppet-datadog-agent/issues/311
 [#313]: https://github.com/DataDog/puppet-datadog-agent/issues/313
 [#315]: https://github.com/DataDog/puppet-datadog-agent/issues/315
+[#316]: https://github.com/DataDog/puppet-datadog-agent/issues/316
 [#318]: https://github.com/DataDog/puppet-datadog-agent/issues/318
 [#322]: https://github.com/DataDog/puppet-datadog-agent/issues/322
 [#323]: https://github.com/DataDog/puppet-datadog-agent/issues/323
@@ -486,17 +505,28 @@ Please read the [docs]() for more details.
 [#403]: https://github.com/DataDog/puppet-datadog-agent/issues/403
 [#404]: https://github.com/DataDog/puppet-datadog-agent/issues/404
 [#406]: https://github.com/DataDog/puppet-datadog-agent/issues/406
+[#408]: https://github.com/DataDog/puppet-datadog-agent/issues/408
 [#411]: https://github.com/DataDog/puppet-datadog-agent/issues/411
 [#412]: https://github.com/DataDog/puppet-datadog-agent/issues/412
+[#417]: https://github.com/DataDog/puppet-datadog-agent/issues/417
 [#418]: https://github.com/DataDog/puppet-datadog-agent/issues/418
 [#420]: https://github.com/DataDog/puppet-datadog-agent/issues/420
 [#424]: https://github.com/DataDog/puppet-datadog-agent/issues/424
 [#426]: https://github.com/DataDog/puppet-datadog-agent/issues/426
 [#427]: https://github.com/DataDog/puppet-datadog-agent/issues/427
 [#431]: https://github.com/DataDog/puppet-datadog-agent/issues/431
+[#433]: https://github.com/DataDog/puppet-datadog-agent/issues/433
+[#437]: https://github.com/DataDog/puppet-datadog-agent/issues/437
+[#438]: https://github.com/DataDog/puppet-datadog-agent/issues/438
+[#439]: https://github.com/DataDog/puppet-datadog-agent/issues/439
+[#443]: https://github.com/DataDog/puppet-datadog-agent/issues/443
+[#444]: https://github.com/DataDog/puppet-datadog-agent/issues/444
+[#445]: https://github.com/DataDog/puppet-datadog-agent/issues/445
+[#446]: https://github.com/DataDog/puppet-datadog-agent/issues/446
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
+[@ColinHerbert]: https://github.com/ColinHerbert
 [@DDRBoxman]: https://github.com/DDRBoxman
 [@IanCrouch]: https://github.com/IanCrouch
 [@LeoCavaille]: https://github.com/LeoCavaille
@@ -508,6 +538,7 @@ Please read the [docs]() for more details.
 [@alexfouche]: https://github.com/alexfouche
 [@alexharv074]: https://github.com/alexharv074
 [@alvin-huang]: https://github.com/alvin-huang
+[@arkpoah]: https://github.com/arkpoah
 [@b2jrock]: https://github.com/b2jrock
 [@bflad]: https://github.com/bflad
 [@binford2k]: https://github.com/binford2k
@@ -524,9 +555,11 @@ Please read the [docs]() for more details.
 [@davidgibbons]: https://github.com/davidgibbons
 [@degemer]: https://github.com/degemer
 [@denmat]: https://github.com/denmat
+[@djova]: https://github.com/djova
 [@dschaaff]: https://github.com/dschaaff
 [@dzinek]: https://github.com/dzinek
 [@eddmann]: https://github.com/eddmann
+[@ewansteele]: https://github.com/ewansteele
 [@ffleming]: https://github.com/ffleming
 [@flyinprogrammer]: https://github.com/flyinprogrammer
 [@fwelschen]: https://github.com/fwelschen
@@ -555,6 +588,7 @@ Please read the [docs]() for more details.
 [@oshmyrko]: https://github.com/oshmyrko
 [@pabrahamsson]: https://github.com/pabrahamsson
 [@pid1]: https://github.com/pid1
+[@pulkitsethi]: https://github.com/pulkitsethi
 [@rooprob]: https://github.com/rooprob
 [@rothgar]: https://github.com/rothgar
 [@rtyler]: https://github.com/rtyler
@@ -569,3 +603,4 @@ Please read the [docs]() for more details.
 [@tdm4]: https://github.com/tdm4
 [@teintuc]: https://github.com/teintuc
 [@tuxinaut]: https://github.com/tuxinaut
+[@yrcjaya]: https://github.com/yrcjaya

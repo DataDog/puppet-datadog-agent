@@ -14,7 +14,7 @@
 
 class datadog_agent::ubuntu::agent5(
   String $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
-  String $agent_version = 'latest',
+  String $agent_version = $datadog_agent::params::agent_version,
   String $location = $datadog_agent::params::agent5_default_repo,
   String $release = $datadog_agent::params::apt_default_release,
   String $repos = 'main',

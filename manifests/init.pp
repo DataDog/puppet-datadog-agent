@@ -286,6 +286,7 @@ class datadog_agent(
   $agent6_repo_uri = $datadog_agent::params::agent6_default_repo,
   $apt_release = $datadog_agent::params::apt_default_release,
   Optional[String] $service_provider = undef,
+  Optional[String] $agent_version = $datadog_agent::params::agent_version,
 ) inherits datadog_agent::params {
 
   # Allow ports to be passed as integers or strings.
@@ -398,6 +399,7 @@ class datadog_agent(
     'Ubuntu','Debian' : {
       if $agent5_enable {
         class { 'datadog_agent::ubuntu::agent5':
+          agent_version         => $agent_version,
           service_ensure        => $service_ensure,
           service_enable        => $service_enable,
           service_provider      => $service_provider,
@@ -407,6 +409,7 @@ class datadog_agent(
         }
       } else {
         class { 'datadog_agent::ubuntu::agent6':
+          agent_version         => $agent_version,
           service_ensure        => $service_ensure,
           service_enable        => $service_enable,
           service_provider      => $service_provider,
@@ -421,6 +424,7 @@ class datadog_agent(
         class { 'datadog_agent::redhat::agent5':
           baseurl          => $agent5_repo_uri,
           manage_repo      => $manage_repo,
+          agent_version    => $agent_version,
           service_ensure   => $service_ensure,
           service_enable   => $service_enable,
           service_provider => $service_provider,
@@ -429,6 +433,7 @@ class datadog_agent(
         class { 'datadog_agent::redhat::agent6':
           baseurl          => $agent6_repo_uri,
           manage_repo      => $manage_repo,
+          agent_version    => $agent_version,
           service_ensure   => $service_ensure,
           service_enable   => $service_enable,
           service_provider => $service_provider,
@@ -562,6 +567,14 @@ class datadog_agent(
         },
     }
 
+    if $host != '' {
+        $host_config = {
+          'host' => $host
+        }
+    } else {
+        $host_config = {}
+    }
+
     if $statsd_forward_host != '' {
         if $_statsd_forward_port != '' {
             $statsd_forward_config = {
@@ -576,7 +589,7 @@ class datadog_agent(
     } else {
         $statsd_forward_config = {}
     }
-    $extra_config = deep_merge($base_extra_config, $agent6_extra_options, $statsd_forward_config)
+    $extra_config = deep_merge($base_extra_config, $agent6_extra_options, $statsd_forward_config, $host_config)
 
     file { $conf6_dir:
       ensure  => directory,

@@ -18,7 +18,7 @@ class datadog_agent::redhat::agent5(
   String $baseurl = $datadog_agent::params::agent5_default_repo,
   String $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
   Boolean $manage_repo = true,
-  String $agent_version = 'latest',
+  String $agent_version = $datadog_agent::params::agent_version,
   String $service_ensure = 'running',
   Boolean $service_enable = true,
   Optional[String] $service_provider = undef,

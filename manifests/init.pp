@@ -569,7 +569,7 @@ class datadog_agent(
 
     if $host != '' {
         $host_config = {
-          'host' => $host
+          'hostname' => $host,
         }
     } else {
         $host_config = {}
@@ -607,7 +607,6 @@ class datadog_agent(
     $_agent_config = {
       'api_key' => $api_key,
       'dd_url' => $dd_url,
-      'hostname' => $host,
       'cmd_port' => 5001,
       'collect_ec2_tags' => $collect_ec2_tags,
       'conf_path' => $datadog_agent::params::conf6_dir,

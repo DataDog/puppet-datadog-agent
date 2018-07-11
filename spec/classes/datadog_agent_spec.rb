@@ -923,6 +923,9 @@ describe 'datadog_agent' do
               'content' => /^logs_config:\n\ \ container_collect_all: false\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').without(
+              'content' => /^hostname: .*\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').without(
               'content' => /^statsd_forward_host: .*\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').without(

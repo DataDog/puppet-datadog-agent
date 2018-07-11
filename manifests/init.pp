@@ -567,18 +567,18 @@ class datadog_agent(
 
   # Set initial permissions on log files
   exec { 'messages_permissions':
-    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/messages';
+    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/messages || true';
   }
   exec { 'secure_permissions':
-    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/secure';
+    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/secure || true';
   }
   exec { 'uwsgi_permissions':
-    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi.log';
+    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi.log || true';
   }
   exec { 'uwsgi-gk_permissions':
-    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-gk.log';
+    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-gk.log || true';
   }
   exec { 'uwsgi-report_permissions':
-    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-report.log';
+    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-report.log || true';
   }
 }

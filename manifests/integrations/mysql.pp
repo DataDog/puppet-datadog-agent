@@ -77,8 +77,8 @@ class datadog_agent::integrations::mysql(
   Boolean $extra_performance_metrics       = false,
   Boolean $schema_size_metrics             = false,
   Boolean $disable_innodb_metrics          = false,
+  Optional[Array] $queries                 = [],
   Optional[Array] $instances               = undef,
-  Array $queries                           = [],
   ) inherits datadog_agent::params {
   include datadog_agent
 

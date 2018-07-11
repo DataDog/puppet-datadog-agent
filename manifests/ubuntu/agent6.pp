@@ -4,14 +4,14 @@
 #
 
 class datadog_agent::ubuntu::agent6(
-  $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
-  $agent_version = 'latest',
-  $location = $datadog_agent::params::agent6_default_repo,
-  $release = $datadog_agent::params::apt_default_release,
-  $repos = '6',
-  $skip_apt_key_trusting = false,
-  $service_ensure = 'running',
-  $service_enable = true,
+  String $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
+  String $agent_version = $datadog_agent::params::agent_version,
+  String $location = $datadog_agent::params::agent6_default_repo,
+  String $release = $datadog_agent::params::apt_default_release,
+  String $repos = '6',
+  Boolean $skip_apt_key_trusting = false,
+  String $service_ensure = 'running',
+  Boolean $service_enable = true,
   Optional[String] $service_provider = undef,
 ) inherits datadog_agent::params {
 

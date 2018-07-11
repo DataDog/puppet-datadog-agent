@@ -23,6 +23,7 @@ class datadog_agent::params {
   $dd_groups                      = undef
   $package_name                   = 'datadog-agent'
   $service_name                   = 'datadog-agent'
+  $agent_version                  = 'latest'
   $dogapi_version                 = 'installed'
   $conf_dir_purge                 = false
   $apt_default_release            = 'stable'

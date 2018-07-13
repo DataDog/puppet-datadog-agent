@@ -979,6 +979,26 @@ describe 'datadog_agent' do
                   'Setting proxy_password will have no effect on agent6 please use agent6_extra_options to set your proxy') 
               }
             end
+            context 'deprecated proxy settings with default values' do
+              let(:params) {{
+                  :proxy_host => '',
+                  :proxy_port => '',
+                  :proxy_user => '',
+                  :proxy_password => '',
+              }}
+              it { is_expected.not_to contain_notify(
+                  'Setting proxy_host will have no effect on agent6 please use agent6_extra_options to set your proxy')
+              }
+              it { is_expected.not_to contain_notify(
+                  'Setting proxy_port will have no effect on agent6 please use agent6_extra_options to set your proxy')
+              }
+              it { is_expected.not_to contain_notify(
+                  'Setting proxy_user will have no effect on agent6 please use agent6_extra_options to set your proxy')
+              }
+              it { is_expected.not_to contain_notify(
+                  'Setting proxy_password will have no effect on agent6 please use agent6_extra_options to set your proxy')
+              }
+            end
           end
 
           context 'with additional agents config' do

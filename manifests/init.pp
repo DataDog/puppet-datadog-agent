@@ -534,16 +534,16 @@ class datadog_agent(
     }
   } else {
     # notify of broken params on agent6
-    if $proxy_host {
+    if !empty($proxy_host) {
         notify { 'Setting proxy_host will have no effect on agent6 please use agent6_extra_options to set your proxy': }
     }
-    if $_proxy_port {
+    if !empty($_proxy_port) {
         notify { 'Setting proxy_port will have no effect on agent6 please use agent6_extra_options to set your proxy': }
     }
-    if $proxy_user {
+    if !empty($proxy_user) {
         notify { 'Setting proxy_user will have no effect on agent6 please use agent6_extra_options to set your proxy': }
     }
-    if $proxy_password {
+    if !empty($proxy_password) {
         notify { 'Setting proxy_password will have no effect on agent6 please use agent6_extra_options to set your proxy': }
     }
 

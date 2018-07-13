@@ -49,3 +49,18 @@ logs:
     service: webserver-nginx-access
     source: nginx
 
+  - type: file
+    path: /var/log/adroll/paster.log
+    service: adroll-paster
+    source: python
+  
+  - type: file
+    path: /var/log/adroll/camera.log
+    service: adroll-camera
+    source: python
+  
+  - type: file
+    path: /var/log/adroll/tasks.log
+    service: adroll-tasks
+    source: python
+

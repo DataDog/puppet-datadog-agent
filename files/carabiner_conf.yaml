@@ -6,6 +6,19 @@ instances:
 logs:
   - type: tcp
     port: 10518
-    service: carabiner
+    service: NO_SERVICE
     source: python
     sourcecategory: webapp
+  
+  - type: tcp
+    port: 10519
+    service: NO_SERVICE
+    source: java
+    sourcecategory: webapp
+  
+  - type: tcp
+    port: 10520
+    service: NO_SERVICE
+    source: go
+    sourcecategory: webapp
+

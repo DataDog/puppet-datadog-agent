@@ -1,4 +1,6 @@
-class datadog_agent {
+class datadog_agent (
+  $api_key = ''
+) {
   $agent_version       = 'latest'
   $repo_uri            = "https://yum.datadoghq.com/stable/6/${::architecture}/"
   $dd_user             = 'dd-agent'
@@ -54,6 +56,15 @@ class datadog_agent {
     group   => $dd_group,
     notify  => Service[$service_name]
   }
+  
+  file { '/etc/datadog-agent/conf.d':
+    ensure  => directory,
+    purge   => false,
+    recurse => true,
+    force   => false,
+    owner   => $dd_user,
+    group   => $dd_group,
+  }
 
   file { '/etc/datadog-agent/conf.d/carabiner.d':
     ensure  => directory,
@@ -78,12 +89,15 @@ class datadog_agent {
     group   => 'dd-agent',
     mode    => '0640',
     ensure => present,
-    source => 'puppet:///modules/datadog_agent/datadog.yaml',
     notify  => Service[$service_name],
+    content => template('datadog_agent/datadog.yaml.erb'),
     require => Package['datadog-agent'];
   }
 
   file { '/etc/datadog-agent/conf.d/carabiner.d/conf.yaml':
+    owner   => 'dd-agent',
+    group   => 'dd-agent',
+    mode    => '0640',
     ensure => present,
     source => 'puppet:///modules/datadog_agent/carabiner_conf.yaml',
     notify  => Service[$service_name],
@@ -91,6 +105,9 @@ class datadog_agent {
   }
   
   file { '/etc/datadog-agent/conf.d/system_logs.d/conf.yaml':
+    owner   => 'dd-agent',
+    group   => 'dd-agent',
+    mode    => '0640',
     ensure => present,
     source => 'puppet:///modules/datadog_agent/system_logs_conf.yaml',
     notify  => Service[$service_name],

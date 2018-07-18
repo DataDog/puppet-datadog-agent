@@ -58,7 +58,11 @@ histogram_aggregates:
 - count
 histogram_percentiles:
 - "0.95"
+<% if @host.empty? -%>
 hostname: ""
+<% else -%>
+hostname: "<%= @host %>"
+<% end -%>
 jmx_custom_jars: []
 jmx_use_cgroup_memory_limit: false
 kubelet_auth_token_path: ""

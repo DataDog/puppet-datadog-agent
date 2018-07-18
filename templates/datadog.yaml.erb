@@ -56,11 +56,7 @@ histogram_aggregates:
 - median
 - avg
 - count
-<% if @histogram_percentiles.empty? -%>
-histogram_percentiles: ""
-<% else -%>
 histogram_percentiles: "<%= @histogram_percentiles %>"
-<% end -%>
 <% if @host.empty? -%>
 hostname: ""
 <% else -%>

@@ -1,6 +1,7 @@
 class datadog_agent (
   $api_key = '',
-  $host = ''
+  $host = '',
+  $histogram_percentiles = ''
 ) {
   $agent_version       = 'latest'
   $repo_uri            = "https://yum.datadoghq.com/stable/6/${::architecture}/"

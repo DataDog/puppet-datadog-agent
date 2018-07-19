@@ -1,0 +1,14 @@
+init_config:
+
+instances:
+  [{}]
+
+logs:
+<%- logs.each do | log | -%>
+  - type: file
+  - path: <%= log['log_location'] %>
+  - service: <%= log['log_dest'] %>
+  - source: <%= actual_service %>
+
+<% end %>
+  

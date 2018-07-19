@@ -1,7 +1,9 @@
 class datadog_agent (
   $api_key = '',
   $host = '',
-  $histogram_percentiles = ''
+  $histogram_percentiles = '',
+  $logs = [],
+  $service = 'catch_all'
 ) {
   $agent_version       = 'latest'
   $repo_uri            = "https://yum.datadoghq.com/stable/6/${::architecture}/"
@@ -11,6 +13,14 @@ class datadog_agent (
   $service_name        = 'datadog-agent'
   $service_ensure      = 'running'
   $service_enable      = true
+
+  if $ec2_tag_service {
+    $actual_service = $ec2_tag_service
+  } elsif $ec2_tag_application {
+    $actual_service = $ec2_tag_application
+  } else {
+    $actual_service = $service
+  }
 
   yumrepo {'datadog':
     ensure   => absent,
@@ -85,6 +95,15 @@ class datadog_agent (
     owner   => $dd_user,
     group   => $dd_group,
   }
+  
+  file { '/etc/datadog-agent/conf.d/custom_logs.d':
+    ensure  => directory,
+    purge   => false,
+    recurse => true,
+    force   => false,
+    owner   => $dd_user,
+    group   => $dd_group,
+  }
 
   file { '/etc/datadog-agent/datadog.yaml':
     owner   => 'dd-agent',
@@ -113,6 +132,16 @@ class datadog_agent (
     ensure => present,
     source => 'puppet:///modules/datadog_agent/system_logs_conf.yaml',
     notify  => Service[$service_name],
+    require => Package['datadog-agent'];
+  }
+
+  file { '/etc/datadog-agent/conf.d/custom_logs.d/conf.yaml':
+    owner   => 'dd-agent',
+    group   => 'dd-agent',
+    mode    => '0640',
+    ensure => present,
+    notify  => Service[$service_name],
+    content => template('datadog_agent/custom_logs.yaml.erb'),
     require => Package['datadog-agent'];
   }
 

@@ -4,7 +4,7 @@ instances:
   [{}]
 
 logs:
-<%- logs.each do | log | -%>
+<%- @logs.each do | log | -%>
   - type: file
   - path: <%= log['log_location'] %>
   - service: <%= log['log_dest'] %>

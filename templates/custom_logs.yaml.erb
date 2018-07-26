@@ -7,8 +7,8 @@ logs:
 <%- @logs.each do | log | -%>
   - type: file
     path: <%= log['log_location'] %>
-    service: <%= log['log_dest'] %>
-    source: <%= actual_service %>
+    service: <%= actual_service %>
+    source: <%= log['log_dest'] %>
 <%- if log['pattern'] -%>
     log_processing_rules:
       - type: multi_line

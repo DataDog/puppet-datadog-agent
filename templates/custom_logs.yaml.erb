@@ -6,9 +6,9 @@ instances:
 logs:
 <%- @logs.each do | log | -%>
   - type: file
-    path: <%= log['log_location'] %>
-    service: <%= actual_service %>
-    source: <%= log['log_dest'] %>
+    path: <%= log['path'] %>
+    service: <%= log['service'] %>
+    source: <%= log['source'] %>
 <%- if log['pattern'] -%>
     log_processing_rules:
       - type: multi_line

@@ -125,6 +125,16 @@ class datadog_agent (
     require => Package['datadog-agent'];
   }
   
+  file { '/etc/datadog-agent/conf.d/system_logs.d/conf.yaml':
+    owner   => 'dd-agent',
+    group   => 'dd-agent',
+    mode    => '0640',
+    ensure => present,
+    source => 'puppet:///modules/datadog_agent/system_logs_conf.yaml',
+    notify  => Service[$service_name],
+    require => Package['datadog-agent'];
+  }
+
   file { '/etc/datadog-agent/conf.d/custom_logs.d/conf.yaml':
     owner   => 'dd-agent',
     group   => 'dd-agent',

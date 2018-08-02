@@ -30,7 +30,6 @@
 class datadog_agent::integrations::zk (
   $servers = [{'host' => 'localhost', 'port' => '2181'}]
 ) {
-  include datadog_agent
 
   file { '/etc/datadog-agent/conf.d/zk.d':
     ensure  => directory,

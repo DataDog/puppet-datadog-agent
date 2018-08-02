@@ -37,8 +37,7 @@ class datadog_agent::integrations::zk (
     recurse => true,
     force   => false,
     owner   => 'dd-agent',
-    group   => 'root',
-    notify  => 'datadog-agent'
+    group   => 'root'
   }
 
   file { '/etc/datadog-agent/conf.d/zk.d/zk.yaml':
@@ -47,7 +46,7 @@ class datadog_agent::integrations::zk (
     group   => 'root',
     mode    => '0600',
     content => template('datadog_agent/agent-conf.d/zk.yaml.erb'),
-    require => 'datadog-agent',
-    notify  => 'datadog-agent'
+    require => Package['datadog-agent'],
+    notify  => Service['datadog-agent']
   }
 }

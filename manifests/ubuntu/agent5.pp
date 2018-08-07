@@ -1,15 +1,6 @@
-# Class: datadog_agent::ubuntu
+# Class: datadog_agent::ubuntu::agent5
 #
 # This class contains the DataDog agent installation mechanism for Ubuntu
-#
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
 #
 
 class datadog_agent::ubuntu::agent5(
@@ -19,54 +10,60 @@ class datadog_agent::ubuntu::agent5(
   String $release = $datadog_agent::params::apt_default_release,
   String $repos = 'main',
   Boolean $skip_apt_key_trusting = false,
+  Boolean $manage_repo = true,
   String $service_ensure = 'running',
   Boolean $service_enable = true,
   Optional[String] $service_provider = undef,
 ) inherits datadog_agent::params{
 
-  ensure_packages(['apt-transport-https'])
+  if $manage_repo {
+    ensure_packages(['apt-transport-https'])
 
-  if !$skip_apt_key_trusting {
-    ::datadog_agent::ubuntu::install_key { [$apt_key]:
-      before  => Apt::Source['datadog'],
+    unless $skip_apt_key_trusting {
+      ::datadog_agent::ubuntu::install_key { [$apt_key]:
+        before  => Apt::Source['datadog'],
+      }
     }
-  }
 
-  # This is a hack - I'm not happy about it, but we should rarely
-  # hit this code path. We can't use 'Package' because we later have
-  # to ensure dastadog-agent is present.
+    # This is a hack - I'm not happy about it, but we should rarely
+    # hit this code path. We can't use 'Package' because we later have
+    # to ensure dastadog-agent is present.
 
-  if ($facts['apt_agent6_beta_repo'] or $facts['apt_agent6_repo']) and $agent_version == 'latest' {
-    exec { 'datadog_apt-get_remove_agent6':
-      command     => '/usr/bin/apt-get remove -y -q datadog-agent',
+    if ($facts['apt_agent6_beta_repo'] or $facts['apt_agent6_repo']) and $agent_version == 'latest' {
+      exec { 'datadog_apt-get_remove_agent6':
+        command     => '/usr/bin/apt-get remove -y -q datadog-agent',
+      }
+    } else {
+      exec { 'datadog_apt-get_remove_agent6':
+        command     => ':',  # NOOP builtin
+        noop        => true,
+        refreshonly => true,
+        provider    => 'shell',
+      }
     }
+
+    if $facts['apt_agent6_beta_repo'] {
+      apt::source { 'datadog-beta':
+        ensure => absent,
+      }
+    }
+    if $facts['apt_agent6_repo'] {
+      apt::source { 'datadog6':
+        ensure => absent,
+      }
+    }
+
+    apt::source { 'datadog':
+      comment  => 'Datadog Agent Repository',
+      location => $location,
+      release  => $release,
+      repos    => $repos,
+      require  => Package['apt-transport-https'],
+      notify   => [Exec['datadog_apt-get_remove_agent6'], Exec['apt_update']],
+    }
+    $package_requirements = [Apt::Source['datadog'], Exec['apt_update']]
   } else {
-    exec { 'datadog_apt-get_remove_agent6':
-      command     => ':',  # NOOP builtin
-      noop        => true,
-      refreshonly => true,
-      provider    => 'shell',
-    }
-  }
-
-  if $facts['apt_agent6_beta_repo'] {
-    apt::source { 'datadog-beta':
-      ensure => absent,
-    }
-  }
-  if $facts['apt_agent6_repo'] {
-    apt::source { 'datadog6':
-      ensure => absent,
-    }
-  }
-
-  apt::source { 'datadog':
-    comment  => 'Datadog Agent Repository',
-    location => $location,
-    release  => $release,
-    repos    => $repos,
-    require  => Package['apt-transport-https'],
-    notify   => [Exec['datadog_apt-get_remove_agent6'],Exec['apt_update']],
+    $package_requirements = [Exec['apt_update']]
   }
 
   package { 'datadog-agent-base':
@@ -76,8 +73,7 @@ class datadog_agent::ubuntu::agent5(
 
   package { $datadog_agent::params::package_name:
     ensure  => $agent_version,
-    require => [Apt::Source['datadog'],
-                Exec['apt_update']],
+    require => $package_requirements,
   }
 
   if $service_provider {

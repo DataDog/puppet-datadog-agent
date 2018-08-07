@@ -406,6 +406,7 @@ class datadog_agent(
           location              => $agent5_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
+          manage_repo           => $manage_repo,
         }
       } else {
         class { 'datadog_agent::ubuntu::agent6':
@@ -416,6 +417,7 @@ class datadog_agent(
           location              => $agent6_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
+          manage_repo           => $manage_repo,
         }
       }
     }

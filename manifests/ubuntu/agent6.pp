@@ -10,29 +10,37 @@ class datadog_agent::ubuntu::agent6(
   String $release = $datadog_agent::params::apt_default_release,
   String $repos = '6',
   Boolean $skip_apt_key_trusting = false,
+  Boolean $manage_repo = true,
   String $service_ensure = 'running',
   Boolean $service_enable = true,
   Optional[String] $service_provider = undef,
 ) inherits datadog_agent::params {
 
-  ensure_packages(['apt-transport-https'])
-  if !$skip_apt_key_trusting {
-    ::datadog_agent::ubuntu::install_key { [$apt_key]:
-      before  => Apt::Source['datadog6'],
+  if $manage_repo {
+    ensure_packages(['apt-transport-https'])
+
+    unless $skip_apt_key_trusting {
+      ::datadog_agent::ubuntu::install_key { [$apt_key]:
+        before  => Apt::Source['datadog6'],
+      }
     }
-  }
 
-  apt::source { 'datadog':
-    ensure => absent,
-  }
+    apt::source { 'datadog':
+      ensure => absent,
+    }
 
-  apt::source { 'datadog6':
-    comment  => 'Datadog Agent 6 Repository',
-    location => $location,
-    release  => $release,
-    repos    => $repos,
-    require  => Package['apt-transport-https'],
-    notify   =>  Exec['apt_update'],
+    apt::source { 'datadog6':
+      comment  => 'Datadog Agent 6 Repository',
+      location => $location,
+      release  => $release,
+      repos    => $repos,
+      require  => Package['apt-transport-https'],
+      notify   => Exec['apt_update'],
+    }
+
+    $package_requirements = [Apt::Source['datadog'], Exec['apt_update']]
+  } else {
+    $package_requirements = [Exec['apt_update']]
   }
 
   package { 'datadog-agent-base':
@@ -42,8 +50,7 @@ class datadog_agent::ubuntu::agent6(
 
   package { $datadog_agent::params::package_name:
     ensure  => $agent_version,
-    require => [Apt::Source['datadog6'],
-                Exec['apt_update']],
+    require => $package_requirements,
   }
 
   if $service_provider {

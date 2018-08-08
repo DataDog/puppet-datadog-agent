@@ -35,9 +35,9 @@ class datadog_agent::ubuntu(
   # This is a hack - I'm not happy about it, but we should rarely
   # hit this code path
   #
-  # Also, using $::apt_agent6_beta_repo to access fact instead of
+  # Also, using $::apt_agent6_beta_repo/$::apt_agent6_repo to access fact instead of
   # $facts hash - for compatibility with puppet3.x default behavior
-  if $::apt_agent6_beta_repo and $agent_version == 'latest' {
+  if ($::apt_agent6_beta_repo or $::apt_agent6_repo) and $agent_version == 'latest' {
     exec { 'datadog_apt-get_remove_agent6':
       command     => '/usr/bin/apt-get remove -y -q datadog-agent',
     }
@@ -50,8 +50,11 @@ class datadog_agent::ubuntu(
     }
   }
 
-  if $::apt_agent6_beta_repo {
+  if $::apt_agent6_beta_repo or $::apt_agent6_repo {
     file { '/etc/apt/sources.list.d/datadog-beta.list':
+      ensure => absent,
+    }
+    file { '/etc/apt/sources.list.d/datadog-6.list':
       ensure => absent,
     }
   }

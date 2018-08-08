@@ -8,8 +8,8 @@ class datadog_agent::ubuntu::agent6(
   $agent_version = 'latest',
   $other_keys = ['935F5A436A5A6E8788F0765B226AE980C7A7DA52'],
   $location = 'https://apt.datadoghq.com',
-  $release = 'beta',
-  $repos = 'main',
+  $release = 'stable',
+  $repos = '6',
 ) inherits datadog_agent::params {
 
   ensure_packages(['apt-transport-https'])
@@ -19,7 +19,7 @@ class datadog_agent::ubuntu::agent6(
     $mykeys = concat($other_keys, [$apt_key])
 
     ::datadog_agent::ubuntu::install_key { $mykeys:
-      before  => File['/etc/apt/sources.list.d/datadog-beta.list'],
+      before  => File['/etc/apt/sources.list.d/datadog-6.list'],
     }
 
   }
@@ -28,7 +28,7 @@ class datadog_agent::ubuntu::agent6(
     ensure => absent,
   }
 
-  file { '/etc/apt/sources.list.d/datadog-beta.list':
+  file { '/etc/apt/sources.list.d/datadog-6.list':
     owner   => 'root',
     group   => 'root',
     content => template('datadog_agent/datadog.list.erb'),
@@ -51,7 +51,7 @@ class datadog_agent::ubuntu::agent6(
 
   package { $datadog_agent::params::package_name:
     ensure  => $agent_version,
-    require => [File['/etc/apt/sources.list.d/datadog-beta.list'],
+    require => [File['/etc/apt/sources.list.d/datadog-6.list'],
                 Exec['datadog_apt-get_update']],
   }
 

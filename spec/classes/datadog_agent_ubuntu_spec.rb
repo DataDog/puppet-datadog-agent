@@ -9,6 +9,8 @@ describe 'datadog_agent::ubuntu' do
   end
 
   it do
+    contain_file('/etc/apt/sources.list.d/datadog-6.list')
+      .with_ensure('absent')
     contain_file('/etc/apt/sources.list.d/datadog-beta.list')
       .with_ensure('absent')
     contain_file('/etc/apt/sources.list.d/datadog.list')\
@@ -58,7 +60,7 @@ describe 'datadog_agent::ubuntu::agent6' do
   it do
     contain_file('/etc/apt/sources.list.d/datadog.list')
       .with_ensure('absent')
-    contain_file('/etc/apt/sources.list.d/datadog-beta.list')\
+    contain_file('/etc/apt/sources.list.d/datadog-6.list')\
       .with_content(%r{deb\s+https://apt.datadoghq.com/\s+beta\s+main})
   end
 
@@ -67,7 +69,7 @@ describe 'datadog_agent::ubuntu::agent6' do
   it { should contain_datadog_agent__ubuntu__install_key('A2923DFF56EDA6E76E55E492D3A80E30382E94DE') }
 
   it do
-    should contain_file('/etc/apt/sources.list.d/datadog-beta.list')\
+    should contain_file('/etc/apt/sources.list.d/datadog-6.list')\
       .that_notifies('exec[datadog_apt-get_update]')
   end
   it { should contain_exec('datadog_apt-get_update') }
@@ -75,7 +77,7 @@ describe 'datadog_agent::ubuntu::agent6' do
   # it should install the packages
   it do
     should contain_package('apt-transport-https')\
-      .that_comes_before('file[/etc/apt/sources.list.d/datadog-beta.list]')
+      .that_comes_before('file[/etc/apt/sources.list.d/datadog-6.list]')
   end
   it do
     should contain_package('datadog-agent-base')\
@@ -84,7 +86,7 @@ describe 'datadog_agent::ubuntu::agent6' do
   end
   it do
     should contain_package('datadog-agent')\
-      .that_requires('file[/etc/apt/sources.list.d/datadog-beta.list]')\
+      .that_requires('file[/etc/apt/sources.list.d/datadog-6.list]')\
       .that_requires('exec[datadog_apt-get_update]')
   end
 

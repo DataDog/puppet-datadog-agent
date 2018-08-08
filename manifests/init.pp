@@ -50,10 +50,13 @@ class datadog_agent (
 
   service { $service_name:
     ensure    => $service_ensure,
-    enable    => true,
     hasstatus => false,
     pattern   => 'dd-agent',
     require   => Package[$package_name],
+    start     => 'initctl start datadog-agent || true',
+    stop      => 'initctl stop datadog-agent || true',
+    status    => 'initctl status datadog-agent || true',
+    restart   => 'initctl restart datadog-agent || true';
   }
   
   file { '/etc/datadog-agent':
@@ -161,5 +164,11 @@ class datadog_agent (
   }
   exec { 'uwsgi-report_permissions':
     command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-report.log || true';
+  }
+
+  # Sometimes the Datadog auth_token file becomes owned by root, chown it just in case
+  exec { 'chown_auth_token':
+    command => 'chown dd-agent /etc/datadog-agent/auth_token || true',
+    notify  => Service[$service_name];
   }
 }

@@ -56,7 +56,7 @@ class datadog_agent (
     start     => 'initctl start datadog-agent || true',
     stop      => 'initctl stop datadog-agent || true',
     status    => 'initctl status datadog-agent || true',
-    restart   => 'initctl restart datadog-agent || true',
+    restart   => 'initctl restart datadog-agent || true';
   }
   
   file { '/etc/datadog-agent':
@@ -66,7 +66,7 @@ class datadog_agent (
     force   => false,
     owner   => $dd_user,
     group   => $dd_group,
-    notify  => Service[$service_name]
+    notify  => Service[$service_name];
   }
   
   file { '/etc/datadog-agent/conf.d':
@@ -76,6 +76,7 @@ class datadog_agent (
     force   => false,
     owner   => $dd_user,
     group   => $dd_group,
+    notify  => Service[$service_name];
   }
 
   file { '/etc/datadog-agent/conf.d/carabiner.d':
@@ -85,6 +86,7 @@ class datadog_agent (
     force   => false,
     owner   => $dd_user,
     group   => $dd_group,
+    notify  => Service[$service_name];
   }
   
   file { '/etc/datadog-agent/conf.d/system_logs.d':
@@ -94,6 +96,7 @@ class datadog_agent (
     force   => false,
     owner   => $dd_user,
     group   => $dd_group,
+    notify  => Service[$service_name];
   }
   
   file { '/etc/datadog-agent/conf.d/custom_logs.d':
@@ -103,6 +106,7 @@ class datadog_agent (
     force   => false,
     owner   => $dd_user,
     group   => $dd_group,
+    notify  => Service[$service_name];
   }
 
   file { '/etc/datadog-agent/datadog.yaml':
@@ -160,5 +164,11 @@ class datadog_agent (
   }
   exec { 'uwsgi-report_permissions':
     command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-report.log || true';
+  }
+
+  # Sometimes the Datadog auth_token file becomes owned by root, chown it just in case
+  exec { 'chown_auth_token':
+    command => 'chown dd-agent /etc/datadog-agent/auth_token || true',
+    notify  => Service[$service_name];
   }
 }

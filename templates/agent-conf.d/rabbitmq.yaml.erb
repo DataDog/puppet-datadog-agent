@@ -41,3 +41,17 @@ instances:
          - <%= x %>
 <% end -%>
 <% end -%>
+
+<% unless @exchanges.empty?  -%>
+       exchanges:
+<% @exchanges.each do |x| -%>
+         - <%= x %>
+<% end -%>
+<% end -%>
+
+<% unless @exchanges_regexes.empty?  -%>
+       exchanges_regexes:
+<% @exchanges_regexes.each do |x| -%>
+         - <%= x %>
+<% end -%>
+<% end -%>

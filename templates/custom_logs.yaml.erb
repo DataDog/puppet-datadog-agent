@@ -9,11 +9,11 @@ logs:
     path: <%= log['path'] %>
     service: <%= log['service'] %>
     source: <%= log['source'] %>
-<%- if log['pattern'] -%>
+<%- if log.key?('pattern') %>
     log_processing_rules:
       - type: multi_line
         name: new_log_start
         pattern: <%= log['pattern'] %>
-<% end %>
-<% end %>
+<% end -%>
+<% end -%>
   

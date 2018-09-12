@@ -45,6 +45,14 @@ instances:
         metric: <%= query['metric'] %>
         type: <%= query['type'] %>
         field: <%= query['field'] %>
+        <% if instance['tags'] and ! instance['tags'].empty? %>
+          tags:
+            <% Array(query['tags']).each do |tag| -%>
+              <%- if tag != '' -%>
+              - <%= tag %>
+              <%- end -%>
+            <%- end %>
+          <%- end -%>
       <%- end -%>
     <%- end -%>
 

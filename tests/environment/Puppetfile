@@ -1,0 +1,6 @@
+mod 'datadog-datadog_agent'
+mod 'puppetlabs-apt'
+mod 'puppetlabs-concat'
+mod 'puppetlabs-puppetserver_gem'
+mod 'puppetlabs-ruby'
+mod 'puppetlabs-stdlib'

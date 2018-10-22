@@ -25,7 +25,7 @@ mod 'datadog-datadog_agent',
     :branch => '<my_branch>'
 ```
 
-- We can also build the module locally using the `puppet build` command, upload the archive to the VM and install it with `puppet module install datadog-datadog_agent-x.y.z.tar.gz --target-dir /home/vagrant/puppet/modules`
+- We can also build the module locally using the `puppet build` command, upload the archive to the VM and install it with `sudo /opt/puppetlabs/bin/puppet module install datadog-datadog_agent-x.y.z.tar.gz --target-dir /home/vagrant/puppet/modules`
 
 
 ## Manifest
@@ -35,4 +35,4 @@ We can edit the manifest and run `vagrant up --provision` to upload the new vers
 
 # Test
 
-In the VM, run `sudo /opt/puppetlabs/bin/puppet apply --modulepath=./modules ./manifests/site.pp` in `/home/vagrant` to apply to manifest on the VM.
+In the VM, run `sudo /opt/puppetlabs/bin/puppet apply --modulepath=./modules ./manifests/site.pp` in `/home/vagrant/puppet` to apply to manifest on the VM.

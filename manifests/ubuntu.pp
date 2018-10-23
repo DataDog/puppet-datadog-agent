@@ -90,7 +90,7 @@ class datadog_agent::ubuntu(
     ensure    => $::datadog_agent::service_ensure,
     enable    => $::datadog_agent::service_enable,
     hasstatus => false,
-    pattern   => 'dd-agent',
+    pattern   => "^(dd|datadog)-agent",
     require   => Package[$datadog_agent::params::package_name],
   }
 }

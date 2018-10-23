@@ -207,7 +207,7 @@
 #
 #
 class datadog_agent(
-  $dd_url = 'https://app.datadoghq.com',
+  $dd_url = '',
   $site = $datadog_agent::params::default_site,
   $host = '',
   $api_key = 'your_API_key',
@@ -508,6 +508,11 @@ class datadog_agent(
       require => File['/etc/dd-agent'],
     }
 
+    if ($dd_url == '') {
+      $_dd_url = 'app.datadoghq.com'
+    } else {
+      $_dd_url = $dd_url
+    }
     concat::fragment{ 'datadog header':
       target  => '/etc/dd-agent/datadog.conf',
       content => template('datadog_agent/datadog_header.conf.erb'),

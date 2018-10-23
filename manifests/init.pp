@@ -6,7 +6,7 @@
 #   $dd_url:
 #       The host of the Datadog intake server to send agent data to.
 #       Defaults to https://app.datadoghq.com.
-#   $site:
+#   $datadog_site:
 #       The site of the Datadog intake to send Agent data to. Defaults to 'datadoghq.com',
 #       set to 'datadoghq.eu' to send data to the EU site.
 #       This option is only available with agent version >= 6.6.0.
@@ -208,7 +208,7 @@
 #
 class datadog_agent(
   $dd_url = '',
-  $site = $datadog_agent::params::default_site,
+  $datadog_site = $datadog_agent::params::datadog_site,
   $host = '',
   $api_key = 'your_API_key',
   $collect_ec2_tags = false,
@@ -313,7 +313,7 @@ class datadog_agent(
   # lint:endignore
 
   validate_legacy(String, 'validate_string', $dd_url)
-  validate_legacy(String, 'validate_string', $site)
+  validate_legacy(String, 'validate_string', $datadog_site)
   validate_legacy(String, 'validate_string', $host)
   validate_legacy(String, 'validate_string', $api_key)
   validate_legacy(Array, 'validate_array', $tags)
@@ -509,7 +509,7 @@ class datadog_agent(
     }
 
     if ($dd_url == '') {
-      $_dd_url = 'app.datadoghq.com'
+      $_dd_url = 'https://app.datadoghq.com'
     } else {
       $_dd_url = $dd_url
     }
@@ -634,7 +634,7 @@ class datadog_agent(
     $_agent_config = {
       'api_key' => $api_key,
       'dd_url' => $dd_url,
-      'site' => $site,
+      'site' => $datadog_site,
       'cmd_port' => $cmd_port,
       'collect_ec2_tags' => $collect_ec2_tags,
       'conf_path' => $datadog_agent::params::conf6_dir,

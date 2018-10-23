@@ -663,7 +663,7 @@ class datadog_agent(
   if $puppet_run_reports {
     class { 'datadog_agent::reports':
       api_key                   => $api_key,
-      datadog_site                      => $datadog_site,
+      datadog_site              => $datadog_site,
       dogapi_version            => $datadog_agent::params::dogapi_version,
       puppetmaster_user         => $puppetmaster_user,
       hostname_extraction_regex => $hostname_extraction_regex,

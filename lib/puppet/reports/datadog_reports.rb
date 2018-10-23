@@ -13,6 +13,7 @@ Puppet::Reports.register_report(:datadog_reports) do
   raise(Puppet::ParseError, "Datadog report config file #{configfile} not readable") unless File.readable?(configfile)
   config = YAML.load_file(configfile)
   API_KEY = config[:datadog_api_key]
+  API_URL = config[:api_url]
 
   # if need be initialize the regex
   if !config[:hostname_extraction_regex].nil?
@@ -110,7 +111,7 @@ Puppet::Reports.register_report(:datadog_reports) do
     end
 
     Puppet.debug "Sending metrics for #{@msg_host} to Datadog"
-    @dog = Dogapi::Client.new(API_KEY)
+    @dog = Dogapi::Client.new(API_KEY, nil, nil, nil, nil, nil, API_URL)
     @dog.batch_metrics do
       self.metrics.each { |metric,data|
         data.values.each { |val|

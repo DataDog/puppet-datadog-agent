@@ -352,11 +352,6 @@ class datadog_agent(
     $local_integrations = $integrations
   }
 
-  datadog_agent::tag{$local_tags: }
-  datadog_agent::tag{$facts_to_tags:
-    lookup_fact => true,
-  }
-
   include datadog_agent::params
   case upcase($log_level) {
     'CRITICAL': { $_loglevel = 'CRITICAL' }
@@ -408,6 +403,11 @@ class datadog_agent(
   }
 
   if !$agent6_enable {
+    datadog_agent::tag{$local_tags: }
+    datadog_agent::tag{$facts_to_tags:
+      lookup_fact => true,
+    }
+
     file { '/etc/dd-agent':
       ensure  => directory,
       owner   => $dd_user,
@@ -491,6 +491,10 @@ class datadog_agent(
       'dogstatsd_non_local_traffic' => $non_local_traffic,
       'log_file' => $agent6_log_file,
       'log_level' => $log_level,
+    }
+
+    if $local_tags {
+      $agent_config['tags'] = $local_tags
     }
 
     file { '/etc/datadog-agent/datadog.yaml':

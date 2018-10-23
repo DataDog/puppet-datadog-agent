@@ -4,6 +4,7 @@ define datadog_agent::tag(
   $lookup_fact = false,
 ){
 
+  $local_config_dir = '/etc/dd-agent/datadog.conf'
   if $lookup_fact{
     $value = getvar($tag_name)
 
@@ -13,7 +14,7 @@ define datadog_agent::tag(
     } else {
       if $value {
         concat::fragment{ "datadog tag ${tag_name}:${value}":
-          target  => '/etc/dd-agent/datadog.conf',
+          target  => "${local_config_dir}",
           content => "${tag_name}:${value}, ",
           order   => '03',
         }
@@ -21,7 +22,7 @@ define datadog_agent::tag(
     }
   } else {
     concat::fragment{ "datadog tag ${tag_name}":
-      target  => '/etc/dd-agent/datadog.conf',
+      target  => "${local_config_dir}",
       content => "${tag_name}, ",
       order   => '03',
     }

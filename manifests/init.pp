@@ -208,7 +208,7 @@
 #
 class datadog_agent(
   $dd_url = 'https://app.datadoghq.com',
-  $site = 'datadoghq.com',
+  $site = $datadog_agent::params::default_site,
   $host = '',
   $api_key = 'your_API_key',
   $collect_ec2_tags = false,

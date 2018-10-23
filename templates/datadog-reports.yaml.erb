@@ -3,6 +3,9 @@
 #
 ---
 :datadog_api_key: '<%= @api_key %>'
+<% if @site != '' -%>
+:api_url: api.'<%= @datadog_site %>'
+<% end -%>
 <% if !@hostname_extraction_regex.nil? -%>
 :hostname_extraction_regex: '<%= @hostname_extraction_regex %>'
 <% end -%>

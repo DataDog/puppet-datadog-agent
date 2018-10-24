@@ -95,4 +95,42 @@ describe 'datadog_agent::reports' do
       end
     end
   end
+
+  context 'EU site in report' do
+    let(:params) do
+      {
+        api_key: 'notanapikey',
+        hostname_extraction_regex: nil,
+        puppetmaster_user: 'puppet',
+        dogapi_version: 'installed',
+        datadog_site: 'datadoghq.eu',
+      }
+    end
+    describe "datadog_agent class dogapi version override" do
+      let(:facts) do
+        {
+          operatingsystem: 'Debian',
+          osfamily: 'debian'
+        }
+      end
+
+      it { should contain_class('ruby').with_rubygems_update(false) }
+      it { should contain_class('ruby::params') }
+      it { should contain_package('ruby').with_ensure('installed') }
+      it { should contain_package('rubygems').with_ensure('installed') }
+
+      it do
+        should contain_package('ruby-dev')\
+          .with_ensure('installed')\
+          .that_comes_before('Package[dogapi]')
+      end
+
+      it do
+        should contain_file('/etc/datadog-agent/datadog-reports.yaml')\
+          .with_owner('puppet')\
+          .with_group('root')\
+          .with_content(/:api_url: api.datadoghq.eu/)
+      end
+    end
+  end
 end

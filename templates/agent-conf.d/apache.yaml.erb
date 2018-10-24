@@ -5,6 +5,9 @@ instances:
 <% if @disable_ssl_validation -%>
         disable_ssl_validation: <%= @disable_ssl_validation %>
 <% end -%>
+<% if @ignore_ssl_warning -%>
+        ignore_ssl_warning: <%= @ignore_ssl_warning %>
+<% end -%>
 <% if @username -%>
         apache_user: <%= @username %>
 <% end -%>
@@ -19,4 +22,3 @@ instances:
     <%- end -%>
   <%- end -%>
 <% end -%>
-

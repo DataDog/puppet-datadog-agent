@@ -552,7 +552,7 @@ class datadog_agent(
     # lint:endignore
     $base_extra_config = {
         'apm_config' => {
-          'apm_enabled'           => $apm_enabled,
+          'enabled'               => $apm_enabled,
           'env'                   => $apm_env,
           'apm_non_local_traffic' => $apm_non_local_traffic
         },

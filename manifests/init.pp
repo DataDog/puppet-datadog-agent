@@ -284,6 +284,9 @@ class datadog_agent(
   Hash[String[1], Data] $agent6_extra_options = {},
   $agent5_repo_uri = $datadog_agent::params::agent5_default_repo,
   $agent6_repo_uri = $datadog_agent::params::agent6_default_repo,
+  $use_apt_backup_keyserver = $datadog_agent::params::use_apt_backup_keyserver,
+  $apt_backup_keyserver = 'hkp://pool.sks-keyservers.net:80',
+  $apt_keyserver = 'hkp://keyserver.ubuntu.com:80',
   $apt_release = $datadog_agent::params::apt_default_release,
   Optional[String] $service_provider = undef,
   Optional[String] $agent_version = $datadog_agent::params::agent_version,
@@ -395,6 +398,12 @@ class datadog_agent(
     default:    { $_loglevel = 'INFO' }
   }
 
+  if $use_apt_backup_keyserver {
+    $_apt_keyserver = $apt_backup_keyserver
+  } else {
+    $_apt_keyserver = $apt_keyserver
+  }
+
   case $::operatingsystem {
     'Ubuntu','Debian' : {
       if $agent5_enable {
@@ -406,6 +415,7 @@ class datadog_agent(
           location              => $agent5_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
+          apt_keyserver         => $_apt_keyserver,
         }
       } else {
         class { 'datadog_agent::ubuntu::agent6':
@@ -416,6 +426,7 @@ class datadog_agent(
           location              => $agent6_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
+          apt_keyserver         => $_apt_keyserver,
         }
       }
     }

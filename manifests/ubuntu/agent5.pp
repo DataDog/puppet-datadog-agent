@@ -22,13 +22,15 @@ class datadog_agent::ubuntu::agent5(
   String $service_ensure = 'running',
   Boolean $service_enable = true,
   Optional[String] $service_provider = undef,
+  Optional[String] $apt_keyserver = undef,
 ) inherits datadog_agent::params{
 
   ensure_packages(['apt-transport-https'])
 
   if !$skip_apt_key_trusting {
     ::datadog_agent::ubuntu::install_key { [$apt_key]:
-      before  => Apt::Source['datadog'],
+      server => $apt_keyserver,
+      before => Apt::Source['datadog'],
     }
   }
 

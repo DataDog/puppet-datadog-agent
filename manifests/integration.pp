@@ -20,7 +20,7 @@ define datadog_agent::integration (
     ensure  => file,
     owner   => $datadog_agent::dd_user,
     group   => $datadog_agent::dd_group,
-    mode    => '0600',
+    mode    => '0644',
     content => to_instances_yaml($init_config, $instances),
     notify  => Service[$datadog_agent::service_name]
   }

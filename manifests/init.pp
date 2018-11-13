@@ -372,7 +372,7 @@ class datadog_agent(
   validate_legacy(String, 'validate_string', $apt_release)
 
   if $hiera_tags {
-    $local_tags = lookup({ 'name' => 'datadog_agent::tags', 'default_value' => []})
+    $local_tags = lookup({ 'name' => 'datadog_agent::tags', 'merge' => 'unique', 'default_value' => []})
   } else {
     $local_tags = $tags
   }

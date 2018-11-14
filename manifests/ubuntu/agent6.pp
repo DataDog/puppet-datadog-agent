@@ -36,7 +36,6 @@ class datadog_agent::ubuntu::agent6(
     repos    => $repos,
     key      => $key,
     require  => Package['apt-transport-https'],
-    notify   =>  Exec['apt_update'],
   }
 
   package { 'datadog-agent-base':

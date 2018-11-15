@@ -100,12 +100,12 @@ that needs to be done.
 
   On your `puppetserver`, enable reporting:
 
-        ```
+```
         class { 'datadog_agent':
           api_key            => "yourkey",
           puppet_run_reports => true,
         }
-        ```
+```
 
   __To support reporting, your Puppet master needs to have the [dogapi](https://github.com/DataDog/dogapi-rb) gem installed, to do that either run the puppet agent on your master with this configuration or install it manually with `gem`.__
   __Please note, you may have to restart your `puppetserver` service for the freshly installed `dogapi-rb` gem to be picked up.__
@@ -118,6 +118,22 @@ that needs to be done.
 3. Include any other integrations you want the agent to use, e.g.
 
         include 'datadog_agent::integrations::mongo'
+
+Some integrations do not come as a dedicated class. To install one of them, add its configuration in the manifest like this (example for the `ntp` check):
+
+```
+        class { 'datadog_agent':
+            api_key      => "yourkey",
+            integrations => {
+                "ntp" => {
+                    init_config => {},
+                    instances => [{
+                        offset_threshold => 30,
+                    }],
+                },
+            },
+        }
+```
 
 Reporting
 ---------

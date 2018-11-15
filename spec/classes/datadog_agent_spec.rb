@@ -833,7 +833,20 @@ describe 'datadog_agent' do
         end
 
         if DEBIAN_OS.include?(operatingsystem)
-          it { should contain_class('datadog_agent::ubuntu::agent5') }
+          it do
+            should contain_class('datadog_agent::ubuntu::agent5')\
+                .with_apt_keyserver('hkp://keyserver.ubuntu.com:80')
+          end
+          context 'use backup keyserver' do
+            let(:params) {{
+                :use_apt_backup_keyserver => true,
+                :agent5_enable => true,
+            }}
+            it do
+                should contain_class('datadog_agent::ubuntu::agent5')\
+                    .with_apt_keyserver('hkp://pool.sks-keyservers.net:80')
+            end
+          end
         elsif REDHAT_OS.include?(operatingsystem)
           it { should contain_class('datadog_agent::redhat::agent5') }
         end

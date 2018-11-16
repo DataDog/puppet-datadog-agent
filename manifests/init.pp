@@ -3,9 +3,13 @@
 # This class contains the agent installation mechanism for the Datadog module
 #
 # Parameters:
+#   $site:
+#       The site of the Datadog intake to send Agent data to.
+#       Defaults to 'datadoghq.com', set to 'datadoghq.eu' to send data to the EU site.
 #   $dd_url:
-#       The host of the Datadog intake server to send agent data to.
-#       Defaults to https://app.datadoghq.com.
+#       The host of the Datadog intake server to send Agent data to, only set this option
+#       if you need the Agent to send data to a custom URL.
+#       Overrides the site setting defined in "site".
 #   $host:
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value.
@@ -200,7 +204,8 @@
 #
 #
 class datadog_agent(
-  $dd_url = 'https://app.datadoghq.com',
+  $site = '',
+  $dd_url = '',
   $host = '',
   $api_key = 'your_API_key',
   $collect_ec2_tags = false,
@@ -303,6 +308,7 @@ class datadog_agent(
   $_syslog_port = "${syslog_port}"
   # lint:endignore
 
+  validate_legacy(String, 'validate_string', $site)
   validate_legacy(String, 'validate_string', $dd_url)
   validate_legacy(String, 'validate_string', $host)
   validate_legacy(String, 'validate_string', $api_key)
@@ -578,6 +584,22 @@ class datadog_agent(
         },
     }
 
+    if $site != '' {
+        $site_config = {
+          'site' => $site,
+        }
+    } else {
+        $site_config = {}
+    }
+
+    if $dd_url != '' {
+        $dd_url_config = {
+          'dd_url' => $dd_url,
+        }
+    } else {
+        $dd_url_config = {}
+    }
+
     if $host != '' {
         $host_config = {
           'hostname' => $host,
@@ -600,7 +622,7 @@ class datadog_agent(
     } else {
         $statsd_forward_config = {}
     }
-    $extra_config = deep_merge($base_extra_config, $agent6_extra_options, $statsd_forward_config, $host_config)
+    $extra_config = deep_merge($base_extra_config, $agent6_extra_options, $statsd_forward_config, $site_config, $dd_url_config, $host_config)
 
     file { $conf6_dir:
       ensure  => directory,
@@ -617,7 +639,6 @@ class datadog_agent(
 
     $_agent_config = {
       'api_key' => $api_key,
-      'dd_url' => $dd_url,
       'cmd_port' => 5001,
       'collect_ec2_tags' => $collect_ec2_tags,
       'conf_path' => $datadog_agent::params::conf6_dir,

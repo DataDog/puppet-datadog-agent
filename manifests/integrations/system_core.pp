@@ -9,8 +9,13 @@
 class datadog_agent::integrations::system_core inherits datadog_agent::params {
   include datadog_agent
 
-  file {
-    "${datadog_agent::params::conf_dir}/system_core.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/system_core.d/conf.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/system_core.yaml"
+  }
+
+  file { $dst:
       ensure  => file,
       owner   => $datadog_agent::params::dd_user,
       group   => $datadog_agent::params::dd_group,

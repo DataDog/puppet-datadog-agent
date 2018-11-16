@@ -37,7 +37,7 @@ class datadog_agent::integrations::haproxy(
   }
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/haproxy.yaml"
+    $dst = "${datadog_agent::conf6_dir}/haproxy.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/haproxy.yaml"
   }

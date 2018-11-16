@@ -56,7 +56,7 @@ class datadog_agent::integrations::redis(
   validate_legacy('Array', 'validate_array', $_ports)
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/redisdb.yaml"
+    $dst = "${datadog_agent::conf6_dir}/redisdb.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/redisdb.yaml"
   }

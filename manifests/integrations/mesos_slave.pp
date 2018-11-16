@@ -18,7 +18,7 @@ class datadog_agent::integrations::mesos_slave(
 ) inherits datadog_agent::params {
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/mesos_slave.yaml"
+    $dst = "${datadog_agent::conf6_dir}/mesos_slave.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/mesos_slave.yaml"
   }

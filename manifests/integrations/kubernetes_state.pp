@@ -4,7 +4,7 @@
 #
 # Parameters:
 #   $url:
-#     The URL for kubernetes metrics 
+#     The URL for kubernetes metrics
 #
 #   $tags:
 #     optional array of tags
@@ -25,7 +25,7 @@ class datadog_agent::integrations::kubernetes_state(
   include datadog_agent
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/kubernetes_state.yaml"
+    $dst = "${datadog_agent::conf6_dir}/kubernetes_state.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/kubernetes_state.yaml"
   }

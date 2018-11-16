@@ -28,7 +28,7 @@ class datadog_agent::integrations::riak(
   validate_legacy('Array', 'validate_array', $tags)
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/riak.yaml"
+    $dst = "${datadog_agent::conf6_dir}/riak.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/riak.yaml"
   }

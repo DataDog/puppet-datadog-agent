@@ -74,7 +74,7 @@ class datadog_agent::integrations::postgres(
   validate_legacy('Boolean', 'validate_bool', $use_psycopg2)
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/postgres.yaml"
+    $dst = "${datadog_agent::conf6_dir}/postgres.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/postgres.yaml"
   }

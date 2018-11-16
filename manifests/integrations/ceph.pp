@@ -27,7 +27,7 @@ class datadog_agent::integrations::ceph(
   }
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/ceph.yaml"
+    $dst = "${datadog_agent::conf6_dir}/ceph.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/ceph.yaml"
   }

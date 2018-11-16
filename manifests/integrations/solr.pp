@@ -39,7 +39,7 @@ class datadog_agent::integrations::solr(
   include datadog_agent
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/solr.yaml"
+    $dst = "${datadog_agent::conf6_dir}/solr.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/solr.yaml"
   }

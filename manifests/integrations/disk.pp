@@ -49,7 +49,7 @@ class datadog_agent::integrations::disk (
   }
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/disk.yaml"
+    $dst = "${datadog_agent::conf6_dir}/disk.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/disk.yaml"
   }

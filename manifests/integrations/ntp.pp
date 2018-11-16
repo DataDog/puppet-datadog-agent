@@ -33,7 +33,7 @@ class datadog_agent::integrations::ntp(
   include datadog_agent
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/ntp.yaml"
+    $dst = "${datadog_agent::conf6_dir}/ntp.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/ntp.yaml"
   }

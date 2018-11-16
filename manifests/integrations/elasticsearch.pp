@@ -75,7 +75,7 @@ class datadog_agent::integrations::elasticsearch(
   }
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/elastic.yaml"
+    $dst = "${datadog_agent::conf6_dir}/elastic.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/elastic.yaml"
   }

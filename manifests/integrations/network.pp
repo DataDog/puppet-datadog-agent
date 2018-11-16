@@ -32,7 +32,7 @@ class datadog_agent::integrations::network(
   validate_legacy('Array', 'validate_array', $excluded_interfaces)
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/network.yaml"
+    $dst = "${datadog_agent::conf6_dir}/network.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/network.yaml"
   }

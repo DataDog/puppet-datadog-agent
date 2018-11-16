@@ -14,8 +14,8 @@
 #   $tag_families
 #       Tag queues "families" based on regex match
 #   $ssl_verify
-#       Skip verification of the RabbitMQ management web endpoint 
-#       SSL certificate 
+#       Skip verification of the RabbitMQ management web endpoint
+#       SSL certificate
 #   $nodes
 #   $nodes_regexes
 #       Specify the nodes to collect metrics on (up to 100 nodes).
@@ -71,7 +71,7 @@ class datadog_agent::integrations::rabbitmq (
   include datadog_agent
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/rabbitmq.yaml"
+    $dst = "${datadog_agent::conf6_dir}/rabbitmq.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/rabbitmq.yaml"
   }

@@ -40,7 +40,7 @@ class datadog_agent::integrations::tomcat(
 
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/tomcat.yaml"
+    $dst = "${datadog_agent::conf6_dir}/tomcat.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/tomcat.yaml"
   }

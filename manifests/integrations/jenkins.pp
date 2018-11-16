@@ -19,7 +19,7 @@ class datadog_agent::integrations::jenkins(
   include datadog_agent
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/jenkins.yaml"
+    $dst = "${datadog_agent::conf6_dir}/jenkins.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/jenkins.yaml"
   }

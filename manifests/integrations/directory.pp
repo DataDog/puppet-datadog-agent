@@ -94,7 +94,7 @@ class datadog_agent::integrations::directory (
   }
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/directory.yaml"
+    $dst = "${datadog_agent::conf6_dir}/directory.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/directory.yaml"
   }

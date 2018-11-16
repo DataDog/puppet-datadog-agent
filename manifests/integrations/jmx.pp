@@ -68,7 +68,7 @@ class datadog_agent::integrations::jmx(
   include datadog_agent
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/jmx.yaml"
+    $dst = "${datadog_agent::conf6_dir}/jmx.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/jmx.yaml"
   }

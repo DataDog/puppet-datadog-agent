@@ -5,9 +5,9 @@
 # Parameters:
 #   servername
 #   socket
-#       Optional. The socket on which supervisor listen for HTTP/XML-RPC requests. 
+#       Optional. The socket on which supervisor listen for HTTP/XML-RPC requests.
 #   hostname
-#       Optional. The host where supervisord server is running. 
+#       Optional. The host where supervisord server is running.
 #   port
 #       Optional. The port number.
 #   username
@@ -16,7 +16,7 @@
 #       specify a username and password that will be used in the check.
 #   proc_names
 #       Optional. The process to monitor within this supervisord instance.
-#       If not specified, the check will monitor all processes. 
+#       If not specified, the check will monitor all processes.
 #   server_check
 #       Optional. Service check for connections to supervisord server.
 #
@@ -47,7 +47,7 @@ class datadog_agent::integrations::supervisord (
   include datadog_agent
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/supervisord.yaml"
+    $dst = "${datadog_agent::conf6_dir}/supervisord.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/supervisord.yaml"
   }

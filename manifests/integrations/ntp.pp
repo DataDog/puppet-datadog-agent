@@ -9,6 +9,9 @@
 #   $host:
 #        ntp server to use for ntp check
 #
+#   $hosts:
+#        array of ntp servers to use for ntp check. In agent v6 configuration
+#
 #   $port
 #
 #   $version
@@ -26,6 +29,7 @@
 class datadog_agent::integrations::ntp(
   $offset_threshold = 60,
   $host             = undef,
+  $hosts            = undef,
   $port             = undef,
   $version          = undef,
   $timeout          = undef,

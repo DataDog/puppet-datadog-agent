@@ -9,6 +9,12 @@ instances:
 <% if @host -%>
     host: <%= @host %>
 <% end -%>
+<% if @hosts -%>
+    hosts:
+    <%- @hosts.each do |host| -%>
+      - <%= host %>
+    <%- end -%>
+<% end -%>
 <% if @port -%>
     port: <%= @port %>
 <% end -%>

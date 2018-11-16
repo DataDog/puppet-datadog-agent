@@ -180,6 +180,9 @@
 #   $container_collect_all
 #       Boolean to enable logs collection for all containers
 #       Boolean. Default: false
+#   $cmd_port
+#       The port on which the IPC api listens
+#       Integer. Default: 5001
 #
 # Actions:
 #
@@ -264,6 +267,7 @@ class datadog_agent(
   $sd_template_dir = '',
   $sd_jmx_enable = false,
   $consul_token = '',
+  $cmd_port = 5001,
   $agent5_enable = $datadog_agent::params::agent5_enable,
   $conf_dir = $datadog_agent::params::conf_dir,
   $conf6_dir = $datadog_agent::params::conf6_dir,
@@ -373,6 +377,7 @@ class datadog_agent(
   validate_legacy(String, 'validate_string', $agent5_repo_uri)
   validate_legacy(String, 'validate_string', $agent6_repo_uri)
   validate_legacy(String, 'validate_string', $apt_release)
+  validate_legacy(Integer, 'validate_integer', $cmd_port)
 
   if $hiera_tags {
     $local_tags = lookup({ 'name' => 'datadog_agent::tags', 'merge' => 'unique', 'default_value' => []})
@@ -618,7 +623,7 @@ class datadog_agent(
     $_agent_config = {
       'api_key' => $api_key,
       'dd_url' => $dd_url,
-      'cmd_port' => 5001,
+      'cmd_port' => $cmd_port,
       'collect_ec2_tags' => $collect_ec2_tags,
       'conf_path' => $datadog_agent::params::conf6_dir,
       'enable_metadata_collection' => $collect_instance_metadata,

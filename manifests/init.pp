@@ -16,6 +16,9 @@
 #   $collect_ec2_tags
 #       Collect AWS EC2 custom tags as agent tags.
 #       Boolean. Default: false
+#   $collect_gce_tags
+#       Collect Google Cloud Engine metadata as agent tags.
+#       Boolean. Default: false
 #   $collect_instance_metadata
 #       The Agent will try to collect instance metadata for EC2 and GCE instances.
 #       Boolean. Default: true
@@ -212,6 +215,7 @@ class datadog_agent(
   $host = '',
   $api_key = 'your_API_key',
   $collect_ec2_tags = false,
+  $collect_gce_tags = false,
   $collect_instance_metadata = true,
   $tags = [],
   $integrations = {},
@@ -341,6 +345,7 @@ class datadog_agent(
   validate_legacy(Boolean, 'validate_bool', $skip_apt_key_trusting)
   validate_legacy(Boolean, 'validate_bool', $use_curl_http_client)
   validate_legacy(Boolean, 'validate_bool', $collect_ec2_tags)
+  validate_legacy(Boolean, 'validate_bool', $collect_gce_tags)
   validate_legacy(Boolean, 'validate_bool', $collect_instance_metadata)
   validate_legacy(String, 'validate_string', $recent_point_threshold)
   validate_legacy(String, 'validate_re', $_listen_port, '^\d*$')
@@ -637,6 +642,7 @@ class datadog_agent(
       'site' => $datadog_site,
       'cmd_port' => $cmd_port,
       'collect_ec2_tags' => $collect_ec2_tags,
+      'collect_gce_tags' => $collect_gce_tags,
       'conf_path' => $datadog_agent::params::conf6_dir,
       'enable_metadata_collection' => $collect_instance_metadata,
       'dogstatsd_port' => $dogstatsd_port,

@@ -48,6 +48,12 @@
 #       Instead of reporting the puppet nodename, use this regex to extract the named
 #       'hostname' captured group to report the run in Datadog.
 #       ex.: '^(?<hostname>.*\.datadoghq\.com)(\.i-\w{8}\..*)?$'
+#   $hostname_fqdn
+#       Make the agent use "hostname -f" on unix-based systems as a last resort
+#       way of determining the hostname instead of Golang "os.Hostname()"
+#       This will be enabled by default in version 6.6
+#       More information at  https://dtdg.co/flag-hostname-fqdn
+#       Optional: Valid values here are: true or false.
 #   $log_to_syslog
 #       Set value of 'log_to_syslog' variable. Default is true -> yes as in dd-agent.
 #       Valid values here are: true or false.
@@ -232,6 +238,7 @@ class datadog_agent(
   $service_enable = true,
   $manage_repo = true,
   $hostname_extraction_regex = nil,
+  $hostname_fqdn = false,
   $dogstatsd_port = 8125,
   $dogstatsd_socket = '',
   $statsd_forward_host = '',
@@ -319,6 +326,7 @@ class datadog_agent(
   validate_legacy(String, 'validate_string', $dd_url)
   validate_legacy(String, 'validate_string', $datadog_site)
   validate_legacy(String, 'validate_string', $host)
+  validate_legacy(Boolean, 'validate_bool', $hostname_fqdn)
   validate_legacy(String, 'validate_string', $api_key)
   validate_legacy(Array, 'validate_array', $tags)
   validate_legacy(Boolean, 'validate_bool', $hiera_tags)
@@ -641,6 +649,7 @@ class datadog_agent(
       'dd_url' => $dd_url,
       'site' => $datadog_site,
       'cmd_port' => $cmd_port,
+      'hostname_fqdn' => $hostname_fqdn,
       'collect_ec2_tags' => $collect_ec2_tags,
       'collect_gce_tags' => $collect_gce_tags,
       'conf_path' => $datadog_agent::params::conf6_dir,

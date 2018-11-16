@@ -23,6 +23,7 @@ class datadog_agent::params {
   $dd_groups                      = undef
   $package_name                   = 'datadog-agent'
   $service_name                   = 'datadog-agent'
+  $agent_version                  = 'latest'
   $dogapi_version                 = 'installed'
   $conf_dir_purge                 = false
   $apt_default_release            = 'stable'
@@ -30,6 +31,11 @@ class datadog_agent::params {
   $process_default_enabled        = false
   $process_default_scrub_args     = true
   $process_default_custom_words   = []
+  $logs_enabled                   = false
+  $container_collect_all          = false
+  $use_apt_backup_keyserver       = false
+  $apt_backup_keyserver           = 'hkp://pool.sks-keyservers.net:80'
+  $apt_keyserver                  = 'hkp://keyserver.ubuntu.com:80'
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {

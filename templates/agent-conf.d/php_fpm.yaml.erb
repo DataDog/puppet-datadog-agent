@@ -10,7 +10,7 @@ instances:
     # Get a reliable service check of your FPM pool with that one
     ping_url: <%= instance['ping_url'] %>
     # Set the expected reply to the ping.
-    ping_reply: pong
+    ping_reply: <%= instance['ping_reply'] ? instance['ping_reply'] : 'pong' %>
     <%- if instance['http_host'] -%>
     # Set http host header
     http_host: <%= instance['http_host'] %>

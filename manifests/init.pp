@@ -174,6 +174,12 @@
 #   $custom_sensitive_words
 #       Array to add more words to be used on the process cdmline scrubbing by the process-agent
 #       Array. Default: []
+#   $logs_enabled
+#       Boolean to enable or disable the logs agent
+#       Boolean. Default: false
+#   $container_collect_all
+#       Boolean to enable logs collection for all containers
+#       Boolean. Default: false
 #
 # Actions:
 #
@@ -273,10 +279,17 @@ class datadog_agent(
   $process_enabled = $datadog_agent::params::process_default_enabled,
   $scrub_args = $datadog_agent::params::process_default_scrub_args,
   $custom_sensitive_words = $datadog_agent::params::process_default_custom_words,
+  $logs_enabled = $datadog_agent::params::logs_enabled,
+  $container_collect_all = $datadog_agent::params::container_collect_all,
   Hash[String[1], Data] $agent6_extra_options = {},
   $agent5_repo_uri = $datadog_agent::params::agent5_default_repo,
   $agent6_repo_uri = $datadog_agent::params::agent6_default_repo,
+  Optional[Boolean] $use_apt_backup_keyserver = $datadog_agent::params::use_apt_backup_keyserver,
+  $apt_backup_keyserver = $datadog_agent::params::apt_backup_keyserver,
+  $apt_keyserver = $datadog_agent::params::apt_keyserver,
   $apt_release = $datadog_agent::params::apt_default_release,
+  Optional[String] $service_provider = undef,
+  Optional[String] $agent_version = $datadog_agent::params::agent_version,
 ) inherits datadog_agent::params {
 
   # Allow ports to be passed as integers or strings.
@@ -355,12 +368,14 @@ class datadog_agent(
   validate_legacy(Boolean, 'validate_bool', $process_enabled)
   validate_legacy(Boolean, 'validate_bool', $scrub_args)
   validate_legacy(Array, 'validate_array', $custom_sensitive_words)
+  validate_legacy(Boolean, 'validate_bool', $logs_enabled)
+  validate_legacy(Boolean, 'validate_bool', $container_collect_all)
   validate_legacy(String, 'validate_string', $agent5_repo_uri)
   validate_legacy(String, 'validate_string', $agent6_repo_uri)
   validate_legacy(String, 'validate_string', $apt_release)
 
   if $hiera_tags {
-    $local_tags = lookup({ 'name' => 'datadog_agent::tags', 'default_value' => []})
+    $local_tags = lookup({ 'name' => 'datadog_agent::tags', 'merge' => 'unique', 'default_value' => []})
   } else {
     $local_tags = $tags
   }
@@ -383,40 +398,56 @@ class datadog_agent(
     default:    { $_loglevel = 'INFO' }
   }
 
+  if $use_apt_backup_keyserver {
+    $_apt_keyserver = $apt_backup_keyserver
+  } else {
+    $_apt_keyserver = $apt_keyserver
+  }
+
   case $::operatingsystem {
     'Ubuntu','Debian' : {
       if $agent5_enable {
         class { 'datadog_agent::ubuntu::agent5':
+          agent_version         => $agent_version,
           service_ensure        => $service_ensure,
           service_enable        => $service_enable,
+          service_provider      => $service_provider,
           location              => $agent5_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
+          apt_keyserver         => $_apt_keyserver,
         }
       } else {
         class { 'datadog_agent::ubuntu::agent6':
+          agent_version         => $agent_version,
           service_ensure        => $service_ensure,
           service_enable        => $service_enable,
+          service_provider      => $service_provider,
           location              => $agent6_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
+          apt_keyserver         => $_apt_keyserver,
         }
       }
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       if $agent5_enable {
         class { 'datadog_agent::redhat::agent5':
-          baseurl        => $agent5_repo_uri,
-          manage_repo    => $manage_repo,
-          service_ensure => $service_ensure,
-          service_enable => $service_enable,
+          baseurl          => $agent5_repo_uri,
+          manage_repo      => $manage_repo,
+          agent_version    => $agent_version,
+          service_ensure   => $service_ensure,
+          service_enable   => $service_enable,
+          service_provider => $service_provider,
         }
       } else {
         class { 'datadog_agent::redhat::agent6':
-          baseurl        => $agent6_repo_uri,
-          manage_repo    => $manage_repo,
-          service_ensure => $service_ensure,
-          service_enable => $service_enable,
+          baseurl          => $agent6_repo_uri,
+          manage_repo      => $manage_repo,
+          agent_version    => $agent_version,
+          service_ensure   => $service_ensure,
+          service_enable   => $service_enable,
+          service_provider => $service_provider,
         }
       }
     }
@@ -513,13 +544,26 @@ class datadog_agent(
       }
     }
   } else {
+    # notify of broken params on agent6
+    if !empty($proxy_host) {
+        notify { 'Setting proxy_host will have no effect on agent6 please use agent6_extra_options to set your proxy': }
+    }
+    if !empty($_proxy_port) {
+        notify { 'Setting proxy_port will have no effect on agent6 please use agent6_extra_options to set your proxy': }
+    }
+    if !empty($proxy_user) {
+        notify { 'Setting proxy_user will have no effect on agent6 please use agent6_extra_options to set your proxy': }
+    }
+    if !empty($proxy_password) {
+        notify { 'Setting proxy_password will have no effect on agent6 please use agent6_extra_options to set your proxy': }
+    }
 
     # lint:ignore:quoted_booleans
     $process_enabled_str = $process_enabled ? { true => 'true' , default => 'disabled' }
     # lint:endignore
     $base_extra_config = {
         'apm_config' => {
-          'apm_enabled'           => $apm_enabled,
+          'enabled'               => $apm_enabled,
           'env'                   => $apm_env,
           'apm_non_local_traffic' => $apm_non_local_traffic
         },
@@ -528,8 +572,35 @@ class datadog_agent(
           'scrub_args' => $scrub_args,
           'custom_sensitive_words' => $custom_sensitive_words,
         },
+        'logs_enabled' => $logs_enabled,
+        'logs_config' => {
+          'container_collect_all' => $container_collect_all,
+        },
     }
-    $extra_config = deep_merge($base_extra_config, $agent6_extra_options)
+
+    if $host != '' {
+        $host_config = {
+          'hostname' => $host,
+        }
+    } else {
+        $host_config = {}
+    }
+
+    if $statsd_forward_host != '' {
+        if $_statsd_forward_port != '' {
+            $statsd_forward_config = {
+              'statsd_forward_host' => $statsd_forward_host,
+              'statsd_forward_port' => $statsd_forward_port,
+            }
+        } else {
+            $statsd_forward_config = {
+              'statsd_forward_host' => $statsd_forward_host,
+            }
+        }
+    } else {
+        $statsd_forward_config = {}
+    }
+    $extra_config = deep_merge($base_extra_config, $agent6_extra_options, $statsd_forward_config, $host_config)
 
     file { $conf6_dir:
       ensure  => directory,
@@ -548,6 +619,7 @@ class datadog_agent(
       'api_key' => $api_key,
       'dd_url' => $dd_url,
       'cmd_port' => 5001,
+      'collect_ec2_tags' => $collect_ec2_tags,
       'conf_path' => $datadog_agent::params::conf6_dir,
       'enable_metadata_collection' => $collect_instance_metadata,
       'dogstatsd_port' => $dogstatsd_port,

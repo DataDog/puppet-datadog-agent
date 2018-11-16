@@ -22,7 +22,7 @@ function datadog_agent::tag6(
       if $value =~ Array {
         $tags = prefix($value, "${tag_names}:")
       } else {
-        $tags = [$tag_names]
+        $tags = ["${tag_names}:${value}"]
       }
     } else {
       $tags = [$tag_names]

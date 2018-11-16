@@ -4,20 +4,23 @@
 #
 
 class datadog_agent::ubuntu::agent6(
-  $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
-  $agent_version = 'latest',
-  $location = $datadog_agent::params::agent6_default_repo,
-  $release = $datadog_agent::params::apt_default_release,
-  $repos = '6',
-  $skip_apt_key_trusting = false,
-  $service_ensure = 'running',
-  $service_enable = true,
+  String $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
+  String $agent_version = $datadog_agent::params::agent_version,
+  String $location = $datadog_agent::params::agent6_default_repo,
+  String $release = $datadog_agent::params::apt_default_release,
+  String $repos = '6',
+  Boolean $skip_apt_key_trusting = false,
+  String $service_ensure = 'running',
+  Boolean $service_enable = true,
+  Optional[String] $service_provider = undef,
+  Optional[String] $apt_keyserver = undef,
 ) inherits datadog_agent::params {
 
   ensure_packages(['apt-transport-https'])
   if !$skip_apt_key_trusting {
     ::datadog_agent::ubuntu::install_key { [$apt_key]:
-      before  => Apt::Source['datadog6'],
+      server => $apt_keyserver,
+      before => Apt::Source['datadog6'],
     }
   }
 
@@ -45,11 +48,22 @@ class datadog_agent::ubuntu::agent6(
                 Exec['apt_update']],
   }
 
-  service { $datadog_agent::params::service_name:
-    ensure    => $service_ensure,
-    enable    => $service_enable,
-    hasstatus => false,
-    pattern   => 'dd-agent',
-    require   => Package['datadog-agent'],
+  if $service_provider {
+    service { $datadog_agent::params::service_name:
+      ensure    => $service_ensure,
+      enable    => $service_enable,
+      provider  => $service_provider,
+      hasstatus => false,
+      pattern   => 'dd-agent',
+      require   => Package['datadog-agent'],
+    }
+  } else {
+    service { $datadog_agent::params::service_name:
+      ensure    => $service_ensure,
+      enable    => $service_enable,
+      hasstatus => false,
+      pattern   => 'dd-agent',
+      require   => Package['datadog-agent'],
+    }
   }
 }

@@ -100,15 +100,15 @@ that needs to be done.
 
   On your `puppetserver`, enable reporting:
 
-        ```
+```
         class { 'datadog_agent':
           api_key            => "yourkey",
           puppet_run_reports => true,
         }
-        ```
+```
 
   __To support reporting, your Puppet master needs to have the [dogapi](https://github.com/DataDog/dogapi-rb) gem installed, to do that either run the puppet agent on your master with this configuration or install it manually with `gem`.__
-  __Please note, you may have two restart your `puppetserver` service for the freshly installed `dogapi-rb` gem to be picked up.__
+  __Please note, you may have to restart your `puppetserver` service for the freshly installed `dogapi-rb` gem to be picked up.__
   _Please note, on version 2.x of the module `puppetserver_gem` is defined as a module dependency, it should be installed automatically when the module is installed._
   _Please note, on version 1.x and if on Puppet Enterprise or POSS (ie. >=3.7.0) there is a soft dependency for reporting on the `puppetserver_gem` module. Install with `puppet module install puppetlabs-puppetserver_gem` - installing manually with `gem` will *not* work._
   _Please note, on version 1.x and older puppets you may install `dogapi-rb` with `gem` as the system-level ruby is used_
@@ -118,6 +118,22 @@ that needs to be done.
 3. Include any other integrations you want the agent to use, e.g.
 
         include 'datadog_agent::integrations::mongo'
+
+Some integrations do not come as a dedicated class. To install one of them, add its configuration in the manifest like this (example for the `ntp` check):
+
+```
+        class { 'datadog_agent':
+            api_key      => "yourkey",
+            integrations => {
+                "ntp" => {
+                    init_config => {},
+                    instances => [{
+                        offset_threshold => 30,
+                    }],
+                },
+            },
+        }
+```
 
 Reporting
 ---------
@@ -288,11 +304,13 @@ Here are some of the other variables that be set in the datadog_agent class to c
 | local_tags    | an array of key:value strings that will be set as tags for the node |
 | non_local_traffic | set this to allow other nodes to relay their traffic through this one |
 | agent5_enable | boolean to install agent5 and override agent6 default | 
-| apm_enabled | boolean to enable the APM agent; defaults to true | 
-| process_enabled | boolean to enable the process agent; defaults to true | 
+| apm_enabled | boolean to enable the APM agent; defaults to false | 
+| process_enabled | boolean to enable the process agent; defaults to false | 
 | scrub_args | boolean to enable the process cmdline scrubbing; defaults to true |
 | custom_sensitive_words| an array to add more words beyond the default ones used by the scrubbing feature; defaults to [] |
-| agent6_extra_options | hash to provide additional configuration options to agent6. | 
+| logs_enabled | boolean to enable the logs agent; defaults to false |
+| container_collect_all | boolean to enable logs collection for all containers |
+| agent6_extra_options | hash to provide additional configuration options to agent6 |
 
 _NOTE: `agent6_extra_options` may be used to provide a fine grain control of additional agent6 config options. A deep merge is performed that may override options provided in the `datadog_agent` class parameters_
 

@@ -11,7 +11,7 @@ define datadog_agent::integration (
   validate_legacy(String, 'validate_string', $integration)
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/${integration}.yaml"
+    $dst = "${datadog_agent::conf6_dir}/${integration}.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/${integration}.yaml"
   }
@@ -20,7 +20,7 @@ define datadog_agent::integration (
     ensure  => file,
     owner   => $datadog_agent::dd_user,
     group   => $datadog_agent::dd_group,
-    mode    => '0600',
+    mode    => '0644',
     content => to_instances_yaml($init_config, $instances),
     notify  => Service[$datadog_agent::service_name]
   }

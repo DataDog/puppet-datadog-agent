@@ -813,11 +813,40 @@ describe 'datadog_agent' do
               )}
             end
 
+            context 'with service provider override' do
+              let(:params) {{
+                  :service_provider => 'upstart',
+              }}
+              it do
+                should contain_service('datadog-agent')\
+                  .that_requires('package[datadog-agent]')
+              end
+              it do
+                should contain_service('datadog-agent').with(
+                  'provider' => 'upstart',
+                  'ensure' => 'running',
+                )
+              end
+            end
+
           end
         end
 
         if DEBIAN_OS.include?(operatingsystem)
-          it { should contain_class('datadog_agent::ubuntu::agent5') }
+          it do
+            should contain_class('datadog_agent::ubuntu::agent5')\
+                .with_apt_keyserver('hkp://keyserver.ubuntu.com:80')
+          end
+          context 'use backup keyserver' do
+            let(:params) {{
+                :use_apt_backup_keyserver => true,
+                :agent5_enable => true,
+            }}
+            it do
+                should contain_class('datadog_agent::ubuntu::agent5')\
+                    .with_apt_keyserver('hkp://pool.sks-keyservers.net:80')
+            end
+          end
         elsif REDHAT_OS.include?(operatingsystem)
           it { should contain_class('datadog_agent::redhat::agent5') }
         end
@@ -862,6 +891,9 @@ describe 'datadog_agent' do
               'content' => /^cmd_port: \"{0,1}5001\"{0,1}\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^collect_ec2_tags: false\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^dd_url: \"{0,1}https:\/\/app.datadoghq.com\"{0,1}\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
@@ -880,7 +912,7 @@ describe 'datadog_agent' do
               'content' => /^apm_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ apm_enabled: false\n/,
+              'content' => /^apm_config:\n\ \ enabled: false\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ apm_non_local_traffic: false\n/,
@@ -889,7 +921,7 @@ describe 'datadog_agent' do
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ enabled: disabled\n/,
+              'content' => /^process_config:\n\ \ enabled: disabled\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ scrub_args: true\n/,
@@ -897,10 +929,92 @@ describe 'datadog_agent' do
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ custom_sensitive_words: \[\]\n/,
               )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^logs_enabled: false\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^logs_config:\n\ \ container_collect_all: false\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').without(
+              'content' => /^hostname: .*\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').without(
+              'content' => /^statsd_forward_host: .*\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').without(
+              'content' => /^statsd_forward_port: ,*\n/,
+              )}
             end
           end
 
-          context 'with apm_extra_config' do
+          context 'with modified defaults' do
+            context 'hostname override' do
+              let(:params) {{
+                  :host => 'my_custom_hostname',
+                  :collect_ec2_tags => true,
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^hostname: my_custom_hostname\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^collect_ec2_tags: true\n/,
+              )}
+            end
+            context 'forward statsd settings set' do
+              let(:params) {{
+                  :statsd_forward_host => 'foo',
+                  :statsd_forward_port => 1234,
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^statsd_forward_host: foo\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^statsd_forward_port: 1234\n/,
+              )}
+            end
+            context 'deprecated proxy settings' do
+              let(:params) {{
+                  :proxy_host => 'foo',
+                  :proxy_port => 1234,
+                  :proxy_user => 'bar',
+                  :proxy_password => 'abcd1234',
+              }}
+              it { is_expected.to contain_notify(
+                  'Setting proxy_host will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+              }
+              it { is_expected.to contain_notify(
+                  'Setting proxy_port will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+              }
+              it { is_expected.to contain_notify(
+                  'Setting proxy_user will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+              }
+              it { is_expected.to contain_notify(
+                  'Setting proxy_password will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+              }
+            end
+            context 'deprecated proxy settings with default values' do
+              let(:params) {{
+                  :proxy_host => '',
+                  :proxy_port => '',
+                  :proxy_user => '',
+                  :proxy_password => '',
+              }}
+              it { is_expected.not_to contain_notify(
+                  'Setting proxy_host will have no effect on agent6 please use agent6_extra_options to set your proxy')
+              }
+              it { is_expected.not_to contain_notify(
+                  'Setting proxy_port will have no effect on agent6 please use agent6_extra_options to set your proxy')
+              }
+              it { is_expected.not_to contain_notify(
+                  'Setting proxy_user will have no effect on agent6 please use agent6_extra_options to set your proxy')
+              }
+              it { is_expected.not_to contain_notify(
+                  'Setting proxy_password will have no effect on agent6 please use agent6_extra_options to set your proxy')
+              }
+            end
+          end
+
+          context 'with additional agents config' do
             context 'with extra_options and APM enabled' do
               let(:params) {{
                   :apm_enabled => true,
@@ -916,7 +1030,7 @@ describe 'datadog_agent' do
               'content' => /^apm_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ apm_enabled: true\n/,
+              'content' => /^apm_config:\n\ \ enabled: true\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ foo: bar\n/,
@@ -925,7 +1039,7 @@ describe 'datadog_agent' do
               'content' => /^\ \ bar: haz\n/,
               )}
             end
-            
+
             context 'with APM non local traffic enabled' do
               let(:params) {{
                   :apm_enabled => true,
@@ -936,7 +1050,7 @@ describe 'datadog_agent' do
               'content' => /^apm_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ apm_enabled: true\n/,
+              'content' => /^apm_config:\n\ \ enabled: true\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ apm_non_local_traffic: true\n/,
@@ -957,13 +1071,13 @@ describe 'datadog_agent' do
               'content' => /^apm_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ apm_enabled: false\n/,
+              'content' => /^apm_config:\n\ \ enabled: false\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ enabled: 'true'\n/,
+              'content' => /^process_config:\n\ \ enabled: 'true'\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ foo: bar\n/,
@@ -987,7 +1101,7 @@ describe 'datadog_agent' do
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ enabled: disabled\n/,
+              'content' => /^process_config:\n\ \ enabled: disabled\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ foo: bar\n/,
@@ -1008,7 +1122,7 @@ describe 'datadog_agent' do
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ enabled: 'true'\n/,
+              'content' => /^process_config:\n\ \ enabled: 'true'\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ scrub_args: false\n/,
@@ -1027,7 +1141,7 @@ describe 'datadog_agent' do
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ enabled: 'true'\n/,
+              'content' => /^process_config:\n\ \ enabled: 'true'\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ scrub_args: true\n/,
@@ -1038,8 +1152,37 @@ describe 'datadog_agent' do
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^\ \ -\ dd_key\n/,
               )}
-
             end
+
+            context 'with logs enabled' do
+              let(:params) {{
+                  :logs_enabled => true,
+                  :container_collect_all => true
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^logs_enabled: true\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^logs_config:\n\ \ container_collect_all: true\n/,
+              )}
+            end
+
+            context 'with service provider override' do
+              let(:params) {{
+                  :service_provider => 'upstart',
+              }}
+              it do
+                should contain_service('datadog-agent')\
+                  .that_requires('package[datadog-agent]')
+              end
+              it do
+                should contain_service('datadog-agent').with(
+                  'provider' => 'upstart',
+                  'ensure' => 'running',
+                )
+              end
+            end
+
           end
         end
       end

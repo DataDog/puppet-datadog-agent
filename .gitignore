@@ -7,3 +7,5 @@ Gemfile.lock
 
 .rbenv-gemsets
 .ruby-version
+
+tests/.vagrant

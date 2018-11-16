@@ -14,20 +14,23 @@
 
 class datadog_agent::ubuntu::agent5(
   String $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
-  String $agent_version = 'latest',
+  String $agent_version = $datadog_agent::params::agent_version,
   String $location = $datadog_agent::params::agent5_default_repo,
   String $release = $datadog_agent::params::apt_default_release,
   String $repos = 'main',
   Boolean $skip_apt_key_trusting = false,
   String $service_ensure = 'running',
   Boolean $service_enable = true,
+  Optional[String] $service_provider = undef,
+  Optional[String] $apt_keyserver = undef,
 ) inherits datadog_agent::params{
 
   ensure_packages(['apt-transport-https'])
 
   if !$skip_apt_key_trusting {
     ::datadog_agent::ubuntu::install_key { [$apt_key]:
-      before  => Apt::Source['datadog'],
+      server => $apt_keyserver,
+      before => Apt::Source['datadog'],
     }
   }
 
@@ -79,11 +82,22 @@ class datadog_agent::ubuntu::agent5(
                 Exec['apt_update']],
   }
 
-  service { $datadog_agent::params::service_name:
-    ensure    => $service_ensure,
-    enable    => $service_enable,
-    hasstatus => false,
-    pattern   => 'dd-agent',
-    require   => Package[$datadog_agent::params::package_name],
+  if $service_provider {
+    service { $datadog_agent::params::service_name:
+      ensure    => $service_ensure,
+      enable    => $service_enable,
+      provider  => $service_provider,
+      hasstatus => false,
+      pattern   => 'dd-agent',
+      require   => Package[$datadog_agent::params::package_name],
+    }
+  } else {
+    service { $datadog_agent::params::service_name:
+      ensure    => $service_ensure,
+      enable    => $service_enable,
+      hasstatus => false,
+      pattern   => 'dd-agent',
+      require   => Package[$datadog_agent::params::package_name],
+    }
   }
 }

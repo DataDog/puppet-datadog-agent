@@ -87,7 +87,7 @@ class datadog_agent::integrations::kafka(
   }
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/kafka.yaml"
+    $dst = "${datadog_agent::conf6_dir}/kafka.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/kafka.yaml"
   }

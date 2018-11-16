@@ -58,7 +58,7 @@ class datadog_agent::integrations::memcache (
   }
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/mcache.yaml"
+    $dst = "${datadog_agent::conf6_dir}/mcache.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/mcache.yaml"
   }

@@ -30,7 +30,7 @@ class datadog_agent::integrations::nginx(
   validate_legacy('Array', 'validate_array', $instances)
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/nginx.yaml"
+    $dst = "${datadog_agent::conf6_dir}/nginx.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/nginx.yaml"
   }

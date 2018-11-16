@@ -43,7 +43,7 @@ class datadog_agent::integrations::logs(
     include datadog_agent
     validate_legacy('Array', 'validate_array', $logs)
 
-    file { "${datadog_agent::conf6_dir}/logs.yaml":
+    file { "${datadog_agent::conf6_dir}/logs.d/conf.yaml":
       ensure  => file,
       owner   => $datadog_agent::params::dd_user,
       group   => $datadog_agent::params::dd_group,

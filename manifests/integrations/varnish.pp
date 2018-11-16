@@ -29,7 +29,7 @@ class datadog_agent::integrations::varnish (
   include datadog_agent
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/varnish.yaml"
+    $dst = "${datadog_agent::conf6_dir}/varnish.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/varnish.yaml"
   }

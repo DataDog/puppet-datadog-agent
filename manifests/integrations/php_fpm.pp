@@ -46,7 +46,7 @@ class datadog_agent::integrations::php_fpm(
   }
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/php_fpm.yaml"
+    $dst = "${datadog_agent::conf6_dir}/php_fpm.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/php_fpm.yaml"
   }

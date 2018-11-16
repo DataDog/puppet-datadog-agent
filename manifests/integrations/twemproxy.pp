@@ -42,7 +42,7 @@ class datadog_agent::integrations::twemproxy(
   }
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/twemproxy.yaml"
+    $dst = "${datadog_agent::conf6_dir}/twemproxy.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/twemproxy.yaml"
   }

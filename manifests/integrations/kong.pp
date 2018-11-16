@@ -35,7 +35,7 @@ class datadog_agent::integrations::kong (
   include datadog_agent
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/kong.yaml"
+    $dst = "${datadog_agent::conf6_dir}/kong.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/kong.yaml"
   }

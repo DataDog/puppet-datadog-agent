@@ -57,7 +57,7 @@ class datadog_agent::integrations::pgbouncer(
   validate_legacy('Array', 'validate_array', $pgbouncers)
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/pgbouncer.yaml"
+    $dst = "${datadog_agent::conf6_dir}/pgbouncer.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/pgbouncer.yaml"
   }

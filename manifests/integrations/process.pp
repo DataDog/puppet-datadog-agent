@@ -56,7 +56,7 @@ class datadog_agent::integrations::process(
   }
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/process.yaml"
+    $dst = "${datadog_agent::conf6_dir}/process.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/process.yaml"
   }

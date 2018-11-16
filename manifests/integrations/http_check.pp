@@ -207,7 +207,7 @@ class datadog_agent::integrations::http_check (
   }
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/http_check.yaml"
+    $dst = "${datadog_agent::conf6_dir}/http_check.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/http_check.yaml"
   }

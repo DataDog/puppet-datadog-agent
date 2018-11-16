@@ -26,7 +26,7 @@ class datadog_agent::integrations::generic(
   validate_legacy('Optional[String]', 'validate_string', $integration_contents)
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/${integration_name}.yaml"
+    $dst = "${datadog_agent::conf6_dir}/${integration_name}.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/${integration_name}.yaml"
   }

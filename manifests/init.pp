@@ -589,6 +589,35 @@ class datadog_agent(
         },
     }
 
+    if $statsd_forward_host != '' {
+        if $_statsd_forward_port != '' {
+            $statsd_forward_config = {
+              'statsd_forward_host' => $statsd_forward_host,
+              'statsd_forward_port' => $statsd_forward_port,
+            }
+        } else {
+            $statsd_forward_config = {
+              'statsd_forward_host' => $statsd_forward_host,
+            }
+        }
+    } else {
+        $statsd_forward_config = {}
+    }
+    $extra_config = deep_merge($base_extra_config, $agent6_extra_options, $statsd_forward_config)
+
+    file { $conf6_dir:
+      ensure  => directory,
+      purge   => $conf_dir_purge,
+      recurse => true,
+      force   => $conf_dir_purge,
+      owner   => $dd_user,
+      group   => $dd_group,
+      notify  => Service[$datadog_agent::params::service_name]
+    }
+
+    $_local_tags = datadog_agent::tag6($local_tags, false)
+    $_facts_tags = datadog_agent::tag6($facts_to_tags, true)
+
     if $site != '' {
         $site_config = {
           'site' => $site,
@@ -613,35 +642,6 @@ class datadog_agent(
         $host_config = {}
     }
 
-    if $statsd_forward_host != '' {
-        if $_statsd_forward_port != '' {
-            $statsd_forward_config = {
-              'statsd_forward_host' => $statsd_forward_host,
-              'statsd_forward_port' => $statsd_forward_port,
-            }
-        } else {
-            $statsd_forward_config = {
-              'statsd_forward_host' => $statsd_forward_host,
-            }
-        }
-    } else {
-        $statsd_forward_config = {}
-    }
-    $extra_config = deep_merge($base_extra_config, $agent6_extra_options, $statsd_forward_config, $site_config, $dd_url_config, $host_config)
-
-    file { $conf6_dir:
-      ensure  => directory,
-      purge   => $conf_dir_purge,
-      recurse => true,
-      force   => $conf_dir_purge,
-      owner   => $dd_user,
-      group   => $dd_group,
-      notify  => Service[$datadog_agent::params::service_name]
-    }
-
-    $_local_tags = datadog_agent::tag6($local_tags, false)
-    $_facts_tags = datadog_agent::tag6($facts_to_tags, true)
-
     $_agent_config = {
       'api_key' => $api_key,
       'cmd_port' => 5001,
@@ -657,7 +657,7 @@ class datadog_agent(
       'tags' => unique(flatten(union($_local_tags, $_facts_tags))),
     }
 
-    $agent_config = deep_merge($_agent_config, $extra_config)
+    $agent_config = deep_merge($site_config, $dd_url_config, $host_config, $_agent_config, $extra_config)
 
     file { '/etc/datadog-agent/datadog.yaml':
       owner   => 'dd-agent',

@@ -50,7 +50,7 @@ class datadog_agent::integrations::process(
   validate_legacy('Array', 'validate_array', $processes)
 
   if $hiera_processes {
-    $local_processes = lookup({ 'name' => 'datadog_agent::integrations::process::processes', 'default_value' => []})
+    $local_processes = lookup({ 'name' => 'datadog_agent::integrations::process::processes', 'merge' => 'unique', 'default_value' => $processes })
   } else {
     $local_processes = $processes
   }

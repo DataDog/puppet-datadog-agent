@@ -285,6 +285,8 @@ class datadog_agent(
   $conf_dir = $datadog_agent::params::conf_dir,
   $conf6_dir = $datadog_agent::params::conf6_dir,
   $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
+  $checks_dir = $datadog_agent::params::checks_dir,
+  $checks6_dir = $datadog_agent::params::checks6_dir,
   $service_name = $datadog_agent::params::service_name,
   $package_name = $datadog_agent::params::package_name,
   $dd_user = $datadog_agent::params::dd_user,
@@ -509,6 +511,16 @@ class datadog_agent(
       notify  => Service[$datadog_agent::params::service_name]
     }
 
+    file { $checks_dir:
+      ensure  => directory,
+      purge   => $conf_dir_purge,
+      recurse => true,
+      force   => $conf_dir_purge,
+      owner   => $dd_user,
+      group   => $dd_group,
+      notify  => Service[$datadog_agent::params::service_name]
+    }
+
     concat {'/etc/dd-agent/datadog.conf':
       owner   => $dd_user,
       group   => $dd_group,
@@ -615,6 +627,16 @@ class datadog_agent(
     $extra_config = deep_merge($base_extra_config, $agent6_extra_options, $statsd_forward_config)
 
     file { $conf6_dir:
+      ensure  => directory,
+      purge   => $conf_dir_purge,
+      recurse => true,
+      force   => $conf_dir_purge,
+      owner   => $dd_user,
+      group   => $dd_group,
+      notify  => Service[$datadog_agent::params::service_name]
+    }
+
+    file { $checks6_dir:
       ensure  => directory,
       purge   => $conf_dir_purge,
       recurse => true,

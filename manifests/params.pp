@@ -14,6 +14,8 @@ class datadog_agent::params {
   $agent5_enable                  = false
   $conf_dir                       = '/etc/dd-agent/conf.d'
   $conf6_dir                      = '/etc/datadog-agent/conf.d'
+  $checks_dir                     = '/etc/dd-agent/checks.d'
+  $checks6_dir                    = '/etc/datadog-agent/checks.d'
   $dd_user                        = 'dd-agent'
   $dd_group                       = 'root'
   $dd_groups                      = undef

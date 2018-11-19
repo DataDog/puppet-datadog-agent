@@ -11,6 +11,7 @@
 #       if you need the Agent to send data to a custom URL.
 #       Overrides the site setting defined in "site".
 #   $host:
+#       Force the hostname to whatever you want. (default: auto-detected)
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value.
 #   $collect_ec2_tags

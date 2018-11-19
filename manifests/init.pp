@@ -11,6 +11,7 @@
 #       set to 'datadoghq.eu' to send data to the EU site.
 #       This option is only available with agent version >= 6.6.0.
 #   $host:
+#       Force the hostname to whatever you want. (default: auto-detected)
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value.
 #   $collect_ec2_tags

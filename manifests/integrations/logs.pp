@@ -37,11 +37,31 @@
 #
 
 class datadog_agent::integrations::logs(
+  Boolean $hiera_logs = false,
   Array $logs = [],
 ) inherits datadog_agent::params {
+
   unless $::datadog_agent::agent5_enable {
+
     include datadog_agent
+
+    validate_legacy('Boolean', 'validate_bool', $hiera_logs)
     validate_legacy('Array', 'validate_array', $logs)
+
+    if $hiera_logs {
+      $local_logs = lookup({ 'name' => 'datadog_agent::integrations::logs::logs', 'merge' => 'unique', 'default_value' => $logs })
+    } else {
+      $local_logs = $logs
+    }
+
+    # The Datadog documentation tells to create a conf.d/directory named after your log source, but for ease of use, we will put everything into conf.d/logs.d
+    # https://docs.datadoghq.com/logs/log_collection/?tab=tailexistingfiles#custom-log-collection
+    file { "${datadog_agent::conf6_dir}/logs.d":
+      ensure  => directory,
+      owner   => $datadog_agent::params::dd_user,
+      group   => $datadog_agent::params::dd_group,
+      mode    => '0750',
+    }
 
     file { "${datadog_agent::conf6_dir}/logs.d/conf.yaml":
       ensure  => file,
@@ -52,5 +72,7 @@ class datadog_agent::integrations::logs(
       require => Package[$datadog_agent::params::package_name],
       notify  => Service[$datadog_agent::params::service_name]
     }
-  }
+
+  }  # unless $::datadog_agent::agent5_enable
+
 }

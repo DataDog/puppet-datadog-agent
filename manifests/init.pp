@@ -218,6 +218,7 @@ class datadog_agent(
   $log_to_syslog = true,
   $service_ensure = 'running',
   $service_enable = true,
+  $manage_packages = true,
   $manage_repo = true,
   $hostname_extraction_regex = nil,
   $dogstatsd_port = 8125,
@@ -404,54 +405,56 @@ class datadog_agent(
     $_apt_keyserver = $apt_keyserver
   }
 
-  case $::operatingsystem {
-    'Ubuntu','Debian' : {
-      if $agent5_enable {
-        class { 'datadog_agent::ubuntu::agent5':
-          agent_version         => $agent_version,
-          service_ensure        => $service_ensure,
-          service_enable        => $service_enable,
-          service_provider      => $service_provider,
-          location              => $agent5_repo_uri,
-          release               => $apt_release,
-          skip_apt_key_trusting => $skip_apt_key_trusting,
-          apt_keyserver         => $_apt_keyserver,
-        }
-      } else {
-        class { 'datadog_agent::ubuntu::agent6':
-          agent_version         => $agent_version,
-          service_ensure        => $service_ensure,
-          service_enable        => $service_enable,
-          service_provider      => $service_provider,
-          location              => $agent6_repo_uri,
-          release               => $apt_release,
-          skip_apt_key_trusting => $skip_apt_key_trusting,
-          apt_keyserver         => $_apt_keyserver,
-        }
-      }
-    }
-    'RedHat','CentOS','Fedora','Amazon','Scientific' : {
-      if $agent5_enable {
-        class { 'datadog_agent::redhat::agent5':
-          baseurl          => $agent5_repo_uri,
-          manage_repo      => $manage_repo,
-          agent_version    => $agent_version,
-          service_ensure   => $service_ensure,
-          service_enable   => $service_enable,
-          service_provider => $service_provider,
-        }
-      } else {
-        class { 'datadog_agent::redhat::agent6':
-          baseurl          => $agent6_repo_uri,
-          manage_repo      => $manage_repo,
-          agent_version    => $agent_version,
-          service_ensure   => $service_ensure,
-          service_enable   => $service_enable,
-          service_provider => $service_provider,
+  if $manage_packages {
+    case $::operatingsystem {
+      'Ubuntu','Debian' : {
+        if $agent5_enable {
+          class { 'datadog_agent::ubuntu::agent5':
+            agent_version         => $agent_version,
+            service_ensure        => $service_ensure,
+            service_enable        => $service_enable,
+            service_provider      => $service_provider,
+            location              => $agent5_repo_uri,
+            release               => $apt_release,
+            skip_apt_key_trusting => $skip_apt_key_trusting,
+            apt_keyserver         => $_apt_keyserver,
+          }
+        } else {
+          class { 'datadog_agent::ubuntu::agent6':
+            agent_version         => $agent_version,
+            service_ensure        => $service_ensure,
+            service_enable        => $service_enable,
+            service_provider      => $service_provider,
+            location              => $agent6_repo_uri,
+            release               => $apt_release,
+            skip_apt_key_trusting => $skip_apt_key_trusting,
+            apt_keyserver         => $_apt_keyserver,
+          }
         }
       }
+      'RedHat','CentOS','Fedora','Amazon','Scientific' : {
+        if $agent5_enable {
+          class { 'datadog_agent::redhat::agent5':
+            baseurl          => $agent5_repo_uri,
+            manage_repo      => $manage_repo,
+            agent_version    => $agent_version,
+            service_ensure   => $service_ensure,
+            service_enable   => $service_enable,
+            service_provider => $service_provider,
+          }
+        } else {
+          class { 'datadog_agent::redhat::agent6':
+            baseurl          => $agent6_repo_uri,
+            manage_repo      => $manage_repo,
+            agent_version    => $agent_version,
+            service_ensure   => $service_ensure,
+            service_enable   => $service_enable,
+            service_provider => $service_provider,
+          }
+        }
+      }
+      default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
     }
-    default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
 
   if ($dd_groups) {

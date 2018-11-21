@@ -8,47 +8,48 @@ Description
 
 A module to:
 
-1. install the [DataDog](http://www.datadoghq.com) agent
-2. to send reports of puppet runs to the Datadog service [Datadog](http://www.datadoghq.com/).
+1. Install the [DataDog][1] Agent.
+2. Send Puppet run reports to [Datadog][1].
 
 Releases
 --------
 
-There are currently two actively maintained versions for the puppet module. To users on puppet >= 4.6.x, and possibly some older 4.x puppets, we recommend you use version 2.0+ of the module. 
+There are currently two actively maintained versions for the Puppet module. For users on Puppet >= 4.6.x, and possibly some older 4.x puppets, it is recommended to use version 2.0+ of the module.
 
-For users running on older versions of puppet the legacy module, series 1.x, should support most use-cases. 
+For users running on older versions of Puppet the legacy module, series 1.x, should support most use-cases. 
 
-Hopefully a majority of users will be able to use the newer module as many of the puppet versions supported in the 1.x series of the module have been EOL'd for a while now.
+The majority of users should be able to use the newer module as many of the Puppet versions supported in the 1.x series of the module have been EOL'd.
 
-Some features might be back-ported if there's enough demand for it, but in general only maintenance will be performed on the 1.x series of the module. Future feature development will be performed on the newer puppet module.
-
+Some features might be back-ported if there's enough demand, but in general only maintenance is performed on the 1.x series of the module. Future feature development is performed on the newer Puppet module.
 
 Version 2.x
 -----------
 
 ## Requirements
 
-Puppet >=4.6.x and <=5.3.x (we may work with newer versions, but untested). For detailed informations on compatibility, check the [module page](https://forge.puppetlabs.com/datadog/datadog_agent) on the Puppet forge.
+Puppet >=4.6.x and <=5.3.x (may work with newer versions, but is untested). For detailed information on compatibility, check the [module page][2] on the Puppet forge.
 
 ## Installation
 
 Install `datadog_agent` as a module in your Puppet master's module path.
 
-    puppet module install datadog-datadog_agent
+```
+puppet module install datadog-datadog_agent
+```
 
 ### Upgrade from the previous module version 1.x
 
-Most of the manifests should be backward compatible. However, there are important changes to the main manifest:
+Most of the manifests are backward compatible. However, there are important changes to the main manifest:
 
-- By default datadog agent 6.x will now be installed.
-  - You may still setup agent 5.x in your nodes by seting the `agent5_enable` boolean parameter to `True`
-- Enhanced support for our APM tracing agent
-- Enhanced support for our Process agent
-- Enhanced support for additional agent6 options
-- APM tracing and Process agents are now opt-in options and will be disabled by default.
-  - Main `datadog_agent` class has parameters to enable and configure the agents easily.
-- Increased granularity for apt/yum repo configuration 
-- New location for datadog puppet reporting configuration
+- By default Datadog Agent 6.x is installed.
+  - To use Agent 5.x in your nodes set the `agent5_enable` boolean parameter to `True`.
+- Enhanced support for our APM Tracing Agent.
+- Enhanced support for our Process Agent.
+- Enhanced support for additional `agent6` options.
+- APM Tracing and Process Agents are now opt-in options and are disabled by default.
+  - The main `datadog_agent` class has parameters to enable and configure the Agents easily.
+- Increased granularity for apt/yum repo configuration.
+- New location for Datadog Puppet reporting configuration.
 
 
 Version 1.x
@@ -56,108 +57,106 @@ Version 1.x
 
 ## Requirements
 
-Puppet >=2.7.x and <=4.2.x (we may work with newer versions, but untested). For detailed informations on compatibility, check the [module page](https://forge.puppetlabs.com/datadog/datadog_agent) on the Puppet forge.
+Puppet >=2.7.x and <=4.2.x (may work with newer versions, but is untested). For detailed information on compatibility, check the [module page][2] on the Puppet forge.
 
 ## Installation
 
 Install `datadog_agent` as a module in your Puppet master's module path.
 
-    puppet module install datadog-datadog_agent --version 1.12.1
+```
+puppet module install datadog-datadog_agent --version 1.12.1
+```
 
 ### Upgrade from previous git manual install 0.x (unreleased)
 
-You can keep using the `datadog` module but it becomes legacy with the release of `datadog_agent` 1.0.0. Upgrade to get new features, and use the puppet forge system which is way easier for maintenance.
+You can keep using the `datadog` module but it becomes legacy with the release of `datadog_agent` 1.0.0. Upgrade to get new features, and use the Puppet forge system which is easier for maintenance.
 
-* Delete the datadog module `rm -r /etc/puppet/modules/datadog`
-* Install the new module from the puppet forge `puppet module install datadog-datadog_agent`
+* Delete the Datadog module `rm -r /etc/puppet/modules/datadog`
+* Install the new module from the Puppet forge `puppet module install datadog-datadog_agent`
 * Update your manifests with the new module class, basically replace `datadog` by `datadog_agent`
-
 
 Usage
 -----
 
-The following instructions should hold true for both puppet module versions (1.x, 2.x).
+The following instructions are for both Puppet module versions (1.x, 2.x).
 
-Note: remember 2.x will install agent6 by default, whereas 1.x defaults to agent6.
+Note: 2.x installs Agent v6 by default, whereas 1.x defaults to Agent v5.
 
-Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaster`, there's a tiny bit of configuration
-that needs to be done.
+Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaster`, follow these configuration steps:
 
-1. Update the default class parameters with your [API key](https://app.datadoghq.com/account/settings#api)
+1. Update the default class parameters with your [API key][3].
 
-2. Specify the module on any nodes you wish to install the DataDog
-   Agent.
-        ```
-        include datadog_agent
-        ```
+2. Specify the module on any nodes you wish to install the DataDog Agent.
 
-  Or assign this module using the Puppet style Parameterized class:
+    ```
+    include datadog_agent
+    ```
+
+    Or assign this module using the Puppet style Parameterized class:
+
         ```
         class { 'datadog_agent':
-          api_key => "yourkey",
+            api_key => "<YOUR_DD_API_KEY>",
         }
         ```
 
-  On your `puppetserver`, enable reporting:
+    On your `puppetserver`, enable reporting:
 
-```
+        ```
         class { 'datadog_agent':
-          api_key            => "yourkey",
-          puppet_run_reports => true,
+            api_key            => "<YOUR_DD_API_KEY>",
+            puppet_run_reports => true,
         }
-```
+        ```
 
-  __To support reporting, your Puppet master needs to have the [dogapi](https://github.com/DataDog/dogapi-rb) gem installed, to do that either run the puppet agent on your master with this configuration or install it manually with `gem`.__
-  __Please note, you may have to restart your `puppetserver` service for the freshly installed `dogapi-rb` gem to be picked up.__
-  _Please note, on version 2.x of the module `puppetserver_gem` is defined as a module dependency, it should be installed automatically when the module is installed._
-  _Please note, on version 1.x and if on Puppet Enterprise or POSS (ie. >=3.7.0) there is a soft dependency for reporting on the `puppetserver_gem` module. Install with `puppet module install puppetlabs-puppetserver_gem` - installing manually with `gem` will *not* work._
-  _Please note, on version 1.x and older puppets you may install `dogapi-rb` with `gem` as the system-level ruby is used_
-  _Also note, on version 1.x of the puppet module, the gem provider is configurable, so you can set it to `puppetserver_gem` (already set by default) if on PE/POSS (>=3.7.0) or `gem` if on older versions of puppet_
+    - To support reporting, your Puppet master needs the [dogapi][4] gem installed. To install, either run the Puppet Agent on your master with this configuration or install it manually with `gem`. You might need to restart your `puppetserver` service for the freshly installed `dogapi-rb` gem to be picked up.
+    - On version 2.x, `puppetserver_gem` is defined as a module dependency, it is installed automatically when the module is installed.
+    - On version 1.x:
+      - If you are on Puppet Enterprise or POSS (ie. >=3.7.0), there is a soft dependency for reporting on the `puppetserver_gem` module. Install with `puppet module install puppetlabs-puppetserver_gem` - installing manually with `gem` does *not* work.
+      - You may install `dogapi-rb` with `gem` as the system-level Ruby is used.
+      - The gem provider is configurable by setting it to `puppetserver_gem` (set by default on PE/POSS (>=3.7.0)) or `gem` if on older versions of Puppet.
 
+3. Include any other integrations you want the agent to use, for example:
 
-3. Include any other integrations you want the agent to use, e.g.
+    ```
+    include 'datadog_agent::integrations::mongo'
+    ```
 
-        include 'datadog_agent::integrations::mongo'
+    Some integrations do not come as a dedicated class. To install one of them, add its configuration in the manifest. Below is an example for the `ntp` check:
 
-Some integrations do not come as a dedicated class. To install one of them, add its configuration in the manifest like this (example for the `ntp` check):
-
-```
-        class { 'datadog_agent':
-            api_key      => "yourkey",
-            integrations => {
-                "ntp" => {
-                    init_config => {},
-                    instances => [{
-                        offset_threshold => 30,
-                    }],
-                },
+    ```
+    class { 'datadog_agent':
+        api_key      => "<YOUR_DD_API_KEY>",
+        integrations => {
+            "ntp" => {
+                init_config => {},
+                instances => [{
+                    offset_threshold => 30,
+                }],
             },
-        }
-```
+        },
+    }
+    ```
 
 Reporting
 ---------
-Other than ensuring that dogapi-rb is available on your system as we 
-explained earlier, a few additional steps should be conducted.
+Ensure `dogapi-rb` is available on your system as explained earlier.
 
-To enable reporting of changes to the Datadog timeline, enable the report
-processor on your Puppet master, and enable reporting for your clients.
-The clients will send a run report after each check-in back to the master.
+To enable reporting of changes to the Datadog timeline, enable the report processor on your Puppet master, and enable reporting for your clients. The clients send a run report after each check-in back to the master.
 
-Make sure you enable the `puppet_run_reports` option to true in the node
-configuration manifest for your master.
+Set the `puppet_run_reports` option to true in the node configuration manifest for your master:
 
 ```ruby
 class { "datadog-agent":
-    api_key => "<your_api_key>",
+    api_key => "<YOUR_DD_API_KEY>",
     puppet_run_reports => true
     # ...
 }
 ```
 
-On puppet >=4.x the location for your configuration file will be: 
-`/etc/puppetlabs/puppet/puppet.conf`
-On older puppets the location should be: `/etc/puppet/puppet.conf`
+On Puppet >=4.x the location for your configuration file is `/etc/puppetlabs/puppet/puppet.conf`.
+
+On older Puppets, the location is `/etc/puppet/puppet.conf`.
 
 Add these configuration options in the pertinent location:
 
@@ -167,7 +166,7 @@ Add these configuration options in the pertinent location:
 # ...
 
 [master]
-# Enable reporting to datadog
+# Enable reporting to Datadog
 reports=datadog_reports
 # If you use other reports already, just add datadog_reports at the end
 # reports=store,log,datadog_reports
@@ -179,8 +178,7 @@ pluginsync=true
 report=true
 ```
 
-And on all of your Puppet client nodes add the following in the
-same location::
+On all of your Puppet client nodes add the following in the same location:
 
 ```ini
 [agent]
@@ -188,7 +186,7 @@ same location::
 report=true
 ```
 
-If you get
+If you see the following, ensure `reports=datadog_reports` is defined in **[master]**, not **[main]**.
 
 ```
 err: Could not send report:
@@ -196,13 +194,11 @@ Error 400 on SERVER: Could not autoload datadog_reports:
 Class Datadog_reports is already defined in Puppet::Reports
 ```
 
-Make sure `reports=datadog_reports` is defined in **[master]**, not **[main]**.
-
 
 Step-by-step
 ============
 
-This is the minimal set of modifications to get started. These files assume puppet 4.5.x or higher.
+This is the minimal set of modifications to get started. These files assume Puppet 4.5.x or higher.
 
 /etc/puppetlabs/puppet/puppet.conf
 -----------------------
@@ -223,17 +219,17 @@ _Note: This may be file `/etc/puppet/puppet/puppet.conf` on older puppets_
 ------------------------------
 
 ```
-    node "default" {
-        class { "datadog_agent":
-            api_key => "INSERT YOU API KEY HERE",
-        }
+node "default" {
+    class { "datadog_agent":
+        api_key => "<YOUR_DD_API_KEY>",
     }
-    node "puppetmaster" {
-        class { "datadog_agent":
-            api_key            => "INSERT YOUR API KEY HERE",
-            puppet_run_reports => true
-        }
+}
+node "puppetmaster" {
+    class { "datadog_agent":
+        api_key            => "<YOUR_DD_API_KEY>",
+        puppet_run_reports => true
     }
+}
 ```
 
 _Note: This may be file `/etc/puppet/manifests/nodes.pp` on older puppets_
@@ -242,94 +238,88 @@ _Note: This may be file `/etc/puppet/manifests/nodes.pp` on older puppets_
 Run Puppet Agent
 ----------------
 
-    sudo systemctl  /etc/init.d/puppetmaster restart
-    sudo puppet agent --onetime --no-daemonize --no-splay --verbose
+```
+sudo systemctl  /etc/init.d/puppetmaster restart
+sudo puppet agent --onetime --no-daemonize --no-splay --verbose
+```
 
-You should see something like:
+Example response:
 
-    info: Retrieving plugin
-    info: Caching catalog for alq-linux.dev.datadoghq.com
-    info: Applying configuration version '1333470114'
-    notice: Finished catalog run in 0.81 seconds
+```
+info: Retrieving plugin
+info: Caching catalog for alq-linux.dev.datadoghq.com
+info: Applying configuration version '1333470114'
+notice: Finished catalog run in 0.81 seconds
+```
 
 Verify on Datadog
 -----------------
 
-Go to [the Setup page](https://app.datadoghq.com/account/settings#integrations) and you should see this
+1. Search for `puppet` on [the Integrations page][5]. The Puppet integration tile displays the install status.
 
-![Puppet integration tile][puppet-integration-tile]
+2. Search for `sources:puppet` in the [Event Stream][6] to see your Puppet events.
 
-If you click on the tile, you may reconfirm it's been automatically installed.
-
-![Puppet integration][puppet-integration]
-
-[puppet-integration-tile]: https://raw.githubusercontent.com/DataDog/documentation/master/content/integrations/images/snapshot_puppet_tile.png
-
-[puppet-integration]: https://raw.githubusercontent.com/DataDog/documentation/master/content/integrations/images/snapshot_puppet_integration.png
-
-Search for "Puppet" in the Stream and you should see something like this:
-
-![Puppet Events in Datadog][puppet-events]
-
-[puppet-events]: https://raw.githubusercontent.com/DataDog/documentation/master/content/integrations/images/snapshot_puppet_events.png
-
-Masterless puppet
+Masterless Puppet
 =================
 
-This is a specific setup, you can use https://gist.github.com/LeoCavaille/cd412c7a9ff5caec462f to set it up. This applies to older puppets and is
-untested on >=4.x puppet versions.
+To use this specific setup, see https://gist.github.com/LeoCavaille/cd412c7a9ff5caec462f. This applies to older puppets and is untested on >=4.x Puppet versions.
+
 
 Client Settings
 ===============
 
 ### Tagging client nodes
 
-The datadog agent configuration file will be recreated from the template every puppet run. If you need to tag your nodes, add an array entry in hiera
+The Datadog Agent configuration file is recreated from the template every Puppet run. If you need to tag your nodes, add an array entry in Hiera:
 
-        datadog_agent::tags:
-        - 'keyname:value'
-        - 'anotherkey:%{factname}'
+```
+datadog_agent::tags:
+- 'keyname:value'
+- 'anotherkey:%{factname}'
+```
 
-Here are some of the other variables that be set in the datadog_agent class to control settings in the agent:
-
+These variables can be set in the `datadog_agent` class to control settings in the Agent:
 
 #### 2.x
 
-| variable name | description |
-| ------------- | ----------- |
-| collect_ec2_tags | Set this to yes to have an instance's custom EC2 tags used as agent tags |
-| collect_instance_metadata | Set this to yes to have an instance's EC2 metadata used as agent tags |
-| dd_url        | datadog intake server URL. You are unlikely to need to change this |
-| host          | overrides the node's hostname |
-| local_tags    | an array of key:value strings that will be set as tags for the node |
-| non_local_traffic | set this to allow other nodes to relay their traffic through this one |
-| agent5_enable | boolean to install agent5 and override agent6 default | 
-| apm_enabled | boolean to enable the APM agent; defaults to false | 
-| process_enabled | boolean to enable the process agent; defaults to false | 
-| scrub_args | boolean to enable the process cmdline scrubbing; defaults to true |
-| custom_sensitive_words| an array to add more words beyond the default ones used by the scrubbing feature; defaults to [] |
-| logs_enabled | boolean to enable the logs agent; defaults to false |
-| container_collect_all | boolean to enable logs collection for all containers |
-| agent6_extra_options | hash to provide additional configuration options to agent6 |
+| variable name               | description                                                                                                                                                                                      |
+|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `collect_ec2_tags`          | Set this to yes to have an instance's custom EC2 tags used as agent tags.                                                                                                                        |
+| `collect_instance_metadata` | Set this to yes to have an instance's EC2 metadata used as agent tags.                                                                                                                           |
+| `dd_url`                    | The Datadog intake server URL. You are unlikely to need to change this.                                                                                                                          |
+| `host`                      | Overrides the node's host name.                                                                                                                                                                  |
+| `local_tags`                | An array of <KEY:VALUE> strings that are set as tags for the node.                                                                                                                               |
+| `non_local_traffic`         | Set this to allow other nodes to relay their traffic through this one.                                                                                                                           |
+| `agent5_enable`             | A boolean to install Agent v5 and override the Agent v6 default.                                                                                                                                 |
+| `apm_enabled`               | A boolean to enable the APM Agent (defaults to false).                                                                                                                                           |
+| `process_enabled`           | A boolean to enable the process agent (defaults to false).                                                                                                                                       |
+| `scrub_args`                | A boolean to enable the process cmdline scrubbing (defaults to true).                                                                                                                            |
+| `custom_sensitive_words`    | An array to add more words beyond the default ones used by the scrubbing feature (defaults to []).                                                                                               |
+| `logs_enabled`              | A boolean to enable the logs agent (defaults to false).                                                                                                                                          |
+| `container_collect_all`     | A boolean to enable logs collection for all containers.                                                                                                                                          |
+| `agent6_extra_options`      | A hash to provide additional configuration options to Agent v6.                                                                                                                                  |
+| `hostname_extraction_regex` | A regex used to extract the hostname captured group to report the run in Datadog instead of reporting the Puppet nodename, for example:<br>`'^(?<hostname>.*\.datadoghq\.com)(\.i-\w{8}\..*)?$'` |
 
-_NOTE: `agent6_extra_options` may be used to provide a fine grain control of additional agent6 config options. A deep merge is performed that may override options provided in the `datadog_agent` class parameters_
+##### Notes:
 
+- `agent6_extra_options` is used to provide a fine grain control of additional Agent v6 config options. A deep merge is performed that may override options provided in the `datadog_agent` class parameters.
+- `hostname_extraction_regex` is useful when the Puppet module and the Datadog Agent are reporting different host names for the same host in the infrastructure list.
 
 #### 1.x
 
-| variable name | description |
-| ------------- | ----------- |
-| collect_ec2_tags | Set this to yes to have an instance's custom EC2 tags used as agent tags |
-| collect_instance_metadata | Set this to yes to have an instance's EC2 metadata used as agent tags |
-| dd_url        | datadog intake server URL. You are unlikely to need to change this |
-| host          | overrides the node's hostname |
-| local_tags    | an array of key:value strings that will be set as tags for the node |
-| non_local_traffic | set this to allow other nodes to relay their traffic through this one |
-| agent6_enable | boolean to install agent6 and override agent5 default | 
+| variable name               | description                                                               |
+|-----------------------------|---------------------------------------------------------------------------|
+| `collect_ec2_tags`          | Set this to yes to have an instance's custom EC2 tags used as agent tags. |
+| `collect_instance_metadata` | Set this to yes to have an instance's EC2 metadata used as agent tags.    |
+| `dd_url`                    | The Datadog intake server URL. You are unlikely to need to change this.   |
+| `host`                      | Overrides the node's host name.                                           |
+| `local_tags`                | An array of <KEY:VALUE> strings that are set as tags for the node.        |
+| `non_local_traffic`         | Set this to allow other nodes to relay their traffic through this one.    |
+| `agent6_enable`             | A boolean to install Agent v6 and override the Agent v5 default.          |
 
 ### Proxy Settings
 
-If you need to connect to the internet through a proxy, you can set `proxy_host`, `proxy_port`, `proxy_user` and `proxy_password`.
+To connect to the Internet through a proxy, set `proxy_host`, `proxy_port`, `proxy_user` and `proxy_password`.
 
 
 Module Development and Testing
@@ -346,7 +336,7 @@ cd puppet-datadog-agent
 
 ```
 bundle install
-rake lint              # Check puppet manifests with puppet-lint / Run puppet-lint
+rake lint              # Check Puppet manifests with puppet-lint / Run puppet-lint
 rake spec              # Run spec tests in a clean fixtures directory
 rake syntax            # Syntax check Puppet manifests and templates
 rake syntax:manifests  # Syntax check Puppet manifests
@@ -362,3 +352,11 @@ pre-commit install
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+
+[1]: http://www.datadoghq.com
+[2]: https://forge.puppetlabs.com/datadog/datadog_agent
+[3]: https://app.datadoghq.com/account/settings#api
+[4]: https://github.com/DataDog/dogapi-rb
+[5]: https://app.datadoghq.com/account/settings#integrations
+[6]: https://app.datadoghq.com/event/stream

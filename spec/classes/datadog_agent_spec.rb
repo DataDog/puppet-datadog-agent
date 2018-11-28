@@ -894,7 +894,10 @@ describe 'datadog_agent' do
               'content' => /^collect_ec2_tags: false\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^dd_url: \"{0,1}https:\/\/app.datadoghq.com\"{0,1}\n/,
+              'content' => /^dd_url: ''\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+                'content' => /^site: datadoghq.com\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^enable_metadata_collection: true\n/,
@@ -958,6 +961,14 @@ describe 'datadog_agent' do
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
               'content' => /^collect_ec2_tags: true\n/,
+              )}
+            end
+            context 'datadog EU' do
+              let(:params) {{
+                  :datadog_site => 'datadoghq.eu',
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^site: datadoghq.eu\n/,
               )}
             end
             context 'forward statsd settings set' do

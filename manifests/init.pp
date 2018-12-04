@@ -151,35 +151,35 @@ class datadog_agent (
 
   # Set initial permissions on log files
   exec { 'messages_permissions':
-    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/messages || true',
-    unless  => 'if [ -f /var/log/messages ] ; then if [ `getfacl /var/log/messages 2>/dev/null | sed -n -e 6p` == "group:dd-agent:r-x" ] ; then true ; else false ; fi ; fi',
+    command  => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/messages || true',
+    unless   => 'if [ -f /var/log/messages ] ; then if [ `getfacl /var/log/messages 2>/dev/null | sed -n -e 6p` != "group:dd-agent:r-x" ] ; then false ; fi ; fi',
     provider => shell;
   }
   exec { 'secure_permissions':
-    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/secure || true',
-    unless  => 'if [ -f /var/log/secure ] ; then if [ `getfacl /var/log/secure 2>/dev/null | sed -n -e 6p` == "group:dd-agent:r-x" ] ; then true ; else false ; fi ; fi',
+    command  => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/secure || true',
+    unless   => 'if [ -f /var/log/secure ] ; then if [ `getfacl /var/log/secure 2>/dev/null | sed -n -e 6p` != "group:dd-agent:r-x" ] ; then false ; fi ; fi',
     provider => shell;
   }
   exec { 'uwsgi_permissions':
-    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi.log || true',
-    unless  => 'if [ -f /var/log/adroll/uwsgi.log ] ; then if [ `getfacl /var/log/adroll/uwsgi.log 2>/dev/null | sed -n -e 6p` == "group:dd-agent:r-x" ] ; then true ; else false ; fi ; fi',
+    command  => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi.log || true',
+    unless   => 'if [ -f /var/log/adroll/uwsgi.log ] ; then if [ `getfacl /var/log/adroll/uwsgi.log 2>/dev/null | sed -n -e 6p` != "group:dd-agent:r-x" ] ; then false ; fi ; fi',
     provider => shell;
   }
   exec { 'uwsgi-gk_permissions':
-    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-gk.log || true',
-    onlyif  => 'if [ -f /var/log/adroll/uwsgi-gk.log ] ; then if [ `getfacl /var/log/adroll/uwsgi-gk.log 2>/dev/null | sed -n -e 6p` == "group:dd-agent:r-x" ] ; then true ; else false ; fi ; fi',
+    command  => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-gk.log || true',
+    unless   => 'if [ -f /var/log/adroll/uwsgi-gk.log ] ; then if [ `getfacl /var/log/adroll/uwsgi-gk.log 2>/dev/null | sed -n -e 6p` != "group:dd-agent:r-x" ] ; then false ; fi ; fi',
     provider => shell;
   }
   exec { 'uwsgi-report_permissions':
-    command => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-report.log || true',
-    unless  => 'if [ -f /var/log/adroll/uwsgi-report.log ] ; then if [ `getfacl /var/log/adroll/uwsgi-report.log 2>/dev/null | sed -n -e 6p` == "group:dd-agent:r-x" ] ; then true ; else false ; fi ; fi',
+    command  => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/adroll/uwsgi-report.log || true',
+    unless   => 'if [ -f /var/log/adroll/uwsgi-report.log ] ; then if [ `getfacl /var/log/adroll/uwsgi-report.log 2>/dev/null | sed -n -e 6p` != "group:dd-agent:r-x" ] ; then false ; fi ; fi',
     provider => shell;
   }
 
   # Sometimes the Datadog auth_token file becomes owned by root, chown it just in case
   exec { 'chown_auth_token':
     command => 'chown dd-agent /etc/datadog-agent/auth_token || true',
-    unless  => 'if [ `stat -c %U  /etc/datadog-agent/auth_token` == "dd-agent" ] ; then true ; else false; fi',
+    unless  => 'if [ `stat -c %U  /etc/datadog-agent/auth_token` != "dd-agent" ] ; then false; fi',
     provider => shell,
     notify  => Service[$service_name];
   }

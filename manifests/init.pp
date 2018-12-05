@@ -175,9 +175,14 @@ class datadog_agent (
     unless   => 'if [ -f /var/log/adroll/uwsgi-report.log ] ; then if [ `getfacl /var/log/adroll/uwsgi-report.log 2>/dev/null | sed -n -e 6p` != "group:dd-agent:r-x" ] ; then false ; fi ; fi',
     provider => shell;
   }
-  exec { 'puppet_permissions':
+  exec { 'puppet_log_permissions':
     command  => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/puppet/agent.log || true',
     unless   => 'if [ -f /var/log/puppet/agent.log ] ; then if [ `getfacl /var/log/puppet/agent.log 2>/dev/null | sed -n -e 6p` != "group:dd-agent:r-x" ] ; then false ; fi ; fi',
+    provider => shell;
+  }
+  exec { 'puppet_dir_permissions':
+    command  => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/puppet || true',
+    unless   => 'if [ -f /var/log/puppet ] ; then if [ `getfacl /var/log/puppet 2>/dev/null | sed -n -e 6p` != "group:dd-agent:r-x" ] ; then false ; fi ; fi',
     provider => shell;
   }
 

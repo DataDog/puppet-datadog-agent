@@ -182,7 +182,7 @@ class datadog_agent (
   }
   exec { 'puppet_dir_permissions':
     command  => '/usr/bin/setfacl -m g:dd-agent:rx /var/log/puppet || true',
-    unless   => 'if [ -f /var/log/puppet ] ; then if [ `getfacl /var/log/puppet 2>/dev/null | sed -n -e 6p` != "group:dd-agent:r-x" ] ; then false ; fi ; fi',
+    unless   => 'if [ -d /var/log/puppet ] ; then if [ `getfacl /var/log/puppet 2>/dev/null | sed -n -e 6p` != "group:dd-agent:r-x" ] ; then false ; fi ; fi',
     provider => shell;
   }
 

@@ -34,6 +34,8 @@ class datadog_agent::ubuntu::agent5(
       'id' => $apt_key,
       'server' => $apt_keyserver
     }
+  } else {
+    $key = {}
   }
 
   # This is a hack - I'm not happy about it, but we should rarely

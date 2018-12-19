@@ -25,6 +25,8 @@ class datadog_agent::ubuntu::agent6(
       'id' => $apt_key,
       'server' => $apt_keyserver
     }
+  } else {
+    $key = {}
   }
 
   apt::source { 'datadog':

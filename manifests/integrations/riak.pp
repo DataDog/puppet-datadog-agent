@@ -27,10 +27,14 @@ class datadog_agent::integrations::riak(
   validate_legacy('String', 'validate_string', $url)
   validate_legacy('Array', 'validate_array', $tags)
 
+  $legacy_dst = "${datadog_agent::conf_dir}/riak.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/riak.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/riak.yaml"
+    $dst = $legacy_dst
   }
 
   file {

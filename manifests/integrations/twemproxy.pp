@@ -41,10 +41,14 @@ class datadog_agent::integrations::twemproxy(
     $_instances = $instances
   }
 
+  $legacy_dst = "${datadog_agent::conf_dir}/twemproxy.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/twemproxy.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/twemproxy.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

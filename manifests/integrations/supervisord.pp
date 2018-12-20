@@ -46,10 +46,14 @@ class datadog_agent::integrations::supervisord (
 ) inherits datadog_agent::params {
   include datadog_agent
 
+  $legacy_dst = "${datadog_agent::conf_dir}/supervisord.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/supervisord.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/supervisord.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

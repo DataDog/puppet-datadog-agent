@@ -70,10 +70,14 @@ class datadog_agent::integrations::rabbitmq (
   validate_legacy('Array', 'validate_array', $vhosts)
   include datadog_agent
 
+  $legacy_dst = "${datadog_agent::conf_dir}/rabbitmq.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/rabbitmq.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/rabbitmq.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

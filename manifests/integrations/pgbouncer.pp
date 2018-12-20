@@ -56,10 +56,14 @@ class datadog_agent::integrations::pgbouncer(
   validate_legacy('Array', 'validate_array', $tags)
   validate_legacy('Array', 'validate_array', $pgbouncers)
 
+  $legacy_dst = "${datadog_agent::conf_dir}/pgbouncer.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/pgbouncer.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/pgbouncer.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

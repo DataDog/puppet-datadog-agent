@@ -17,10 +17,14 @@ class datadog_agent::integrations::mesos_slave(
   $url = 'http://localhost:5051'
 ) inherits datadog_agent::params {
 
+  $legacy_dst = "${datadog_agent::conf_dir}/mesos_slave.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/mesos_slave.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/mesos_slave.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

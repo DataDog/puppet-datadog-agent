@@ -20,10 +20,14 @@ class datadog_agent::integrations::cacti(
 ) inherits datadog_agent::params {
   include datadog_agent
 
+  $legacy_dst = "${datadog_agent::conf_dir}/cacti.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/cacti.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/cacti.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

@@ -17,7 +17,11 @@ describe 'datadog_agent::integrations::fluentd' do
       let(:dd_group) { 'root' }
       let(:dd_package) { 'datadog-agent' }
       let(:dd_service) { 'datadog-agent' }
-      let(:conf_file) { "#{conf_dir}/fluentd.yaml" }
+      if enabled
+        let(:conf_file) { "#{conf_dir}/fluentd.yaml" }
+      else
+        let(:conf_file) { "#{conf_dir}/fluentd.d/conf.yaml" }
+      end
 
       context 'with default parameters' do
         it { should compile }

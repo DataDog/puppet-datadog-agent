@@ -18,7 +18,11 @@ describe 'datadog_agent::integrations::cacti' do
       let(:dd_package) { 'datadog-agent' }
       let(:dd_service) { 'datadog-agent' }
       let(:agent5_enable) { enabled }
-      let(:conf_file) { "#{conf_dir}/cacti.yaml" }
+      if enabled
+        let(:conf_file) { "#{conf_dir}/cacti.yaml" }
+      else
+        let(:conf_file) { "#{conf_dir}/cacti.d/conf.yaml" }
+      end
 
       context 'with default parameters' do
         it { should compile }

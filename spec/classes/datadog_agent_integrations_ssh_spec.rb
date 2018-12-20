@@ -17,7 +17,11 @@ describe 'datadog_agent::integrations::ssh' do
       let(:dd_group) { 'root' }
       let(:dd_package) { 'datadog-agent' }
       let(:dd_service) { 'datadog-agent' }
-      let(:conf_file) { "#{conf_dir}/ssh.yaml" }
+      if enabled
+        let(:conf_file) { "#{conf_dir}/ssh.yaml" }
+      else
+        let(:conf_file) { "#{conf_dir}/ssh.d/conf.yaml" }
+      end
 
       context 'with default parameters' do
         it { should compile }

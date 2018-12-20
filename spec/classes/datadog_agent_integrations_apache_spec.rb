@@ -15,7 +15,11 @@ describe 'datadog_agent::integrations::apache' do
       let(:dd_package) { 'datadog-agent' }
       let(:dd_service) { 'datadog-agent' }
       let(:agent5_enable) { enabled }
-      let(:conf_file) { "#{conf_dir}/apache.yaml" }
+      if enabled
+        let(:conf_file) { "#{conf_dir}/apache.yaml" }
+      else
+        let(:conf_file) { "#{conf_dir}/apache.d/conf.yaml" }
+      end
   
       it { should compile.with_all_deps }
 

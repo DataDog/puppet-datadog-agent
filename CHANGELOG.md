@@ -9,8 +9,12 @@ Changes
 * [FEATURE] Add `site` for EU/USA region support. See [#464][] 
 * [FEATURE] Make Agent 6 `cmd_port` configurable. See [#473][] (Thanks [@arkpoah][]) 
 * [FEATURE] Support backup keyservers. See [#470][] 
+* [FEATURE] Support `hostname_fqdn`. See [#481][] (Thanks [@alexfouche][]) 
+* [FEATURE] Support GCE tag collection. See [#481][] (Thanks [@alexfouche][]) 
+* [IMPROVEMENT] Use recommended locations for integration configs. See [#481][] (Thanks [@alexfouche][]) 
 * [IMPROVEMENT] Silence agent6_extra_options notification on default params. See [#449][] (Thanks [@spectralblu][])
 * [IMPROVEMENT] Generic integrations improvements. See [#471][]
+* [BUGFIX] Fix Hiera tag merge in process integration. See [#481][] (Thanks [@alexfouche][]) 
 * [BUGFIX] Merge `datadog_agent::tags` hiera values. See [#472][] (Thanks [@paulhamby][]) 
 * [BUGFIX] Fix `apm_enabled` YAML. See [#466][] (Thanks [@NoodlesNZ][]) 
 * [BUGFIX] Fix `facts_to_tags` regression in Agent 6. See [#455][] (Thanks [@tommoyangn][]) 
@@ -550,6 +554,7 @@ Please read the [docs]() for more details.
 [#472]: https://github.com/DataDog/puppet-datadog-agent/issues/472
 [#473]: https://github.com/DataDog/puppet-datadog-agent/issues/473
 [#475]: https://github.com/DataDog/puppet-datadog-agent/issues/475
+[#481]: https://github.com/DataDog/puppet-datadog-agent/issues/481
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert

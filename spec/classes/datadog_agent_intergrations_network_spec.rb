@@ -17,7 +17,11 @@ describe 'datadog_agent::integrations::network' do
       let(:dd_group) { 'root' }
       let(:dd_package) { 'datadog-agent' }
       let(:dd_service) { 'datadog-agent' }
-      let(:conf_file) { "#{conf_dir}/network.yaml" }
+      if enabled
+        let(:conf_file) { "#{conf_dir}/network.yaml" }
+      else
+        let(:conf_file) { "#{conf_dir}/network.d/conf.yaml" }
+      end
 
       context 'with default parameters' do
         it { should compile }

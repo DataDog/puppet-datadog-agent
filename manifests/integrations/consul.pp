@@ -40,10 +40,14 @@ class datadog_agent::integrations::consul(
   validate_legacy('Boolean', 'validate_bool', $new_leader_checks)
   validate_legacy('Optional[Array]', 'validate_array', $service_whitelist)
 
+  $legacy_dst = "${datadog_agent::conf_dir}/consul.yaml"
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/consul.yaml"
+    $dst = "${datadog_agent::conf6_dir}/consul.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/consul.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

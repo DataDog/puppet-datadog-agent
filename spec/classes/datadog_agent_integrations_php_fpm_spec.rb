@@ -17,7 +17,11 @@ describe 'datadog_agent::integrations::php_fpm' do
       let(:dd_group) { 'root' }
       let(:dd_package) { 'datadog-agent' }
       let(:dd_service) { 'datadog-agent' }
-      let(:conf_file) { "#{conf_dir}/php_fpm.yaml" }
+      if enabled
+        let(:conf_file) { "#{conf_dir}/php_fpm.yaml" }
+      else
+        let(:conf_file) { "#{conf_dir}/php_fpm.d/conf.yaml" }
+      end
 
       it { should compile.with_all_deps }
       it { should contain_file(conf_file).with(

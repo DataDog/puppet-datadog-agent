@@ -34,10 +34,14 @@ class datadog_agent::integrations::zk (
 
   validate_legacy('Array', 'validate_array', $servers)
 
+  $legacy_dst = "${datadog_agent::conf_dir}/zk.yaml"
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/zk.yaml"
+    $dst = "${datadog_agent::conf6_dir}/zk.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/zk.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

@@ -45,10 +45,14 @@ class datadog_agent::integrations::php_fpm(
     $_instances = $instances
   }
 
+  $legacy_dst = "${datadog_agent::conf_dir}/php_fpm.yaml"
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/php_fpm.yaml"
+    $dst = "${datadog_agent::conf6_dir}/php_fpm.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/php_fpm.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

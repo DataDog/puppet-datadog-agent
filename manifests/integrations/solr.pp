@@ -38,10 +38,14 @@ class datadog_agent::integrations::solr(
 ) inherits datadog_agent::params {
   include datadog_agent
 
+  $legacy_dst = "${datadog_agent::conf_dir}/solr.yaml"
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/solr.yaml"
+    $dst = "${datadog_agent::conf6_dir}/solr.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/solr.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

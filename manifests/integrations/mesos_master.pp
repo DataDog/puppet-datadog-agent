@@ -19,7 +19,7 @@ class datadog_agent::integrations::mesos_master(
   include datadog_agent
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/mesos.yaml"
+    $dst = "${datadog_agent::conf6_dir}/mesos.d/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/mesos.yaml"
   }
@@ -28,10 +28,14 @@ class datadog_agent::integrations::mesos_master(
     ensure => 'absent'
   }
 
+  $legacy_dst_master = "${datadog_agent::conf_dir}/mesos_master.yaml"
   if !$::datadog_agent::agent5_enable {
-    $dst_master = "${datadog_agent::conf6_dir}/mesos_master.yaml"
+    $dst_master = "${datadog_agent::conf6_dir}/mesos_master.d/conf.yaml"
+    file { $legacy_dst_master:
+      ensure => 'absent'
+    }
   } else {
-    $dst_master = "${datadog_agent::conf_dir}/mesos_master.yaml"
+    $dst_master = $legacy_dst_master
   }
 
   file { $dst_master:

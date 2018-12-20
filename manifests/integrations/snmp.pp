@@ -69,7 +69,13 @@ class datadog_agent::integrations::snmp (
     3 => $snmp_v3_instances,
   }
 
-  file { "${datadog_agent::params::conf_dir}/snmp.yaml":
+  if !$::datadog_agent::agent5_enable {
+    $dst = "${datadog_agent::conf6_dir}/snmp.d/conf.yaml"
+  } else {
+    $dst = "${datadog_agent::conf_dir}/snmp.yaml"
+  }
+
+  file { $dst:
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,

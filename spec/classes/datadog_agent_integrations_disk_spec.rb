@@ -53,6 +53,8 @@ describe 'datadog_agent::integrations::disk' do
         }}
         let(:yaml_conf) {
            <<-HEREDOC
+### MANAGED BY PUPPET
+
 init_config:
 
 instances:

@@ -20,7 +20,7 @@ describe 'datadog_agent::integrations::kubernetes_state' do
       if enabled
         let(:conf_file) { "#{conf_dir}/kubernetes_state.yaml" }
       else
-        let(:conf_file) { "#{conf_dir}/kubernetes_state.yaml" }
+        let(:conf_file) { "#{conf_dir}/kubernetes_state.d/conf.yaml" }
       end
 
       it { should compile.with_all_deps }

@@ -1,6 +1,22 @@
 Changes
 =======
 
+# 2.4.0 / Unreleased 
+
+### Notes
+
+* [FEATURE] Support EU site in the reporter. See [#468][] 
+* [FEATURE] Add `site` for EU/USA region support. See [#464][] 
+* [FEATURE] Make Agent 6 `cmd_port` configurable. See [#473][] (Thanks [@arkpoah][]) 
+* [FEATURE] Support backup keyservers. See [#470][] 
+* [IMPROVEMENT] Silence agent6_extra_options notification on default params. See [#449][] (Thanks [@spectralblu][])
+* [IMPROVEMENT] Generic integrations improvements. See [#471][]
+* [BUGFIX] Merge `datadog_agent::tags` hiera values. See [#472][] (Thanks [@paulhamby][]) 
+* [BUGFIX] Fix `apm_enabled` YAML. See [#466][] (Thanks [@NoodlesNZ][]) 
+* [BUGFIX] Fix `facts_to_tags` regression in Agent 6. See [#455][] (Thanks [@tommoyangn][]) 
+* [TEST] Removing `sudo: false` as required by Travis CI. See [#475][] 
+* [TEST] Adding vagrant-based test environment facilities. See [#462][] 
+
 # 2.3.0 / 2018-07-11
 
 ### Notes
@@ -523,6 +539,17 @@ Please read the [docs]() for more details.
 [#444]: https://github.com/DataDog/puppet-datadog-agent/issues/444
 [#445]: https://github.com/DataDog/puppet-datadog-agent/issues/445
 [#446]: https://github.com/DataDog/puppet-datadog-agent/issues/446
+[#449]: https://github.com/DataDog/puppet-datadog-agent/issues/449
+[#455]: https://github.com/DataDog/puppet-datadog-agent/issues/455
+[#462]: https://github.com/DataDog/puppet-datadog-agent/issues/462
+[#464]: https://github.com/DataDog/puppet-datadog-agent/issues/464
+[#466]: https://github.com/DataDog/puppet-datadog-agent/issues/466
+[#468]: https://github.com/DataDog/puppet-datadog-agent/issues/468
+[#470]: https://github.com/DataDog/puppet-datadog-agent/issues/470
+[#471]: https://github.com/DataDog/puppet-datadog-agent/issues/471
+[#472]: https://github.com/DataDog/puppet-datadog-agent/issues/472
+[#473]: https://github.com/DataDog/puppet-datadog-agent/issues/473
+[#475]: https://github.com/DataDog/puppet-datadog-agent/issues/475
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
@@ -587,6 +614,7 @@ Please read the [docs]() for more details.
 [@obowersa]: https://github.com/obowersa
 [@oshmyrko]: https://github.com/oshmyrko
 [@pabrahamsson]: https://github.com/pabrahamsson
+[@paulhamby]: https://github.com/paulhamby
 [@pid1]: https://github.com/pid1
 [@pulkitsethi]: https://github.com/pulkitsethi
 [@rooprob]: https://github.com/rooprob
@@ -596,11 +624,13 @@ Please read the [docs]() for more details.
 [@samueljamesmarshall]: https://github.com/samueljamesmarshall
 [@scottgeary]: https://github.com/scottgeary
 [@sethcleveland]: https://github.com/sethcleveland
+[@spectralblu]: https://github.com/spectralblu
 [@stamak]: https://github.com/stamak
 [@stantona]: https://github.com/stantona
 [@swwolf]: https://github.com/swwolf
 [@szponek]: https://github.com/szponek
 [@tdm4]: https://github.com/tdm4
 [@teintuc]: https://github.com/teintuc
+[@tommoyangn]: https://github.com/tommoyangn
 [@tuxinaut]: https://github.com/tuxinaut
 [@yrcjaya]: https://github.com/yrcjaya

@@ -6,7 +6,7 @@ Changes
 ### Notes
 
 * [FEATURE] Support EU site in the reporter. See [#468][] 
-* [FEATURE] Add `site` for EU/USA region support. See [#464][] 
+* [FEATURE] Add `datadog_site` for EU/USA region support. See [#464][] 
 * [FEATURE] Make Agent 6 `cmd_port` configurable. See [#473][] (Thanks [@arkpoah][]) 
 * [FEATURE] Support backup keyservers. See [#470][] 
 * [FEATURE] Support `hostname_fqdn`. See [#481][] (Thanks [@alexfouche][]) 

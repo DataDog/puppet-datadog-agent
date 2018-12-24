@@ -32,6 +32,11 @@
 #
 #       If `tag families` are enabled, the first capture group in the regex will
 #       be used as the queue_family tag
+#   $exchanges
+#   $exchanges_regexes
+#       Specify the exchanges to collect metrics on (up to 50 queues).
+#       If you have less than 50 queues, metrics will be collected on all exchanges
+#       by default.
 #   $vhosts
 #       List of vhosts to monitor with service checks. By default, a list of all
 #       vhosts is fetched and each one will be checked using the aliveness API.
@@ -56,6 +61,8 @@ class datadog_agent::integrations::rabbitmq (
   Array $queues              = [],
   Array $queues_regexes      = [],
   Array $vhosts              = [],
+  Array $exchanges           = [],
+  Array $exchanges_regexes   = [],
 ) inherits datadog_agent::params {
 
   validate_legacy('String', 'validate_string', $url)
@@ -67,6 +74,8 @@ class datadog_agent::integrations::rabbitmq (
   validate_legacy('Array', 'validate_array', $nodes_regexes)
   validate_legacy('Array', 'validate_array', $queues)
   validate_legacy('Array', 'validate_array', $queues_regexes)
+  validate_legacy('Array', 'validate_array', $exchanges)
+  validate_legacy('Array', 'validate_array', $exchanges_regexes)
   validate_legacy('Array', 'validate_array', $vhosts)
   include datadog_agent
 

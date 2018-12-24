@@ -17,7 +17,11 @@ describe 'datadog_agent::integrations::ceph' do
       let(:dd_group) { 'root' }
       let(:dd_package) { 'datadog-agent' }
       let(:dd_service) { 'datadog-agent' }
-      let(:conf_file) { "#{conf_dir}/ceph.yaml" }
+      if enabled
+        let(:conf_file) { "#{conf_dir}/ceph.yaml" }
+      else
+        let(:conf_file) { "#{conf_dir}/ceph.d/conf.yaml" }
+      end
       let(:sudo_conf_file) { '/etc/sudoers.d/datadog_ceph' }
 
       it { should compile.with_all_deps }

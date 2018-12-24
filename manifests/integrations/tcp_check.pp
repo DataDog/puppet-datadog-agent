@@ -4,31 +4,31 @@
 #
 # Parameters:
 #   name
-#       (Required) - Name of the service. 
+#       (Required) - Name of the service.
 #        This will be included as a tag: instance:<name>.
 #
 #   host
-#       (Required) - Host to be checked. 
+#       (Required) - Host to be checked.
 #        This will be included as a tag: url:<host>:<port>.
 #
 #   port
-#       (Required) - Port to be checked. 
+#       (Required) - Port to be checked.
 #        This will be included as a tag: url:<host>:<port>.
 #
 #   timeout
 #       (Optional) - Timeout for the check. Defaults to 10 seconds.
 #
 #   threshold
-#       (Optional) - Used in conjunction with window. An alert will 
+#       (Optional) - Used in conjunction with window. An alert will
 #        trigger if the check fails <threshold> times in <window> attempts.
 #
 #   window
 #       (Optional) - Refer to threshold.
 #
 #   collect_response_time
-#       (Optional) - Defaults to false. If this is not set to true, no 
-#       response time metric will be collected. If it is set to true, the 
-#       metric returned is network.tcp.response_time. 
+#       (Optional) - Defaults to false. If this is not set to true, no
+#       response time metric will be collected. If it is set to true, the
+#       metric returned is network.tcp.response_time.
 #
 #   skip_event
 #        The (optional) skip_event parameter will instruct the check to not
@@ -117,10 +117,14 @@ class datadog_agent::integrations::tcp_check (
     $_instances = $instances
   }
 
+  $legacy_dst = "${datadog_agent::conf_dir}/tcp_check.yaml"
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/tcp_check.yaml"
+    $dst = "${datadog_agent::conf6_dir}/tcp_check.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/tcp_check.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

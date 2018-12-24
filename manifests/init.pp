@@ -11,10 +11,14 @@
 #       set to 'datadoghq.eu' to send data to the EU site.
 #       This option is only available with agent version >= 6.6.0.
 #   $host:
+#       Force the hostname to whatever you want. (default: auto-detected)
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value.
 #   $collect_ec2_tags
 #       Collect AWS EC2 custom tags as agent tags.
+#       Boolean. Default: false
+#   $collect_gce_tags
+#       Collect Google Cloud Engine metadata as agent tags.
 #       Boolean. Default: false
 #   $collect_instance_metadata
 #       The Agent will try to collect instance metadata for EC2 and GCE instances.
@@ -45,6 +49,12 @@
 #       Instead of reporting the puppet nodename, use this regex to extract the named
 #       'hostname' captured group to report the run in Datadog.
 #       ex.: '^(?<hostname>.*\.datadoghq\.com)(\.i-\w{8}\..*)?$'
+#   $hostname_fqdn
+#       Make the agent use "hostname -f" on unix-based systems as a last resort
+#       way of determining the hostname instead of Golang "os.Hostname()"
+#       This will be enabled by default in version 6.6
+#       More information at  https://dtdg.co/flag-hostname-fqdn
+#       Optional: Valid values here are: true or false.
 #   $log_to_syslog
 #       Set value of 'log_to_syslog' variable. Default is true -> yes as in dd-agent.
 #       Valid values here are: true or false.
@@ -212,6 +222,7 @@ class datadog_agent(
   $host = '',
   $api_key = 'your_API_key',
   $collect_ec2_tags = false,
+  $collect_gce_tags = false,
   $collect_instance_metadata = true,
   $tags = [],
   $integrations = {},
@@ -228,6 +239,7 @@ class datadog_agent(
   $service_enable = true,
   $manage_repo = true,
   $hostname_extraction_regex = nil,
+  $hostname_fqdn = false,
   $dogstatsd_port = 8125,
   $dogstatsd_socket = '',
   $statsd_forward_host = '',
@@ -315,6 +327,7 @@ class datadog_agent(
   validate_legacy(String, 'validate_string', $dd_url)
   validate_legacy(String, 'validate_string', $datadog_site)
   validate_legacy(String, 'validate_string', $host)
+  validate_legacy(Boolean, 'validate_bool', $hostname_fqdn)
   validate_legacy(String, 'validate_string', $api_key)
   validate_legacy(Array, 'validate_array', $tags)
   validate_legacy(Boolean, 'validate_bool', $hiera_tags)
@@ -341,6 +354,7 @@ class datadog_agent(
   validate_legacy(Boolean, 'validate_bool', $skip_apt_key_trusting)
   validate_legacy(Boolean, 'validate_bool', $use_curl_http_client)
   validate_legacy(Boolean, 'validate_bool', $collect_ec2_tags)
+  validate_legacy(Boolean, 'validate_bool', $collect_gce_tags)
   validate_legacy(Boolean, 'validate_bool', $collect_instance_metadata)
   validate_legacy(String, 'validate_string', $recent_point_threshold)
   validate_legacy(String, 'validate_re', $_listen_port, '^\d*$')
@@ -636,7 +650,9 @@ class datadog_agent(
       'dd_url' => $dd_url,
       'site' => $datadog_site,
       'cmd_port' => $cmd_port,
+      'hostname_fqdn' => $hostname_fqdn,
       'collect_ec2_tags' => $collect_ec2_tags,
+      'collect_gce_tags' => $collect_gce_tags,
       'conf_path' => $datadog_agent::params::conf6_dir,
       'enable_metadata_collection' => $collect_instance_metadata,
       'dogstatsd_port' => $dogstatsd_port,

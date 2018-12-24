@@ -50,15 +50,19 @@ class datadog_agent::integrations::process(
   validate_legacy('Array', 'validate_array', $processes)
 
   if $hiera_processes {
-    $local_processes = lookup({ 'name' => 'datadog_agent::integrations::process::processes', 'default_value' => []})
+    $local_processes = lookup({ 'name' => 'datadog_agent::integrations::process::processes', 'merge' => 'unique', 'default_value' => $processes })
   } else {
     $local_processes = $processes
   }
 
+  $legacy_dst = "${datadog_agent::conf_dir}/process.yaml"
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/process.yaml"
+    $dst = "${datadog_agent::conf6_dir}/process.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/process.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

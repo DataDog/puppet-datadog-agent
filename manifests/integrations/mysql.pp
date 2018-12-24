@@ -49,7 +49,7 @@
 #      extra_status_metrics      => 'true',
 #      extra_innodb_metrics      => 'true',
 #      extra_performance_metrics => 'true',
-#      schema_size_metrics       => 'true', 
+#      schema_size_metrics       => 'true',
 #      disable_innodb_metrics    => 'false',
 #      queries                   => [
 #        {
@@ -113,10 +113,14 @@ class datadog_agent::integrations::mysql(
     $_instances = $instances
   }
 
+  $legacy_dst = "${datadog_agent::conf_dir}/mysql.yaml"
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/mysql.yaml"
+    $dst = "${datadog_agent::conf6_dir}/mysql.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/mysql.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

@@ -1,3 +1,5 @@
+### MANAGED BY PUPPET
+
 init_config:
 
 instances:
@@ -38,6 +40,20 @@ instances:
 <% unless @vhosts.empty? -%>
        vhosts:
 <% @vhosts.each do |x| -%>
+         - <%= x %>
+<% end -%>
+<% end -%>
+
+<% unless @exchanges.empty?  -%>
+       exchanges:
+<% @exchanges.each do |x| -%>
+         - <%= x %>
+<% end -%>
+<% end -%>
+
+<% unless @exchanges_regexes.empty?  -%>
+       exchanges_regexes:
+<% @exchanges_regexes.each do |x| -%>
          - <%= x %>
 <% end -%>
 <% end -%>

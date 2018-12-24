@@ -48,10 +48,14 @@ class datadog_agent::integrations::disk (
     fail('error during compilation')
   }
 
+  $legacy_dst = "${datadog_agent::conf_dir}/disk.yaml"
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/disk.yaml"
+    $dst = "${datadog_agent::conf6_dir}/disk.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/disk.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

@@ -25,10 +25,14 @@ class datadog_agent::integrations::fluentd(
 
   validate_legacy('Optional[Array]', 'validate_array', $plugin_ids)
 
+  $legacy_dst = "${datadog_agent::conf_dir}/fluentd.yaml"
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/fluentd.yaml"
+    $dst = "${datadog_agent::conf6_dir}/fluentd.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/fluentd.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

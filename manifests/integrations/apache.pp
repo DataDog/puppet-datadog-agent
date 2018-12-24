@@ -39,10 +39,14 @@ class datadog_agent::integrations::apache (
   validate_legacy('Array', 'validate_array', $tags)
   validate_legacy('Boolean', 'validate_bool', $disable_ssl_validation)
 
+  $legacy_dst = "${datadog_agent::conf_dir}/apache.yaml"
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/apache.yaml"
+    $dst = "${datadog_agent::conf6_dir}/apache.d/conf.yaml"
+    file { $legacy_dst:
+      ensure => 'absent'
+    }
   } else {
-    $dst = "${datadog_agent::conf_dir}/apache.yaml"
+    $dst = $legacy_dst
   }
 
   file { $dst:

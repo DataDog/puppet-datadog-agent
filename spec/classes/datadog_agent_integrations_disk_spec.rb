@@ -17,7 +17,11 @@ describe 'datadog_agent::integrations::disk' do
       let(:dd_group) { 'root' }
       let(:dd_package) { 'datadog-agent' }
       let(:dd_service) { 'datadog-agent' }
-      let(:conf_file) { "#{conf_dir}/disk.yaml" }
+      if enabled
+        let(:conf_file) { "#{conf_dir}/disk.yaml" }
+      else
+        let(:conf_file) { "#{conf_dir}/disk.d/conf.yaml" }
+      end
 
       it { is_expected.to compile.with_all_deps }
       it { is_expected.to  contain_file(conf_file).with_content(
@@ -49,6 +53,8 @@ describe 'datadog_agent::integrations::disk' do
         }}
         let(:yaml_conf) {
            <<-HEREDOC
+### MANAGED BY PUPPET
+
 init_config:
 
 instances:

@@ -20,7 +20,7 @@ describe 'datadog_agent::integrations::docker_daemon' do
       if enabled
         let(:conf_file) { "#{conf_dir}/docker_daemon.yaml" }
       else
-        let(:conf_file) { "#{conf_dir}/docker.yaml" }
+        let(:conf_file) { "#{conf_dir}/docker.d/conf.yaml" }
       end
 
       it { should compile.with_all_deps }

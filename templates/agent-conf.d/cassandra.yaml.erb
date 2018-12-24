@@ -1,6 +1,4 @@
-#
-# MANAGED BY PUPPET
-#
+### MANAGED BY PUPPET
 
 instances:
   - host: <%= @host %>
@@ -52,7 +50,7 @@ init_config:
         domain: org.apache.cassandra.metrics
         type: ColumnFamily
         bean_regex:
-          - .*keyspace=.*  
+          - .*keyspace=.*
         name:
           - TotalDiskSpaceUsed
           - BloomFilterDiskSpaceUsed

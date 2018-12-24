@@ -11,6 +11,8 @@ Changes
 * [FEATURE] Support backup keyservers. See [#470][] 
 * [FEATURE] Support `hostname_fqdn`. See [#481][] (Thanks [@alexfouche][]) 
 * [FEATURE] Support GCE tag collection. See [#481][] (Thanks [@alexfouche][]) 
+* [FEATURE] Tomcat: support `jmx_url` option. See [#482][] (Thanks [@evansj][]) 
+* [IMPROVEMENT] Reports: fix `hostname_extraction_regex` default to undef. See [#482][] (Thanks [@evansj][]) 
 * [IMPROVEMENT] Use recommended locations for integration configs. See [#481][] (Thanks [@alexfouche][]) 
 * [IMPROVEMENT] Silence agent6_extra_options notification on default params. See [#449][] (Thanks [@spectralblu][])
 * [IMPROVEMENT] Generic integrations improvements. See [#471][]
@@ -555,6 +557,7 @@ Please read the [docs]() for more details.
 [#473]: https://github.com/DataDog/puppet-datadog-agent/issues/473
 [#475]: https://github.com/DataDog/puppet-datadog-agent/issues/475
 [#481]: https://github.com/DataDog/puppet-datadog-agent/issues/481
+[#482]: https://github.com/DataDog/puppet-datadog-agent/issues/482
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
@@ -591,6 +594,7 @@ Please read the [docs]() for more details.
 [@dschaaff]: https://github.com/dschaaff
 [@dzinek]: https://github.com/dzinek
 [@eddmann]: https://github.com/eddmann
+[@evansj]: https://github.com/evansj
 [@ewansteele]: https://github.com/ewansteele
 [@ffleming]: https://github.com/ffleming
 [@flyinprogrammer]: https://github.com/flyinprogrammer

@@ -238,7 +238,7 @@ class datadog_agent(
   $service_ensure = 'running',
   $service_enable = true,
   $manage_repo = true,
-  $hostname_extraction_regex = nil,
+  $hostname_extraction_regex = undef,
   $hostname_fqdn = false,
   $dogstatsd_port = 8125,
   $dogstatsd_socket = '',

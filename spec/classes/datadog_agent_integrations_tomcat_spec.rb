@@ -75,7 +75,7 @@ describe 'datadog_agent::integrations::tomcat' do
           password: 'passbar',
         }}
         it { should contain_file(conf_file).with_content(%r{host: tomcat1}) }
-        it { should contain_file(conf_file).with_content(%r{jmx_url: service:jmx:rmi:///jndi/rmi://tomcat.foo:9999/custompath}) }
+        it { should contain_file(conf_file).with_content(%r{jmx_url: "service:jmx:rmi:///jndi/rmi://tomcat.foo:9999/custompath"}) }
         it { should contain_file(conf_file).with_content(%r{user: userfoo}) }
         it { should contain_file(conf_file).with_content(%r{password: passbar}) }
       end

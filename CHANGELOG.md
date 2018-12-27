@@ -1,7 +1,7 @@
 Changes
 =======
 
-# 2.4.0 / Unreleased 
+# 2.4.0 / 2018-12-27 
 
 ### Notes
 
@@ -15,6 +15,7 @@ Changes
 * [IMPROVEMENT] Reports: fix `hostname_extraction_regex` default to undef. See [#482][] (Thanks [@evansj][]) 
 * [IMPROVEMENT] Use recommended locations for integration configs. See [#481][] (Thanks [@alexfouche][]) 
 * [IMPROVEMENT] Silence agent6_extra_options notification on default params. See [#449][] (Thanks [@spectralblu][])
+* [IMPROVEMENT] Improve proxy argument management. See [#484][]
 * [IMPROVEMENT] Generic integrations improvements. See [#471][]
 * [BUGFIX] Fix potential dependency cycle when used with other modules. See [#463][] 
 * [BUGFIX] Fix Hiera tag merge in process integration. See [#481][] (Thanks [@alexfouche][]) 
@@ -560,6 +561,7 @@ Please read the [docs]() for more details.
 [#475]: https://github.com/DataDog/puppet-datadog-agent/issues/475
 [#481]: https://github.com/DataDog/puppet-datadog-agent/issues/481
 [#482]: https://github.com/DataDog/puppet-datadog-agent/issues/482
+[#484]: https://github.com/DataDog/puppet-datadog-agent/issues/484
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert

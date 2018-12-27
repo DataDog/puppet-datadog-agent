@@ -16,6 +16,7 @@ Changes
 * [IMPROVEMENT] Use recommended locations for integration configs. See [#481][] (Thanks [@alexfouche][]) 
 * [IMPROVEMENT] Silence agent6_extra_options notification on default params. See [#449][] (Thanks [@spectralblu][])
 * [IMPROVEMENT] Generic integrations improvements. See [#471][]
+* [BUGFIX] Fix potential dependency cycle when used with other modules. See [#463][] 
 * [BUGFIX] Fix Hiera tag merge in process integration. See [#481][] (Thanks [@alexfouche][]) 
 * [BUGFIX] Merge `datadog_agent::tags` hiera values. See [#472][] (Thanks [@paulhamby][]) 
 * [BUGFIX] Fix `apm_enabled` YAML. See [#466][] (Thanks [@NoodlesNZ][]) 
@@ -548,6 +549,7 @@ Please read the [docs]() for more details.
 [#449]: https://github.com/DataDog/puppet-datadog-agent/issues/449
 [#455]: https://github.com/DataDog/puppet-datadog-agent/issues/455
 [#462]: https://github.com/DataDog/puppet-datadog-agent/issues/462
+[#463]: https://github.com/DataDog/puppet-datadog-agent/issues/463
 [#464]: https://github.com/DataDog/puppet-datadog-agent/issues/464
 [#466]: https://github.com/DataDog/puppet-datadog-agent/issues/466
 [#468]: https://github.com/DataDog/puppet-datadog-agent/issues/468

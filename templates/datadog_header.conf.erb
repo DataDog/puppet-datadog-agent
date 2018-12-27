@@ -6,22 +6,22 @@
 dd_url: <%= @_dd_url %>
 
 # If you need a proxy to connect to the Internet, provide the settings here
-<% if @proxy_host.empty? -%>
+<% if !defined?(@proxy_host) || @proxy_host.empty? -%>
 # proxy_host:
 <% else -%>
 proxy_host: <%= @proxy_host %>
 <% end -%>
-<% if @_proxy_port.empty? -%>
+<% if !defined?(@proxy_port) || "#{@proxy_port}".empty? -%>
 # proxy_port:
 <% else -%>
-proxy_port: <%= @_proxy_port %>
+proxy_port: <%= @proxy_port %>
 <% end -%>
-<% if @proxy_user.empty? -%>
+<% if !defined?(@proxy_user) || @proxy_user.empty? -%>
 # proxy_user:
 <% else -%>
 proxy_user: <%= @proxy_user %>
 <% end -%>
-<% if @proxy_password.empty? -%>
+<% if !defined?(@proxy_password) || @proxy_password.empty? -%>
 # proxy_password:
 <% else -%>
 proxy_password: <%= @proxy_password %>

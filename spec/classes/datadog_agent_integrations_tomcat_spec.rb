@@ -66,6 +66,19 @@ describe 'datadog_agent::integrations::tomcat' do
         it { should contain_file(conf_file).with_content(%r{trust_store_password: hunter2}) }
         it { should contain_file(conf_file).with_content(%r{tags:\s+foo: bar\s+baz: bat}) }
       end
+
+      context 'with jmx_url parameter set' do
+        let(:params) {{
+          hostname: 'tomcat1',
+          jmx_url: 'service:jmx:rmi:///jndi/rmi://tomcat.foo:9999/custompath',
+          username: 'userfoo',
+          password: 'passbar',
+        }}
+        it { should contain_file(conf_file).with_content(%r{host: tomcat1}) }
+        it { should contain_file(conf_file).with_content(%r{jmx_url: "service:jmx:rmi:///jndi/rmi://tomcat.foo:9999/custompath"}) }
+        it { should contain_file(conf_file).with_content(%r{user: userfoo}) }
+        it { should contain_file(conf_file).with_content(%r{password: passbar}) }
+      end
     end
   end
 end

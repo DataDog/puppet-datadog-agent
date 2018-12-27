@@ -245,10 +245,10 @@ class datadog_agent(
   $statsd_forward_host = '',
   $statsd_forward_port = '',
   $statsd_histogram_percentiles = '0.95',
-  $proxy_host = '',
-  $proxy_port = '',
-  $proxy_user = '',
-  $proxy_password = '',
+  Optional[String] $proxy_host = undef,
+  Optional[Variant[Integer, Pattern[/^\d*$/]]] $proxy_port = undef,
+  Optional[String] $proxy_user = undef,
+  Optional[String] $proxy_password = undef,
   $graphite_listen_port = '',
   $extra_template = '',
   $ganglia_host = '',
@@ -317,7 +317,6 @@ class datadog_agent(
   # lint:ignore:only_variable_string
   $_dogstatsd_port = "${dogstatsd_port}"
   $_statsd_forward_port = "${statsd_forward_port}"
-  $_proxy_port = "${proxy_port}"
   $_graphite_listen_port = "${graphite_listen_port}"
   $_listen_port = "${listen_port}"
   $_pup_port = "${pup_port}"
@@ -342,10 +341,6 @@ class datadog_agent(
   validate_legacy(String, 'validate_re', $_dogstatsd_port, '^\d*$')
   validate_legacy(String, 'validate_string', $statsd_histogram_percentiles)
   validate_legacy(String, 'validate_re', $_statsd_forward_port, '^\d*$')
-  validate_legacy(String, 'validate_string', $proxy_host)
-  validate_legacy(String, 'validate_re', $_proxy_port, '^\d*$')
-  validate_legacy(String, 'validate_string', $proxy_user)
-  validate_legacy(String, 'validate_string', $proxy_password)
   validate_legacy(String, 'validate_re', $_graphite_listen_port, '^\d*$')
   validate_legacy(String, 'validate_string', $extra_template)
   validate_legacy(String, 'validate_string', $ganglia_host)
@@ -578,7 +573,7 @@ class datadog_agent(
     if !empty($proxy_host) {
         notify { 'Setting proxy_host will have no effect on agent6 please use agent6_extra_options to set your proxy': }
     }
-    if !empty($_proxy_port) {
+    if !empty($proxy_port) {
         notify { 'Setting proxy_port will have no effect on agent6 please use agent6_extra_options to set your proxy': }
     }
     if !empty($proxy_user) {

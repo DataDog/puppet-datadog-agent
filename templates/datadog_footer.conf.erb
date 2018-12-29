@@ -347,6 +347,9 @@ process_agent_enabled: <%= @process_enabled %>
 # Enable the trace agent.
 apm_enabled: <%= @apm_enabled %>
 
+# Enable and the trace search & analytics.
+  analyzed_spans:
+    <%= @apm_trace_search_analytics_spans.join(',') %>
 
 <% if not @extra_template.empty? -%>
 # ========================================================================== #

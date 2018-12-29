@@ -16,7 +16,7 @@ Releases
 
 There are currently two actively maintained versions for the Puppet module. For users on Puppet >= 4.6.x, and possibly some older 4.x puppets, it is recommended to use version 2.0+ of the module.
 
-For users running on older versions of Puppet the legacy module, series 1.x, should support most use-cases. 
+For users running on older versions of Puppet the legacy module, series 1.x, should support most use-cases.
 
 The majority of users should be able to use the newer module as many of the Puppet versions supported in the 1.x series of the module have been EOL'd.
 
@@ -291,7 +291,10 @@ These variables can be set in the `datadog_agent` class to control settings in t
 | `local_tags`                | An array of <KEY:VALUE> strings that are set as tags for the node.                                                                                                                               |
 | `non_local_traffic`         | Set this to allow other nodes to relay their traffic through this one.                                                                                                                           |
 | `agent5_enable`             | A boolean to install Agent v5 and override the Agent v6 default.                                                                                                                                 |
-| `apm_enabled`               | A boolean to enable the APM Agent (defaults to false).                                                                                                                                           |
+| `apm_enabled`               | A boolean to enable the APM Agent (defaults to false).                                                                                                         
+
+| `apm_trace_search_analytics_events`    | An array to add APM events for the Trace Search & Analytics tool. (defaults to []).
+                                  |
 | `process_enabled`           | A boolean to enable the process agent (defaults to false).                                                                                                                                       |
 | `scrub_args`                | A boolean to enable the process cmdline scrubbing (defaults to true).                                                                                                                            |
 | `custom_sensitive_words`    | An array to add more words beyond the default ones used by the scrubbing feature (defaults to []).                                                                                               |

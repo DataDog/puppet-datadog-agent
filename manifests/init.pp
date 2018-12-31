@@ -231,7 +231,7 @@ class datadog_agent(
   $facts_to_tags = [],
   $puppet_run_reports = false,
   $puppetmaster_user = $settings::user,
-  $puppet_gem_provider = $datadog_agent::params::gem_provider,
+  String $puppet_gem_provider = $datadog_agent::params::gem_provider,
   $non_local_traffic = false,
   $dogstreams = [],
   $log_level = 'info',
@@ -335,7 +335,6 @@ class datadog_agent(
   validate_legacy(Array, 'validate_array', $facts_to_tags)
   validate_legacy(Boolean, 'validate_bool', $puppet_run_reports)
   validate_legacy(String, 'validate_string', $puppetmaster_user)
-  validate_legacy(String, 'validate_string', $puppet_gem_provider)
   validate_legacy(Boolean, 'validate_bool', $non_local_traffic)
   validate_legacy(Boolean, 'validate_bool', $log_to_syslog)
   validate_legacy(Boolean, 'validate_bool', $manage_repo)

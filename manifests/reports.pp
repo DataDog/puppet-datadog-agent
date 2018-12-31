@@ -15,11 +15,11 @@
 #
 class datadog_agent::reports(
   $api_key,
-  $puppet_gem_provider,
   $puppetmaster_user,
   $dogapi_version,
   $hostname_extraction_regex = undef,
   $datadog_site = 'datadoghq.com',
+  $puppet_gem_provider = $datadog_agent::params::gem_provider,
 ) {
 
   include datadog_agent

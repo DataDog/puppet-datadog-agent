@@ -297,7 +297,7 @@ class datadog_agent(
   $apm_enabled = $datadog_agent::params::apm_default_enabled,
   $apm_env = 'none',
   $apm_non_local_traffic = false,
-  $apm_trace_search_analytics_events = $datadog_agent::params::$apm_t_s_analytics_events,
+  $apm_analyzed_spans = $datadog_agent::params::$apm_analyzed_spans_list,
   $process_enabled = $datadog_agent::params::process_default_enabled,
   $scrub_args = $datadog_agent::params::process_default_scrub_args,
   $custom_sensitive_words = $datadog_agent::params::process_default_custom_words,

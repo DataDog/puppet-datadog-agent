@@ -349,7 +349,7 @@ apm_enabled: <%= @apm_enabled %>
 
 # Enable and the trace search & analytics by adding a list of entered APM events.
   analyzed_spans:
-    <%= @apm_trace_search_analytics_spans.join(',') %>
+    <%= @apm_analyzed_spans.join(',') %>
 
 <% if not @extra_template.empty? -%>
 # ========================================================================== #

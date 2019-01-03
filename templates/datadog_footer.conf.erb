@@ -349,7 +349,9 @@ apm_enabled: <%= @apm_enabled %>
 
 # Enable and the trace search & analytics by adding a list of entered APM events.
   analyzed_spans:
-    <%= @apm_analyzed_spans.join(',') %>
+    <%= @apm_analyzed_spans.each { |service, resource, percentage|
+            service.nil? || resource.nil? || percentage.nil? ? (puts "Error data missing for: #{service}, #{resource}, #{percentage}") : (raise "#{service}|#{resource}: #{percentage}")
+        } %>
 
 <% if not @extra_template.empty? -%>
 # ========================================================================== #

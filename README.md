@@ -294,10 +294,8 @@ These variables can be set in the `datadog_agent` class to control settings in t
 | `apm_enabled`               | A boolean to enable the APM Agent (defaults to false).                                                                                                         
 
 | `apm_analyzed_spans`    | An array to add APM events for the Trace Search & Analytics tool. (defaults to []).
-|  Example: `{
-  '[my-rails-app','rails.request',1],
-  '['service-name','operation-name', 0.8]
-}`
+|  Example: `'[[my-rails-app','rails.request',1],
+  '['service-name','operation-name', 0.8]]`
                                   |
 | `process_enabled`           | A boolean to enable the process agent (defaults to false).                                                                                                                                       |
 | `scrub_args`                | A boolean to enable the process cmdline scrubbing (defaults to true).                                                                                                                            |

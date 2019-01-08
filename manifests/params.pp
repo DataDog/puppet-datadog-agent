@@ -25,7 +25,6 @@ class datadog_agent::params {
   $conf_dir_purge                 = false
   $apt_default_release            = 'stable'
   $apm_default_enabled            = false
-  $apm_analyzed_spans_list        = []
   $process_default_enabled        = false
   $process_default_scrub_args     = true
   $process_default_custom_words   = []

@@ -37,6 +37,14 @@ Install `datadog_agent` as a module in your Puppet master's module path.
 puppet module install datadog-datadog_agent
 ```
 
+**Note**: For CentOS versions <7.0, specify the service provider as `upstart`:
+
+```
+class{ 'datadog_agent': 
+    service_provider => 'upstart' 
+  }
+```
+
 ### Upgrade from the previous module version 1.x
 
 Most of the manifests are backward compatible. However, there are important changes to the main manifest:

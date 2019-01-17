@@ -12,8 +12,8 @@ instances:
     port: <%= server['port'] %>
   <%- if !server['tags'].nil? && server['tags'].any? -%>
     tags:
-    <%- server['tags'].each do |tag| -%>
-      - <%= tag %>
+    <%- server['tags'].each do |key,value| -%>
+      <%= key %>: <%= value %>
     <%- end -%>
   <%- end -%>
   <%- if !server['username'].nil? -%>

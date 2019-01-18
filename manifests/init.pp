@@ -617,6 +617,17 @@ class datadog_agent(
         $host_config = {}
     }
 
+    $apm_extra_config = {
+        'apm_config' => {},
+        }
+    if $apm_analyzed_spans {
+        $span_list = $apm_analyzed_spans.map { |service, resource, percentage|
+            "#{service}|#{resource}: #{percentage}"
+        }
+
+        $apm_extra_config['apm_config']['apm_analyzed_spans'] = $span_list
+    }
+
     if $statsd_forward_host != '' {
         if $_statsd_forward_port != '' {
             $statsd_forward_config = {
@@ -631,7 +642,7 @@ class datadog_agent(
     } else {
         $statsd_forward_config = {}
     }
-    $extra_config = deep_merge($base_extra_config, $agent6_extra_options, $statsd_forward_config, $host_config)
+    $extra_config = deep_merge($base_extra_config, $agent6_extra_options, $apm_extra_config, $statsd_forward_config, $host_config)
 
     file { $conf6_dir:
       ensure  => directory,

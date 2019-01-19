@@ -347,14 +347,6 @@ process_agent_enabled: <%= @process_enabled %>
 # Enable the trace agent.
 apm_enabled: <%= @apm_enabled %>
 
-# Enable and the trace search & analytics by adding a list of entered APM events.
-<% if @apm_analyzed_spans -%>
-  analyzed_spans:
-
-    <%= @apm_analyzed_spans.each { |service, resource, percentage|
-            puts "#{service}|#{resource}: #{percentage}"
-        } %>
-<% end -%>
 <% if not @extra_template.empty? -%>
 # ========================================================================== #
 # Custom Templates from Puppet                                               #

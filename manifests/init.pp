@@ -297,7 +297,7 @@ class datadog_agent(
   $apm_enabled = $datadog_agent::params::apm_default_enabled,
   $apm_env = 'none',
   $apm_non_local_traffic = false,
-  Optional[Array[Tuple[String,Float[0, 1], 2, 1]]] $apm_analyzed_spans = undef,
+  Optional[Hash[String, Float[0, 1]]] $apm_analyzed_spans = undef,
   $process_enabled = $datadog_agent::params::process_default_enabled,
   $scrub_args = $datadog_agent::params::process_default_scrub_args,
   $custom_sensitive_words = $datadog_agent::params::process_default_custom_words,
@@ -497,6 +497,7 @@ class datadog_agent(
   }
 
   if $agent5_enable {
+
     file { '/etc/dd-agent':
       ensure  => directory,
       owner   => $dd_user,
@@ -559,7 +560,7 @@ class datadog_agent(
       }
     }
 
-    if ($apm_enabled == true) and ($apm_env != 'none') {
+    if ($apm_enabled == true) and ($apm_env != 'none') or $apm_analyzed_spans {
       concat::fragment{ 'datadog apm footer':
         target  => '/etc/dd-agent/datadog.conf',
         content => template('datadog_agent/datadog_apm_footer.conf.erb'),
@@ -617,15 +618,14 @@ class datadog_agent(
         $host_config = {}
     }
 
-    $apm_extra_config = {
-        'apm_config' => {},
-        }
     if $apm_analyzed_spans {
-        $span_list = $apm_analyzed_spans.map { |service, resource, percentage|
-            "#{service}|#{resource}: #{percentage}"
+        $apm_analyzed_span_config = {
+            'apm_config' => {
+                'apm_analyzed_spans' => $apm_analyzed_spans
+            }
         }
-
-        $apm_extra_config['apm_config']['apm_analyzed_spans'] = $span_list
+    } else {
+        $apm_analyzed_span_config = {}
     }
 
     if $statsd_forward_host != '' {
@@ -642,7 +642,12 @@ class datadog_agent(
     } else {
         $statsd_forward_config = {}
     }
-    $extra_config = deep_merge($base_extra_config, $agent6_extra_options, $apm_extra_config, $statsd_forward_config, $host_config)
+    $extra_config = deep_merge(
+            $base_extra_config, 
+            $agent6_extra_options, 
+            $apm_analyzed_span_config,
+            $statsd_forward_config, 
+            $host_config)
 
     file { $conf6_dir:
       ensure  => directory,

@@ -179,6 +179,10 @@
 #       String. Default: non
 #   $apm_non_local_traffic
 #       Accept non local apm traffic. Defaults to false.
+#       Boolean. Default: false
+#   $apm_analyzed_spans
+#       Hash defining the APM spans to analyze and their rates.
+#       Optional Hash. Default: undef.
 #   $process_enabled
 #       String to enable the process/container agent
 #       Boolean. Default: false
@@ -297,6 +301,7 @@ class datadog_agent(
   $apm_enabled = $datadog_agent::params::apm_default_enabled,
   $apm_env = 'none',
   $apm_non_local_traffic = false,
+  Optional[Hash[String, Float[0, 1]]] $apm_analyzed_spans = undef,
   $process_enabled = $datadog_agent::params::process_default_enabled,
   $scrub_args = $datadog_agent::params::process_default_scrub_args,
   $custom_sensitive_words = $datadog_agent::params::process_default_custom_words,
@@ -491,6 +496,7 @@ class datadog_agent(
   }
 
   if $agent5_enable {
+
     file { '/etc/dd-agent':
       ensure  => directory,
       owner   => $dd_user,
@@ -553,7 +559,7 @@ class datadog_agent(
       }
     }
 
-    if ($apm_enabled == true) and ($apm_env != 'none') {
+    if ($apm_enabled == true) and ($apm_env != 'none') or $apm_analyzed_spans {
       concat::fragment{ 'datadog apm footer':
         target  => '/etc/dd-agent/datadog.conf',
         content => template('datadog_agent/datadog_apm_footer.conf.erb'),
@@ -611,6 +617,16 @@ class datadog_agent(
         $host_config = {}
     }
 
+    if $apm_analyzed_spans {
+        $apm_analyzed_span_config = {
+            'apm_config' => {
+                'apm_analyzed_spans' => $apm_analyzed_spans
+            }
+        }
+    } else {
+        $apm_analyzed_span_config = {}
+    }
+
     if $statsd_forward_host != '' {
         if $_statsd_forward_port != '' {
             $statsd_forward_config = {
@@ -625,7 +641,12 @@ class datadog_agent(
     } else {
         $statsd_forward_config = {}
     }
-    $extra_config = deep_merge($base_extra_config, $agent6_extra_options, $statsd_forward_config, $host_config)
+    $extra_config = deep_merge(
+            $base_extra_config,
+            $agent6_extra_options,
+            $apm_analyzed_span_config,
+            $statsd_forward_config,
+            $host_config)
 
     file { $conf6_dir:
       ensure  => directory,

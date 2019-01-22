@@ -179,6 +179,10 @@
 #       String. Default: non
 #   $apm_non_local_traffic
 #       Accept non local apm traffic. Defaults to false.
+#       Boolean. Default: false
+#   $apm_analyzed_spans
+#       Hash defining the APM spans to analyze and their rates.
+#       Optional Hash. Default: undef.
 #   $process_enabled
 #       String to enable the process/container agent
 #       Boolean. Default: false

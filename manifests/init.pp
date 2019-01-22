@@ -643,10 +643,10 @@ class datadog_agent(
         $statsd_forward_config = {}
     }
     $extra_config = deep_merge(
-            $base_extra_config, 
-            $agent6_extra_options, 
+            $base_extra_config,
+            $agent6_extra_options,
             $apm_analyzed_span_config,
-            $statsd_forward_config, 
+            $statsd_forward_config,
             $host_config)
 
     file { $conf6_dir:

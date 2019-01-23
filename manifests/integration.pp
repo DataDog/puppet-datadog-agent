@@ -12,6 +12,13 @@ define datadog_agent::integration (
 
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/${integration}.d/conf.yaml"
+    file { "${datadog_agent::conf6_dir}/${integration}.d":
+      ensure => directory,
+      owner  => $datadog_agent::dd_user,
+      group  => $datadog_agent::dd_group,
+      mode   => '0755',
+      before => File[$dst]
+    }
   } else {
     $dst = "${datadog_agent::conf_dir}/${integration}.yaml"
   }

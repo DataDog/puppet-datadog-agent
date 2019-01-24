@@ -8,7 +8,8 @@ describe "datadog_agent::integration" do
       if enabled
         let(:conf_file) { '/etc/dd-agent/conf.d/test.yaml' }
       else
-        let(:conf_file) { '/etc/datadog-agent/conf.d/test.d/conf.yaml' }
+        let(:conf_dir) { '/etc/datadog-agent/conf.d/test.d' }
+        let(:conf_file) { "#{conf_dir}/conf.yaml" }
       end
 
       let (:title) { "test" }
@@ -23,7 +24,12 @@ describe "datadog_agent::integration" do
               { 'one' => "two" }
           ]
       }}
+
+
       it { should compile }
+      if enabled
+        it { should contain_file("#{conf_dir}").that_comes_before("File[#{conf_file}]") }
+      end
       it { should contain_file("#{conf_file}").with_content(/init_config: /) }
       gem_spec = Gem.loaded_specs['puppet']
       if gem_spec.version >= Gem::Version.new('4.0.0')

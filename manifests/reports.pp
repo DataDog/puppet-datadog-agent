@@ -20,10 +20,9 @@ class datadog_agent::reports(
   $hostname_extraction_regex = undef,
   $datadog_site = 'datadoghq.com',
   $puppet_gem_provider = $datadog_agent::params::gem_provider,
-) {
+) inherits datadog_agent::params {
 
   include datadog_agent
-  include datadog_agent::params
   $rubydev_package = $datadog_agent::params::rubydev_package
 
   # check to make sure that you're not installing rubydev somewhere else

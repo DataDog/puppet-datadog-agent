@@ -1,7 +1,7 @@
 Puppet & Datadog
 ================
 
-[![Build Status](https://travis-ci.org/DataDog/puppet-datadog-agent.svg?branch=master)](https://travis-ci.org/DataDog/puppet-datadog-agent)
+[![Build Status](https://travis-ci.com/DataDog/puppet-datadog-agent.svg?branch=master)](https://travis-ci.com/DataDog/puppet-datadog-agent)
 
 Description
 -----------

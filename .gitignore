@@ -9,3 +9,6 @@ Gemfile.lock
 .ruby-version
 
 tests/.vagrant
+
+# mac stuff
+.DS_Store

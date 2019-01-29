@@ -235,6 +235,7 @@ class datadog_agent(
   $facts_to_tags = [],
   $puppet_run_reports = false,
   $puppetmaster_user = $settings::user,
+  String $puppet_gem_provider = $datadog_agent::params::gem_provider,
   $non_local_traffic = false,
   $dogstreams = [],
   $log_level = 'info',
@@ -696,6 +697,7 @@ class datadog_agent(
     class { 'datadog_agent::reports':
       api_key                   => $api_key,
       datadog_site              => $datadog_site,
+      puppet_gem_provider       => $puppet_gem_provider,
       dogapi_version            => $datadog_agent::params::dogapi_version,
       puppetmaster_user         => $puppetmaster_user,
       hostname_extraction_regex => $hostname_extraction_regex,

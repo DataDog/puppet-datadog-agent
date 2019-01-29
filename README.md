@@ -123,6 +123,7 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
       - If you are on Puppet Enterprise or POSS (ie. >=3.7.0), there is a soft dependency for reporting on the `puppetserver_gem` module. Install with `puppet module install puppetlabs-puppetserver_gem` - installing manually with `gem` does *not* work.
       - You may install `dogapi-rb` with `gem` as the system-level Ruby is used.
       - The gem provider is configurable by setting it to `puppetserver_gem` (set by default on PE/POSS (>=3.7.0)) or `gem` if on older versions of Puppet.
+        - For users running puppet in standalone/masterless mode you will need to set the `puppet_gem_provider` to `puppet_gem` (or `gem` depending on versions) to ensure the `dogapi-rb` is available.
 
 3. Include any other integrations you want the agent to use, for example:
 

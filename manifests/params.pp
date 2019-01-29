@@ -22,6 +22,7 @@ class datadog_agent::params {
   $service_name                   = 'datadog-agent'
   $agent_version                  = 'latest'
   $dogapi_version                 = 'installed'
+  $gem_provider                   = 'puppetserver_gem'
   $conf_dir_purge                 = false
   $apt_default_release            = 'stable'
   $apm_default_enabled            = false

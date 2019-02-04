@@ -48,8 +48,32 @@ describe 'datadog_agent::integrations::postgres' do
           it { should contain_file(conf_file).with_content(%r{port: 5432}) }
           it { should contain_file(conf_file).with_content(%r{username: datadog}) }
           it { should contain_file(conf_file).without_content(%r{^\s*use_psycopg2: }) }
+          it { should contain_file(conf_file).with_content(%r{collect_function_metrics: false}) }
+          it { should contain_file(conf_file).with_content(%r{collect_count_metrics: false}) }
+          it { should contain_file(conf_file).with_content(%r{collect_activity_metrics: false}) }
+          it { should contain_file(conf_file).with_content(%r{collect_database_size_metrics: false}) }
+          it { should contain_file(conf_file).with_content(%r{collect_default_database: false}) }
           it { should contain_file(conf_file).without_content(%r{tags: })}
           it { should contain_file(conf_file).without_content(%r{^[^#]*relations: }) }
+        end
+
+        context 'with extra metrics collection enabled' do
+          let(:params) {{
+            password: 'abc123',
+            collect_function_metrics: true,
+            collect_count_metrics: true,
+            collect_activity_metrics: true,
+            collect_database_size_metrics: true,
+            collect_default_database: true,
+          }}
+          it {
+            should contain_file(conf_file)
+              .with_content(%r{collect_function_metrics: true})
+              .with_content(%r{collect_count_metrics: true})
+              .with_content(%r{collect_activity_metrics: true})
+              .with_content(%r{collect_database_size_metrics: true})
+              .with_content(%r{collect_default_database: true})
+          }
         end
 
         context 'with use_psycopg2 enabled' do

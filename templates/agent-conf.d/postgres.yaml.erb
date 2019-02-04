@@ -20,6 +20,11 @@ instances:
     username: <%= instance['username']  %>
     password: <%= instance['password']  %>
     dbname: <%= instance['dbname']  %>
+    collect_function_metrics: <%= instance['collect_function_metrics']  %>
+    collect_count_metrics: <%= instance['collect_count_metrics']  %>
+    collect_activity_metrics: <%= instance['collect_activity_metrics']  %>
+    collect_database_size_metrics: <%= instance['collect_database_size_metrics']  %>
+    collect_default_database: <%= instance['collect_default_database']  %>
 <% if instance['ssl']  == true -%>
     ssl: true
 <% end -%>

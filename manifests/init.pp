@@ -664,7 +664,7 @@ class datadog_agent(
 
     $_agent_config = {
       'api_key' => $api_key,
-      'dd_url' => $dd_url,
+      'dd_url' => $_dd_url,
       'site' => $datadog_site,
       'cmd_port' => $cmd_port,
       'hostname_fqdn' => $hostname_fqdn,

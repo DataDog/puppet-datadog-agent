@@ -496,6 +496,12 @@ class datadog_agent(
     require => Package[$datadog_agent::params::package_name],
   }
 
+  if ($dd_url == '') {
+    $_dd_url = 'https://app.datadoghq.com'
+  } else {
+    $_dd_url = $dd_url
+  }
+
   if $agent5_enable {
 
     file { '/etc/dd-agent':
@@ -524,11 +530,6 @@ class datadog_agent(
       require => File['/etc/dd-agent'],
     }
 
-    if ($dd_url == '') {
-      $_dd_url = 'https://app.datadoghq.com'
-    } else {
-      $_dd_url = $dd_url
-    }
     concat::fragment{ 'datadog header':
       target  => '/etc/dd-agent/datadog.conf',
       content => template('datadog_agent/datadog_header.conf.erb'),

@@ -11,6 +11,7 @@
 # Sample Usage:
 #
 class datadog_agent::params {
+  $dd_url                         = 'https://app.datadoghq.com'
   $datadog_site                   = 'datadoghq.com'
   $agent5_enable                  = false
   $conf_dir                       = '/etc/dd-agent/conf.d'

@@ -497,7 +497,7 @@ class datadog_agent(
   }
 
   if ($dd_url == '') {
-    $_dd_url = 'https://app.datadoghq.com'
+    $_dd_url = $datadog_agent::params::dd_url
   } else {
     $_dd_url = $dd_url
   }

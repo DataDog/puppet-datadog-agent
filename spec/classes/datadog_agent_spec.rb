@@ -1104,7 +1104,7 @@ describe 'datadog_agent' do
               'content' => /^apm_config:\n\ \ enabled: true\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ apm_analyzed_spans:\n\ \ \ \ foo|bar: 0.5\n\ \ \ \ haz|qux: 0.1\n/,
+              'content' => /^\ \ analyzed_spans:\n\ \ \ \ foo|bar: 0.5\n\ \ \ \ haz|qux: 0.1\n/,
               )}
             end
             context 'with extra_options and Process enabled' do

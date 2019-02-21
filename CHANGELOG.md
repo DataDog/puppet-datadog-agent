@@ -1,6 +1,15 @@
 Changes
 =======
 
+# 2.4.1 / 2019-02-21 
+
+### Notes
+
+* [FEATURE] APM Trace Search. See [#485][]
+* [BUGFIX] Fix `apm_analyzed_spans` config directive. See [#496][] (Thanks [@zoom-kris-anderson][])
+* [BUGFIX] Custom integration defined type bugfix. See [#490][] (Thanks [@o0oxid][])
+* [DOCS] multiple documentation improvements. (See [#492][] and [#487][])
+
 # 2.4.0 / 2018-12-27 
 
 ### Notes
@@ -562,6 +571,11 @@ Please read the [docs]() for more details.
 [#481]: https://github.com/DataDog/puppet-datadog-agent/issues/481
 [#482]: https://github.com/DataDog/puppet-datadog-agent/issues/482
 [#484]: https://github.com/DataDog/puppet-datadog-agent/issues/484
+[#485]: https://github.com/DataDog/puppet-datadog-agent/issues/485
+[#487]: https://github.com/DataDog/puppet-datadog-agent/issues/487
+[#490]: https://github.com/DataDog/puppet-datadog-agent/issues/490
+[#492]: https://github.com/DataDog/puppet-datadog-agent/issues/492
+[#496]: https://github.com/DataDog/puppet-datadog-agent/issues/496
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
@@ -623,6 +637,7 @@ Please read the [docs]() for more details.
 [@mrunkel-ut]: https://github.com/mrunkel-ut
 [@mtougeron]: https://github.com/mtougeron
 [@npaufler]: https://github.com/npaufler
+[@o0oxid]: https://github.com/o0oxid
 [@obi11235]: https://github.com/obi11235
 [@obowersa]: https://github.com/obowersa
 [@oshmyrko]: https://github.com/oshmyrko
@@ -647,3 +662,4 @@ Please read the [docs]() for more details.
 [@tommoyangn]: https://github.com/tommoyangn
 [@tuxinaut]: https://github.com/tuxinaut
 [@yrcjaya]: https://github.com/yrcjaya
+[@zoom-kris-anderson]: https://github.com/zoom-kris-anderson

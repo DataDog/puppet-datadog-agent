@@ -35,7 +35,7 @@ describe 'datadog_agent::integrations::kafka' do
 
       context 'with default parameters' do
         it { should contain_file(conf_file).with_content(%r{- host: localhost\s+port: 9999}) }
-        it { should contain_file(conf_file).without_content(%r{tags:}) }
+        it { should contain_file(conf_file).without_content(%r{user:}) }
       end
 
       context 'with one kafka broker' do

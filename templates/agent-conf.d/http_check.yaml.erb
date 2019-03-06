@@ -39,8 +39,8 @@ instances:
 <% unless instance['skip_event'].nil? -%>
     skip_event: <%= instance['skip_event'] %>
 <% end -%>
-<% unless instance['no_proxy'].nil? -%>
-    no_proxy: <%= instance['no_proxy'] %>
+<% unless instance['skip_proxy'].nil? -%>
+    skip_proxy: <%= instance['skip_proxy'] %>
 <% end -%>
 <% if instance['ca_certs'] -%>
     ca_certs: <%= instance['ca_certs'] %>

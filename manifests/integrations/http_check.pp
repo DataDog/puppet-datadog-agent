@@ -64,8 +64,8 @@
 #       This defaults to True because this is being deprecated.
 #       (See https://github.com/DataDog/dd-agent/blob/master/checks/network_checks.py#L178-L180)
 #
-#   no_proxy
-#       The (optional) no_proxy parameter would bypass any proxy settings enabled
+#   skip_proxy
+#       The (optional) skip_proxy parameter would bypass any proxy settings enabled
 #       and attempt to reach the the URL directly.
 #       If no proxy is defined at any level, this flag bears no effect.
 #       Defaults to False.
@@ -162,7 +162,7 @@ class datadog_agent::integrations::http_check (
   $collect_response_time = true,
   $disable_ssl_validation = false,
   $skip_event = true,
-  $no_proxy  = false,
+  $skip_proxy  = false,
   $check_certificate_expiration = true,
   $days_warning = undef,
   $days_critical = undef,
@@ -190,7 +190,7 @@ class datadog_agent::integrations::http_check (
       'collect_response_time'        => $collect_response_time,
       'disable_ssl_validation'       => $disable_ssl_validation,
       'skip_event'                   => $skip_event,
-      'no_proxy'                     => $no_proxy,
+      'skip_proxy'                   => $skip_proxy,
       'check_certificate_expiration' => $check_certificate_expiration,
       'days_warning'                 => $days_warning,
       'days_critical'                => $days_critical,

@@ -39,7 +39,7 @@ class datadog_agent::integrations::ssh(
 
   $legacy_dst = "${datadog_agent::conf_dir}/ssh.yaml"
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/ssh.d/conf.yaml"
+    $dst = "${datadog_agent::conf6_dir}/ssh_check.d/conf.yaml"
     file { $legacy_dst:
       ensure => 'absent'
     }

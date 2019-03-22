@@ -26,12 +26,10 @@ class datadog_agent::ubuntu::agent5(
 ) inherits datadog_agent::params{
 
   if !$skip_apt_key_trusting {
-    $key = {
-      'id' => $apt_key,
-      'server' => $apt_keyserver
+    ::datadog_agent::ubuntu::install_key { [$apt_key]:
+      server => $apt_keyserver,
+      before => Apt::Source['datadog'],
     }
-  } else {
-    $key = {}
   }
 
   # This is a hack - I'm not happy about it, but we should rarely
@@ -67,7 +65,6 @@ class datadog_agent::ubuntu::agent5(
     location => $location,
     release  => $release,
     repos    => $repos,
-    key      => $key,
     require  => Class['apt'],
     notify   => Exec['datadog_apt-get_remove_agent6'],
   }
@@ -80,7 +77,7 @@ class datadog_agent::ubuntu::agent5(
   package { $datadog_agent::params::package_name:
     ensure  => $agent_version,
     require => [Apt::Source['datadog'],
-                Class['apt::update']],
+                Exec['apt_update']],
   }
 
   if $service_provider {

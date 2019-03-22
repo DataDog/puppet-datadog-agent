@@ -20,7 +20,7 @@ describe 'datadog_agent::integrations::ssh' do
       if enabled
         let(:conf_file) { "#{conf_dir}/ssh.yaml" }
       else
-        let(:conf_file) { "#{conf_dir}/ssh.d/conf.yaml" }
+        let(:conf_file) { "#{conf_dir}/ssh_check.d/conf.yaml" }
       end
 
       context 'with default parameters' do

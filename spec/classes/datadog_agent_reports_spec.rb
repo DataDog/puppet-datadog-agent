@@ -172,7 +172,7 @@ describe 'datadog_agent::reports' do
         should contain_file(conf_file)\
           .with_owner('puppet')\
           .with_group('root')\
-          .with_content(/:api_url: api.datadoghq.eu/)
+          .with_content(/:api_url: https:\/\/api.datadoghq.eu/)
       end
       it { should contain_file(conf_file).without_content(/hostname_extraction_regex:/)  }
     end

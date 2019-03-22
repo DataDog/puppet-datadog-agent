@@ -17,10 +17,12 @@ class datadog_agent::ubuntu::agent6(
 ) inherits datadog_agent::params {
 
   if !$skip_apt_key_trusting {
-    ::datadog_agent::ubuntu::install_key { [$apt_key]:
-      server => $apt_keyserver,
-      before => Apt::Source['datadog6'],
+    $key = {
+      'id' => $apt_key,
+      'server' => $apt_keyserver,
     }
+  } else {
+    $key = {}
   }
 
   apt::source { 'datadog':
@@ -33,6 +35,7 @@ class datadog_agent::ubuntu::agent6(
     release  => $release,
     repos    => $repos,
     require  => Class['apt'],
+    key      => $key,
   }
 
   package { 'datadog-agent-base':
@@ -43,7 +46,7 @@ class datadog_agent::ubuntu::agent6(
   package { $datadog_agent::params::package_name:
     ensure  => $agent_version,
     require => [Apt::Source['datadog6'],
-                Exec['apt_update']],
+                Class['apt::update']],
   }
 
   if $service_provider {

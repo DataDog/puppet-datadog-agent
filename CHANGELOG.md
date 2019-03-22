@@ -1,29 +1,53 @@
 Changes
 =======
 
-# 2.4.0 / 2018-12-27 
+# 2.5.0 / 2019-03-25
 
 ### Notes
 
-* [FEATURE] Support EU site in the reporter. See [#468][] 
-* [FEATURE] Add `datadog_site` for EU/USA region support. See [#464][] 
-* [FEATURE] Make Agent 6 `cmd_port` configurable. See [#473][] (Thanks [@arkpoah][]) 
-* [FEATURE] Support backup keyservers. See [#470][] 
-* [FEATURE] Support `hostname_fqdn`. See [#481][] (Thanks [@alexfouche][]) 
-* [FEATURE] Support GCE tag collection. See [#481][] (Thanks [@alexfouche][]) 
-* [FEATURE] Tomcat: support `jmx_url` option. See [#482][] (Thanks [@evansj][]) 
-* [IMPROVEMENT] Reports: fix `hostname_extraction_regex` default to undef. See [#482][] (Thanks [@evansj][]) 
-* [IMPROVEMENT] Use recommended locations for integration configs. See [#481][] (Thanks [@alexfouche][]) 
+* [FEATURE] Kafka: Updated kafka integration to include all stats. See [#498][] (Thanks [@dpricha89][])
+* [FEATURE] PostgreSQL: enable extra metrics collection. See [#493][] (Thanks [@diogokiss][])
+* [FEATURE] Reporting: make gem provider configurable at the datadog-agent class level. See [#486][]
+* [IMPROVEMENT] Disk: support new integration options replacing deprecations. See [#508][]
+* [IMPROVEMENT] Remove apt-transport-https package install. See [#504][] (Thanks [@fr3nd][])
+* [BUGFIX] Reporting: use https:// in datadog-reports.yaml. See [#503][] (Thanks [@cabrinha][])
+* [BUGFIX] TCP check: `check_name` instead of name. See [#501][] (Thanks [@cabrinha][]) (Thanks [@cabrinha][])
+* [BUGFIX] SSH check: fix broken config location: `ssh_check.d` instead of `ssh.d`. See [#502][] (Thanks [@cabrinha][])
+* [BUGFIX] Revert chatty apt-get update behavior. See [#506][] and [#507][]
+
+
+# 2.4.1 / 2019-02-21
+
+### Notes
+
+* [FEATURE] APM Trace Search. See [#485][]
+* [BUGFIX] Fix `apm_analyzed_spans` config directive. See [#496][] (Thanks [@zoom-kris-anderson][])
+* [BUGFIX] Custom integration defined type bugfix. See [#490][] (Thanks [@o0oxid][])
+* [DOCS] multiple documentation improvements. (See [#492][] and [#487][])
+
+# 2.4.0 / 2018-12-27
+
+### Notes
+
+* [FEATURE] Support EU site in the reporter. See [#468][]
+* [FEATURE] Add `datadog_site` for EU/USA region support. See [#464][]
+* [FEATURE] Make Agent 6 `cmd_port` configurable. See [#473][] (Thanks [@arkpoah][])
+* [FEATURE] Support backup keyservers. See [#470][]
+* [FEATURE] Support `hostname_fqdn`. See [#481][] (Thanks [@alexfouche][])
+* [FEATURE] Support GCE tag collection. See [#481][] (Thanks [@alexfouche][])
+* [FEATURE] Tomcat: support `jmx_url` option. See [#482][] (Thanks [@evansj][])
+* [IMPROVEMENT] Reports: fix `hostname_extraction_regex` default to undef. See [#482][] (Thanks [@evansj][])
+* [IMPROVEMENT] Use recommended locations for integration configs. See [#481][] (Thanks [@alexfouche][])
 * [IMPROVEMENT] Silence agent6_extra_options notification on default params. See [#449][] (Thanks [@spectralblu][])
 * [IMPROVEMENT] Improve proxy argument management. See [#484][]
 * [IMPROVEMENT] Generic integrations improvements. See [#471][]
-* [BUGFIX] Fix potential dependency cycle when used with other modules. See [#463][] 
-* [BUGFIX] Fix Hiera tag merge in process integration. See [#481][] (Thanks [@alexfouche][]) 
-* [BUGFIX] Merge `datadog_agent::tags` hiera values. See [#472][] (Thanks [@paulhamby][]) 
-* [BUGFIX] Fix `apm_enabled` YAML. See [#466][] (Thanks [@NoodlesNZ][]) 
-* [BUGFIX] Fix `facts_to_tags` regression in Agent 6. See [#455][] (Thanks [@tommoyangn][]) 
-* [TEST] Removing `sudo: false` as required by Travis CI. See [#475][] 
-* [TEST] Adding vagrant-based test environment facilities. See [#462][] 
+* [BUGFIX] Fix potential dependency cycle when used with other modules. See [#463][]
+* [BUGFIX] Fix Hiera tag merge in process integration. See [#481][] (Thanks [@alexfouche][])
+* [BUGFIX] Merge `datadog_agent::tags` hiera values. See [#472][] (Thanks [@paulhamby][])
+* [BUGFIX] Fix `apm_enabled` YAML. See [#466][] (Thanks [@NoodlesNZ][])
+* [BUGFIX] Fix `facts_to_tags` regression in Agent 6. See [#455][] (Thanks [@tommoyangn][])
+* [TEST] Removing `sudo: false` as required by Travis CI. See [#475][]
+* [TEST] Adding vagrant-based test environment facilities. See [#462][]
 
 # 2.3.0 / 2018-07-11
 
@@ -82,11 +106,11 @@ Changes
 
 # 2.0.0 / 2018-02-27
 
-### Overview 
-This release is a mejor release, there are a some breaking changes. We have 
-tried to keep the interface as similar as possible to what the community 
-was already used to, but have had to make some changes and cleaned up some 
-of the interfaces to some classes. Most notably the main `datadog_agent` 
+### Overview
+This release is a mejor release, there are a some breaking changes. We have
+tried to keep the interface as similar as possible to what the community
+was already used to, but have had to make some changes and cleaned up some
+of the interfaces to some classes. Most notably the main `datadog_agent`
 class, and the `datadog_agent::ubuntu` and `datadog_agent::redhat`.
 
 Most checks manifest should remain backward compatible.
@@ -95,8 +119,8 @@ Please note this new release will install datadog agent version 6.x by default.
 
 Finally, deprecated modules and support for EOL'd puppets has been dropped
 so if you're running a puppet server <= `4.5.x` or PE <= `2016.4.x` although
-the module might work for some versions, it has not been tested in those 
-environments. 
+the module might work for some versions, it has not been tested in those
+environments.
 
 Please read the [docs]() for more details.
 
@@ -136,10 +160,10 @@ Please read the [docs]() for more details.
 * [IMPROVEMENT] pgbouncer: support multiple instances. See [#361][] (thanks [@ajvb][])
 * [IMPROVEMENT] general cleanup. See [#357][] and [#376][] (thanks [@alexfouche][])
 
-* [BUGFIX] agent6: fix downgrade back to agent5 if on `latest` version. See [#375][] 
-* [BUGFIX] apt: only grep for last 8 characters to verify key. See [#373][] and [#374][] (thanks [@szponek][]) 
+* [BUGFIX] agent6: fix downgrade back to agent5 if on `latest` version. See [#375][]
+* [BUGFIX] apt: only grep for last 8 characters to verify key. See [#373][] and [#374][] (thanks [@szponek][])
 
-* [DOCUMENTATION] fix tagging documentation. See [#347][] (thanks [@bit-herder][]) 
+* [DOCUMENTATION] fix tagging documentation. See [#347][] (thanks [@bit-herder][])
 
 # 1.11.0 / 2017-07-27
 
@@ -562,6 +586,21 @@ Please read the [docs]() for more details.
 [#481]: https://github.com/DataDog/puppet-datadog-agent/issues/481
 [#482]: https://github.com/DataDog/puppet-datadog-agent/issues/482
 [#484]: https://github.com/DataDog/puppet-datadog-agent/issues/484
+[#485]: https://github.com/DataDog/puppet-datadog-agent/issues/485
+[#486]: https://github.com/DataDog/puppet-datadog-agent/issues/486
+[#487]: https://github.com/DataDog/puppet-datadog-agent/issues/487
+[#490]: https://github.com/DataDog/puppet-datadog-agent/issues/490
+[#492]: https://github.com/DataDog/puppet-datadog-agent/issues/492
+[#493]: https://github.com/DataDog/puppet-datadog-agent/issues/493
+[#496]: https://github.com/DataDog/puppet-datadog-agent/issues/496
+[#498]: https://github.com/DataDog/puppet-datadog-agent/issues/498
+[#501]: https://github.com/DataDog/puppet-datadog-agent/issues/501
+[#502]: https://github.com/DataDog/puppet-datadog-agent/issues/502
+[#503]: https://github.com/DataDog/puppet-datadog-agent/issues/503
+[#504]: https://github.com/DataDog/puppet-datadog-agent/issues/504
+[#506]: https://github.com/DataDog/puppet-datadog-agent/issues/506
+[#507]: https://github.com/DataDog/puppet-datadog-agent/issues/507
+[#508]: https://github.com/DataDog/puppet-datadog-agent/issues/508
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
@@ -584,6 +623,7 @@ Please read the [docs]() for more details.
 [@bit-herder]: https://github.com/bit-herder
 [@bittner]: https://github.com/bittner
 [@butangero]: https://github.com/butangero
+[@cabrinha]: https://github.com/cabrinha
 [@ckolos]: https://github.com/ckolos
 [@com6056]: https://github.com/com6056
 [@craigwatson]: https://github.com/craigwatson
@@ -594,7 +634,9 @@ Please read the [docs]() for more details.
 [@davidgibbons]: https://github.com/davidgibbons
 [@degemer]: https://github.com/degemer
 [@denmat]: https://github.com/denmat
+[@diogokiss]: https://github.com/diogokiss
 [@djova]: https://github.com/djova
+[@dpricha89]: https://github.com/dpricha89
 [@dschaaff]: https://github.com/dschaaff
 [@dzinek]: https://github.com/dzinek
 [@eddmann]: https://github.com/eddmann
@@ -602,6 +644,7 @@ Please read the [docs]() for more details.
 [@ewansteele]: https://github.com/ewansteele
 [@ffleming]: https://github.com/ffleming
 [@flyinprogrammer]: https://github.com/flyinprogrammer
+[@fr3nd]: https://github.com/fr3nd
 [@fwelschen]: https://github.com/fwelschen
 [@fzwart]: https://github.com/fzwart
 [@generica]: https://github.com/generica
@@ -623,6 +666,7 @@ Please read the [docs]() for more details.
 [@mrunkel-ut]: https://github.com/mrunkel-ut
 [@mtougeron]: https://github.com/mtougeron
 [@npaufler]: https://github.com/npaufler
+[@o0oxid]: https://github.com/o0oxid
 [@obi11235]: https://github.com/obi11235
 [@obowersa]: https://github.com/obowersa
 [@oshmyrko]: https://github.com/oshmyrko
@@ -647,3 +691,4 @@ Please read the [docs]() for more details.
 [@tommoyangn]: https://github.com/tommoyangn
 [@tuxinaut]: https://github.com/tuxinaut
 [@yrcjaya]: https://github.com/yrcjaya
+[@zoom-kris-anderson]: https://github.com/zoom-kris-anderson

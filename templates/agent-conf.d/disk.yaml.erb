@@ -4,6 +4,42 @@ init_config:
 
 instances:
   - use_mount: <%= @use_mount %>
+<% if @filesystem_blacklist -%>
+    file_system_blacklist:
+<% (Array(@filesystem_blacklist)).each do |fs| -%>
+      - <%= fs %>
+<%- end -%>
+<% end -%>
+<% if @device_blacklist -%>
+    device_blacklist:
+<% (Array(@device_blacklist)).each do |disk| -%>
+      - <%= disk %>
+<% end -%>
+<% end -%>
+<% if @mountpoint_blacklist -%>
+    mount_point_blacklist:
+<% (Array(@mountpoint_blacklist)).each do |mount| -%>
+      - <%= mount %>
+<% end -%>
+<% end -%>
+<% if @filesystem_whitelist -%>
+    file_system_whitelist:
+<% (Array(@filesystem_whitelist)).each do |fs| -%>
+      - <%= fs %>
+<%- end -%>
+<% end -%>
+<% if @device_whitelist -%>
+    device_whitelist:
+<% (Array(@device_whitelist)).each do |disk| -%>
+      - <%= disk %>
+<% end -%>
+<% end -%>
+<% if @mountpoint_whitelist -%>
+    mount_point_whitelist:
+<% (Array(@mountpoint_whitelist)).each do |mount| -%>
+      - <%= mount %>
+<% end -%>
+<% end -%>
 <% if @excluded_filesystems -%>
     excluded_filesystems:
 <% (Array(@excluded_filesystems)).each do |fs| -%>

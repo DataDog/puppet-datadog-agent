@@ -72,6 +72,51 @@ instances:
          }
         it { is_expected.to contain_file(conf_file).with_content(yaml_conf) }
       end
+
+      context 'we handle new disk configuration option' do
+        let(:params) {{
+          use_mount: 'yes',
+          filesystem_blacklist: ['tmpfs', 'dev'],
+          device_blacklist: ['/dev/sda1'],
+          mountpoint_blacklist: ['/mnt/foo'],
+          filesystem_whitelist: ['ext4', 'hdfs', 'reiserfs'],
+          device_whitelist: ['/dev/sdc1', '/dev/sdc2', '/dev/sdd2'],
+          mountpoint_whitelist: ['/mnt/logs', '/mnt/builds'],
+          all_partitions: 'yes',
+          tag_by_filesystem: 'no'
+        }}
+        let(:yaml_conf) {
+           <<-HEREDOC
+### MANAGED BY PUPPET
+
+init_config:
+
+instances:
+  - use_mount: yes
+    file_system_blacklist:
+      - tmpfs
+      - dev
+    device_blacklist:
+      - /dev/sda1
+    mount_point_blacklist:
+      - /mnt/foo
+    file_system_whitelist:
+      - ext4
+      - hdfs
+      - reiserfs
+    device_whitelist:
+      - /dev/sdc1
+      - /dev/sdc2
+      - /dev/sdd2
+    mount_point_whitelist:
+      - /mnt/logs
+      - /mnt/builds
+    all_partitions: yes
+    tag_by_filesystem: no
+        HEREDOC
+         }
+        it { is_expected.to contain_file(conf_file).with_content(yaml_conf) }
+      end
     end
   end
 end

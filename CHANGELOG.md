@@ -11,7 +11,7 @@ Changes
 * [IMPROVEMENT] Disk: support new integration options replacing deprecations. See [#508][]
 * [IMPROVEMENT] Remove apt-transport-https package install. See [#504][] (Thanks [@fr3nd][])
 * [BUGFIX] Reporting: use https:// in datadog-reports.yaml. See [#503][] (Thanks [@cabrinha][])
-* [BUGFIX] TCP check: `check_name` instead of name. See [#501][] (Thanks [@cabrinha][]) (Thanks [@cabrinha][])
+* [BUGFIX] TCP check: `check_name` instead of name. See [#501][] (Thanks [@cabrinha][])
 * [BUGFIX] SSH check: fix broken config location: `ssh_check.d` instead of `ssh.d`. See [#502][] (Thanks [@cabrinha][])
 * [BUGFIX] Revert chatty apt-get update behavior. See [#506][] and [#507][]
 

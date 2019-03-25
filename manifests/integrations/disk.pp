@@ -43,8 +43,8 @@ class datadog_agent::integrations::disk (
   Optional[Array[String]] $mountpoint_whitelist  = undef,
   Optional[Variant[String, Array[String]]] $excluded_filesystems   = undef,  # deprecated in agent versions >6.9
   Optional[Variant[String, Array[String]]] $excluded_disks         = undef,  # deprecated in agent versions >6.9
-  Optional[Variant[String, Array[String]]] $excluded_disk_re       = undef,  # deprecated in agent versions >6.9
-  Optional[Variant[String, Array[String]]] $excluded_mountpoint_re = undef,  # deprecated in agent versions >6.9
+  Optional[String] $excluded_disk_re       = undef,  # deprecated in agent versions >6.9
+  Optional[String] $excluded_mountpoint_re = undef,  # deprecated in agent versions >6.9
 ) inherits datadog_agent::params {
   include datadog_agent
 

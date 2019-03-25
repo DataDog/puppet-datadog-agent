@@ -32,13 +32,19 @@
 #      excluded_disk_re     => '/dev/sd[e-z]*'
 #  }
 class datadog_agent::integrations::disk (
-  String $use_mount       = 'no',
-  $excluded_filesystems   = undef,
-  $excluded_disks         = undef,
-  $excluded_disk_re       = undef,
-  $excluded_mountpoint_re = undef,
-  $all_partitions         = undef,
-  $tag_by_filesystem      = undef
+  String $use_mount                              = 'no',
+  $all_partitions                                = undef,
+  $tag_by_filesystem                             = undef,
+  Optional[Array[String]] $filesystem_blacklist  = undef,
+  Optional[Array[String]] $device_blacklist      = undef,
+  Optional[Array[String]] $mountpoint_blacklist  = undef,
+  Optional[Array[String]] $filesystem_whitelist  = undef,
+  Optional[Array[String]] $device_whitelist      = undef,
+  Optional[Array[String]] $mountpoint_whitelist  = undef,
+  Optional[Variant[String, Array[String]]] $excluded_filesystems   = undef,  # deprecated in agent versions >6.9
+  Optional[Variant[String, Array[String]]] $excluded_disks         = undef,  # deprecated in agent versions >6.9
+  Optional[Variant[String, Array[String]]] $excluded_disk_re       = undef,  # deprecated in agent versions >6.9
+  Optional[Variant[String, Array[String]]] $excluded_mountpoint_re = undef,  # deprecated in agent versions >6.9
 ) inherits datadog_agent::params {
   include datadog_agent
 

@@ -64,10 +64,26 @@
 #      }
 #    }
 #  }
+# 
+# Hiera Usage:
 #
+#   datadog_agent::integrations::postgres::instances:
+#     - host: 'localhost'
+#       dbname: 'postgres'
+#       username: 'datadog'
+#       password: 'some_pass'
+#       ssl: false
+#       custom_metrics:
+#         a_custom_query:
+#           query: 'select tag_column, %s from table'
+#           relation: false
+#           metrics:
+#             value_column: ["value_column.datadog.tag", "GAUGE"]
+#           descriptors:
+#           - ["tag_column", "tag_column.datadog.tag"]
 #
 class datadog_agent::integrations::postgres(
-  String $password,
+  Optional[String] $password             = undef,
   String $host                           = 'localhost',
   String $dbname                         = 'postgres',
   Variant[String, Integer] $port         = '5432',

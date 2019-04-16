@@ -24,7 +24,7 @@ describe 'datadog_agent::integrations::postgres' do
       end
 
       context 'with default parameters' do
-        it { should_not compile }
+        it { should compile }
       end
 
       context 'with password set' do

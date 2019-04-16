@@ -28,6 +28,21 @@ describe 'datadog_agent::redhat::agent5' do
       should_not contain_yumrepo('datadog6')
     end
   end
+  context 'overriding provider' do
+    let(:params) {{
+      service_provider: 'upstart',
+    }}
+    it do
+      should contain_service('datadog-agent')\
+        .that_requires('package[datadog-agent]')
+    end
+    it do
+      should contain_service('datadog-agent').with(
+        'provider' => 'upstart',
+        'ensure' => 'running',
+      )
+    end
+  end
 
 
   # it should install the packages
@@ -74,6 +89,21 @@ describe 'datadog_agent::redhat::agent6' do
       should_not contain_yumrepo('datadog')
       should_not contain_yumrepo('datadog5')
       should_not contain_yumrepo('datadog6')
+    end
+  end
+  context 'overriding provider' do
+    let(:params) {{
+      service_provider: 'upstart',
+    }}
+    it do
+      should contain_service('datadog-agent')\
+        .that_requires('package[datadog-agent]')
+    end
+    it do
+      should contain_service('datadog-agent').with(
+        'provider' => 'upstart',
+        'ensure' => 'running',
+      )
     end
   end
 

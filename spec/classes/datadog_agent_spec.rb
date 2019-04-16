@@ -774,6 +774,24 @@ describe 'datadog_agent' do
             end
 
             end
+
+            context 'with service provider override' do
+              let(:params) {{
+                  :service_provider => 'upstart',
+              }}
+              it do
+                should contain_service('datadog-agent')\
+                  .that_requires('package[datadog-agent]')
+              end
+              it do
+                should contain_service('datadog-agent').with(
+                  'provider' => 'upstart',
+                  'ensure' => 'running',
+                )
+              end
+            end
+
+          end
         end
 
         if DEBIAN_OS.include?(operatingsystem)
@@ -846,7 +864,19 @@ describe 'datadog_agent' do
               'content' => /^process_config:\n/,
               )}
               it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^\ \ process_enabled: disabled\n/,
+              'content' => /^\ \ enabled: disabled\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ scrub_args: true\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ custom_sensitive_words: \[\]\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^logs_enabled: false\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^logs_config:\n\ \ container_collect_all: false\n/,
               )}
             end
           end
@@ -930,6 +960,79 @@ describe 'datadog_agent' do
               'content' => /^\ \ bar: haz\n/,
               )}
             end
+          end
+
+          context 'with data scrubbing custom options' do
+            context 'with data scrubbing disabled' do
+              let(:params) {{
+                  :process_enabled => true,
+                  :scrub_args => false
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^process_config:\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ enabled: 'true'\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ scrub_args: false\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ custom_sensitive_words: \[\]\n/,
+              )}
+            end
+
+            context 'with data scrubbing enabled with custom sensitive_words' do
+              let(:params) {{
+                  :process_enabled => true,
+                  :custom_sensitive_words => ['consul_token','dd_key']
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^process_config:\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ enabled: 'true'\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ scrub_args: true\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ -\ consul_token\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ -\ dd_key\n/,
+              )}
+            end
+
+            context 'with logs enabled' do
+              let(:params) {{
+                  :logs_enabled => true,
+                  :container_collect_all => true
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^logs_enabled: true\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^logs_config:\n\ \ container_collect_all: true\n/,
+              )}
+            end
+
+            context 'with service provider override' do
+              let(:params) {{
+                  :service_provider => 'upstart',
+              }}
+              it do
+                should contain_service('datadog-agent')\
+                  .that_requires('package[datadog-agent]')
+              end
+              it do
+                should contain_service('datadog-agent').with(
+                  'provider' => 'upstart',
+                  'ensure' => 'running',
+                )
+              end
+            end
+
           end
         end
       end

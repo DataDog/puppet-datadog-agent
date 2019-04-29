@@ -38,6 +38,7 @@ describe 'datadog_agent::integrations::http_check' do
         it { should contain_file(conf_file).without_content(%r{username: }) }
         it { should contain_file(conf_file).without_content(%r{password: }) }
         it { should contain_file(conf_file).without_content(%r{timeout: 1}) }
+        it { should contain_file(conf_file).without_content(%r{data: }) }
         it { should contain_file(conf_file).without_content(%{threshold: }) }
         it { should contain_file(conf_file).without_content(%r{window: }) }
         it { should contain_file(conf_file).without_content(%r{content_match: }) }
@@ -61,6 +62,8 @@ describe 'datadog_agent::integrations::http_check' do
           username: 'foouser',
           password: 'barpassword',
           timeout: 123,
+          method: 'post',
+          data: 'key=value',
           threshold: 456,
           window: 789,
           content_match: 'foomatch',
@@ -82,6 +85,8 @@ describe 'datadog_agent::integrations::http_check' do
         it { should contain_file(conf_file).with_content(%r{username: foouser}) }
         it { should contain_file(conf_file).with_content(%r{password: barpassword}) }
         it { should contain_file(conf_file).with_content(%r{timeout: 123}) }
+        it { should contain_file(conf_file).with_content(%r{method: post}) }
+        it { should contain_file(conf_file).with_content(%r{data: key=value}) }
         it { should contain_file(conf_file).with_content(%r{threshold: 456}) }
         it { should contain_file(conf_file).with_content(%r{window: 789}) }
         it { should contain_file(conf_file).with_content(%r{content_match: 'foomatch'}) }
@@ -96,6 +101,19 @@ describe 'datadog_agent::integrations::http_check' do
         it { should contain_file(conf_file).with_content(%r{days_critical: 7}) }
         it { should contain_file(conf_file).with_content(%r{allow_redirects: true}) }
         it { should contain_file(conf_file).with_content(%r{ca_certs: /dev/null}) }
+      end
+
+      context 'with json post data' do
+        let(:params) {{
+          sitename: 'foo.bar.baz',
+          url: 'http://foo.bar.baz:4096',
+          method: 'post',
+          data: ['key: value'],
+          headers: ['Content-Type: application/json'],
+        }}
+        it { should contain_file(conf_file).with_content(%r{method: post}) }
+        it { should contain_file(conf_file).with_content(/data:\s+key:\s+value/) }
+        it { should contain_file(conf_file).with_content(/headers:\s+Content-Type:\s+application\/json/) }
       end
 
       context 'with headers parameter array' do

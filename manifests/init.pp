@@ -678,6 +678,7 @@ class datadog_agent(
       'log_file' => $agent6_log_file,
       'log_level' => $log_level,
       'tags' => unique(flatten(union($_local_tags, $_facts_tags))),
+      'additional_checksd' => $additional_checksd,
     }
 
     $agent_config = deep_merge($_agent_config, $extra_config)

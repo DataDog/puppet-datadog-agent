@@ -43,11 +43,25 @@ describe 'datadog_agent::integrations::nginx' do
               'nginx_status_url' => 'http://foo.bar:1941/check',
               'tags' => %w{foo bar baz}
             }
+          ],
+          logs: [
+            {
+              'type' => 'file',
+              'path' => '/var/log/nginx/access.log',
+              'service' => 'my.nginx.service',
+              'source' => 'nginx',
+              'sourcecategory' => 'http_web_access'
+            }
           ]
         }}
 
         it { should contain_file(conf_file).with_content(%r{nginx_status_url:.*http://foo.bar:1941/check}m) }
         it { should contain_file(conf_file).with_content(%r{tags:.*foo.*bar.*baz}m) }
+        it { should contain_file(conf_file).with_content(%r{type:.*file}m) }
+        it { should contain_file(conf_file).with_content(%r{path:.*file}m) }
+        it { should contain_file(conf_file).with_content(%r{service:.*my.nginx.service}m) }
+        it { should contain_file(conf_file).with_content(%r{source:.*nginx}m) }
+        it { should contain_file(conf_file).with_content(%r{sourcecategory:.*http_web_access}m) }
       end
     end
   end

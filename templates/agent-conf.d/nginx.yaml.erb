@@ -18,4 +18,8 @@
 require 'yaml'
 %>
 
+<% if @logs %>
+<%= {'init_config'=>nil, 'instances'=>@instances, 'logs'=>@logs}.to_yaml %>
+<% else %>
 <%= {'init_config'=>nil, 'instances'=>@instances}.to_yaml %>
+<% end %>

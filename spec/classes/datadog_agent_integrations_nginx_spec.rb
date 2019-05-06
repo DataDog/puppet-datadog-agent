@@ -58,7 +58,7 @@ describe 'datadog_agent::integrations::nginx' do
         it { should contain_file(conf_file).with_content(%r{nginx_status_url:.*http://foo.bar:1941/check}m) }
         it { should contain_file(conf_file).with_content(%r{tags:.*foo.*bar.*baz}m) }
         it { should contain_file(conf_file).with_content(%r{type:.*file}m) }
-        it { should contain_file(conf_file).with_content(%r{path:.*file}m) }
+        it { should contain_file(conf_file).with_content(%r{path:.*/var/log/nginx/access.log}m) }
         it { should contain_file(conf_file).with_content(%r{service:.*my.nginx.service}m) }
         it { should contain_file(conf_file).with_content(%r{source:.*nginx}m) }
         it { should contain_file(conf_file).with_content(%r{sourcecategory:.*http_web_access}m) }

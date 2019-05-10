@@ -12,6 +12,13 @@
 #   timeout
 #       The (optional) timeout in seconds.
 #
+#   method
+#    	The (optional) HTTP method. This setting defaults to GET, though many
+#    	other HTTP methods are supported, including POST and PUT.
+#   data
+#       The (optional) data option. Data should be a string or an array of
+#       key-value pairs and will be sent in the body of the request.
+#
 #   username
 #   password
 #       If your service uses basic authentication, you can optionally
@@ -154,6 +161,8 @@ class datadog_agent::integrations::http_check (
   $username  = undef,
   $password  = undef,
   $timeout   = 1,
+  $method    = 'get',
+  $data      = undef,
   $threshold = undef,
   $window    = undef,
   $content_match = undef,
@@ -182,6 +191,8 @@ class datadog_agent::integrations::http_check (
       'username'                     => $username,
       'password'                     => $password,
       'timeout'                      => $timeout,
+      'method'                       => $method,
+      'data'                         => $data,
       'threshold'                    => $threshold,
       'window'                       => $window,
       'content_match'                => $content_match,

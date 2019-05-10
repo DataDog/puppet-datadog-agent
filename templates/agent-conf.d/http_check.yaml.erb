@@ -9,6 +9,17 @@ instances:
 <% if instance['timeout'] -%>
     timeout: <%= instance['timeout'] %>
 <% end -%>
+<% if instance['method'] -%>
+    method: <%= instance['method'] %>
+<% end -%>
+<% if instance['data'].is_a?(String) -%>
+    data: <%= instance['data'] %>
+<% elsif instance['data'].is_a?(Array) -%>
+    data:
+    <%- instance['data'].each do |data| -%>
+      <%= data %>
+    <%- end -%>
+<% end -%>
 <% if instance['username'] -%>
     username: <%= instance['username'] %>
 <% end -%>

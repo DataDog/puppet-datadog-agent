@@ -3,24 +3,39 @@
 init_config:
 
 instances:
-<% @_ports.each do |port| -%>
-  - host: <%= @host %>
-    port: <%= port %>
-    warn_on_missing_keys: <%= @warn_on_missing_keys %>
-    command_stats: <%= @command_stats %>
-    <% if @password.empty? %># <%end %>password: <%= @password %>
+<%- (Array(@_instances)).each do |instance| -%>
+  - host: <%= instance['host'] %>
+    port: <%= instance['port']  %>
+<% if instance['password']  and ! instance['password'].empty? -%>
+    password: <%= instance['password'] %>
+<% end -%>
+<% if instance['slowlog_max_len']  and ! instance['slowlog_max_len'].empty? -%>
     # unix_socket_path: /var/run/redis/redis.sock # optional, can be used in lieu of host/port
-    <% if @slowlog_max_len.empty? %># <%end %>slowlog-max-len: <%= @slowlog_max_len %>
-<% unless @tags.empty? -%>
-    tags:                  # Optional
-<% @tags.each do |tag| -%>
-        - <%= tag %>
+    slowlog-max-len: <%= instance['slowlog_max_len'] %>
+<% end -%>
+<% if !instance['warn_on_missing_keys'].nil? -%>
+    warn_on_missing_keys: <%= instance['warn_on_missing_keys'] %>
+<% end -%>
+<% if !instance['command_stats'].nil? -%>
+    command_stats: <%= instance['command_stats'] %>
+<% end -%>
+<% if instance['keys']  and unless instance['keys'].empty? -%>
+    keys:
+  <%- Array(instance['keys'] ).each do |key| -%>
+    <%- if key != '' -%>
+      - <%= key %>
+    <%- end -%>
+  <% end -%>
+<% end -%>
+<% if instance['tags']  and unless instance['tags'].empty? -%>
+    tags:
+  <%- Array(instance['tags'] ).each do |tag| -%>
+    <%- if tag != '' -%>
+      - <%= tag %>
+    <%- end -%>
+  <% end -%>
 <% end -%>
 <% end -%>
-<% unless @keys.empty? -%>
-    keys:  # check the length of these keys
-<% @keys.each do |key| -%>
-        - <%= key %>
-<% end -%>
+
 <% end -%>
 <% end -%>

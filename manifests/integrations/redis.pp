@@ -37,6 +37,7 @@ class datadog_agent::integrations::redis(
   Array $keys                               = [],
   Boolean $warn_on_missing_keys             = true,
   Boolean $command_stats                    = false,
+  Optional[Array] $instances                = undef,
 
 ) inherits datadog_agent::params {
   include datadog_agent
@@ -55,6 +56,19 @@ class datadog_agent::integrations::redis(
 
   validate_legacy('Array', 'validate_array', $_ports)
 
+  $_port_instances = $_ports.map |$instance_port| {
+     {
+      'host'                          => $host,
+      'password'                      => $password,
+      'port'                          => $instance_port,
+      'slowlog_max_len'               => $slowlog_max_len,
+      'tags'                          => $tags,
+      'keys'                          => $keys,
+      'warn_on_missing_keys'          => $warn_on_missing_keys,
+      'command_stats'                 => $command_stats,
+    }
+  }
+
   $legacy_dst = "${datadog_agent::conf_dir}/redisdb.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst = "${datadog_agent::conf6_dir}/redisdb.d/conf.yaml"
@@ -63,6 +77,14 @@ class datadog_agent::integrations::redis(
     }
   } else {
     $dst = $legacy_dst
+  }
+
+  if !$instances and $host {
+    $_instances = $_port_instances
+  } elsif !$instances{
+    $_instances = []
+  } else {
+    $_instances = $instances
   }
 
   file { $dst:

@@ -57,15 +57,15 @@ class datadog_agent::integrations::redis(
   validate_legacy('Array', 'validate_array', $_ports)
 
   $_port_instances = $_ports.map |$instance_port| {
-     {
-      'host'                          => $host,
-      'password'                      => $password,
-      'port'                          => $instance_port,
-      'slowlog_max_len'               => $slowlog_max_len,
-      'tags'                          => $tags,
-      'keys'                          => $keys,
-      'warn_on_missing_keys'          => $warn_on_missing_keys,
-      'command_stats'                 => $command_stats,
+    {
+      'host'                 => $host,
+      'password'             => $password,
+      'port'                 => $instance_port,
+      'slowlog_max_len'      => $slowlog_max_len,
+      'tags'                 => $tags,
+      'keys'                 => $keys,
+      'warn_on_missing_keys' => $warn_on_missing_keys,
+      'command_stats'        => $command_stats,
     }
   }
 

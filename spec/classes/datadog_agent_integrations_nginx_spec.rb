@@ -48,7 +48,14 @@ describe 'datadog_agent::integrations::nginx' do
             {
               'type' => 'file',
               'path' => '/var/log/nginx/access.log',
-              'service' => 'my.nginx.service',
+              'service' => 'nginx',
+              'source' => 'nginx',
+              'sourcecategory' => 'http_web_access'
+            },
+            {
+              'type' => 'file',
+              'path' => '/var/log/nginx/error.log',
+              'service' => 'nginx',
               'source' => 'nginx',
               'sourcecategory' => 'http_web_access'
             }
@@ -59,9 +66,10 @@ describe 'datadog_agent::integrations::nginx' do
         it { should contain_file(conf_file).with_content(%r{tags:.*foo.*bar.*baz}m) }
         it { should contain_file(conf_file).with_content(%r{type:.*file}m) }
         it { should contain_file(conf_file).with_content(%r{path:.*/var/log/nginx/access.log}m) }
-        it { should contain_file(conf_file).with_content(%r{service:.*my.nginx.service}m) }
+        it { should contain_file(conf_file).with_content(%r{service:.*nginx}m) }
         it { should contain_file(conf_file).with_content(%r{source:.*nginx}m) }
         it { should contain_file(conf_file).with_content(%r{sourcecategory:.*http_web_access}m) }
+        it { should contain_file(conf_file).with_content(%r{path:.*/var/log/nginx/error.log}m) }
       end
     end
   end

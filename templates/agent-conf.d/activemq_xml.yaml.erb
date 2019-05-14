@@ -5,34 +5,31 @@ init_config:
 instances:
 <%- (Array(@_instances)).each do |instance| -%>
   - url: <%= instance['url'] %>
-<% if !instance['username'].nil? -%>
+<% unless instance['username'].nil? -%>
     username: <%= instance['username']  %>
 <%- end -%>
-<% if !instance['password'].nil? -%>
+<% unless instance['password'].nil? -%>
     password: <%= instance['password']  %>
 <%- end -%>
-<% if !instance['supress_errors'].nil? -%>
+<% unless instance['supress_errors'].nil? -%>
     supress_errors: <%= instance['supress_errors']  %>
 <%- end -%>
-<%- if !instance['detailed_queues'].nil? and unless instance['detailed_queues'].empty? -%>
+<%- unless instance['detailed_queues'].nil? || instance['detailed_queues'].empty? -%>
     detailed_queues:
   <%- Array(instance['detailed_queues'] ).each do |queue| -%>
       - <%= queue %>
   <%- end -%>
 <%- end -%>
-<%- end -%>
-<%- if !instance['detailed_topics'].nil? and unless instance['detailed_topics'].empty? -%>
+<%- unless instance['detailed_topics'].nil? || instance['detailed_topics'].empty? -%>
     detailed_topics:
   <%- Array(instance['detailed_topics'] ).each do |topic| -%>
       - <%= topic %>
   <%- end -%>
 <%- end -%>
-<%- end -%>
-<%- if !instance['detailed_subscribers'].nil? and unless instance['detailed_subscribers'].empty? -%>
+<%- unless instance['detailed_subscribers'].nil? || instance['detailed_subscribers'].empty? -%>
     detailed_subscribers:
   <%- Array(instance['detailed_subscribers'] ).each do |subscriber| -%>
       - <%= subscriber %>
   <%- end %>
 <%- end -%>
 <%- end -%>
-<% end -%>

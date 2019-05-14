@@ -34,8 +34,8 @@ describe 'datadog_agent::integrations::redis' do
 
       context 'with default parameters' do
         it { should contain_file(conf_file).with_content(%r{host: localhost}) }
-        it { should contain_file(conf_file).without_content(%r{^[^#]*password: }) }
         it { should contain_file(conf_file).with_content(%r{port: 6379}) }
+        it { should contain_file(conf_file).without_content(%r{^[^#]*password: }) }
         it { should contain_file(conf_file).without_content(%r{^[^#]*slowlog-max-len: }) }
         it { should contain_file(conf_file).without_content(%r{tags:}) }
         it { should contain_file(conf_file).without_content(%r{\bkeys:}) }
@@ -62,6 +62,59 @@ describe 'datadog_agent::integrations::redis' do
         it { should contain_file(conf_file).with_content(%r{keys:.*\s+- baz\s+- bat}) }
         it { should contain_file(conf_file).with_content(%r{warn_on_missing_keys: false}) }
         it { should contain_file(conf_file).with_content(%r{command_stats: true}) }
+      end
+
+      context 'with ports parameters set' do
+        let(:params) {{
+          host: 'redis1',
+          password: 'hunter2',
+          ports: %w(2379 2380 2381),
+          slowlog_max_len: '5309',
+          tags: %w{foo bar},
+          keys: %w{baz bat},
+          warn_on_missing_keys: false,
+          command_stats: true,
+        }}
+        it { should contain_file(conf_file).with_content(%r{host: redis1}) }
+        it { should contain_file(conf_file).with_content(%r{^[^#]*password: hunter2}) }
+        it { should contain_file(conf_file).with_content(%r{^[^#]*slowlog-max-len: 5309}) }
+        it { should contain_file(conf_file).with_content(%r{tags:.*\s+- foo\s+- bar}) }
+        it { should contain_file(conf_file).with_content(%r{keys:.*\s+- baz\s+- bat}) }
+        it { should contain_file(conf_file).with_content(%r{warn_on_missing_keys: false}) }
+        it { should contain_file(conf_file).with_content(%r{command_stats: true}) }
+        it { should contain_file(conf_file).with_content(%r{port: 2379}) }
+        it { should contain_file(conf_file).with_content(%r{port: 2380}) }
+        it { should contain_file(conf_file).with_content(%r{port: 2381}) }
+      end
+
+      context 'with instances set' do
+        let(:params) {{
+          instances: [
+              {
+                  'host'     => 'redis1',
+                  'password' => 'hunter2',
+                  'port'     => 2379,
+                  'tags'     => %w(foo bar),
+                  'keys'     => %w(baz bat),
+              },
+              {
+                  'host'     => 'redis1',
+                  'password' => 'hunter2',
+                  'port'     => 2380,
+                  'tags'     => %w(foo bar),
+                  'keys'     => %w(baz bat),
+              },
+          ],
+        }}
+        it { should contain_file(conf_file).with_content(%r{host: redis1}) }
+        it { should contain_file(conf_file).with_content(%r{^[^#]*password: hunter2}) }
+        it { should contain_file(conf_file).with_content(%r{port: 2379}) }
+        it { should contain_file(conf_file).with_content(%r{port: 2380}) }
+        it { should contain_file(conf_file).with_content(%r{tags:.*\s+- foo\s+- bar}) }
+        it { should contain_file(conf_file).with_content(%r{keys:.*\s+- baz\s+- bat}) }
+        it { should contain_file(conf_file).without_content(%r{^[^#]*slowlog-max-len: 5309}) }
+        it { should contain_file(conf_file).without_content(%r{warn_on_missing_keys: false}) }
+        it { should contain_file(conf_file).without_content(%r{command_stats: true}) }
       end
     end
   end

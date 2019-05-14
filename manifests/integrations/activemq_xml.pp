@@ -3,84 +3,44 @@
 # This class will install the necessary configuration for the activemq_xml integration
 #
 # Parameters:
-#   $password
-#       The password for the datadog user
-#   $host
-#       The host activemq_xml is running on
-#   $dbname
-#       The activemq_xml database name
-#   $port
-#       The activemq_xml port number
+#   $url
+#       URL to gather the activemq_xml starts from
 #   $username
-#       The username for the datadog user
-#   $ssl
-#       Boolean to enable SSL
-#   $use_psycopg2
-#       Boolean to flag connecting to activemq_xml with psycopg2 instead of pg8000.
-#       Warning, psycopg2 doesn't support ssl mode.
-#   $collect_function_metrics
-#       Boolean to enable collecting metrics regarding PL/pgSQL functions from pg_stat_user_functions.
-#   $collect_count_metrics
-#       Boolean to enable collecting count metrics, default value is True for backward compatibility but they might be slow,
-#       suggested value is False.
-#   $collect_activity_metrics
-#       Boolean to enable collecting metrics regarding transactions from pg_stat_activity, default value is False.
-#       Please make sure the user has sufficient privileges to read from pg_stat_activity before enabling this option.
-#   $collect_database_size_metrics
-#       Boolean to enable collecting database size metrics. Default value is True but they might be slow with large databases
-#   $collect_default_database
-#       Boolean to enable collecting statistics from the default database 'activemq_xml' in the check metrics, default to false
-#   $tags
-#       Optional array of tags
-#   $tables
-#       Track per relation/table metrics. Array of strings.
-#       Warning: this can collect lots of metrics per relation
-#       (10 + 10 per index)
-#   $tags
-#       Optional array of tags
-#   $custom_metrics
-#       A hash of custom metrics with the following keys - query, metrics,
-#       relation, descriptors. Refer to this guide for details on those fields:
-#       https://help.datadoghq.com/hc/en-us/articles/208385813-activemq_xml-custom-metric-collection-explained
+#       Username to use for authentication - optional
+#   $password
+#       Password to use for authentication - optional
+#   $supress_errors
+#      Supress connection errors if URL is expected to be offline at times (eg. standby host)
+#   $detailed_queues
+#      List of queues to monitor, required if you have more than 300 queues you wish to track.
+#   $detailed_topics
+#      List of topics to monitor, required if you have more than 300 topics you wish to track.
+#   $detailed_subscribers
+#      List of subscribers to monitor, required if you have more than 300 subscribers you wish to track.
 #
 # Sample Usage:
 #
 #  class { 'datadog_agent::integrations::activemq_xml' :
-#    host     => 'localhost',
-#    dbname   => 'activemq_xml'
+#    url     => 'http://localhost:8161',
 #    username => 'datadog',
 #    password => 'some_pass',
-#    ssl      => false,
-#    custom_metrics => {
-#      a_custom_query => {
-#        query => "select tag_column, %s from table",
-#        relation => false,
-#        metrics => {
-#          value_column => ["value_column.datadog.tag", "GAUGE"]
-#        },
-#        descriptors => [
-#          ["tag_column", "tag_column.datadog.tag"]
-#        ]
-#      }
-#    }
+#    supress_errors => false,
+#    detailed_queues => ['queue1', 'queue2', 'queue3'],
+#    detailed_topics => ['topic1', 'topic2', 'topic3'],
+#    detailed_subscribers => ['subscriber1', 'subscriber2', 'subscriber3'],
 #  }
 #
 # Hiera Usage:
 #
 #   datadog_agent::integrations::activemq_xml::instances:
-#     - host: 'localhost'
-#       dbname: 'activemq_xml'
+#     - host: 'http://localhost:8161'
 #       username: 'datadog'
 #       password: 'some_pass'
-#       ssl: false
-#       custom_metrics:
-#         a_custom_query:
-#           query: 'select tag_column, %s from table'
-#           relation: false
-#           metrics:
-#             value_column: ["value_column.datadog.tag", "GAUGE"]
-#           descriptors:
-#           - ["tag_column", "tag_column.datadog.tag"]
+#       supress_errors: false
+#       detailed_queues: ['queue1', 'queue2', 'queue3'],
+#       detailed_topics: ['topic1', 'topic2', 'topic3'],
+#       detailed_subscribers: ['subscriber1', 'subscriber2', 'subscriber3'],
+#
 #
 class datadog_agent::integrations::activemq_xml(
   String $url                                   = 'http://localhost:8161',

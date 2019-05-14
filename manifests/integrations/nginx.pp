@@ -24,7 +24,7 @@
 #
 class datadog_agent::integrations::nginx(
   Array $instances = [],
-  Optional [Array] $logs = undef,
+  Optional[Array] $logs = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 

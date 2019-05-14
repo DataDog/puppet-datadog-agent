@@ -4,19 +4,19 @@
 #
 # Parameters:
 #   $url
-#       URL to gather the activemq_xml starts from
+#       ActiveMQ administration web URL to gather the activemq_xml stats from.
 #   $username
 #       Username to use for authentication - optional
 #   $password
 #       Password to use for authentication - optional
 #   $supress_errors
-#      Supress connection errors if URL is expected to be offline at times (eg. standby host)
+#      Supress connection errors if URL is expected to be offline at times (eg. standby host) - optional
 #   $detailed_queues
-#      List of queues to monitor, required if you have more than 300 queues you wish to track.
+#      List of queues to monitor, required if you have more than 300 queues you wish to track, otherwise optional.
 #   $detailed_topics
-#      List of topics to monitor, required if you have more than 300 topics you wish to track.
+#      List of topics to monitor, required if you have more than 300 topics you wish to track, otherwise optional.
 #   $detailed_subscribers
-#      List of subscribers to monitor, required if you have more than 300 subscribers you wish to track.
+#      List of subscribers to monitor, required if you have more than 300 subscribers you wish to track, otherwise optional.
 #
 # Sample Usage:
 #

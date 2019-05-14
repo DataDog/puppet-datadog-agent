@@ -92,7 +92,7 @@ describe 'datadog_agent::integrations::http_check' do
         it { should contain_file(conf_file).with_content(%r{threshold: 456}) }
         it { should contain_file(conf_file).with_content(%r{window: 789}) }
         it { should contain_file(conf_file).with_content(%r{content_match: 'foomatch'}) }
-        it { should contain_file(conf_file).with_content(%r{reverse_content_match: false}) }
+        it { should contain_file(conf_file).with_content(%r{reverse_content_match: true}) }
         it { should contain_file(conf_file).with_content(%r{include_content: true}) }
         it { should contain_file(conf_file).without_content(%r{collect_response_time: true}) }
         it { should contain_file(conf_file).with_content(%r{disable_ssl_validation: true}) }

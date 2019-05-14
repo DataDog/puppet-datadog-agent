@@ -1,0 +1,35 @@
+### MANAGED BY PUPPET
+
+init_config:
+
+instances:
+<%- (Array(@_instances)).each do |instance| -%>
+  - url: <%= instance['url'] %>
+<% unless instance['username'].nil? -%>
+    username: <%= instance['username']  %>
+<%- end -%>
+<% unless instance['password'].nil? -%>
+    password: <%= instance['password']  %>
+<%- end -%>
+<% unless instance['supress_errors'].nil? -%>
+    supress_errors: <%= instance['supress_errors']  %>
+<%- end -%>
+<%- unless instance['detailed_queues'].nil? || instance['detailed_queues'].empty? -%>
+    detailed_queues:
+  <%- Array(instance['detailed_queues'] ).each do |queue| -%>
+      - <%= queue %>
+  <%- end -%>
+<%- end -%>
+<%- unless instance['detailed_topics'].nil? || instance['detailed_topics'].empty? -%>
+    detailed_topics:
+  <%- Array(instance['detailed_topics'] ).each do |topic| -%>
+      - <%= topic %>
+  <%- end -%>
+<%- end -%>
+<%- unless instance['detailed_subscribers'].nil? || instance['detailed_subscribers'].empty? -%>
+    detailed_subscribers:
+  <%- Array(instance['detailed_subscribers'] ).each do |subscriber| -%>
+      - <%= subscriber %>
+  <%- end %>
+<%- end -%>
+<%- end -%>

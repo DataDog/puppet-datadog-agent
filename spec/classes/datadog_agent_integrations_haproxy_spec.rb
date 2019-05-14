@@ -3,13 +3,13 @@ require 'spec_helper'
 describe 'datadog_agent::integrations::haproxy' do
   context 'supported agents - v5 and v6' do
     agents = { '5' => true, '6' => false }
-    agents.each do |_, enabled|
-      let(:pre_condition) { "class {'::datadog_agent': agent5_enable => #{enabled}}" }
+    agents.each do |_, is_agent5|
+      let(:pre_condition) { "class {'::datadog_agent': agent5_enable => #{is_agent5}}" }
       let(:facts) {{
         operatingsystem: 'Ubuntu',
         ipaddress: '1.2.3.4',
       }}
-      if enabled
+      if is_agent5
         let(:conf_dir) { '/etc/dd-agent/conf.d' }
       else
         let(:conf_dir) { '/etc/datadog-agent/conf.d' }
@@ -18,7 +18,7 @@ describe 'datadog_agent::integrations::haproxy' do
       let(:dd_group) { 'root' }
       let(:dd_package) { 'datadog-agent' }
       let(:dd_service) { 'datadog-agent' }
-      if enabled
+      if is_agent5
         let(:conf_file) { "#{conf_dir}/haproxy.yaml" }
       else
         let(:conf_file) { "#{conf_dir}/haproxy.d/conf.yaml" }

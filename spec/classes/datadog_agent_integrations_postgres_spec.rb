@@ -3,12 +3,12 @@ require 'spec_helper'
 describe 'datadog_agent::integrations::postgres' do
   context 'supported agents - v5 and v6' do
     agents = { '5' => true, '6' => false }
-    agents.each do |_, enabled|
-      let(:pre_condition) { "class {'::datadog_agent': agent5_enable => #{enabled}}" }
+    agents.each do |_, is_agent5|
+      let(:pre_condition) { "class {'::datadog_agent': agent5_enable => #{is_agent5}}" }
       let(:facts) {{
         operatingsystem: 'Ubuntu',
       }}
-      if enabled
+      if is_agent5
         let(:conf_dir) { '/etc/dd-agent/conf.d' }
       else
         let(:conf_dir) { '/etc/datadog-agent/conf.d' }
@@ -17,7 +17,7 @@ describe 'datadog_agent::integrations::postgres' do
       let(:dd_group) { 'root' }
       let(:dd_package) { 'datadog-agent' }
       let(:dd_service) { 'datadog-agent' }
-      if enabled
+      if is_agent5
         let(:conf_file) { "#{conf_dir}/postgres.yaml" }
       else
         let(:conf_file) { "#{conf_dir}/postgres.d/conf.yaml" }
@@ -57,7 +57,7 @@ describe 'datadog_agent::integrations::postgres' do
           it { should contain_file(conf_file).without_content(%r{^[^#]*relations: }) }
         end
 
-        context 'with extra metrics collection enabled' do
+        context 'with extra metrics collection is_agent5' do
           let(:params) {{
             password: 'abc123',
             collect_function_metrics: true,
@@ -76,7 +76,7 @@ describe 'datadog_agent::integrations::postgres' do
           }
         end
 
-        context 'with use_psycopg2 enabled' do
+        context 'with use_psycopg2 is_agent5' do
           let(:params) {{
             use_psycopg2: true,
             password: 'abc123',

@@ -3,9 +3,9 @@ require 'spec_helper'
 describe "datadog_agent::integration" do
   context 'supported agents - v5 and v6' do
     agents = { '5' => true, '6' => false }
-    agents.each do |_, enabled|
-      let(:pre_condition) { "class {'::datadog_agent': agent5_enable => #{enabled}}" }
-      if enabled
+    agents.each do |_, is_agent5|
+      let(:pre_condition) { "class {'::datadog_agent': agent5_enable => #{is_agent5}}" }
+      if is_agent5
         let(:conf_file) { '/etc/dd-agent/conf.d/test.yaml' }
       else
         let(:conf_dir) { '/etc/datadog-agent/conf.d/test.d' }
@@ -27,7 +27,7 @@ describe "datadog_agent::integration" do
 
 
       it { should compile }
-      if enabled
+      if is_agent5
         it { should contain_file("#{conf_dir}").that_comes_before("File[#{conf_file}]") }
       end
       it { should contain_file("#{conf_file}").with_content(/init_config: /) }

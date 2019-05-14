@@ -19,6 +19,10 @@
 #       Optional array of keys to check length
 #   $command_stats
 #       Collect INFO COMMANDSTATS output as metrics
+#   $instances
+#       Optional array of hashes should you wish to specify multiple instances.
+#       If this option is specified all other parameters will be overriden.
+#       This parameter may also be used to specify instances with hiera.
 #
 # Sample Usage:
 #
@@ -26,6 +30,15 @@
 #    host => 'localhost',
 #  }
 #
+# Hiera Usage:
+#
+#   datadog_agent::integrations::redis::instances:
+#     - host: 'localhost'
+#       password: 'datadog'
+#       port: 6379
+#       slowlog_max_len: 1000
+#       warn_on_missing_keys: true
+#       command_stats: false
 #
 class datadog_agent::integrations::redis(
   String $host                              = 'localhost',

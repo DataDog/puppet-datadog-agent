@@ -32,6 +32,9 @@ instances:
 <% if instance['window'] -%>
     window: <%= instance['window'] %>
 <% end -%>
+<% if instance['reverse_content_match'] -%>
+    reverse_content_match: <%= instance["reverse_content_match"] %>
+<% end -%>
 <% if instance['content_match'] -%>
     content_match: '<%= instance["content_match"] %>'
 <% end -%>

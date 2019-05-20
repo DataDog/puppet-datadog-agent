@@ -30,6 +30,11 @@
 #       alerts only if the check fails x times within the last y attempts
 #       where x is the threshold and y is the window.
 #
+#   reverse_content_match
+#       When (optional) true, reverses the behavior of the content_match option, 
+#       i.e. the HTTP check will report as DOWN if the string or expression 
+#       in content_match IS found. (default is false)
+#
 #   content_match
 #       The (optional) content_match parameter will allow the check
 #       to look for a particular string within the response. The check
@@ -166,6 +171,7 @@ class datadog_agent::integrations::http_check (
   $threshold = undef,
   $window    = undef,
   $content_match = undef,
+  $reverse_content_match = false,
   $include_content = false,
   $http_response_status_code = undef,
   $collect_response_time = true,
@@ -196,6 +202,7 @@ class datadog_agent::integrations::http_check (
       'threshold'                    => $threshold,
       'window'                       => $window,
       'content_match'                => $content_match,
+      'reverse_content_match'        => $reverse_content_match,
       'include_content'              => $include_content,
       'http_response_status_code'    => $http_response_status_code,
       'collect_response_time'        => $collect_response_time,

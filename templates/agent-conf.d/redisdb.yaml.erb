@@ -9,7 +9,7 @@ instances:
 <% if instance['password']  and ! instance['password'].empty? -%>
     password: <%= instance['password'] %>
 <% end -%>
-<% if instance['slowlog_max_len']  and ! instance['slowlog_max_len'].empty? -%>
+<% if instance['slowlog_max_len'] and ! instance['slowlog_max_len'].to_s.empty? -%>
     # unix_socket_path: /var/run/redis/redis.sock # optional, can be used in lieu of host/port
     slowlog-max-len: <%= instance['slowlog_max_len'] %>
 <% end -%>

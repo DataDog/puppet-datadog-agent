@@ -7,14 +7,6 @@
 #       The use_mount parameter will instruct the check to collect disk
 #       and fs metrics using mount points instead of volumes.
 #       values: yes, no (Boolean, default: no)
-#   $excluded_filesystems
-#       The filesystems you wish to exclude, example: tmpfs, run (string or array)
-#   $excluded_disks
-#       The disks you (optional) wish to exclude, example: /dev/sda (string or array)
-#   $excluded_disk_re
-#       Regular expression (optional) to exclude disks, eg: /dev/sde.*
-#   $excluded_mountpoint_re
-#       Regular expression (optional) to exclude mountpoints, eg: /mnt/somebody-elses-problem.*
 #   $all_partitions
 #       The (optional) all_partitions parameter will instruct the check to
 #       get metrics for all partitions. use_mount should be set to yes (to avoid
@@ -23,6 +15,29 @@
 #       The (optional) tag_by_filesystem parameter will instruct the check to
 #       tag all disks with their filesystem (for ex: filesystem:nfs)
 #       valuse: yes, no (Boolean, default: no)
+#   $filesystem_blacklist
+#       The (optional) filesystems you wish to exclude, example: tmpfs, run,
+#       dev (string or array)
+#   $device_blacklist
+#       The (optional) devices you wish to exclude, example: /dev/sda (string or array)
+#   $mountpoint_blacklist
+#       The (optional) mountpoints you wish to exclude, example: /tmp,
+#       /mnt/somebody-elses-problem (string or array)
+#   $filesystem_whitelist
+#       Specify (optional) filesystems, to only collect from them (string or array)
+#   $device_whitelist
+#       Specify (optional) devices, to only collect from them (string or array)
+#   $mountpoint_whitelist
+#       Specify (optional) mountpoints, to only collect from them (string or array)
+#   $excluded_filesystems (DEPRECATED in agent version>6.9, use $filesystem_blacklist instead)
+#       The filesystems you wish to exclude, example: tmpfs, run (string or array)
+#   $excluded_disks (DEPRECATED in agent version>6.9, use $device_blacklist instead)
+#       The disks you (optional)
+#   $excluded_disk_re (DEPRECATED in agent version>6.9, use $device_blacklist instead)
+#       Regular expression (optional) to exclude disks, eg: /dev/sde.*
+#   $excluded_mountpoint_re (DEPRECATED in agent version>6.9, use $mountpoint_blacklist instead)
+#       Regular expression (optional) to exclude , eg: /mnt/somebody-elses-problem.*
+
 #
 # Sample Usage:
 #

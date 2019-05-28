@@ -65,7 +65,17 @@ class datadog_agent::integrations::docker_daemon(
   }
 
   if !$::datadog_agent::agent5_enable {
-    $legacy_conf = "${datadog_agent::conf6_dir}/docker_daemon.d/conf.yaml"
+    $legacy_dir = "${datadog_agent::conf6_dir}/docker_daemon.d"
+
+    file { $legacy_dir:
+      ensure  => directory,
+      owner   => $datadog_agent::params::dd_user,
+      group   => $datadog_agent::params::dd_group,
+      mode    => '0755',
+      require => Package[$datadog_agent::params::package_name],
+      notify  => Service[$datadog_agent::params::service_name]
+    }
+    $legacy_conf = "${legacy_dir}/conf.yaml"
   } else {
     $legacy_conf = "${datadog_agent::conf_dir}/docker.yaml"
   }
@@ -75,7 +85,17 @@ class datadog_agent::integrations::docker_daemon(
   }
 
   if !$::datadog_agent::agent5_enable {
-    $dst = "${datadog_agent::conf6_dir}/docker.d/conf.yaml"
+    $dst_dir = "${datadog_agent::conf6_dir}/docker.d"
+
+    file { $dst_dir:
+      ensure  => directory,
+      owner   => $datadog_agent::params::dd_user,
+      group   => $datadog_agent::params::dd_group,
+      mode    => '0755',
+      require => Package[$datadog_agent::params::package_name],
+      notify  => Service[$datadog_agent::params::service_name]
+    }
+    $dst = "${dst_dir}/conf.yaml"
   } else {
     $dst = "${datadog_agent::conf_dir}/docker_daemon.yaml"
   }

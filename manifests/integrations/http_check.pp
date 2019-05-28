@@ -17,7 +17,7 @@
 #    	other HTTP methods are supported, including POST and PUT.
 #   data
 #       The (optional) data option. Data should be a string or an array of
-#       key-value pairs and will be sent in the body of the request.
+#       'key: value' pairs and will be sent in the body of the request.
 #
 #   username
 #   password
@@ -94,10 +94,10 @@
 #       service check regardless of the value of disable_ssl_validation
 #
 #   headers
-#       The (optional) headers parameter allows you to send extra headers
-#       with the request. This is useful for explicitly specifying the host
-#       header or perhaps adding headers for authorisation purposes. Note
-#       that the http client library converts all headers to lowercase.
+#       The (optional) headers parameter allows you to send extra headers with
+#       the request. Specify them like 'header-name: content'. This is useful for
+#       explicitly specifying the 'host' header or for authorisation purposes.
+#       Note that the http client library converts all headers to lowercase.
 #       This is legal according to RFC2616
 #       (See: http://tools.ietf.org/html/rfc2616#section-4.2)
 #       but may be problematic with some HTTP servers

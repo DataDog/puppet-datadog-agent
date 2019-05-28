@@ -33,13 +33,13 @@
 # Hiera Usage:
 #
 #   datadog_agent::integrations::activemq_xml::instances:
-#     - host: 'http://localhost:8161'
+#     - url: 'http://localhost:8161'
 #       username: 'datadog'
 #       password: 'some_pass'
 #       supress_errors: false
-#       detailed_queues: ['queue1', 'queue2', 'queue3'],
-#       detailed_topics: ['topic1', 'topic2', 'topic3'],
-#       detailed_subscribers: ['subscriber1', 'subscriber2', 'subscriber3'],
+#       detailed_queues: ['queue1', 'queue2', 'queue3']
+#       detailed_topics: ['topic1', 'topic2', 'topic3']
+#       detailed_subscribers: ['subscriber1', 'subscriber2', 'subscriber3']
 #
 #
 class datadog_agent::integrations::activemq_xml(

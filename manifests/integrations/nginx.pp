@@ -5,6 +5,9 @@
 # Parameters:
 #   $instances:
 #       Array of hashes for all nginx urls and associates tags. See example
+#   $logs:
+#       (optional) log collection configuration, in the format described here:
+#       https://docs.datadoghq.com/integrations/nginx/
 #
 # Sample Usage:
 #
@@ -17,11 +20,43 @@
 #             'nginx_status_url'  => 'http://example2.com:1234/nginx_status/',
 #             'tags' => ['instance:foo'],
 #         },
+#         {
+#             'type' => 'file',
+#             'path' => '/var/log/nginx/access.log',
+#             'service' => 'nginx',
+#             'source' => 'nginx',
+#             'sourcecategory' => 'http_web_access'
+#           },
+#           {
+#             'type' => 'file',
+#             'path' => '/var/log/nginx/error.log',
+#             'service' => 'nginx',
+#             'source' => 'nginx',
+#             'sourcecategory' => 'http_web_access'
+#         },
 #     ],
 #   }
 #
+# Hiera Usage:
 #
+#   datadog_agent::integrations::nginx::instances:
+#       - nginx_status_url: 'http://example.com/nginx_status/'
+#       - nginx_status_url: 'http://example2.com:1234/nginx_status/'
+#         tags:
+#             - 'instance:foo'
+#   datadog_agent::integrations::nginx::logs:
+#       - type: file
+#         path: /var/log/nginx/access.log
+#         service: nginx
+#         source: nginx
+#         sourcecategory: 'http_web_access'
+#       - type: file
+#         path: /var/log/nginx/error.log
+#         service: nginx
+#         source: nginx
+#         sourcecategory: 'http_web_access'
 #
+
 class datadog_agent::integrations::nginx(
   Array $instances = [],
   Optional[Array] $logs = undef,

@@ -6,15 +6,15 @@
 #   $use_mount
 #       The use_mount parameter will instruct the check to collect disk
 #       and fs metrics using mount points instead of volumes.
-#       values: yes, no (Boolean, default: no)
+#       (values: yes, no)
 #   $all_partitions
 #       The (optional) all_partitions parameter will instruct the check to
 #       get metrics for all partitions. use_mount should be set to yes (to avoid
-#       collecting empty device names) when using this option.
+#       collecting empty device names) when using this option. (values: yes, no)
 #   $tag_by_filesystem
 #       The (optional) tag_by_filesystem parameter will instruct the check to
 #       tag all disks with their filesystem (for ex: filesystem:nfs)
-#       valuse: yes, no (Boolean, default: no)
+#       (values: yes, no)
 #   $filesystem_blacklist
 #       The (optional) filesystems you wish to exclude, example: tmpfs, run,
 #       dev (string or array)

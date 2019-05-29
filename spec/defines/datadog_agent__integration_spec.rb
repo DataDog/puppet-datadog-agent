@@ -38,6 +38,21 @@ describe "datadog_agent::integration" do
         it { should contain_file("#{conf_file}").with_content(/--- \n  init_config: \n  instances: \n    - one: two/) }
       end
       it { should contain_file("#{conf_file}").that_notifies("Service[datadog-agent]") }
+
+      context 'with logs' do
+        let(:params) {{
+          :instances => [
+              { 'one' => "two" }
+          ],
+          :logs => %w(one two),
+        }}
+
+        if gem_spec.version >= Gem::Version.new('4.0.0')
+          it { should contain_file(conf_file).with_content(%r{logs:\n- one\n- two}) }
+        else
+          it { should contain_file(conf_file).with_content(%r{logs:\n  - one\n  - two}) }
+        end
+      end
     end
   end
 end

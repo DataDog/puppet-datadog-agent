@@ -10,7 +10,7 @@ module Puppet::Parser::Functions
             'instances' => instances
         }
         if !logs.nil? && !logs.empty? then
-          default_values.merge({'logs' => logs})
+          default_values.merge!({'logs' => logs})
         end
         YAML::dump(default_values)
     end

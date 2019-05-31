@@ -1,6 +1,26 @@
 Changes
 =======
 
+# 2.6.0 / 2019-05-31
+
+### Notes
+
+* [FEATURE] AcitveMQ_XML: added new integration. See [#521][]
+* [FEATURE] Custom Integration: support logs collection. See [#513][] (Thanks [@zickzackv][])
+* [FEATURE] Nginx: support logs collection. See [#519][] (Thanks [@jadams-av][])
+* [FEATURE] Redis: adding multi-instance support. See [#520][]
+* [FEATURE] HTTP check: add support for `method`, `data` configuration. See [#515][] (Thanks [@Aramack][])
+* [FEATURE] HTTP check: add reverse content-match support. See [#524][] (Thanks [@dorg-kanderson][])
+* [BUGFIX] Agent 6: track integration configuration directories - fixes `conf_dir_purge`. See [#525][] (Thanks [@Aramack][])
+* [BUGFIX] Agent 6: fixes `additional_checksd` not appearing in agent config. See [#513][] (Thanks [@gotyaio][])
+* [BUGFIX] Postgres: allow setting password in Hiera. See [#514][] (Thanks [@cabrinha][])
+* [BUGFIX] Redis: fix trying to call `empty?` on an integer on template. See [#527][]
+* [SANITY] Module: bring up concat dependency upper bound to <6.0.0. See [#516][] (Thanks [@siebrand][])
+* [SANITY] Module: bring up stdlib dependency upper bound to <6.0.0. See [#513][] (Thanks [@skiedude][])
+* [SANITY] Module: bring up apt dependency upper bound to <=6.0.0. See [#513][] (Thanks [@skiedude][])
+* [DOCUMENTATION] Fixes on disk, ndingx and activemq_xml docs. See [#528][]
+
+
 # 2.5.0 / 2019-03-25
 
 ### Notes
@@ -601,6 +621,17 @@ Please read the [docs]() for more details.
 [#506]: https://github.com/DataDog/puppet-datadog-agent/issues/506
 [#507]: https://github.com/DataDog/puppet-datadog-agent/issues/507
 [#508]: https://github.com/DataDog/puppet-datadog-agent/issues/508
+[#513]: https://github.com/DataDog/puppet-datadog-agent/issues/513
+[#514]: https://github.com/DataDog/puppet-datadog-agent/issues/514
+[#515]: https://github.com/DataDog/puppet-datadog-agent/issues/515
+[#516]: https://github.com/DataDog/puppet-datadog-agent/issues/516
+[#519]: https://github.com/DataDog/puppet-datadog-agent/issues/519
+[#520]: https://github.com/DataDog/puppet-datadog-agent/issues/520
+[#521]: https://github.com/DataDog/puppet-datadog-agent/issues/521
+[#524]: https://github.com/DataDog/puppet-datadog-agent/issues/524
+[#525]: https://github.com/DataDog/puppet-datadog-agent/issues/525
+[#527]: https://github.com/DataDog/puppet-datadog-agent/issues/527
+[#528]: https://github.com/DataDog/puppet-datadog-agent/issues/528
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
@@ -636,6 +667,7 @@ Please read the [docs]() for more details.
 [@denmat]: https://github.com/denmat
 [@diogokiss]: https://github.com/diogokiss
 [@djova]: https://github.com/djova
+[@dorg-kanderson]: https://github.com/dorg-kanderson
 [@dpricha89]: https://github.com/dpricha89
 [@dschaaff]: https://github.com/dschaaff
 [@dzinek]: https://github.com/dzinek
@@ -648,8 +680,10 @@ Please read the [docs]() for more details.
 [@fwelschen]: https://github.com/fwelschen
 [@fzwart]: https://github.com/fzwart
 [@generica]: https://github.com/generica
+[@gotyaio]: https://github.com/gotyaio
 [@grubernaut]: https://github.com/grubernaut
 [@jacobbednarz]: https://github.com/jacobbednarz
+[@jadams-av]: https://github.com/jadams-av
 [@jameynelson]: https://github.com/jameynelson
 [@jangie]: https://github.com/jangie
 [@jcarr-sailthru]: https://github.com/jcarr-sailthru
@@ -681,6 +715,8 @@ Please read the [docs]() for more details.
 [@samueljamesmarshall]: https://github.com/samueljamesmarshall
 [@scottgeary]: https://github.com/scottgeary
 [@sethcleveland]: https://github.com/sethcleveland
+[@siebrand]: https://github.com/siebrand
+[@skiedude]: https://github.com/skiedude
 [@spectralblu]: https://github.com/spectralblu
 [@stamak]: https://github.com/stamak
 [@stantona]: https://github.com/stantona
@@ -691,4 +727,5 @@ Please read the [docs]() for more details.
 [@tommoyangn]: https://github.com/tommoyangn
 [@tuxinaut]: https://github.com/tuxinaut
 [@yrcjaya]: https://github.com/yrcjaya
+[@zickzackv]: https://github.com/zickzackv
 [@zoom-kris-anderson]: https://github.com/zoom-kris-anderson

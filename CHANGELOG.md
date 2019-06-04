@@ -1,7 +1,7 @@
 Changes
 =======
 
-# 2.6.0 / Unreleased
+# 2.6.0 / 2019-06-04
 
 ### Notes
 

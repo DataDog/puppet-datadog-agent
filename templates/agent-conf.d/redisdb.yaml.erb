@@ -25,7 +25,7 @@ instances:
     <%- if key != '' -%>
       - <%= key %>
     <%- end -%>
-  <% end -%>
+  <%- end -%>
 <% end -%>
 <% if instance['tags']  and unless instance['tags'].empty? -%>
     tags:
@@ -33,7 +33,7 @@ instances:
     <%- if tag != '' -%>
       - <%= tag %>
     <%- end -%>
-  <% end -%>
+  <%- end -%>
 <% end -%>
 <% end -%>
 

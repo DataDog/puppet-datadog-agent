@@ -147,6 +147,22 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
     }
     ```
 
+Installing and pinning specific versions of integrations
+--------------------------------------------------------
+
+    You can specify a given integration and version number to be installed by using `datadog_agent::install_integration`. This will use the `datadog-agent integration` command to ensure a specific integration is installed or uninstalled.
+
+    ```
+    datadog_agent::install_integration { "mongo-1.9":
+      ensure => present,
+      integration_name => 'datadog-mongo',
+      version => '1.9.0',
+    }
+    ```
+
+    The field `ensure` can be either `present` (default) or `absent`, the later being useful to remove a previously pinned version of an integration.
+
+
 Reporting
 ---------
 Ensure `dogapi-rb` is available on your system as explained earlier.

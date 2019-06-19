@@ -19,3 +19,16 @@ env:
   - PUPPET_VERSION="~> 5.1.0" STRICT_VARIABLES=yes
   - PUPPET_VERSION="~> 5.2.0" STRICT_VARIABLES=yes
   - PUPPET_VERSION="~> 5.3.3" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 6.0.0" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 6.5.0" STRICT_VARIABLES=yes
+matrix:
+  exclude:
+    # Puppet 6 needs ruby 2.3+
+    - rvm: 2.1.9
+      env: PUPPET_VERSION="~> 6.0.0" STRICT_VARIABLES=yes
+    - rvm: 2.1.9
+      env: PUPPET_VERSION="~> 6.5.0" STRICT_VARIABLES=yes
+    - rvm: 2.2.3
+      env: PUPPET_VERSION="~> 6.0.0" STRICT_VARIABLES=yes
+    - rvm: 2.2.3
+      env: PUPPET_VERSION="~> 6.5.0" STRICT_VARIABLES=yes

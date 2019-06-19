@@ -7,15 +7,19 @@ define datadog_agent::install_integration (
   include datadog_agent
 
   if $ensure == 'present' {
-    $command = 'install'
+    exec { "install ${integration_name}==${version}":
+      command => "/opt/datadog-agent/bin/agent/agent integration install ${integration_name}==${version}",
+      user    => 'dd-agent',
+      unless  => "/opt/datadog-agent/bin/agent/agent integration freeze | grep ${integration_name}==${version}",
+      require => Package[$datadog_agent::params::package_name],
+    }
   } else {
-    $command = 'remove'
-  }
-
-  exec { "${command} ${integration_name}==${version}":
-    command => "/opt/datadog-agent/bin/agent/agent integration ${command} ${integration_name}==${version}",
-    user    => 'dd-agent',
-    require => Package[$datadog_agent::params::package_name],
+    exec { "remove ${integration_name}==${version}":
+      command => "/opt/datadog-agent/bin/agent/agent integration remove ${integration_name}==${version}",
+      user    => 'dd-agent',
+      onlyif  => "/opt/datadog-agent/bin/agent/agent integration freeze | grep ${integration_name}==${version}",
+      require => Package[$datadog_agent::params::package_name],
+    }
   }
 
 }

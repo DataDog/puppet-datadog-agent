@@ -12,6 +12,7 @@ define datadog_agent::install_integration (
       user    => 'dd-agent',
       unless  => "/opt/datadog-agent/bin/agent/agent integration freeze | grep ${integration_name}==${version}",
       require => Package[$datadog_agent::params::package_name],
+      notify  => Service[$datadog_agent::params::service_name],
     }
   } else {
     exec { "remove ${integration_name}==${version}":
@@ -19,6 +20,7 @@ define datadog_agent::install_integration (
       user    => 'dd-agent',
       onlyif  => "/opt/datadog-agent/bin/agent/agent integration freeze | grep ${integration_name}==${version}",
       require => Package[$datadog_agent::params::package_name],
+      notify  => Service[$datadog_agent::params::service_name],
     }
   }
 

@@ -105,20 +105,20 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
 
     Or assign this module using the Puppet style Parameterized class:
 
-        ```
-        class { 'datadog_agent':
-            api_key => "<YOUR_DD_API_KEY>",
-        }
-        ```
+    ```
+    class { 'datadog_agent':
+        api_key => "<YOUR_DD_API_KEY>",
+    }
+    ```
 
     On your `puppetserver`, enable reporting:
 
-        ```
-        class { 'datadog_agent':
-            api_key            => "<YOUR_DD_API_KEY>",
-            puppet_run_reports => true,
-        }
-        ```
+    ```
+    class { 'datadog_agent':
+        api_key            => "<YOUR_DD_API_KEY>",
+        puppet_run_reports => true,
+    }
+    ```
 
     - To support reporting, your Puppet master needs the [dogapi][4] gem installed. To install, either run the Puppet Agent on your master with this configuration or install it manually with `gem`. You might need to restart your `puppetserver` service for the freshly installed `dogapi-rb` gem to be picked up.
     - On version 2.x, `puppetserver_gem` is defined as a module dependency, it is installed automatically when the module is installed.
@@ -153,17 +153,17 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
 Installing and pinning specific versions of integrations
 --------------------------------------------------------
 
-    You can specify a given integration and version number to be installed by using `datadog_agent::install_integration`. This will use the `datadog-agent integration` command to ensure a specific integration is installed or uninstalled.
+You can specify a given integration and version number to be installed by using `datadog_agent::install_integration`. This will use the `datadog-agent integration` command to ensure a specific integration is installed or uninstalled.
 
-    ```
-    datadog_agent::install_integration { "mongo-1.9":
-      ensure => present,
-      integration_name => 'datadog-mongo',
-      version => '1.9.0',
-    }
-    ```
+```
+datadog_agent::install_integration { "mongo-1.9":
+    ensure => present,
+    integration_name => 'datadog-mongo',
+    version => '1.9.0',
+}
+```
 
-    The field `ensure` can be either `present` (default) or `absent`, the later being useful to remove a previously pinned version of an integration.
+The field `ensure` can be either `present` (default) or `absent`, the later being useful to remove a previously pinned version of an integration.
 
 
 Reporting

@@ -2,6 +2,9 @@ Puppet & Datadog
 ================
 
 [![Build Status](https://travis-ci.com/DataDog/puppet-datadog-agent.svg?branch=master)](https://travis-ci.com/DataDog/puppet-datadog-agent)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/datadog/datadog_agent.svg)](https://forge.puppetlabs.com/datadog/datadog_agent)
+[![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/datadog/datadog_agent.svg)](https://forge.puppetlabs.com/datadog/datadog_agent)
+
 
 Description
 -----------
@@ -40,8 +43,8 @@ puppet module install datadog-datadog_agent
 **Note**: For CentOS versions <7.0, specify the service provider as `upstart`:
 
 ```
-class{ 'datadog_agent': 
-    service_provider => 'upstart' 
+class{ 'datadog_agent':
+    service_provider => 'upstart'
   }
 ```
 

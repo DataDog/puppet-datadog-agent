@@ -11,25 +11,28 @@ rvm:
 script:
   - bundle exec rake test
 env:
-  - PUPPET_VERSION="~> 4.6.2" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 4.7.1" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 4.8.2" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 4.9.4" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 4.10.9" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 5.0.1" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 5.1.0" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 5.2.0" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 5.3.3" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 6.0.0" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 6.5.0" STRICT_VARIABLES=yes
+  global:
+     - STRICT_VARIABLES=yes
+  matrix:
+    - PUPPET_VERSION="~> 4.6.2"
+    - PUPPET_VERSION="~> 4.7.1"
+    - PUPPET_VERSION="~> 4.8.2"
+    - PUPPET_VERSION="~> 4.9.4"
+    - PUPPET_VERSION="~> 4.10.9"
+    - PUPPET_VERSION="~> 5.0.1"
+    - PUPPET_VERSION="~> 5.1.0"
+    - PUPPET_VERSION="~> 5.2.0"
+    - PUPPET_VERSION="~> 5.3.3"
+    - PUPPET_VERSION="~> 6.0.0"
+    - PUPPET_VERSION="~> 6.5.0"
 matrix:
   exclude:
     # Puppet 6 needs ruby 2.3+
     - rvm: 2.1.9
-      env: PUPPET_VERSION="~> 6.0.0" STRICT_VARIABLES=yes
+      env: PUPPET_VERSION="~> 6.0.0"
     - rvm: 2.1.9
-      env: PUPPET_VERSION="~> 6.5.0" STRICT_VARIABLES=yes
+      env: PUPPET_VERSION="~> 6.5.0"
     - rvm: 2.2.3
-      env: PUPPET_VERSION="~> 6.0.0" STRICT_VARIABLES=yes
+      env: PUPPET_VERSION="~> 6.0.0"
     - rvm: 2.2.3
-      env: PUPPET_VERSION="~> 6.5.0" STRICT_VARIABLES=yes
+      env: PUPPET_VERSION="~> 6.5.0"

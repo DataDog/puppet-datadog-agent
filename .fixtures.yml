@@ -13,6 +13,8 @@ fixtures:
       repo: "git://github.com/puppetlabs/puppetlabs-puppetserver_gem.git"
       ref: "1.0.0"
     ruby: "git://github.com/puppetlabs/puppetlabs-ruby.git"
+  forge_modules:
+    yumrepo_core: "puppetlabs/yumrepo_core"
   symlinks:
     custom_datadog: "#{source_dir}/spec/custom_fixtures/custom_datadog"
     datadog_agent: "#{source_dir}"

@@ -231,14 +231,14 @@ This is the minimal set of modifications to get started. These files assume Pupp
 /etc/puppetlabs/puppet/puppet.conf
 -----------------------
 ```ini
-    [master]
-    report = true
-    reports = datadog_reports
-    pluginsync = true
+[master]
+report = true
+reports = datadog_reports
+pluginsync = true
 
-    [agent]
-    report = true
-    pluginsync = true
+[agent]
+report = true
+pluginsync = true
 ```
 
 _Note: This may be file `/etc/puppet/puppet/puppet.conf` on older puppets_

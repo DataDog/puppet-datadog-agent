@@ -687,6 +687,7 @@ class datadog_agent(
       'log_file' => $agent6_log_file,
       'log_level' => $log_level,
       'tags' => unique(flatten(union($_local_tags, $_facts_tags))),
+      'histogram_percentiles' => $statsd_histogram_percentiles,
     }
 
     $agent_config = deep_merge($site_config, $dd_url_config, $host_config, $_agent_config, $extra_config)

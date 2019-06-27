@@ -241,7 +241,7 @@ class datadog_agent(
   $dogstatsd_socket = '',
   $statsd_forward_host = '',
   $statsd_forward_port = '',
-  $statsd_histogram_percentiles = '0.95',
+  $statsd_histogram_percentiles = ['0.95'],
   $proxy_host = '',
   $proxy_port = '',
   $proxy_user = '',
@@ -338,7 +338,7 @@ class datadog_agent(
   validate_legacy(Boolean, 'validate_bool', $manage_repo)
   validate_legacy(String, 'validate_string', $log_level)
   validate_legacy(String, 'validate_re', $_dogstatsd_port, '^\d*$')
-  validate_legacy(String, 'validate_string', $statsd_histogram_percentiles)
+  validate_legacy(Array, 'validate_array', $statsd_histogram_percentiles)
   validate_legacy(String, 'validate_re', $_statsd_forward_port, '^\d*$')
   validate_legacy(String, 'validate_string', $proxy_host)
   validate_legacy(String, 'validate_re', $_proxy_port, '^\d*$')

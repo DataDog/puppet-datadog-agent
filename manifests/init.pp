@@ -662,6 +662,12 @@ class datadog_agent(
     $_local_tags = datadog_agent::tag6($local_tags, false)
     $_facts_tags = datadog_agent::tag6($facts_to_tags, true)
 
+    if ($additional_checksd == '') {
+      $_additional_checksd = '/etc/datadog-agent/checks.d'
+    } else {
+      $_additional_checksd = $additional_checksd
+    }
+
     $_agent_config = {
       'api_key' => $api_key,
       'dd_url' => $dd_url,
@@ -678,7 +684,7 @@ class datadog_agent(
       'log_file' => $agent6_log_file,
       'log_level' => $log_level,
       'tags' => unique(flatten(union($_local_tags, $_facts_tags))),
-      'additional_checksd' => $additional_checksd,
+      'additional_checksd' => $_additional_checksd,
     }
 
     $agent_config = deep_merge($_agent_config, $extra_config)

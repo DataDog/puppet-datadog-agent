@@ -22,6 +22,9 @@ Puppet::Reports.register_report(:datadog_reports) do
     rescue
       raise(Puppet::ParseError, "Invalid hostname_extraction_regex #{HOSTNAME_REGEX}")
     end
+    unless HOSTNAME_EXTRACTION_REGEX.named_captures.has_key? "hostname"
+      raise(Puppet::ParseError, "hostname_extraction_regex doesn't include a match group named 'hostname': #{HOSTNAME_REGEX}")
+    end
   else
     HOSTNAME_EXTRACTION_REGEX = nil
   end

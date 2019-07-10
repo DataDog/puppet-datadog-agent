@@ -35,7 +35,7 @@ graphite_listen_port: <%= @_graphite_listen_port %>
 <% end -%>
 
 # Additional directory to look for Datadog checks
-<% if @additional_checksd.empty? -%>
+<% if @additional_checksd.nil? -%>
 # additional_checksd: /etc/dd-agent/checks.d/
 <% else -%>
 additional_checksd: <%= @additional_checksd %>

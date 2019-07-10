@@ -97,7 +97,7 @@
 #       String. Default: empty (port 17123 in dd-agent)
 #   $additional_checksd
 #       Additional directory to look for datadog checks in
-#       String. Default: empty
+#       String. Default: undef
 #   $bind_host
 #       The loopback address the forwarder and Dogstatsd will bind.
 #       String. Default: empty
@@ -263,7 +263,7 @@ class datadog_agent(
   $use_curl_http_client = false,
   $recent_point_threshold = '',
   $listen_port = '',
-  $additional_checksd = '',
+  $additional_checksd = undef,
   $bind_host = '',
   $use_pup = false,
   $pup_port = '',
@@ -642,12 +642,22 @@ class datadog_agent(
     } else {
         $statsd_forward_config = {}
     }
+
+    if $additional_checksd {
+        $additional_checksd_config = {
+          'additional_checksd' => $additional_checksd,
+        }
+    } else {
+        $additional_checksd_config = {}
+    }
+
     $extra_config = deep_merge(
             $base_extra_config,
             $agent6_extra_options,
             $apm_analyzed_span_config,
             $statsd_forward_config,
-            $host_config)
+            $host_config,
+            $additional_checksd_config)
 
     file { $conf6_dir:
       ensure  => directory,
@@ -678,7 +688,6 @@ class datadog_agent(
       'log_file' => $agent6_log_file,
       'log_level' => $log_level,
       'tags' => unique(flatten(union($_local_tags, $_facts_tags))),
-      'additional_checksd' => $additional_checksd,
     }
 
     $agent_config = deep_merge($_agent_config, $extra_config)

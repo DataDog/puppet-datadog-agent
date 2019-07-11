@@ -42,10 +42,6 @@
     {
       "name": "puppet",
       "version_requirement": ">=4.6.0 <7.0.0"
-    },
-    {
-      "name": "yumrepo_core",
-      "version_requirement": ">=1.0.3 < 2.0.0"
     }
   ],
   "dependencies": [
@@ -68,6 +64,10 @@
     {
       "name": "puppetlabs/puppetserver_gem",
       "version_requirement": ">=1.0.0 <2.0.0"
+    },
+    {
+      "name": "puppetlabs/yumrepo_core",
+      "version_requirement": ">=1.0.3 < 2.0.0"
     }
   ]
 }

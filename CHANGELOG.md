@@ -1,6 +1,16 @@
 Changes
 =======
 
+# 2.7.0 / 2019-07-11
+
+### Notes
+
+* [FEATURE] Support puppet 6. See [#537][]
+* [FEATURE] Added a define that wraps the agent integration command. See [#534][]
+* [BUGFIX] Add whitespace surpression to redisdb.yaml.erb to ensure a valid yaml. See [#533][] (Thanks again [@Aramack][])
+* [BUGFIX] Do not include additional_checksd if not set. See [#545][] (Thanks [@turnopil][])
+* [IMPROVEMENT] Raise if hostname_extraction_regex doesn't capture hostname. See [#544][]
+
 # 2.6.0 / 2019-06-04
 
 ### Notes
@@ -20,7 +30,6 @@ Changes
 * [SANITY] Module: bring up apt dependency upper bound to <=6.0.0. See [#513][] (Thanks [@skiedude][])
 * [DOCUMENTATION] Fixes on disk, ndingx and activemq_xml docs. See [#528][]
 
-
 # 2.5.0 / 2019-03-25
 
 ### Notes
@@ -34,7 +43,6 @@ Changes
 * [BUGFIX] TCP check: `check_name` instead of name. See [#501][] (Thanks [@cabrinha][])
 * [BUGFIX] SSH check: fix broken config location: `ssh_check.d` instead of `ssh.d`. See [#502][] (Thanks [@cabrinha][])
 * [BUGFIX] Revert chatty apt-get update behavior. See [#506][] and [#507][]
-
 
 # 2.4.1 / 2019-02-21
 
@@ -632,6 +640,11 @@ Please read the [docs]() for more details.
 [#525]: https://github.com/DataDog/puppet-datadog-agent/issues/525
 [#527]: https://github.com/DataDog/puppet-datadog-agent/issues/527
 [#528]: https://github.com/DataDog/puppet-datadog-agent/issues/528
+[#533]: https://github.com/DataDog/puppet-datadog-agent/issues/533
+[#534]: https://github.com/DataDog/puppet-datadog-agent/issues/534
+[#537]: https://github.com/DataDog/puppet-datadog-agent/issues/537
+[#544]: https://github.com/DataDog/puppet-datadog-agent/issues/544
+[#545]: https://github.com/DataDog/puppet-datadog-agent/issues/545
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
@@ -725,6 +738,7 @@ Please read the [docs]() for more details.
 [@tdm4]: https://github.com/tdm4
 [@teintuc]: https://github.com/teintuc
 [@tommoyangn]: https://github.com/tommoyangn
+[@turnopil]: https://github.com/turnopil
 [@tuxinaut]: https://github.com/tuxinaut
 [@yrcjaya]: https://github.com/yrcjaya
 [@zickzackv]: https://github.com/zickzackv

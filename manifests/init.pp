@@ -611,12 +611,20 @@ class datadog_agent(
         'logs_enabled' => $logs_enabled,
         'logs_config' => {
           'container_collect_all' => $container_collect_all,
-          if $open_files_limit {
-            'open_files_limit' => $open_files_limit,
-          },
         },
     }
 
+    if $open_files_limit {
+      $open_files_limit_config = {
+        'logs_config' => {
+          'open_files_limit' => $open_files_limit
+        },
+      }
+      $base_extra_config = deep_merge(
+        $base_extra_config,
+        $open_files_limit_config
+      )
+    }
     if $host != '' {
         $host_config = {
           'hostname' => $host,

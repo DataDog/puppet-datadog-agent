@@ -197,7 +197,7 @@
 #       Boolean. Default: false
 #   $open_files_limit
 #       Integer to increase or decrease default limit of 100
-#       Integer. Default: 100
+#       Integer. Default: 100 if undef
 #   $container_collect_all
 #       Boolean to enable logs collection for all containers
 #       Boolean. Default: false
@@ -398,7 +398,6 @@ class datadog_agent(
   validate_legacy(Boolean, 'validate_bool', $scrub_args)
   validate_legacy(Array, 'validate_array', $custom_sensitive_words)
   validate_legacy(Boolean, 'validate_bool', $logs_enabled)
-  validate_legacy(Integer, 'validate_integer', $open_files_limit)
   validate_legacy(Boolean, 'validate_bool', $container_collect_all)
   validate_legacy(String, 'validate_string', $agent5_repo_uri)
   validate_legacy(String, 'validate_string', $agent6_repo_uri)
@@ -612,7 +611,9 @@ class datadog_agent(
         'logs_enabled' => $logs_enabled,
         'logs_config' => {
           'container_collect_all' => $container_collect_all,
-          'open_files_limit' => $open_files_limit,
+          if $open_files_limit {
+            'open_files_limit' => $open_files_limit,
+          },
         },
     }
 

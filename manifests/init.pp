@@ -195,8 +195,8 @@
 #   $logs_enabled
 #       Boolean to enable or disable the logs agent
 #       Boolean. Default: false
-#   $open_files_limit
-#       Integer to increase or decrease default limit of 100
+#   $logs_open_files_limit
+#       Integer set the max number of open files for the logs agent
 #       Integer. Default: 100 if undef
 #   $container_collect_all
 #       Boolean to enable logs collection for all containers
@@ -310,7 +310,7 @@ class datadog_agent(
   $scrub_args = $datadog_agent::params::process_default_scrub_args,
   $custom_sensitive_words = $datadog_agent::params::process_default_custom_words,
   $logs_enabled = $datadog_agent::params::logs_enabled,
-  $open_files_limit = $datadog_agent::params::open_files_limit,
+  $logs_open_files_limit = $datadog_agent::params::logs_open_files_limit,
   $container_collect_all = $datadog_agent::params::container_collect_all,
   Hash[String[1], Data] $agent6_extra_options = {},
   $agent5_repo_uri = $datadog_agent::params::agent5_default_repo,
@@ -609,21 +609,20 @@ class datadog_agent(
           'custom_sensitive_words' => $custom_sensitive_words,
         },
         'logs_enabled' => $logs_enabled,
+    }
+    if $logs_open_files_limit {
+      $logs_base_config = {
+        'logs_config' => {
+          'container_collect_all' => $container_collect_all,
+          'open_files_limit' => $logs_open_files_limit
+        },
+      }
+    } else {
+      $logs_base_config = {
         'logs_config' => {
           'container_collect_all' => $container_collect_all,
         },
-    }
-
-    if $open_files_limit {
-      $open_files_limit_config = {
-        'logs_config' => {
-          'open_files_limit' => $open_files_limit
-        },
       }
-      $base_extra_config = deep_merge(
-        $base_extra_config,
-        $open_files_limit_config
-      )
     }
     if $host != '' {
         $host_config = {
@@ -668,6 +667,7 @@ class datadog_agent(
 
     $extra_config = deep_merge(
             $base_extra_config,
+            $logs_base_config,
             $agent6_extra_options,
             $apm_analyzed_span_config,
             $statsd_forward_config,

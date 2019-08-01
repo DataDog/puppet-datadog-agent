@@ -27,6 +27,7 @@ instances:
     <%- end -%>
   <%- end -%>
 <% end -%>
+<% end -%>
 <% if instance['tags']  and unless instance['tags'].empty? -%>
     tags:
   <%- Array(instance['tags'] ).each do |tag| -%>
@@ -37,5 +38,4 @@ instances:
 <% end -%>
 <% end -%>
 
-<% end -%>
 <% end -%>

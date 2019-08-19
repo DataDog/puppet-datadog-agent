@@ -35,6 +35,9 @@ class datadog_agent::params {
   $use_apt_backup_keyserver       = false
   $apt_backup_keyserver           = 'hkp://pool.sks-keyservers.net:80'
   $apt_keyserver                  = 'hkp://keyserver.ubuntu.com:80'
+  $win_msi_location               = 'c:/tmp'
+  $win_msi_filename               = "datadog-agent-6-${agent_version}.amd64.msi"
+  $datadog_win_msi                = "${win_msi_location}/${win_msi_filename}"
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {
@@ -46,6 +49,9 @@ class datadog_agent::params {
       $rubydev_package   = 'ruby-devel'
       $agent5_default_repo = "https://yum.datadoghq.com/rpm/${::architecture}/"
       $agent6_default_repo = "https://yum.datadoghq.com/stable/6/${::architecture}/"
+    }
+    'Windows': {
+      $agent6_default_repo = 'https://s3.amazonaws.com/ddagent-windows-stable/datadog-agent-6-${::agent_version}.amd64.msi")'
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }

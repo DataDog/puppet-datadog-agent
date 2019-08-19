@@ -266,7 +266,7 @@ class datadog_agent(
   $use_curl_http_client = false,
   $recent_point_threshold = '',
   $listen_port = '',
-  $additional_checksd = undef,
+  Optional[String] $additional_checksd = undef,
   $bind_host = '',
   $use_pup = false,
   $pup_port = '',
@@ -363,7 +363,6 @@ class datadog_agent(
   validate_legacy(Boolean, 'validate_bool', $collect_instance_metadata)
   validate_legacy(String, 'validate_string', $recent_point_threshold)
   validate_legacy(String, 'validate_re', $_listen_port, '^\d*$')
-  validate_legacy(String, 'validate_string', $additional_checksd)
   validate_legacy(String, 'validate_string', $bind_host)
   validate_legacy(Boolean, 'validate_bool', $use_pup)
   validate_legacy(String, 'validate_re', $_pup_port, '^\d*$')

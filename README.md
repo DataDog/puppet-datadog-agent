@@ -390,3 +390,4 @@ pre-commit install
 [4]: https://github.com/DataDog/dogapi-rb
 [5]: https://app.datadoghq.com/account/settings#integrations
 [6]: https://app.datadoghq.com/event/stream
+

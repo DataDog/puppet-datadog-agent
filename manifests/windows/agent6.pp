@@ -39,7 +39,7 @@ class datadog_agent::windows::agent6(
     }
 
     exec { 'DatadogRestart':
-      command           => "& 'C:\Program Files\Datadog\Datadog Agent\embedded\agent.exe' restart-service",
+      command           => "& 'C:/Program Files/Datadog/Datadog Agent/embedded/agent.exe' restart-service",
       provider          => powershell
     }
 

@@ -38,6 +38,11 @@ class datadog_agent::params {
   $win_msi_location               = 'c:/tmp'
   $win_msi_filename               = "datadog-agent-6-${agent_version}.amd64.msi"
   $datadog_win_msi                = "${win_msi_location}/${win_msi_filename}"
+  $service_name_win               = 'datadogagent'
+  $should_install_win             = true
+  $conf6_dir_win                  = 'C:/ProgramData/Datadog/conf.d'
+  $dd_user_win                    = 'ddagentuser'
+  $dd_group_win                   = 'Administrators'
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {

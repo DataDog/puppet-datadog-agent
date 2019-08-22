@@ -14,12 +14,8 @@ class datadog_agent::params {
   $datadog_site                   = 'datadoghq.com'
   $agent5_enable                  = false
   $conf_dir                       = '/etc/dd-agent/conf.d'
-  $conf6_dir                      = '/etc/datadog-agent/conf.d'
-  $dd_user                        = 'dd-agent'
-  $dd_group                       = 'root'
   $dd_groups                      = undef
   $package_name                   = 'datadog-agent'
-  $service_name                   = 'datadog-agent'
   $agent_version                  = 'latest'
   $dogapi_version                 = 'installed'
   $gem_provider                   = 'puppetserver_gem'
@@ -35,28 +31,37 @@ class datadog_agent::params {
   $use_apt_backup_keyserver       = false
   $apt_backup_keyserver           = 'hkp://pool.sks-keyservers.net:80'
   $apt_keyserver                  = 'hkp://keyserver.ubuntu.com:80'
-  $win_msi_location               = 'c:/tmp'
-  $win_msi_filename               = "datadog-agent-6-${agent_version}.amd64.msi"
-  $datadog_win_msi                = "${win_msi_location}/${win_msi_filename}"
-  $service_name_win               = 'datadogagent'
-  $should_install_win             = true
-  $conf6_dir_win                  = 'C:/ProgramData/Datadog/conf.d'
-  $dd_user_win                    = 'ddagentuser'
-  $dd_group_win                   = 'Administrators'
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {
-      $rubydev_package   =  'ruby-dev'
+      $rubydev_package     =  'ruby-dev'
       $agent5_default_repo = 'https://apt.datadoghq.com'
       $agent6_default_repo = 'https://apt.datadoghq.com'
+      $conf6_dir           = '/etc/datadog-agent/conf.d'
+      $dd_user             = 'dd-agent'
+      $dd_group            = 'root'
+      $service_name        = 'datadog-agent'
+      $agent6_log_file     = '/var/log/datadog/agent.log'
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
-      $rubydev_package   = 'ruby-devel'
+      $rubydev_package     = 'ruby-devel'
       $agent5_default_repo = "https://yum.datadoghq.com/rpm/${::architecture}/"
       $agent6_default_repo = "https://yum.datadoghq.com/stable/6/${::architecture}/"
+      $conf6_dir           = '/etc/datadog-agent/conf.d'
+      $dd_user             = 'dd-agent'
+      $dd_group            = 'root'
+      $service_name        = 'datadog-agent'
+      $agent6_log_file     = '/var/log/datadog/agent.log'
     }
     'Windows': {
+      $rubydev_package     = 'ruby-dev'
+      $agent5_default_repo = '<agent 5 is not supported>'
       $agent6_default_repo = 'https://s3.amazonaws.com/ddagent-windows-stable/datadog-agent-6-${::agent_version}.amd64.msi")'
+      $conf6_dir           = 'C:/ProgramData/Datadog/conf.d'
+      $dd_user             = 'ddagentuser'
+      $dd_group            = 'Administrators'
+      $service_name        = 'datadogagent'
+      $agent6_log_file     = 'C:/ProgramData/Datadog/logs/agent.log'
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }

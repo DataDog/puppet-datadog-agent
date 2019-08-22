@@ -4,29 +4,31 @@
 #
 
 class datadog_agent::windows::agent6(
+  String $agent_version = $datadog_agent::params::agent_version,
   String $service_ensure = 'running',
   String $baseurl = $datadog_agent::params::agent6_default_repo,
-  String $msi = $datadog_agent::params::datadog_win_msi,
-  String $msi_destination = $datadog_agent::params::win_msi_location,
+  String $msi_location = 'c:/tmp',
   String $api_key = $datadog_agent::api_key,
   String $hostname = $datadog_agent::host,
   String $service_name = $datadog_agent::service_name_win,
   Array  $tags = $datadog_agent::tags,
   Boolean $service_enable = true,
-  Boolean $should_install = $datadog_agent::should_install_win
+  Boolean $should_install = true,
 ) inherits datadog_agent::params {
 
   if $should_install {
-    file { $msi_destination:
+    file { $msi_location:
       ensure => directory,
       owner  => 'Administrator',
       group  => 'Administrators',
       notify => Exec['downloadmsi']
     }
 
+    $msi_full_path = "${msi_location}/datadog-agent-6-${agent_version}.amd64.msi"
+
     exec { 'downloadmsi':
-      command  => "Invoke-WebRequest ${baseurl} -outfile ${msi}",
-      onlyif   => "if ((test-path ${msi}) -eq \$true) {exit 1}",
+      command  => "Invoke-WebRequest ${baseurl} -outfile ${msi_full_path}",
+      onlyif   => "if ((test-path ${msi_full_path}) -eq \$true) {exit 1}",
       provider => powershell,
       notify   => Package['Datadog Agent']
     }
@@ -34,7 +36,7 @@ class datadog_agent::windows::agent6(
     package { 'Datadog Agent':
       ensure          => installed,
       provider        => 'windows',
-      source          => $msi,
+      source          => $msi_full_path,
       install_options => ['/quiet', {'APIKEY' => $api_key, 'HOSTNAME' => $hostname, 'TAGS' => $tags}]
     }
 
@@ -49,7 +51,7 @@ class datadog_agent::windows::agent6(
       require => Package['Datadog Agent']
     }
   } else {
-    file { $msi_destination:
+    file { $msi_location:
       ensure => absent,
       owner  => 'Administrator',
       group  => 'Administrators',

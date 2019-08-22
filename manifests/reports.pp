@@ -22,35 +22,43 @@ class datadog_agent::reports(
   $puppet_gem_provider = $datadog_agent::params::gem_provider,
 ) inherits datadog_agent::params {
 
-  include datadog_agent
-  $rubydev_package = $datadog_agent::params::rubydev_package
+  if ($::operatingsystem == 'Windows') {
 
-  # check to make sure that you're not installing rubydev somewhere else
-  if ! defined(Package[$rubydev_package]) {
-    package {$rubydev_package:
-      ensure => installed,
-      before => Package['dogapi']
+    fail('Reports are not supported on Windows')
+
+  } else {
+
+    include datadog_agent
+    $rubydev_package = $datadog_agent::params::rubydev_package
+
+    # check to make sure that you're not installing rubydev somewhere else
+    if ! defined(Package[$rubydev_package]) {
+      package {$rubydev_package:
+        ensure => installed,
+        before => Package['dogapi']
+      }
     }
-  }
 
-  if (! defined(Package['rubygems'])) {
-    # Ensure rubygems is installed
-    class { 'ruby':
-      rubygems_update => false
+    if (! defined(Package['rubygems'])) {
+      # Ensure rubygems is installed
+      class { 'ruby':
+        rubygems_update => false
+      }
     }
-  }
 
-  file { '/etc/datadog-agent/datadog-reports.yaml':
-    ensure  => file,
-    content => template('datadog_agent/datadog-reports.yaml.erb'),
-    owner   => $puppetmaster_user,
-    group   => 'root',
-    mode    => '0640',
-    require => File['/etc/datadog-agent'],
-  }
+    file { '/etc/datadog-agent/datadog-reports.yaml':
+      ensure  => file,
+      content => template('datadog_agent/datadog-reports.yaml.erb'),
+      owner   => $puppetmaster_user,
+      group   => 'root',
+      mode    => '0640',
+      require => File['/etc/datadog-agent'],
+    }
 
-  package{ 'dogapi':
-    ensure   => $dogapi_version,
-    provider => $puppet_gem_provider,
+    package{ 'dogapi':
+      ensure   => $dogapi_version,
+      provider => $puppet_gem_provider,
+    }
+
   }
 }

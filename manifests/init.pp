@@ -495,16 +495,16 @@ class datadog_agent(
     }
     'Windows' : {
       class { 'datadog_agent::windows::agent6' :
-        service_ensure   => $service_ensure,
-        baseurl          => $agent6_repo_uri,
-        msi              => $msi_filepath_n_filename,
-        msi_destination  => $msi_filepath,
-        api_key          => $api_key,
-        hostname         => $host,
-        service_name     => $service_name_win,
-        tags             => $tags,
-        service_enable   => $service_enable,
-        should_install   => $should_install_win
+        service_ensure  => $service_ensure,
+        baseurl         => $agent6_repo_uri,
+        msi             => $msi_filepath_n_filename,
+        msi_destination => $msi_filepath,
+        api_key         => $api_key,
+        hostname        => $host,
+        service_name    => $service_name_win,
+        tags            => $tags,
+        service_enable  => $service_enable,
+        should_install  => $should_install_win
       }
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
@@ -744,7 +744,6 @@ class datadog_agent(
       }
     }
 
-
     if $puppet_run_reports {
       class { 'datadog_agent::reports':
         api_key                   => $api_key,
@@ -788,114 +787,114 @@ class datadog_agent(
           'custom_sensitive_words' => $custom_sensitive_words,
           },
           'logs_enabled' => $logs_enabled,
+    }
+    if $logs_open_files_limit {
+      $logs_base_config = {
+        'logs_config' => {
+          'container_collect_all' => $container_collect_all,
+          'open_files_limit' => $logs_open_files_limit
+          },
+      }
+    } else {
+    $logs_base_config = {
+      'logs_config' => {
+        'container_collect_all' => $container_collect_all,
+        },
+      }
+    }
+    if $host != '' {
+      $host_config = {
+        'hostname' => $host,
+      }
+    } else {
+      $host_config = {}
+    }
+
+    if $apm_analyzed_spans {
+      $apm_analyzed_span_config = {
+        'apm_config' => {
+          'analyzed_spans' => $apm_analyzed_spans
         }
-        if $logs_open_files_limit {
-          $logs_base_config = {
-            'logs_config' => {
-              'container_collect_all' => $container_collect_all,
-              'open_files_limit' => $logs_open_files_limit
-              },
-            }
-            } else {
-              $logs_base_config = {
-                'logs_config' => {
-                  'container_collect_all' => $container_collect_all,
-                  },
-                }
-              }
-              if $host != '' {
-                $host_config = {
-                  'hostname' => $host,
-                }
-                } else {
-                  $host_config = {}
-                }
+      }
+    } else {
+      $apm_analyzed_span_config = {}
+    }
 
-                if $apm_analyzed_spans {
-                  $apm_analyzed_span_config = {
-                    'apm_config' => {
-                      'analyzed_spans' => $apm_analyzed_spans
-                    }
-                  }
-                  } else {
-                    $apm_analyzed_span_config = {}
-                  }
+    if $statsd_forward_host != '' {
+      if $_statsd_forward_port != '' {
+        $statsd_forward_config = {
+          'statsd_forward_host' => $statsd_forward_host,
+          'statsd_forward_port' => $statsd_forward_port,
+        }
+      } else {
+        $statsd_forward_config = {
+          'statsd_forward_host' => $statsd_forward_host,
+        }
+      }
+    } else {
+      $statsd_forward_config = {}
+    }
 
-                  if $statsd_forward_host != '' {
-                    if $_statsd_forward_port != '' {
-                      $statsd_forward_config = {
-                        'statsd_forward_host' => $statsd_forward_host,
-                        'statsd_forward_port' => $statsd_forward_port,
-                      }
-                      } else {
-                        $statsd_forward_config = {
-                          'statsd_forward_host' => $statsd_forward_host,
-                        }
-                      }
-                      } else {
-                        $statsd_forward_config = {}
-                      }
+    if $additional_checksd {
+      $additional_checksd_config = {
+        'additional_checksd' => $additional_checksd,
+      }
+    } else {
+      $additional_checksd_config = {}
+    }
 
-                      if $additional_checksd {
-                        $additional_checksd_config = {
-                          'additional_checksd' => $additional_checksd,
-                        }
-                        } else {
-                          $additional_checksd_config = {}
-                        }
+    $extra_config = deep_merge(
+      $base_extra_config,
+      $logs_base_config,
+      $agent6_extra_options,
+      $apm_analyzed_span_config,
+      $statsd_forward_config,
+      $host_config,
+      $additional_checksd_config)
 
-                        $extra_config = deep_merge(
-                          $base_extra_config,
-                          $logs_base_config,
-                          $agent6_extra_options,
-                          $apm_analyzed_span_config,
-                          $statsd_forward_config,
-                          $host_config,
-                          $additional_checksd_config)
+    file { $conf6_dir_win:
+      ensure  => directory,
+      purge   => $conf_dir_purge,
+      recurse => true,
+      force   => $conf_dir_purge,
+      owner   => $dd_user_win,
+      group   => $dd_group_win,
+      notify  => Service[$datadog_agent::params::service_name_win]
+    }
 
-                        file { $conf6_dir_win:
-                          ensure  => directory,
-                          purge   => $conf_dir_purge,
-                          recurse => true,
-                          force   => $conf_dir_purge,
-                          owner   => $dd_user_win,
-                          group   => $dd_group_win,
-                          notify  => Service[$datadog_agent::params::service_name_win]
-                        }
+    $_local_tags = datadog_agent::tag6($local_tags, false)
+    $_facts_tags = datadog_agent::tag6($facts_to_tags, true)
 
-                        $_local_tags = datadog_agent::tag6($local_tags, false)
-                        $_facts_tags = datadog_agent::tag6($facts_to_tags, true)
+    $_agent_config = {
+      'api_key' => $api_key,
+      'dd_url' => $dd_url,
+      'site' => $datadog_site,
+      'cmd_port' => $cmd_port,
+      'hostname_fqdn' => $hostname_fqdn,
+      'collect_ec2_tags' => $collect_ec2_tags,
+      'collect_gce_tags' => $collect_gce_tags,
+      'conf_path' => $datadog_agent::params::conf6_dir_win,
+      'enable_metadata_collection' => $collect_instance_metadata,
+      'dogstatsd_port' => $dogstatsd_port,
+      'dogstatsd_socket' => $dogstatsd_socket,
+      'dogstatsd_non_local_traffic' => $non_local_traffic,
+      'log_file' => $agent6_log_file_win,
+      'log_level' => $log_level,
+      'tags' => unique(flatten(union($_local_tags, $_facts_tags))),
+    }
 
-                        $_agent_config = {
-                          'api_key' => $api_key,
-                          'dd_url' => $dd_url,
-                          'site' => $datadog_site,
-                          'cmd_port' => $cmd_port,
-                          'hostname_fqdn' => $hostname_fqdn,
-                          'collect_ec2_tags' => $collect_ec2_tags,
-                          'collect_gce_tags' => $collect_gce_tags,
-                          'conf_path' => $datadog_agent::params::conf6_dir_win,
-                          'enable_metadata_collection' => $collect_instance_metadata,
-                          'dogstatsd_port' => $dogstatsd_port,
-                          'dogstatsd_socket' => $dogstatsd_socket,
-                          'dogstatsd_non_local_traffic' => $non_local_traffic,
-                          'log_file' => $agent6_log_file_win,
-                          'log_level' => $log_level,
-                          'tags' => unique(flatten(union($_local_tags, $_facts_tags))),
-                        }
+    $agent_config = deep_merge($_agent_config, $extra_config)
 
-                        $agent_config = deep_merge($_agent_config, $extra_config)
+    file { 'C:/ProgramData/Datadog/':
+      ensure   => directory
+    }
 
-                      file { 'C:/ProgramData/Datadog/':
-                        ensure   => directory
-                      }
-
-                      file { 'C:/ProgramData/Datadog/datadog.yaml':
-                        owner   => 'ddagentuser',
-                        group   => 'Administrators',
-                        content => template('datadog_agent/datadog6.yaml.erb'),
-                        notify  => Service[$datadog_agent::params::service_name_win],
-                        require => File['C:/ProgramData/Datadog/'],
-                      }
+    file { 'C:/ProgramData/Datadog/datadog.yaml':
+      owner   => 'ddagentuser',
+      group   => 'Administrators',
+      content => template('datadog_agent/datadog6.yaml.erb'),
+      notify  => Service[$datadog_agent::params::service_name_win],
+      require => File['C:/ProgramData/Datadog/'],
+    }
   }
 }

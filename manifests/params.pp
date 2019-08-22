@@ -54,8 +54,6 @@ class datadog_agent::params {
       $agent6_log_file     = '/var/log/datadog/agent.log'
     }
     'Windows': {
-      $rubydev_package     = 'ruby-dev'
-      $agent5_default_repo = '<agent 5 is not supported>'
       $agent6_default_repo = 'https://s3.amazonaws.com/ddagent-windows-stable/datadog-agent-6-${::agent_version}.amd64.msi")'
       $conf6_dir           = 'C:/ProgramData/Datadog/conf.d'
       $dd_user             = 'ddagentuser'

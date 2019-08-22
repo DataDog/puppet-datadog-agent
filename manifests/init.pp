@@ -503,7 +503,7 @@ class datadog_agent(
         hostname         => $host,
         service_name     => $service_name_win,
         tags             => $tags,
-        service_enable   => $service_enable
+        service_enable   => $service_enable,
         should_install   => $should_install_win
       }
     }

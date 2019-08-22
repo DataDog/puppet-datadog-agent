@@ -13,7 +13,7 @@ class datadog_agent::windows::agent6(
   String $service_name = $datadog_agent::service_name_win,
   Array  $tags = $datadog_agent::tags,
   Boolean $service_enable = true,
-  Boolean $should_install = true
+  Boolean $should_install = $datadog_agent::should_install_win
 ) inherits datadog_agent::params {
 
 	if $should_install {

@@ -32,7 +32,11 @@
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": ["14.04", "16.04", "17.04", "17.10", "18.04", "18.10"]
-    }
+    },
+    {
+      "operatingsystem": "Windows",
+      "operatingsystemrelease": [ "Server 2008", "Server 2008 R2", "Server 2012", "Server 2012 R2", "Server 2016", "Server 2019", "7", "8", "10" ]
+    },
   ],
   "requirements": [
     {

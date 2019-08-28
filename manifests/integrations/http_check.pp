@@ -45,9 +45,8 @@
 #        . ^ $ * + ? { } [ ] \ | ( )
 #
 #   include_content
-#       The (optional) collect_response_time parameter will instruct the
-#       check to create a metric 'network.http.response_time', tagged with
-#       the url, reporting the response time in seconds.
+#       When (optional) true, includes the first 200 characters of the HTTP
+#       response body in notifications. (default is false)
 #
 #   http_response_status_code
 #       The (optional) http_response_status_code parameter will instruct the check

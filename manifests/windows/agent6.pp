@@ -19,8 +19,6 @@ class datadog_agent::windows::agent6(
   if $should_install {
     file { $msi_location:
       ensure => directory,
-      owner  => 'Administrator',
-      group  => 'Administrators',
       notify => Exec['downloadmsi']
     }
 
@@ -53,8 +51,6 @@ class datadog_agent::windows::agent6(
   } else {
     file { $msi_location:
       ensure => absent,
-      owner  => 'Administrator',
-      group  => 'Administrators',
       notify => Package['Datadog Agent']
     }
 

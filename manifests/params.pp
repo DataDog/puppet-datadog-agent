@@ -57,7 +57,7 @@ class datadog_agent::params {
       $agent6_default_repo = 'https://s3.amazonaws.com/ddagent-windows-stable/datadog-agent-6-${::agent_version}.amd64.msi")'
       $conf6_dir           = 'C:/ProgramData/Datadog/conf.d'
       $dd_user             = 'ddagentuser'
-      $dd_group            = 'Administrators'
+      $dd_group            = 'S-1-5-32-544' #Administrators
       $service_name        = 'datadogagent'
       $agent6_log_file     = 'C:/ProgramData/Datadog/logs/agent.log'
     }

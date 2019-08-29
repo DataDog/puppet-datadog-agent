@@ -4,7 +4,12 @@ group :test do
   gem "rb-inotify", '< 0.10.0' if RUBY_VERSION < '2.2.0'
   gem "public_suffix", "~> 3.0.0"
   gem "listen", "~> 3.0.0"
-  gem "puppet", ENV['PUPPET_VERSION'] || '~> 4.6.2'
+  if RUBY_PLATFORM=~ /win32/ || RUBY_PLATFORM=~ /mingw32/
+    # Using a newer version on Windows to avoid hitting https://tickets.puppetlabs.com/browse/PUP-7383
+    gem "puppet", ENV['PUPPET_VERSION'] || '~> 4.10.2'
+  else
+    gem "puppet", ENV['PUPPET_VERSION'] || '~> 4.6.2'
+  end
   gem "puppet-lint", "~> 2.3.6"
   gem "puppet-syntax", "~> 2.5.0"
   gem "puppetlabs_spec_helper", "~> 2.14.1"

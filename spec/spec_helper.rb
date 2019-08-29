@@ -5,7 +5,29 @@ include RspecPuppetFacts
 
 DEBIAN_OS = %w(Ubuntu Debian)
 REDHAT_OS = %w(RedHat CentOS Fedora Amazon Scientific)
+WINDOWS_OS = %w(Windows)
 ALL_OS = DEBIAN_OS + REDHAT_OS
+#ALL_OS = WINDOWS_OS + DEBIAN_OS + REDHAT_OS
+
+def getosfamily(operatingsystem)
+  if DEBIAN_OS.include?(operatingsystem)
+    return 'debian'
+  elsif REDHAT_OS.include?(operatingsystem)
+    return 'redhat'
+  else
+    return 'windows'
+  end
+end
+
+def getosrelease(operatingsystem)
+  if DEBIAN_OS.include?(operatingsystem)
+    return '14.04'
+  elsif REDHAT_OS.include?(operatingsystem)
+    return '7'
+  else
+    return '2019'
+  end
+end
 
 RSpec.configure do |c|
   c.default_facts = {

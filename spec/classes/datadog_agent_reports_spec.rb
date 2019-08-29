@@ -15,44 +15,50 @@ describe 'datadog_agent::reports' do
         let(:facts) do
           {
             operatingsystem: operatingsystem,
-            osfamily: DEBIAN_OS.include?(operatingsystem) ? 'debian' : 'redhat',
-            operatingsystemrelease: DEBIAN_OS.include?(operatingsystem) ? '14.04' : '7',
+            osfamily: getosfamily(operatingsystem),
+            operatingsystemrelease: getosrelease(operatingsystem),
           }
         end
 
-        it { should contain_class('ruby').with_rubygems_update(false) }
-        it { should contain_class('ruby::params') }
-        it { should contain_package('ruby').with_ensure('installed') }
-        it { should contain_package('rubygems').with_ensure('installed') }
-
-        if DEBIAN_OS.include?(operatingsystem)
-          it do
-            should contain_package('ruby-dev')\
-              .with_ensure('installed')\
-              .that_comes_before('Package[dogapi]')
+        if WINDOWS_OS.include?(operatingsystem)
+          it "should raise on Windows" do
+            should raise_error(Puppet::Error)
           end
-        elsif REDHAT_OS.include?(operatingsystem)
-          it do
-            should contain_package('ruby-devel')\
-              .with_ensure('installed')\
-              .that_comes_before('Package[dogapi]')
+        else
+          it { should contain_class('ruby').with_rubygems_update(false) }
+          it { should contain_class('ruby::params') }
+          it { should contain_package('ruby').with_ensure('installed') }
+          it { should contain_package('rubygems').with_ensure('installed') }
+
+          if DEBIAN_OS.include?(operatingsystem)
+            it do
+              should contain_package('ruby-dev')\
+                .with_ensure('installed')\
+                .that_comes_before('Package[dogapi]')
+            end
+          elsif REDHAT_OS.include?(operatingsystem)
+            it do
+              should contain_package('ruby-devel')\
+                .with_ensure('installed')\
+                .that_comes_before('Package[dogapi]')
+            end
           end
+
+          it do
+            should contain_package('dogapi')\
+              .with_ensure('installed')
+              .with_provider('puppetserver_gem')
+          end
+
+          it do
+            should contain_file(conf_file)\
+              .with_owner('puppet')\
+              .with_group('root')
+          end
+
+          it { should contain_file(conf_file).without_content(/hostname_extraction_regex:/) }
+
         end
-
-        it do
-          should contain_package('dogapi')\
-            .with_ensure('installed')
-            .with_provider('puppetserver_gem')
-        end
-
-        it do
-          should contain_file(conf_file)\
-            .with_owner('puppet')\
-            .with_group('root')
-        end
-
-        it { should contain_file(conf_file).without_content(/hostname_extraction_regex:/) }
-
       end
     end
   end

@@ -50,6 +50,9 @@ instances:
 <% unless instance['disable_ssl_validation'].nil? -%>
     disable_ssl_validation: <%= instance['disable_ssl_validation'] %>
 <% end -%>
+<% unless instance['ignore_ssl_warning'].nil? -%>
+    ignore_ssl_warning: <%= instance['ignore_ssl_warning'] %>
+<% end -%>
 <% unless instance['skip_event'].nil? -%>
     skip_event: <%= instance['skip_event'] %>
 <% end -%>

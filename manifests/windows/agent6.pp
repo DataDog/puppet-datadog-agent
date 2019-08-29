@@ -13,10 +13,10 @@ class datadog_agent::windows::agent6(
   String $service_name = $datadog_agent::service_name_win,
   Array  $tags = $datadog_agent::tags,
   Boolean $service_enable = true,
-  Boolean $should_install = true,
+  Enum['present', 'absent'] $ensure = 'present',
 ) inherits datadog_agent::params {
 
-  if $should_install {
+  if $ensure == 'present' {
     file { $msi_location:
       ensure => directory,
       notify => Exec['downloadmsi']

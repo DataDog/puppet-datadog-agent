@@ -320,7 +320,7 @@ class datadog_agent(
   $apt_keyserver = $datadog_agent::params::apt_keyserver,
   $apt_release = $datadog_agent::params::apt_default_release,
   $win_msi_location = 'c:/tmp',
-  $should_install_win = true,
+  Enum['present', 'absent'] $win_ensure = 'present',
   Optional[String] $service_provider = undef,
   Optional[String] $agent_version = $datadog_agent::params::agent_version,
 ) inherits datadog_agent::params {
@@ -405,7 +405,6 @@ class datadog_agent(
   validate_legacy(String, 'validate_string', $apt_release)
   validate_legacy(Integer, 'validate_integer', $cmd_port)
   validate_legacy(String, 'validate_string', $win_msi_location)
-  validate_legacy(Boolean, 'validate_bool', $should_install_win)
 
   if $hiera_tags {
     $local_tags = lookup({ 'name' => 'datadog_agent::tags', 'merge' => 'unique', 'default_value' => []})
@@ -495,7 +494,7 @@ class datadog_agent(
         service_name   => $service_name,
         tags           => $tags,
         service_enable => $service_enable,
-        should_install => $should_install_win
+        ensure         => $win_ensure
       }
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }

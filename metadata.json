@@ -36,7 +36,7 @@
     {
       "operatingsystem": "Windows",
       "operatingsystemrelease": [ "Server 2008", "Server 2008 R2", "Server 2012", "Server 2012 R2", "Server 2016", "Server 2019", "7", "8", "10" ]
-    },
+    }
   ],
   "requirements": [
     {

@@ -15,7 +15,6 @@ class datadog_agent::params {
   $agent5_enable                  = false
   $conf_dir                       = '/etc/dd-agent/conf.d'
   $dd_groups                      = undef
-  $package_name                   = 'datadog-agent'
   $agent_version                  = 'latest'
   $dogapi_version                 = 'installed'
   $gem_provider                   = 'puppetserver_gem'
@@ -42,6 +41,7 @@ class datadog_agent::params {
       $dd_group            = 'root'
       $service_name        = 'datadog-agent'
       $agent6_log_file     = '/var/log/datadog/agent.log'
+      $package_name        = 'datadog-agent'
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       $rubydev_package     = 'ruby-devel'
@@ -52,6 +52,7 @@ class datadog_agent::params {
       $dd_group            = 'root'
       $service_name        = 'datadog-agent'
       $agent6_log_file     = '/var/log/datadog/agent.log'
+      $package_name        = 'datadog-agent'
     }
     'Windows': {
       $agent5_default_repo = '<agent 5 is not supported by puppet on windows>'
@@ -61,6 +62,7 @@ class datadog_agent::params {
       $dd_group            = 'S-1-5-32-544' #Administrators
       $service_name        = 'datadogagent'
       $agent6_log_file     = 'C:/ProgramData/Datadog/logs/agent.log'
+      $package_name        = 'Datadog Agent'
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }

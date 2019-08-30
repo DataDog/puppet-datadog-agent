@@ -47,7 +47,7 @@
 #
 #  class { 'datadog_agent::integrations::postgres' :
 #    host     => 'localhost',
-#    dbname   => 'postgres'
+#    dbname   => 'postgres',
 #    username => 'datadog',
 #    password => 'some_pass',
 #    ssl      => false,

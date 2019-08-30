@@ -28,10 +28,10 @@ class datadog_agent::windows::agent6(
       command  => "Invoke-WebRequest ${baseurl} -outfile ${msi_full_path}",
       onlyif   => "if ((test-path ${msi_full_path}) -eq \$true) {exit 1}",
       provider => powershell,
-      notify   => Package['Datadog Agent']
+      notify   => Package[$datadog_agent::params::package_name]
     }
 
-    package { 'Datadog Agent':
+    package { $datadog_agent::params::package_name:
       ensure          => installed,
       provider        => 'windows',
       source          => $msi_full_path,
@@ -54,8 +54,10 @@ class datadog_agent::windows::agent6(
       notify => Package['Datadog Agent']
     }
 
-    package { 'Datadog Agent':
+    package { $datadog_agent::params::package_name:
       ensure            => absent,
+      provider          => 'windows',
+      source            => $msi_full_path,
       uninstall_options => ['/quiet']
     }
   }

@@ -6,8 +6,12 @@ include RspecPuppetFacts
 DEBIAN_OS = %w(Ubuntu Debian)
 REDHAT_OS = %w(RedHat CentOS Fedora Amazon Scientific)
 WINDOWS_OS = %w(Windows)
-ALL_OS = DEBIAN_OS + REDHAT_OS
-#ALL_OS = WINDOWS_OS + DEBIAN_OS + REDHAT_OS
+
+if RSpec::Support::OS.windows?
+  ALL_OS = WINDOWS_OS
+else
+  ALL_OS = DEBIAN_OS + REDHAT_OS
+end
 
 def getosfamily(operatingsystem)
   if DEBIAN_OS.include?(operatingsystem)

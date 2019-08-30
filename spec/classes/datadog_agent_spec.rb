@@ -1,19 +1,22 @@
 require 'spec_helper'
 
 describe 'datadog_agent' do
-  context 'unsupported operating system' do
-    describe 'datadog_agent class without any parameters on Solaris/Nexenta' do
-      let(:facts) do
-        {
-          osfamily:         'Solaris',
-          operatingsystem:  'Nexenta'
-        }
-      end
 
-      it do
-        expect {
-          should contain_package('module')
-        }.to raise_error(Puppet::Error, /Unsupported operatingsystem: Nexenta/)
+  if !RSpec::Support::OS.windows?
+    context 'unsupported operating system' do
+      describe 'datadog_agent class without any parameters on Solaris/Nexenta' do
+        let(:facts) do
+          {
+            osfamily:         'Solaris',
+            operatingsystem:  'Nexenta'
+          }
+        end
+
+        it do
+          expect {
+            should contain_package('module')
+          }.to raise_error(Puppet::Error, /Unsupported operatingsystem: Nexenta/)
+        end
       end
     end
   end
@@ -1251,19 +1254,21 @@ describe 'datadog_agent' do
               )}
             end
 
-            context 'with service provider override' do
-              let(:params) {{
-                  :service_provider => 'upstart',
-              }}
-              it do
-                should contain_service('datadog-agent')\
-                  .that_requires('package[datadog-agent]')
-              end
-              it do
-                should contain_service('datadog-agent').with(
-                  'provider' => 'upstart',
-                  'ensure' => 'running',
-                )
+            if !WINDOWS_OS.include?(operatingsystem)
+              context 'with service provider override' do
+                let(:params) {{
+                    :service_provider => 'upstart',
+                }}
+                it do
+                  should contain_service('datadog-agent')\
+                    .that_requires('package[datadog-agent]')
+                end
+                it do
+                  should contain_service('datadog-agent').with(
+                    'provider' => 'upstart',
+                    'ensure' => 'running',
+                  )
+                end
               end
             end
 

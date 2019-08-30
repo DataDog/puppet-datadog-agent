@@ -919,80 +919,86 @@ describe 'datadog_agent' do
           it { should contain_class('datadog_agent::params') }
         end
 
-        it { should contain_file('/etc/datadog-agent') }
+        config_dir = WINDOWS_OS.include?(operatingsystem) ? 'C:/ProgramData/Datadog' : "/etc/datadog-agent"
+        config_yaml_file = config_dir + "/datadog.yaml"
+        log_file = WINDOWS_OS.include?(operatingsystem) ? 'C:/ProgramData/Datadog/logs/agent.log' : '\/var\/log\/datadog\/agent.log'
+
+        it { should contain_file(config_dir+'/') }
+        it { should contain_file(config_yaml_file) }
+        it { should contain_file(config_dir + '/conf.d').with_ensure('directory') }
+
+        # Agent 5 files
         it { should_not contain_file('/etc/dd-agent') }
         it { should_not contain_concat('/etc/dd-agent/datadog.conf') }
-        it { should contain_file('/etc/datadog-agent/datadog.yaml') }
         it { should_not contain_file('/etc/dd-agent/conf.d').with_ensure('directory') }
-        it { should contain_file('/etc/datadog-agent/conf.d').with_ensure('directory') }
 
         describe 'agent6 parameter check' do
           context 'with defaults' do
             context 'for basic beta settings' do
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^api_key: your_API_key\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^conf_path: \"{0,1}\/etc\/datadog-agent\/conf.d\"{0,1}\n/,
+              it { should contain_file(config_yaml_file).with(
+              'content' => Regexp.new('^conf_path: \"{0,1}' + config_dir + '/conf.d' + '"{0,1}\n'),
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^cmd_port: \"{0,1}5001\"{0,1}\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^collect_ec2_tags: false\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^dd_url: ''\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-                'content' => /^site: datadoghq.com\n/,
+              it { should contain_file(config_yaml_file).with(
+              'content' => /^site: datadoghq.com\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^enable_metadata_collection: true\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^dogstatsd_port: \"{0,1}8125\"{0,1}\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
-              'content' => /^log_file: \"{0,1}\/var\/log\/datadog\/agent.log\"{0,1}\n/,
+              it { should contain_file(config_yaml_file).with(
+              'content' => Regexp.new('^log_file: \"{0,1}' + log_file + '"{0,1}\n'),
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^log_level: info\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^apm_config:\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^apm_config:\n\ \ enabled: false\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ apm_non_local_traffic: false\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^process_config:\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^process_config:\n\ \ enabled: disabled\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ scrub_args: true\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ custom_sensitive_words: \[\]\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^logs_enabled: false\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^logs_config:\n\ \ container_collect_all: false\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').without(
+              it { should contain_file(config_yaml_file).without(
               'content' => /^hostname: .*\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').without(
+              it { should contain_file(config_yaml_file).without(
               'content' => /^statsd_forward_host: .*\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').without(
+              it { should contain_file(config_yaml_file).without(
               'content' => /^statsd_forward_port: ,*\n/,
               )}
             end
@@ -1004,10 +1010,10 @@ describe 'datadog_agent' do
                   :host => 'my_custom_hostname',
                   :collect_ec2_tags => true,
               }}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^hostname: my_custom_hostname\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^collect_ec2_tags: true\n/,
               )}
             end
@@ -1015,7 +1021,7 @@ describe 'datadog_agent' do
               let(:params) {{
                   :datadog_site => 'datadoghq.eu',
               }}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^site: datadoghq.eu\n/,
               )}
             end
@@ -1024,10 +1030,10 @@ describe 'datadog_agent' do
                   :statsd_forward_host => 'foo',
                   :statsd_forward_port => 1234,
               }}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^statsd_forward_host: foo\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^statsd_forward_port: 1234\n/,
               )}
             end
@@ -1085,16 +1091,16 @@ describe 'datadog_agent' do
                       }
                   }
               }}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^apm_config:\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^apm_config:\n\ \ enabled: true\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ foo: bar\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ bar: haz\n/,
               )}
             end
@@ -1105,13 +1111,13 @@ describe 'datadog_agent' do
                   :apm_env => 'foo',
                   :apm_non_local_traffic => true,
               }}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^apm_config:\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^apm_config:\n\ \ enabled: true\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ apm_non_local_traffic: true\n/,
               )}
             end
@@ -1124,13 +1130,13 @@ describe 'datadog_agent' do
                       'haz|qux' => 0.1
                   },
               }}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^apm_config:\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^apm_config:\n\ \ enabled: true\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ analyzed_spans:\n\ \ \ \ foo|bar: 0.5\n\ \ \ \ haz|qux: 0.1\n/,
               )}
             end
@@ -1145,22 +1151,22 @@ describe 'datadog_agent' do
                       }
                   }
               }}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^apm_config:\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^apm_config:\n\ \ enabled: false\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^process_config:\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^process_config:\n\ \ enabled: 'true'\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ foo: bar\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ bar: haz\n/,
               )}
             end
@@ -1175,16 +1181,16 @@ describe 'datadog_agent' do
                       }
                   }
               }}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^process_config:\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^process_config:\n\ \ enabled: disabled\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ foo: bar\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ bar: haz\n/,
               )}
             end
@@ -1196,16 +1202,16 @@ describe 'datadog_agent' do
                   :process_enabled => true,
                   :scrub_args => false
               }}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^process_config:\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^process_config:\n\ \ enabled: 'true'\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ scrub_args: false\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ custom_sensitive_words: \[\]\n/,
               )}
             end
@@ -1215,19 +1221,19 @@ describe 'datadog_agent' do
                   :process_enabled => true,
                   :custom_sensitive_words => ['consul_token','dd_key']
               }}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^process_config:\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^process_config:\n\ \ enabled: 'true'\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ scrub_args: true\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ -\ consul_token\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^\ \ -\ dd_key\n/,
               )}
             end
@@ -1237,10 +1243,10 @@ describe 'datadog_agent' do
                   :logs_enabled => true,
                   :container_collect_all => true
               }}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^logs_enabled: true\n/,
               )}
-              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              it { should contain_file(config_yaml_file).with(
               'content' => /^logs_config:\n\ \ container_collect_all: true\n/,
               )}
             end

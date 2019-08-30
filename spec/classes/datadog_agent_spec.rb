@@ -34,7 +34,7 @@ describe 'datadog_agent' do
 
         if WINDOWS_OS.include?(operatingsystem)
           it "agent 5 should raise on Windows" do
-            should raise_error(Puppet::Error)
+            should raise_error(Puppet::Error, /Installation of agent 5 with puppet is not supported on Windows/)
           end
         else
           it { should compile.with_all_deps }
@@ -890,7 +890,7 @@ describe 'datadog_agent' do
 
         if WINDOWS_OS.include?(operatingsystem)
           it "reports should raise on Windows" do
-            should raise_error(Puppet::Error)
+            should raise_error(Puppet::Error, /Reports are not supported on Windows/)
           end
         else
           it { should compile.with_all_deps }

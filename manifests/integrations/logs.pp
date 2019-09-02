@@ -47,7 +47,7 @@ class datadog_agent::integrations::logs(
       ensure  => file,
       owner   => $datadog_agent::params::dd_user,
       group   => $datadog_agent::params::dd_group,
-      mode    => '0600',
+      mode    => '0660',
       content => template('datadog_agent/agent-conf.d/logs.yaml.erb'),
       require => Package[$datadog_agent::params::package_name],
       notify  => Service[$datadog_agent::params::service_name]

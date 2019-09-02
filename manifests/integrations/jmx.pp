@@ -78,7 +78,7 @@ class datadog_agent::integrations::jmx(
       ensure  => directory,
       owner   => $datadog_agent::params::dd_user,
       group   => $datadog_agent::params::dd_group,
-      mode    => '0755',
+      mode    => '0775',
       require => Package[$datadog_agent::params::package_name],
       notify  => Service[$datadog_agent::params::service_name]
     }
@@ -91,7 +91,7 @@ class datadog_agent::integrations::jmx(
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
-    mode    => '0600',
+    mode    => '0660',
     content => template('datadog_agent/agent-conf.d/jmx.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]

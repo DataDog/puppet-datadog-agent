@@ -9,9 +9,22 @@ WINDOWS_OS = %w(Windows)
 
 if RSpec::Support::OS.windows?
   ALL_OS = WINDOWS_OS
+  ALL_SUPPORTED_AGENTS = { '6' => false }
+  CONF_DIR6 = 'C:/ProgramData/Datadog/conf.d'
+  DD_USER = 'ddagentuser'
+  DD_GROUP = 'S-1-5-32-544'
+  SERVICE_NAME = 'datadogagent'
+  PACKAGE_NAME = 'Datadog Agent'
 else
   ALL_OS = DEBIAN_OS + REDHAT_OS
+  ALL_SUPPORTED_AGENTS = { '5' => true, '6' => false }
+  CONF_DIR6 = '/etc/datadog-agent/conf.d'
+  DD_USER = 'dd-agent'
+  DD_GROUP = 'root'
+  SERVICE_NAME = 'datadog-agent'
+  PACKAGE_NAME = 'datadog-agent'
 end
+
 
 def getosfamily(operatingsystem)
   if DEBIAN_OS.include?(operatingsystem)
@@ -36,21 +49,21 @@ end
 RSpec.configure do |c|
   c.default_facts = {
     'architecture'               => 'x86_64',
-    'operatingsystem'            => 'Ubuntu',
-    'osfamily'                   => 'Debian',
-    'operatingsystemmajrelease'  => '14',
-    'operatingsystemminrelease'  => '04',
-    'operatingsystemrelease'     => '14.04',
-    'lsbdistrelease'             => '14.04',
-    'lsbdistcodename'            => 'trusty',
-    'os'                         => { 
-        'name' => 'Ubuntu', 
-        'family'  => 'Debian', 
-        'release' => { 
-            'major' => '14',
-            'minor' => '04',
-            'full'  => '14.04' 
-        }    
+    'operatingsystem'            => (if RSpec::Support::OS.windows? then 'Windows' else 'Ubuntu' end),
+    'osfamily'                   => (if RSpec::Support::OS.windows? then 'windows' else 'Debian' end),
+    'operatingsystemmajrelease'  => (if RSpec::Support::OS.windows? then '2019' else '14' end),
+    'operatingsystemminrelease'  => (if RSpec::Support::OS.windows? then 'SP1' else '04' end),
+    'operatingsystemrelease'     => (if RSpec::Support::OS.windows? then '2019 SP1' else '14.04' end),
+    'lsbdistrelease'             => (if RSpec::Support::OS.windows? then '2019 SP1' else '14.04' end),
+    'lsbdistcodename'            => (if RSpec::Support::OS.windows? then '2019' else '14.04' end),
+    'os'                         => {
+      'name'    => (if RSpec::Support::OS.windows? then 'Windows' else 'Ubuntu' end),
+      'family'  => (if RSpec::Support::OS.windows? then 'windows' else 'Debian' end),
+      'release' => {
+        'major' => (if RSpec::Support::OS.windows? then '2019' else '14' end),
+        'minor' => (if RSpec::Support::OS.windows? then 'SP1' else '04' end),
+        'full'  => (if RSpec::Support::OS.windows? then '2019 SP1' else '14.04' end)
+      }
     }
   }
 end

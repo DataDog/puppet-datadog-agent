@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe 'datadog_agent::ubuntu::agent5' do
+
+  if RSpec::Support::OS.windows?
+    return
+  end
+
   let(:facts) do
     {
       osfamily: 'debian',

@@ -13,7 +13,6 @@
 class datadog_agent::params {
   $datadog_site                   = 'datadoghq.com'
   $agent5_enable                  = false
-  $conf_dir                       = '/etc/dd-agent/conf.d'
   $dd_groups                      = undef
   $agent_version                  = 'latest'
   $dogapi_version                 = 'installed'
@@ -36,6 +35,7 @@ class datadog_agent::params {
       $rubydev_package     =  'ruby-dev'
       $agent5_default_repo = 'https://apt.datadoghq.com'
       $agent6_default_repo = 'https://apt.datadoghq.com'
+      $conf_dir            = '/etc/dd-agent/conf.d'
       $conf6_dir           = '/etc/datadog-agent/conf.d'
       $dd_user             = 'dd-agent'
       $dd_group            = 'root'
@@ -47,6 +47,7 @@ class datadog_agent::params {
       $rubydev_package     = 'ruby-devel'
       $agent5_default_repo = "https://yum.datadoghq.com/rpm/${::architecture}/"
       $agent6_default_repo = "https://yum.datadoghq.com/stable/6/${::architecture}/"
+      $conf_dir            = '/etc/dd-agent/conf.d'
       $conf6_dir           = '/etc/datadog-agent/conf.d'
       $dd_user             = 'dd-agent'
       $dd_group            = 'root'
@@ -57,6 +58,7 @@ class datadog_agent::params {
     'Windows': {
       $agent5_default_repo = '<agent 5 is not supported by puppet on windows>'
       $agent6_default_repo = "https://s3.amazonaws.com/ddagent-windows-stable/datadog-agent-6-${agent_version}.amd64.msi"
+      $conf_dir            = 'C:/ProgramData/Datadog/agent5' #Not a real path, but integrations use it to ensure => absent so it needs to be a valid path
       $conf6_dir           = 'C:/ProgramData/Datadog/conf.d'
       $dd_user             = 'ddagentuser'
       $dd_group            = 'S-1-5-32-544' #Administrators

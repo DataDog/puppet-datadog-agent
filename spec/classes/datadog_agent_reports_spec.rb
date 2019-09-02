@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe 'datadog_agent::reports' do
+
+  if RSpec::Support::OS.windows?
+    return
+  end
+
   context 'all supported operating systems' do
     let(:params) do
       {

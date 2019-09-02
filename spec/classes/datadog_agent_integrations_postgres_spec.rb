@@ -1,26 +1,13 @@
 require 'spec_helper'
 
 describe 'datadog_agent::integrations::postgres' do
-  context 'supported agents - v5 and v6' do
-    agents = { '5' => true, '6' => false }
-    agents.each do |_, is_agent5|
+  context 'supported agents' do
+    ALL_SUPPORTED_AGENTS.each do |_, is_agent5|
       let(:pre_condition) { "class {'::datadog_agent': agent5_enable => #{is_agent5}}" }
-      let(:facts) {{
-        operatingsystem: 'Ubuntu',
-      }}
       if is_agent5
-        let(:conf_dir) { '/etc/dd-agent/conf.d' }
+        let(:conf_file) { "/etc/dd-agent/conf.d/postgres.yaml" }
       else
-        let(:conf_dir) { '/etc/datadog-agent/conf.d' }
-      end
-      let(:dd_user) { 'dd-agent' }
-      let(:dd_group) { 'root' }
-      let(:dd_package) { 'datadog-agent' }
-      let(:dd_service) { 'datadog-agent' }
-      if is_agent5
-        let(:conf_file) { "#{conf_dir}/postgres.yaml" }
-      else
-        let(:conf_file) { "#{conf_dir}/postgres.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR6}/postgres.d/conf.yaml" }
       end
 
       context 'with default parameters' do
@@ -34,12 +21,12 @@ describe 'datadog_agent::integrations::postgres' do
 
         it { should compile.with_all_deps }
         it { should contain_file(conf_file).with(
-          owner: dd_user,
-          group: dd_group,
-          mode: '0600',
+          owner: DD_USER,
+          group: DD_GROUP,
+          mode: '0660',
         )}
-        it { should contain_file(conf_file).that_requires("Package[#{dd_package}]") }
-        it { should contain_file(conf_file).that_notifies("Service[#{dd_service}]") }
+        it { should contain_file(conf_file).that_requires("Package[#{PACKAGE_NAME}]") }
+        it { should contain_file(conf_file).that_notifies("Service[#{SERVICE_NAME}]") }
         it { should contain_file(conf_file).with_content(/password: abc123/) }
 
         context 'with default parameters' do
@@ -144,8 +131,8 @@ describe 'datadog_agent::integrations::postgres' do
             it { should contain_file(conf_file).with_content(%r{\s+query:\s*['"]?select foo, %s from bar['"]?}) }
             it { should contain_file(conf_file).with_content(%r{\s+metrics:}) }
             it { should contain_file(conf_file).with_content(%r{\s+"gooo":\s+\[custom_metric.tag.gooo, GAUGE\]}) }
-            it { should contain_file(conf_file).with_content(%r{\s+query.*\n\s+relation:\s*false}) }
-            it { should contain_file(conf_file).with_content(%r{\s+descriptors.*\n\s+-\s+\[foo, custom_metric.tag.foo\]}) }
+            it { should contain_file(conf_file).with_content(%r{\s+query.*[\r\n]+\s+relation:\s*false}) }
+            it { should contain_file(conf_file).with_content(%r{\s+descriptors.*[\r\n]+\s+-\s+\[foo, custom_metric.tag.foo\]}) }
           end
         end
       end

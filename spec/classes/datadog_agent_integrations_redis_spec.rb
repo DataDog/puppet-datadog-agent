@@ -137,6 +137,42 @@ describe 'datadog_agent::integrations::redis' do
         it { should contain_file(conf_file).without_content(%r{warn_on_missing_keys: false}) }
         it { should contain_file(conf_file).without_content(%r{command_stats: true}) }
       end
+
+      context 'with only keys' do
+        let(:params) {{
+          instances: [
+              {
+                  'host'     => 'redis1',
+                  'password' => 'hunter2',
+                  'port'     => 2379,
+                  'tags'     => %w(),
+                  'keys'     => %w(baz bat),
+              },
+          ],
+        }}
+        it { should contain_file(conf_file).with_content(%r{host: redis1}) }
+        it { should contain_file(conf_file).with_content(%r{^[^#]*password: hunter2}) }
+        it { should contain_file(conf_file).with_content(%r{port: 2379}) }
+        it { should contain_file(conf_file).with_content(%r{keys:.*\s+- baz\s+- bat}) }
+      end
+
+      context 'with only tags' do
+        let(:params) {{
+          instances: [
+              {
+                  'host'     => 'redis1',
+                  'password' => 'hunter2',
+                  'port'     => 2379,
+                  'tags'     => %w(baz bat),
+                  'keys'     => %w(),
+              },
+          ],
+        }}
+        it { should contain_file(conf_file).with_content(%r{host: redis1}) }
+        it { should contain_file(conf_file).with_content(%r{^[^#]*password: hunter2}) }
+        it { should contain_file(conf_file).with_content(%r{port: 2379}) }
+        it { should contain_file(conf_file).with_content(%r{tags:.*\s+- baz\s+- bat}) }
+      end
     end
   end
 end

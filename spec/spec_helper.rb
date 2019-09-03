@@ -15,6 +15,8 @@ if RSpec::Support::OS.windows?
   DD_GROUP = 'S-1-5-32-544'
   SERVICE_NAME = 'datadogagent'
   PACKAGE_NAME = 'Datadog Agent'
+  PERMISSIONS_FILE = '0664'
+  PERMISSIONS_PROTECTED_FILE = '0660'
 else
   ALL_OS = DEBIAN_OS + REDHAT_OS
   ALL_SUPPORTED_AGENTS = { '5' => true, '6' => false }
@@ -23,6 +25,8 @@ else
   DD_GROUP = 'root'
   SERVICE_NAME = 'datadog-agent'
   PACKAGE_NAME = 'datadog-agent'
+  PERMISSIONS_FILE = '0644'
+  PERMISSIONS_PROTECTED_FILE = '0600'
 end
 
 

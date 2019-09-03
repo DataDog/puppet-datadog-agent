@@ -14,7 +14,7 @@ describe 'datadog_agent::integrations::marathon' do
       it { should contain_file(conf_file).with(
         owner: DD_USER,
         group: DD_GROUP,
-        mode: '0664',
+        mode: PERMISSIONS_FILE,
       )}
       it { should contain_file(conf_file).that_requires("Package[#{PACKAGE_NAME}]") }
       it { should contain_file(conf_file).that_notifies("Service[#{SERVICE_NAME}]") }

@@ -18,7 +18,7 @@ define datadog_agent::integration (
       ensure => directory,
       owner  => $datadog_agent::dd_user,
       group  => $datadog_agent::dd_group,
-      mode   => '0755',
+      mode   => $datadog_agent::params::permissions_directory,
       before => File[$dst]
     }
   } else {
@@ -29,7 +29,7 @@ define datadog_agent::integration (
     ensure  => file,
     owner   => $datadog_agent::dd_user,
     group   => $datadog_agent::dd_group,
-    mode    => '0664',
+    mode    => $datadog_agent::params::permissions_file,
     content => to_instances_yaml($init_config, $instances, $logs),
     notify  => Service[$datadog_agent::service_name]
   }

@@ -14,7 +14,7 @@ describe 'datadog_agent::integrations::http_check' do
       it { should contain_file(conf_file).with(
         owner: DD_USER,
         group: DD_GROUP,
-        mode: '0660',
+        mode: PERMISSIONS_PROTECTED_FILE,
       )}
       it { should contain_file(conf_file).that_requires("Package[#{PACKAGE_NAME}]") }
       it { should contain_file(conf_file).that_notifies("Service[#{SERVICE_NAME}]") }

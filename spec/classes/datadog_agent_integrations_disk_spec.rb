@@ -16,7 +16,7 @@ describe 'datadog_agent::integrations::disk' do
       ).with(
         owner: DD_USER,
         group: DD_GROUP,
-        mode: '0660',
+        mode: PERMISSIONS_PROTECTED_FILE,
       )}
       it { is_expected.to contain_file(conf_file).that_requires("Package[#{PACKAGE_NAME}]") }
       it { is_expected.to contain_file(conf_file).that_notifies("Service[#{SERVICE_NAME}]") }

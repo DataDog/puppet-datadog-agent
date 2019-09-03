@@ -513,7 +513,7 @@ class datadog_agent(
       ensure  => directory,
       owner   => $dd_user,
       group   => $dd_group,
-      mode    => '0755',
+      mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
     }
   }
@@ -528,7 +528,7 @@ class datadog_agent(
       ensure  => directory,
       owner   => $dd_user,
       group   => $dd_group,
-      mode    => '0755',
+      mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
     }
 

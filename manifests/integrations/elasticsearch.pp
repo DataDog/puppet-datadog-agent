@@ -85,7 +85,7 @@ class datadog_agent::integrations::elasticsearch(
       ensure  => directory,
       owner   => $datadog_agent::params::dd_user,
       group   => $datadog_agent::params::dd_group,
-      mode    => '0775',
+      mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
       notify  => Service[$datadog_agent::params::service_name]
     }
@@ -98,7 +98,7 @@ class datadog_agent::integrations::elasticsearch(
     ensure  => file,
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
-    mode    => '0664',
+    mode    => $datadog_agent::params::permissions_file,
     content => template('datadog_agent/agent-conf.d/elastic.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]

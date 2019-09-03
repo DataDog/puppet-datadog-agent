@@ -19,7 +19,7 @@ instances:
 <% if !instance['command_stats'].nil? -%>
     command_stats: <%= instance['command_stats'] %>
 <% end -%>
-<% if instance['keys']  and unless instance['keys'].empty? -%>
+<% if instance['keys'] and ! instance['keys'].empty? -%>
     keys:
   <%- Array(instance['keys'] ).each do |key| -%>
     <%- if key != '' -%>
@@ -27,15 +27,12 @@ instances:
     <%- end -%>
   <%- end -%>
 <% end -%>
-<% if instance['tags']  and unless instance['tags'].empty? -%>
+<% if instance['tags'] and ! instance['tags'].empty? -%>
     tags:
   <%- Array(instance['tags'] ).each do |tag| -%>
     <%- if tag != '' -%>
       - <%= tag %>
     <%- end -%>
   <%- end -%>
-<% end -%>
-<% end -%>
-
 <% end -%>
 <% end -%>

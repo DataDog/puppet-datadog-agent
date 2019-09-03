@@ -8,24 +8,24 @@ REDHAT_OS = %w(RedHat CentOS Fedora Amazon Scientific)
 WINDOWS_OS = %w(Windows)
 
 if RSpec::Support::OS.windows?
-  ALL_OS = WINDOWS_OS
-  ALL_SUPPORTED_AGENTS = { '6' => false }
-  CONF_DIR6 = 'C:/ProgramData/Datadog/conf.d'
-  DD_USER = 'ddagentuser'
-  DD_GROUP = 'S-1-5-32-544'
-  SERVICE_NAME = 'datadogagent'
-  PACKAGE_NAME = 'Datadog Agent'
-  PERMISSIONS_FILE = '0664'
+  ALL_OS                     = WINDOWS_OS
+  ALL_SUPPORTED_AGENTS       = { '6' => false }  # Boolean means "is agent 5". TODO: Refactor this.
+  CONF_DIR6                  = 'C:/ProgramData/Datadog/conf.d'
+  DD_USER                    = 'ddagentuser'
+  DD_GROUP                   = 'S-1-5-32-544'
+  SERVICE_NAME               = 'datadogagent'
+  PACKAGE_NAME               = 'Datadog Agent'
+  PERMISSIONS_FILE           = '0664'
   PERMISSIONS_PROTECTED_FILE = '0660'
 else
-  ALL_OS = DEBIAN_OS + REDHAT_OS
-  ALL_SUPPORTED_AGENTS = { '5' => true, '6' => false }
-  CONF_DIR6 = '/etc/datadog-agent/conf.d'
-  DD_USER = 'dd-agent'
-  DD_GROUP = 'root'
-  SERVICE_NAME = 'datadog-agent'
-  PACKAGE_NAME = 'datadog-agent'
-  PERMISSIONS_FILE = '0644'
+  ALL_OS                     = DEBIAN_OS + REDHAT_OS
+  ALL_SUPPORTED_AGENTS       = { '5' => true, '6' => false } # Boolean means "is agent 5". TODO: Refactor this.
+  CONF_DIR6                  = '/etc/datadog-agent/conf.d'
+  DD_USER                    = 'dd-agent'
+  DD_GROUP                   = 'root'
+  SERVICE_NAME               = 'datadog-agent'
+  PACKAGE_NAME               = 'datadog-agent'
+  PERMISSIONS_FILE           = '0644'
   PERMISSIONS_PROTECTED_FILE = '0600'
 end
 

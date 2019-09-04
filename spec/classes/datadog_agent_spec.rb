@@ -926,7 +926,7 @@ describe 'datadog_agent' do
         config_yaml_file = config_dir + "/datadog.yaml"
         log_file = WINDOWS_OS.include?(operatingsystem) ? 'C:/ProgramData/Datadog/logs/agent.log' : '\/var\/log\/datadog\/agent.log'
 
-        it { should contain_file(config_dir+'/') }
+        it { should contain_file(config_dir) }
         it { should contain_file(config_yaml_file) }
         it { should contain_file(config_dir + '/conf.d').with_ensure('directory') }
 

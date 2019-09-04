@@ -736,7 +736,7 @@ class datadog_agent(
 
     if ($::operatingsystem == 'Windows') {
 
-      file { 'C:/ProgramData/Datadog/':
+      file { 'C:/ProgramData/Datadog':
         ensure   => directory
       }
 
@@ -745,7 +745,7 @@ class datadog_agent(
         group   => 'S-1-5-32-544', #Administrators
         content => template('datadog_agent/datadog6.yaml.erb'),
         notify  => Service[$datadog_agent::params::service_name],
-        require => File['C:/ProgramData/Datadog/'],
+        require => File['C:/ProgramData/Datadog'],
       }
 
     } else {

@@ -493,7 +493,7 @@ class datadog_agent(
         api_key        => $api_key,
         hostname       => $host,
         service_name   => $service_name,
-        tags           => $tags,
+        tags           => $local_tags,
         ensure         => $win_ensure
       }
       if ($win_ensure == absent) {

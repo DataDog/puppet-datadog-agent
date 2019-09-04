@@ -62,18 +62,18 @@ class datadog_agent::params {
       $permissions_protected_file = '0600'
     }
     'Windows': {
-      $agent5_default_repo        = '<agent 5 is not supported by puppet on windows>'
+      $agent5_default_repo        = '<agent 5 is not supported by this module on windows>' # Param in init.pp so needs to be defined, but not used on Windows
       $agent6_default_repo        = "https://s3.amazonaws.com/ddagent-windows-stable/datadog-agent-6-${agent_version}.amd64.msi"
-      $conf_dir                   = 'C:/ProgramData/Datadog/agent5' #Not a real path, but integrations use it to ensure => absent so it needs to be a valid path
+      $conf_dir                   = 'C:/ProgramData/Datadog/agent5' # Not a real path, but integrations use it to ensure => absent so it needs to be a valid path
       $conf6_dir                  = 'C:/ProgramData/Datadog/conf.d'
       $dd_user                    = 'ddagentuser'
-      $dd_group                   = 'S-1-5-32-544' #Administrators
+      $dd_group                   = 'S-1-5-32-544' # Administrators group, passed as SID so it works on localized Windows versions
       $service_name               = 'datadogagent'
       $agent6_log_file            = 'C:/ProgramData/Datadog/logs/agent.log'
       $package_name               = 'Datadog Agent'
-      $permissions_directory      = '0775' # On Windows, the Administrators group needs to maintain access, otherwise puppet itself won't be able to access the file
-      $permissions_file           = '0664'
-      $permissions_protected_file = '0660'
+      $permissions_directory      = '0775' # On Windows, the Administrators group needs to maintain access,
+      $permissions_file           = '0664' # otherwise puppet itself won't be able to access the file. Reported
+      $permissions_protected_file = '0660' # as bug in: https://tickets.puppetlabs.com/browse/PA-2877
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }

@@ -319,8 +319,8 @@ class datadog_agent(
   $apt_backup_keyserver = $datadog_agent::params::apt_backup_keyserver,
   $apt_keyserver = $datadog_agent::params::apt_keyserver,
   $apt_release = $datadog_agent::params::apt_default_release,
-  $win_msi_location = 'c:/tmp',
-  Enum['present', 'absent'] $win_ensure = 'present',
+  $win_msi_location = 'c:/tmp', # Temporary directory where the msi file is downloaded
+  Enum['present', 'absent'] $win_ensure = 'present', #TODO: Implement uninstall also for apt and rpm install methods
   Optional[String] $service_provider = undef,
   Optional[String] $agent_version = $datadog_agent::params::agent_version,
 ) inherits datadog_agent::params {
@@ -488,16 +488,16 @@ class datadog_agent(
         baseurl        => $agent6_repo_uri,
         agent_version  => $agent_version,
         service_ensure => $service_ensure,
+        service_enable => $service_enable,
         msi_location   => $win_msi_location,
         api_key        => $api_key,
         hostname       => $host,
         service_name   => $service_name,
         tags           => $tags,
-        service_enable => $service_enable,
         ensure         => $win_ensure
       }
       if ($win_ensure == absent) {
-        return()
+        return() #Config files will remain unchanged on uninstall
       }
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }

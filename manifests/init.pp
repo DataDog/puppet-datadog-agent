@@ -496,6 +496,9 @@ class datadog_agent(
         service_enable => $service_enable,
         ensure         => $win_ensure
       }
+      if ($win_ensure == absent) {
+        return()
+      }
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }

@@ -16,13 +16,13 @@ class datadog_agent::windows::agent6(
   Enum['present', 'absent'] $ensure = 'present',
 ) inherits datadog_agent::params {
 
+  $msi_full_path = "${msi_location}/datadog-agent-6-${agent_version}.amd64.msi"
+
   if $ensure == 'present' {
     file { $msi_location:
       ensure => directory,
       notify => Exec['downloadmsi']
     }
-
-    $msi_full_path = "${msi_location}/datadog-agent-6-${agent_version}.amd64.msi"
 
     exec { 'downloadmsi':
       command  => "Invoke-WebRequest ${baseurl} -outfile ${msi_full_path}",
@@ -46,12 +46,13 @@ class datadog_agent::windows::agent6(
     service { $service_name:
       ensure  => $service_ensure,
       enable  => $service_enable,
-      require => Package['Datadog Agent']
+      require => Package[$datadog_agent::params::package_name]
     }
   } else {
+
     file { $msi_location:
       ensure => absent,
-      notify => Package['Datadog Agent']
+      notify => Package[$datadog_agent::params::package_name]
     }
 
     package { $datadog_agent::params::package_name:
@@ -60,5 +61,6 @@ class datadog_agent::windows::agent6(
       source            => $msi_full_path,
       uninstall_options => ['/quiet']
     }
+
   }
 }

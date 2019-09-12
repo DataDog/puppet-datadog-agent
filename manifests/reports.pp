@@ -24,7 +24,7 @@ class datadog_agent::reports(
 
   if ($::operatingsystem == 'Windows') {
 
-    fail('Reports are not supported on Windows')
+    fail('Reporting is not yet supported from a Windows host')
 
   } else {
 

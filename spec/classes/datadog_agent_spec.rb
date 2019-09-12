@@ -893,7 +893,7 @@ describe 'datadog_agent' do
 
         if WINDOWS_OS.include?(operatingsystem)
           it "reports should raise on Windows" do
-            should raise_error(Puppet::Error, /Reports are not supported on Windows/)
+            should raise_error(Puppet::Error, /Reporting is not yet supported from a Windows host/)
           end
         else
           it { should compile.with_all_deps }

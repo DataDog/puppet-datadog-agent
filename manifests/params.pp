@@ -45,6 +45,7 @@ class datadog_agent::params {
       $permissions_directory      = '0755'
       $permissions_file           = '0644'
       $permissions_protected_file = '0600'
+      $agent_binary               = '/opt/datadog-agent/bin/agent/agent'
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       $rubydev_package            = 'ruby-devel'
@@ -60,6 +61,7 @@ class datadog_agent::params {
       $permissions_directory      = '0755'
       $permissions_file           = '0644'
       $permissions_protected_file = '0600'
+      $agent_binary               = '/opt/datadog-agent/bin/agent/agent'
     }
     'Windows': {
       $agent5_default_repo        = '<agent 5 is not supported by this module on windows>' # Param in init.pp so needs to be defined, but not used on Windows
@@ -74,6 +76,7 @@ class datadog_agent::params {
       $permissions_directory      = '0775' # On Windows, the Administrators group needs to maintain access,
       $permissions_file           = '0664' # otherwise puppet itself won't be able to access the file. Reported
       $permissions_protected_file = '0660' # as bug in: https://tickets.puppetlabs.com/browse/PA-2877
+      $agent_binary               = 'C:/Program Files/Datadog/Datadog Agent/embedded/agent.exe'
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }

@@ -319,7 +319,7 @@ class datadog_agent(
   $apt_backup_keyserver = $datadog_agent::params::apt_backup_keyserver,
   $apt_keyserver = $datadog_agent::params::apt_keyserver,
   $apt_release = $datadog_agent::params::apt_default_release,
-  $win_msi_location = 'c:/tmp', # Temporary directory where the msi file is downloaded
+  String $win_msi_location = 'c:/tmp', # Temporary directory where the msi file is downloaded
   Enum['present', 'absent'] $win_ensure = 'present', #TODO: Implement uninstall also for apt and rpm install methods
   Optional[String] $service_provider = undef,
   Optional[String] $agent_version = $datadog_agent::params::agent_version,
@@ -404,7 +404,6 @@ class datadog_agent(
   validate_legacy(String, 'validate_string', $agent6_repo_uri)
   validate_legacy(String, 'validate_string', $apt_release)
   validate_legacy(Integer, 'validate_integer', $cmd_port)
-  validate_legacy(String, 'validate_string', $win_msi_location)
 
   if $hiera_tags {
     $local_tags = lookup({ 'name' => 'datadog_agent::tags', 'merge' => 'unique', 'default_value' => []})

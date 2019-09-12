@@ -17,11 +17,9 @@ A module to:
 Releases
 --------
 
-There are currently two actively maintained versions for the Puppet module. For users on Puppet >= 4.6.x, and possibly some older 4.x puppets, it is recommended to use version 2.0+ of the module.
+The current version of this Puppet module is compatible with Puppet >= 4.6.x. For users running on older versions of Puppet the legacy module, series 1.x, should support most use-cases.
 
-For users running on older versions of Puppet the legacy module, series 1.x, should support most use-cases.
-
-The majority of users should be able to use the newer module as many of the Puppet versions supported in the 1.x series of the module have been EOL'd.
+The majority of users should be able to use the current version, as the Puppet versions supported in the 1.x series of the module have been EOL'd.
 
 Some features might be back-ported if there's enough demand, but in general only maintenance is performed on the 1.x series of the module. Future feature development is performed on the newer Puppet module.
 
@@ -30,7 +28,7 @@ Version 2.x
 
 ## Requirements
 
-Puppet >=4.6.x and <=5.3.x (may work with newer versions, but is untested). For detailed information on compatibility, check the [module page][2] on the Puppet forge.
+For detailed information on compatibility, check the [module page][2] on the Puppet forge.
 
 ## Installation
 
@@ -68,7 +66,7 @@ Version 1.x
 
 ## Requirements
 
-Puppet >=2.7.x and <=4.2.x (may work with newer versions, but is untested). For detailed information on compatibility, check the [module page][2] on the Puppet forge.
+Puppet >=2.7.x and <=4.2.x. For detailed information on compatibility, check the [module page][2] on the Puppet forge.
 
 ## Installation
 

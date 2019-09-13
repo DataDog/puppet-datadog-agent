@@ -9,3 +9,11 @@ env: <%= @apm_env %>
 <%= span %>: <%= value %>
 <% end %>
 <% end -%>
+
+<% if @apm_automatic_scrubbing -%>
+[trace.obfuscation]
+<% @apm_automatic_scrubbing.each do |service, data| -%>
+<%= service %>:
+  <%= data %>
+<% end %>
+<% end -%>

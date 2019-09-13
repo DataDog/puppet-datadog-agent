@@ -1012,16 +1012,16 @@ describe 'datadog_agent' do
                   :proxy_password => 'abcd1234',
               }}
               it { is_expected.to contain_notify(
-                  'Setting proxy_host will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+                  'Setting proxy_host will have no effect on agent6 please use agent6_extra_options to set your proxy')
               }
               it { is_expected.to contain_notify(
-                  'Setting proxy_port will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+                  'Setting proxy_port will have no effect on agent6 please use agent6_extra_options to set your proxy')
               }
               it { is_expected.to contain_notify(
-                  'Setting proxy_user will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+                  'Setting proxy_user will have no effect on agent6 please use agent6_extra_options to set your proxy')
               }
               it { is_expected.to contain_notify(
-                  'Setting proxy_password will have no effect on agent6 please use agent6_extra_options to set your proxy') 
+                  'Setting proxy_password will have no effect on agent6 please use agent6_extra_options to set your proxy')
               }
             end
             context 'deprecated proxy settings with default values' do
@@ -1107,6 +1107,48 @@ describe 'datadog_agent' do
               'content' => /^\ \ analyzed_spans:\n\ \ \ \ foo|bar: 0.5\n\ \ \ \ haz|qux: 0.1\n/,
               )}
             end
+
+            context 'with apm_enabled set to true and apm_automatic_scrubbing specified' do
+              let(:params) {{
+                :apm_enabled  => true,
+                :apm_automatic_scrubbing => {
+                    'elasticsearch' => {
+                        'enable' => true,
+                        'keep_values' => [
+                            'user_id',
+                            'category_id'
+                        ]
+                    },
+                    'redis' => {
+                        'enable' => true
+                    },
+                    'memcached' => {
+                        'enable' => true
+                    },
+                    'http' => {
+                        'remove_query_string' => true,
+                        'remove_paths_with_digits' => true
+                    },
+                    'mongodb' => {
+                        'enable' => true,
+                        'keep_values' => [
+                            'uid',
+                            'cat_id'
+                        ]
+                    }
+                }
+              }}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^apm_config:\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^apm_config:\n\ \ enabled: true\n/,
+              )}
+              it { should contain_file('/etc/datadog-agent/datadog.yaml').with(
+              'content' => /^\ \ obfuscation:\n/,
+              )}
+            end
+
             context 'with extra_options and Process enabled' do
               let(:params) {{
                   :apm_enabled => false,

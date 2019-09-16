@@ -2,6 +2,8 @@ language: ruby
 before_install: rm -f Gemfile.lock
 bundler_args: --full-index
 cache: bundler
+os:
+  - linux
 rvm:
   - 2.1.9
   - 2.2.3
@@ -35,4 +37,15 @@ matrix:
     - rvm: 2.2.3
       env: PUPPET_VERSION="~> 6.0.0"
     - rvm: 2.2.3
+      env: PUPPET_VERSION="~> 6.5.0"
+  include:
+      os: windows
+      language: bash # There is no support for ruby on windows yet (2019/09)
+      install:
+      - choco install ruby
+      - choco install msys2
+      - ridk.cmd exec pacman -S --noconfirm --needed base-devel mingw-w64-x86_64-toolchain
+      - powershell kill -n gpg-agent # Started by msys, if we don't kill it the travis job stays running forever (found by running 'ps -W')
+      - gem install bundler
+      - bundle install
       env: PUPPET_VERSION="~> 6.5.0"

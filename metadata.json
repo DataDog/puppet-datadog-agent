@@ -68,6 +68,10 @@
     {
       "name": "puppetlabs/yumrepo_core",
       "version_requirement": ">=1.0.3 < 2.0.0"
+    },
+    {
+      "name": "puppetlabs/powershell",
+      "version_requirement": ">=2.3.0 <3.0.0"
     }
   ]
 }

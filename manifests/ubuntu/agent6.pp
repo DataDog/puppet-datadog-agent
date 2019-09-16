@@ -40,7 +40,7 @@ class datadog_agent::ubuntu::agent6(
 
   package { 'datadog-agent-base':
     ensure => absent,
-    before => Package['datadog-agent'],
+    before => Package[$datadog_agent::params::package_name],
   }
 
   package { $datadog_agent::params::package_name:
@@ -56,7 +56,7 @@ class datadog_agent::ubuntu::agent6(
       provider  => $service_provider,
       hasstatus => false,
       pattern   => 'dd-agent',
-      require   => Package['datadog-agent'],
+      require   => Package[$datadog_agent::params::package_name],
     }
   } else {
     service { $datadog_agent::params::service_name:
@@ -64,7 +64,7 @@ class datadog_agent::ubuntu::agent6(
       enable    => $service_enable,
       hasstatus => false,
       pattern   => 'dd-agent',
-      require   => Package['datadog-agent'],
+      require   => Package[$datadog_agent::params::package_name],
     }
   }
 }

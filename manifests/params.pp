@@ -72,7 +72,7 @@ class datadog_agent::params {
       $dd_group                   = 'S-1-5-32-544' # Administrators group, passed as SID so it works on localized Windows versions
       $service_name               = 'datadogagent'
       $agent6_log_file            = 'C:/ProgramData/Datadog/logs/agent.log'
-      $package_name               = 'Datadog Agent'
+      $package_name               = 'Datadog Agent' # Must be the app's DisplayName. https://puppet.com/docs/puppet/latest/resources_package_windows.html
       $permissions_directory      = '0775' # On Windows, the Administrators group needs to maintain access,
       $permissions_file           = '0664' # otherwise puppet itself won't be able to access the file. Reported
       $permissions_protected_file = '0660' # as bug in: https://tickets.puppetlabs.com/browse/PA-2877

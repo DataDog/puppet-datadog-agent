@@ -38,11 +38,6 @@ class datadog_agent::windows::agent6(
       install_options => ['/quiet', {'APIKEY' => $api_key, 'HOSTNAME' => $hostname, 'TAGS' => $tags}]
     }
 
-    exec { 'DatadogRestart':
-      command  => "& 'C:/Program Files/Datadog/Datadog Agent/embedded/agent.exe' restart-service",
-      provider => powershell
-    }
-
     service { $service_name:
       ensure  => $service_ensure,
       enable  => $service_enable,

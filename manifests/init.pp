@@ -294,7 +294,7 @@ class datadog_agent(
   $consul_token = '',
   $cmd_port = 5001,
   $agent5_enable = $datadog_agent::params::agent5_enable,
-  $conf_dir = $datadog_agent::params::conf_dir,
+  $conf_dir = $datadog_agent::params::conf5_dir,
   $conf6_dir = $datadog_agent::params::conf6_dir,
   $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
   $service_name = $datadog_agent::params::service_name,

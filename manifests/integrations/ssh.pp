@@ -37,7 +37,7 @@ class datadog_agent::integrations::ssh(
 ) inherits datadog_agent::params {
   include ::datadog_agent
 
-  $legacy_dst = "${datadog_agent::conf_dir}/ssh.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/ssh.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/ssh_check.d"
     file { $legacy_dst:

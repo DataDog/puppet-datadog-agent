@@ -64,7 +64,7 @@ class datadog_agent::integrations::mongo(
 
   validate_legacy('Array', 'validate_array', $servers)
 
-  $legacy_dst = "${datadog_agent::conf_dir}/mongo.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/mongo.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/mongo.d"
     file { $legacy_dst:

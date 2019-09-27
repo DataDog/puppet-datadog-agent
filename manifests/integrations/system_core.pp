@@ -9,7 +9,7 @@
 class datadog_agent::integrations::system_core inherits datadog_agent::params {
   include datadog_agent
 
-  $legacy_dst = "${datadog_agent::conf_dir}/system_core.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/system_core.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/system_core.d"
     file { $legacy_dst:

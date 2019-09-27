@@ -52,7 +52,7 @@ class datadog_agent::integrations::postfix (
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf_dir}/postfix.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/postfix.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/postfix.d"
     file { $legacy_dst:

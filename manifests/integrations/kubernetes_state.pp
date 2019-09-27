@@ -24,7 +24,7 @@ class datadog_agent::integrations::kubernetes_state(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  $legacy_dst = "${datadog_agent::conf_dir}/kubernetes_state.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/kubernetes_state.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/kubernetes_state.d"
     file { $legacy_dst:

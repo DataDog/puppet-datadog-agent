@@ -67,7 +67,7 @@ class datadog_agent::integrations::jmx(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  $legacy_dst = "${datadog_agent::conf_dir}/jmx.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/jmx.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/jmx.d"
     file { $legacy_dst:

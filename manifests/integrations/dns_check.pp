@@ -37,7 +37,7 @@ class datadog_agent::integrations::dns_check (
 
   validate_legacy('Array', 'validate_array', $checks)
 
-  $legacy_dst = "${datadog_agent::conf_dir}/dns_check.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/dns_check.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/dns_check.d"
     file { $legacy_dst:

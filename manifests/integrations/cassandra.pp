@@ -36,7 +36,7 @@ class datadog_agent::integrations::cassandra(
 
   validate_legacy(Optional[Hash], 'validate_hash', $tags)
 
-  $legacy_dst = "${datadog_agent::conf_dir}/cassandra.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/cassandra.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/cassandra.d"
 

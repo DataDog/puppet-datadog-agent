@@ -36,7 +36,7 @@ class datadog_agent::integrations::haproxy(
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf_dir}/haproxy.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/haproxy.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/haproxy.d"
     file { $legacy_dst:

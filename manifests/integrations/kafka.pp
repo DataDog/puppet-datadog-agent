@@ -86,7 +86,7 @@ class datadog_agent::integrations::kafka(
     $servers = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf_dir}/kafka.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/kafka.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/kafka.d"
     file { $legacy_dst:

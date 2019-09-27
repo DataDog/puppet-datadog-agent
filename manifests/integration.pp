@@ -22,7 +22,7 @@ define datadog_agent::integration (
       before => File[$dst]
     }
   } else {
-    $dst = "${datadog_agent::conf_dir}/${integration}.yaml"
+    $dst = "${datadog_agent::conf5_dir}/${integration}.yaml"
   }
 
   file { $dst:

@@ -57,7 +57,7 @@ class datadog_agent::integrations::memcache (
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf_dir}/mcache.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/mcache.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/mcache.d"
     file { $legacy_dst:

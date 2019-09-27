@@ -113,7 +113,7 @@ class datadog_agent::integrations::mysql(
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf_dir}/mysql.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/mysql.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/mysql.d"
     file { $legacy_dst:

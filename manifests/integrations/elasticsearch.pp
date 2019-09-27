@@ -74,7 +74,7 @@ class datadog_agent::integrations::elasticsearch(
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf_dir}/elastic.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/elastic.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/elastic.d"
     file { $legacy_dst:

@@ -117,7 +117,7 @@ class datadog_agent::integrations::tcp_check (
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf_dir}/tcp_check.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/tcp_check.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/tcp_check.d"
     file { $legacy_dst:

@@ -31,7 +31,7 @@ class datadog_agent::integrations::network(
 
   validate_legacy('Array', 'validate_array', $excluded_interfaces)
 
-  $legacy_dst = "${datadog_agent::conf_dir}/network.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/network.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/network.d"
     file { $legacy_dst:

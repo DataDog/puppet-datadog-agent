@@ -942,7 +942,7 @@ describe 'datadog_agent' do
               'content' => /^api_key: your_API_key\n/,
               )}
               it { should contain_file(config_yaml_file).with(
-              'content' => Regexp.new('^conf_path: \"{0,1}' + config_dir + '/conf.d' + '"{0,1}\n'),
+              'content' => Regexp.new('^confd_path: \"{0,1}' + config_dir + '/conf.d' + '"{0,1}\n'),
               )}
               it { should contain_file(config_yaml_file).with(
               'content' => /^cmd_port: \"{0,1}5001\"{0,1}\n/,

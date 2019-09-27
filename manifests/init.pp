@@ -720,7 +720,7 @@ class datadog_agent(
       'hostname_fqdn' => $hostname_fqdn,
       'collect_ec2_tags' => $collect_ec2_tags,
       'collect_gce_tags' => $collect_gce_tags,
-      'conf_path' => $datadog_agent::params::conf6_dir,
+      'confd_path' => $conf6_dir,
       'enable_metadata_collection' => $collect_instance_metadata,
       'dogstatsd_port' => $dogstatsd_port,
       'dogstatsd_socket' => $dogstatsd_socket,

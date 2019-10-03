@@ -42,7 +42,7 @@ class datadog_agent::integrations::tomcat(
   include datadog_agent
 
 
-  $legacy_dst = "${datadog_agent::conf_dir}/tomcat.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/tomcat.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/tomcat.d"
     file { $legacy_dst:

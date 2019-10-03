@@ -31,8 +31,8 @@
 #       where x is the threshold and y is the window.
 #
 #   reverse_content_match
-#       When (optional) true, reverses the behavior of the content_match option, 
-#       i.e. the HTTP check will report as DOWN if the string or expression 
+#       When (optional) true, reverses the behavior of the content_match option,
+#       i.e. the HTTP check will report as DOWN if the string or expression
 #       in content_match IS found. (default is false)
 #
 #   content_match
@@ -229,7 +229,7 @@ class datadog_agent::integrations::http_check (
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf_dir}/http_check.yaml"
+  $legacy_dst = "${datadog_agent::conf5_dir}/http_check.yaml"
   if !$::datadog_agent::agent5_enable {
     $dst_dir = "${datadog_agent::conf6_dir}/http_check.d"
     file { $legacy_dst:

@@ -319,7 +319,7 @@ class datadog_agent(
   $apt_backup_keyserver = $datadog_agent::params::apt_backup_keyserver,
   $apt_keyserver = $datadog_agent::params::apt_keyserver,
   $apt_release = $datadog_agent::params::apt_default_release,
-  String $win_msi_location = 'c:/tmp', # Temporary directory where the msi file is downloaded
+  String $win_msi_location = 'C:/Windows/temp', # Temporary directory where the msi file is downloaded, must exist
   Enum['present', 'absent'] $win_ensure = 'present', #TODO: Implement uninstall also for apt and rpm install methods
   Optional[String] $service_provider = undef,
   Optional[String] $agent_version = $datadog_agent::params::agent_version,

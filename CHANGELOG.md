@@ -1,6 +1,15 @@
 Changes
 =======
 
+# 2.9.0 / 2019-10-23
+
+### Notes
+
+* [FEATURE] Official Windows support.
+* [BUGFIX] Remove unnecessary restart of the agent on Windows. [#562][]. (Thanks [@jvanbrunschot][]))
+* [BUGFIX] Only download MSI if needed, on Windows. See [#563][].
+* [BUGFIX] Give Administrator group access to datadog.yaml. See [#571][].
+
 # 2.8.0 / 2019-09-18
 
 ### Notes
@@ -662,6 +671,9 @@ Please read the [docs]() for more details.
 [#556]: https://github.com/DataDog/puppet-datadog-agent/issues/556
 [#557]: https://github.com/DataDog/puppet-datadog-agent/issues/557
 [#558]: https://github.com/DataDog/puppet-datadog-agent/issues/558
+[#562]: https://github.com/DataDog/puppet-datadog-agent/issues/562
+[#563]: https://github.com/DataDog/puppet-datadog-agent/issues/563
+[#571]: https://github.com/DataDog/puppet-datadog-agent/issues/571
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
@@ -722,6 +734,7 @@ Please read the [docs]() for more details.
 [@jfrost]: https://github.com/jfrost
 [@jniesen]: https://github.com/jniesen
 [@jubagarie]: https://github.com/jubagarie
+[@jvanbrunschot]: https://github.com/jvanbrunschot
 [@kevin-bowers]: https://github.com/kevin-bowers
 [@kitchen]: https://github.com/kitchen
 [@lowkeyshift]: https://github.com/lowkeyshift

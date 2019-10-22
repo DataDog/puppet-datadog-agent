@@ -40,12 +40,16 @@ matrix:
       env: PUPPET_VERSION="~> 6.5.0"
   include:
       os: windows
+      rvm: 2.5.3 # Has no effect, but without this Travis shows 2.1.9 in the GUI, which is incorrect
       language: bash # There is no support for ruby on windows yet (2019/09)
       install:
-      - choco install ruby
-      - choco install msys2
+      - choco uninstall ruby # Otherwise we end up with two rubys installed
+      - choco install ruby --allow-downgrade -y --version 2.5.3.101 # Keep version in sync with next command!
+      - export PATH=/c/tools/ruby25/bin:$PATH # Installing ruby doesn't set the path, we need to do this manually
+      - ruby --version
+      - choco install msys2 --allow-downgrade -y --version 20180531.0.0
       - ridk.cmd exec pacman -S --noconfirm --needed base-devel mingw-w64-x86_64-toolchain
       - powershell kill -n gpg-agent # Started by msys, if we don't kill it the travis job stays running forever (found by running 'ps -W')
-      - gem install bundler
+      - gem install bundler -v 1.17.3
       - bundle install
       env: PUPPET_VERSION="~> 6.5.0"

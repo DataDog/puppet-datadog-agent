@@ -14,7 +14,7 @@ group :test do
   gem "puppet-syntax", "~> 2.5.0"
   gem "puppetlabs_spec_helper", "~> 2.14.1"
   gem "jwt", "~> 1.5.6"
-  gem "rake", "~> 12.3.3" if RUBY_VERSION < '2.6.0'
+  gem "rake", "~> 12.3.3" # last version to support ruby < 2.6
   gem "rspec-puppet", '2.6.9'
   gem 'rspec-puppet-facts', '~> 1.7', :require => false
 end

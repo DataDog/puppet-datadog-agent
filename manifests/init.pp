@@ -742,6 +742,7 @@ class datadog_agent(
       file { 'C:/ProgramData/Datadog/datadog.yaml':
         owner   => $dd_user,
         group   => 'S-1-5-32-544', #Administrators
+        mode    => '0660',
         content => template('datadog_agent/datadog6.yaml.erb'),
         notify  => Service[$datadog_agent::params::service_name],
         require => File['C:/ProgramData/Datadog'],

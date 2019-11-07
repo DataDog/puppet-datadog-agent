@@ -6,6 +6,8 @@ Changes
 ### Notes
 
 * [FEATURE] Official Windows support.
+* [FEATURE] Add logs parameter to mysql integration. [#572][]. (Thanks [@asenci][]))
+* [FEATURE] Add support for Oracle Linux. [#574][]. (Thanks [@atayts][]))
 * [BUGFIX] Remove unnecessary restart of the agent on Windows. [#562][]. (Thanks [@jvanbrunschot][]))
 * [BUGFIX] Only download MSI if needed, on Windows. See [#563][].
 * [BUGFIX] Give Administrator group access to datadog.yaml. See [#571][].
@@ -674,6 +676,8 @@ Please read the [docs]() for more details.
 [#562]: https://github.com/DataDog/puppet-datadog-agent/issues/562
 [#563]: https://github.com/DataDog/puppet-datadog-agent/issues/563
 [#571]: https://github.com/DataDog/puppet-datadog-agent/issues/571
+[#572]: https://github.com/DataDog/puppet-datadog-agent/issues/572
+[#574]: https://github.com/DataDog/puppet-datadog-agent/issues/574
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
@@ -690,6 +694,8 @@ Please read the [docs]() for more details.
 [@alexharv074]: https://github.com/alexharv074
 [@alvin-huang]: https://github.com/alvin-huang
 [@arkpoah]: https://github.com/arkpoah
+[@asenci]: https://github.com/asenci
+[@atayts]: https://github.com/atayts
 [@b2jrock]: https://github.com/b2jrock
 [@bflad]: https://github.com/bflad
 [@binford2k]: https://github.com/binford2k

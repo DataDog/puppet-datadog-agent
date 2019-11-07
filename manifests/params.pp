@@ -47,7 +47,7 @@ class datadog_agent::params {
       $permissions_protected_file = '0600'
       $agent_binary               = '/opt/datadog-agent/bin/agent/agent'
     }
-    'RedHat','CentOS','Fedora','Amazon','Scientific' : {
+    'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux' : {
       $rubydev_package            = 'ruby-devel'
       $agent5_default_repo        = "https://yum.datadoghq.com/rpm/${::architecture}/"
       $agent6_default_repo        = "https://yum.datadoghq.com/stable/6/${::architecture}/"

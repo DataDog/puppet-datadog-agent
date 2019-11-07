@@ -461,7 +461,7 @@ class datadog_agent(
         }
       }
     }
-    'RedHat','CentOS','Fedora','Amazon','Scientific' : {
+    'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux' : {
       if $agent5_enable {
         class { 'datadog_agent::redhat::agent5':
           baseurl          => $agent5_repo_uri,

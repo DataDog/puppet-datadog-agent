@@ -1,5 +1,9 @@
 ### MANAGED BY PUPPET
 
+<%
+require 'yaml'
+%>
+
 init_config:
 
 instances:
@@ -48,3 +52,4 @@ instances:
 
 <% end -%>
 
+<%= {'logs'=>@logs}.to_yaml %>

@@ -79,6 +79,7 @@ class datadog_agent::integrations::mysql(
   Boolean $disable_innodb_metrics          = false,
   Optional[Array] $queries                 = [],
   Optional[Array] $instances               = undef,
+  Optional[Array] $logs                    = [],
   ) inherits datadog_agent::params {
   include datadog_agent
 

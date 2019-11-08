@@ -8,6 +8,7 @@ Changes
 * [FEATURE] Official Windows support.
 * [FEATURE] Add logs parameter to mysql integration. [#572][]. (Thanks [@asenci][]))
 * [FEATURE] Add support for Oracle Linux. [#574][]. (Thanks [@atayts][]))
+* [FEATURE] Support latest version of puppet libraries [#576][]. (Thanks [@flyinbutrs][]))
 * [BUGFIX] Remove unnecessary restart of the agent on Windows. [#562][]. (Thanks [@jvanbrunschot][]))
 * [BUGFIX] Only download MSI if needed, on Windows. See [#563][].
 * [BUGFIX] Give Administrator group access to datadog.yaml. See [#571][].
@@ -678,6 +679,7 @@ Please read the [docs]() for more details.
 [#571]: https://github.com/DataDog/puppet-datadog-agent/issues/571
 [#572]: https://github.com/DataDog/puppet-datadog-agent/issues/572
 [#574]: https://github.com/DataDog/puppet-datadog-agent/issues/574
+[#576]: https://github.com/DataDog/puppet-datadog-agent/issues/576
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
@@ -723,6 +725,7 @@ Please read the [docs]() for more details.
 [@evansj]: https://github.com/evansj
 [@ewansteele]: https://github.com/ewansteele
 [@ffleming]: https://github.com/ffleming
+[@flyinbutrs]: https://github.com/flyinbutrs
 [@flyinprogrammer]: https://github.com/flyinprogrammer
 [@fr3nd]: https://github.com/fr3nd
 [@fwelschen]: https://github.com/fwelschen

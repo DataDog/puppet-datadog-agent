@@ -20,11 +20,12 @@ class datadog_agent::windows::agent6(
 
   if $ensure == 'present' {
 
-    exec { 'downloadmsi': # Using exec instead of file so we can specify an onlyif condition
-      command  => "Invoke-WebRequest ${baseurl} -outfile ${msi_full_path}",
-      onlyif   => "if ((Get-Package \"${datadog_agent::params::package_name}\") -or (test-path ${msi_full_path})) { exit 1 }",
-      provider => powershell,
+    file { 'installer':
+      path => $msi_full_path,
+      source => $baseurl,
+      provider => 'windows',
       notify   => Package[$datadog_agent::params::package_name]
+
     }
 
     package { $datadog_agent::params::package_name:
@@ -40,11 +41,16 @@ class datadog_agent::windows::agent6(
       require => Package[$datadog_agent::params::package_name]
     }
   } else {
+    exec { 'datadog_6_14_fix':
+      command => "((New-Object System.Net.WebClient).DownloadFile('https://s3.amazonaws.com/ddagent-windows-stable/scripts/fix_6_14.ps1', $env:temp + '\\fix_6_14.ps1')); &$env:temp\\fix_6_14.ps1",
+      provider => powershell,
+    }
 
     package { $datadog_agent::params::package_name:
       ensure            => absent,
       provider          => 'windows',
-      uninstall_options => ['/quiet']
+      uninstall_options => ['/quiet'],
+      subscribe         => Exec['datadog_6_14_fix'],
     }
 
   }

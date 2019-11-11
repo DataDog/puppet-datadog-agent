@@ -24,6 +24,9 @@ class datadog_agent::windows::agent6(
       path => $msi_full_path,
       source => $baseurl,
       provider => 'windows',
+      validate_cmd => "$blacklist = '928b00d2f952219732cda9ae0515351b15f9b9c1ea1d546738f9dc0fda70c336',"\
+      "'78b2bb2b231bcc185eb73dd367bfb6cb8a5d45ba93a46a7890fd607dc9188194';"\
+      "if $blacklist -match $(Get-FileHash -Path % -Algorithm SHA256).Hash { Exit 1 }"
       notify   => Package[$datadog_agent::params::package_name]
 
     }

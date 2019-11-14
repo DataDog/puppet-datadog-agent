@@ -1,0 +1,10 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "puppetlabs/centos-7.2-64-puppet"
+  config.vm.box_version = "1.0.0"
+  config.vm.provision "file", source: "../environment", destination: "$HOME/puppet"
+  config.vm.provision "shell", inline: <<-SHELL
+    /opt/puppetlabs/puppet/bin/gem install r10k -v 2.6.7
+    cd /home/vagrant/puppet
+    sudo /opt/puppetlabs/puppet/bin/r10k puppetfile install
+  SHELL
+end

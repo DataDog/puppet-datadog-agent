@@ -65,7 +65,7 @@ class datadog_agent::params {
     }
     'Windows': {
       $agent5_default_repo        = '<agent 5 is not supported by this module on windows>' # Param in init.pp so needs to be defined, but not used on Windows
-      $agent6_default_repo        = "https://s3.amazonaws.com/ddagent-windows-stable/"
+      $agent6_default_repo        = 'https://s3.amazonaws.com/ddagent-windows-stable/'
       $conf5_dir                   = 'C:/ProgramData/Datadog/agent5' # Not a real path, but integrations use it to ensure => absent so it needs to be a valid path
       $conf6_dir                  = 'C:/ProgramData/Datadog/conf.d'
       $dd_user                    = 'ddagentuser'

@@ -17,21 +17,32 @@ class datadog_agent::windows::agent6(
 ) inherits datadog_agent::params {
 
   $msi_full_path = "${msi_location}/datadog-agent-6-${agent_version}.amd64.msi"
+  $msi_source = "${baseurl}ddagent-cli-${agent_version}.msi"
 
   if $ensure == 'present' {
+    if ($agent_version in ['6.14.0', '6.14.1']) {
+      fail('The specified agent version has been blacklisted, please specify a version other than 6.14.0 or 6.14.1')
+    }
 
-    exec { 'downloadmsi': # Using exec instead of file so we can specify an onlyif condition
-      command  => "Invoke-WebRequest ${baseurl} -outfile ${msi_full_path}",
-      onlyif   => "if ((Get-Package \"${datadog_agent::params::package_name}\") -or (test-path ${msi_full_path})) { exit 1 }",
-      provider => powershell,
-      notify   => Package[$datadog_agent::params::package_name]
+    file { 'installer':
+      path     => $msi_full_path,
+      source   => $msi_source,
+      provider => 'windows',
+    }
+
+    exec { 'validate':
+      command   => "\$blacklist = '928b00d2f952219732cda9ae0515351b15f9b9c1ea1d546738f9dc0fda70c336','78b2bb2b231bcc185eb73dd367bfb6cb8a5d45ba93a46a7890fd607dc9188194';\$fileStream = [system.io.file]::openread('${msi_full_path}'); \$hasher = [System.Security.Cryptography.HashAlgorithm]::create('sha256'); \$hash = \$hasher.ComputeHash(\$fileStream); \$fileStream.close(); \$fileStream.dispose();\$hexhash = [system.bitconverter]::tostring(\$hash).ToLower().replace('-','');if (\$hexhash -match \$blacklist) { Exit 1 }",
+      provider  => 'powershell',
+      logoutput => 'on_failure',
+      require   => File['installer'],
+      notify    => Package[$datadog_agent::params::package_name]
     }
 
     package { $datadog_agent::params::package_name:
       ensure          => installed,
       provider        => 'windows',
       source          => $msi_full_path,
-      install_options => ['/quiet', {'APIKEY' => $api_key, 'HOSTNAME' => $hostname, 'TAGS' => $tags}]
+      install_options => ['/norestart', {'APIKEY' => $api_key, 'HOSTNAME' => $hostname, 'TAGS' => $tags}]
     }
 
     service { $service_name:
@@ -40,11 +51,16 @@ class datadog_agent::windows::agent6(
       require => Package[$datadog_agent::params::package_name]
     }
   } else {
+    exec { 'datadog_6_14_fix':
+      command  => "((New-Object System.Net.WebClient).DownloadFile('https://s3.amazonaws.com/ddagent-windows-stable/scripts/fix_6_14.ps1', \$env:temp + '\\fix_6_14.ps1')); &\$env:temp\\fix_6_14.ps1",
+      provider => 'powershell',
+    }
 
     package { $datadog_agent::params::package_name:
       ensure            => absent,
       provider          => 'windows',
-      uninstall_options => ['/quiet']
+      uninstall_options => ['/quiet'],
+      subscribe         => Exec['datadog_6_14_fix'],
     }
 
   }

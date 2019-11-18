@@ -24,10 +24,17 @@ class datadog_agent::windows::agent6(
       fail('The specified agent version has been blacklisted, please specify a version other than 6.14.0 or 6.14.1')
     }
 
+    exec { "check_not_installed":
+      command  => "[void] 'noop'",
+      provider => 'powershell',
+      onlyif   => "if (Get-Package \"${datadog_agent::params::package_name}\") { exit 1 }"
+    }
+
     file { 'installer':
       path     => $msi_full_path,
       source   => $msi_source,
       provider => 'windows',
+      require  => Exec["check_not_installed"],
     }
 
     exec { 'validate':

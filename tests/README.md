@@ -9,7 +9,7 @@ This is an example setup, based on vagrant + virtualbox, that allows to easily r
 
 # Setup
 
-in `puppet-datadog-agent/tests`:
+in `puppet-datadog-agent/tests/ubuntu` or `puppet-datadog-agent/tests/centos`:
 
 - provision VM: `vagrant up`
 - connect to the VM to check the configuration: `vagrant ssh`
@@ -17,15 +17,17 @@ in `puppet-datadog-agent/tests`:
 
 ## Module installation
 
-- The default `Puppetfile` installs the latest released version of the module from Puppetforge.
+- The default `Puppetfile` (in `environment/Puppetfile`) installs the latest released version of the module from Puppetforge.
 - To use your development branch instead edit the Puppetfile et replace the `datadog-datadog_agent` with:
 ```
 mod 'datadog-datadog_agent',
   :git    => 'https://github.com/DataDog/puppet-datadog-agent',
-    :branch => '<my_branch>'
+  :branch => '<my_branch>'
 ```
 
-- We can also build the module locally using the `puppet build` or `pdk build` command, upload the archive to the VM and install it with `sudo /opt/puppetlabs/bin/puppet module install datadog-datadog_agent-x.y.z.tar.gz --target-dir /home/vagrant/puppet/modules`
+- We can also build the module locally using the `puppet build` or `pdk build` command, upload the archive to the VM and install it with:
+  - Ubuntu VM: `sudo /opt/puppetlabs/bin/puppet module install datadog-datadog_agent-x.y.z.tar.gz --target-dir /home/vagrant/puppet/modules`
+  - CentOS VM: `sudo /usr/local/bin/puppet module install datadog-datadog_agent-x.y.z.tar.gz --target-dir /home/vagrant/puppet/modules`
 
 
 ## Manifest
@@ -35,4 +37,5 @@ We can edit the manifest and run `vagrant up --provision` to upload the new vers
 
 # Test
 
-In the VM, run `sudo /opt/puppetlabs/bin/puppet apply --modulepath=./modules ./manifests/site.pp` in `/home/vagrant/puppet` to apply to manifest on the VM.
+In the CentOS VM, run `sudo /usr/local/bin/puppet apply --modulepath=./modules ./manifests/site.pp` in `/home/vagrant/puppet` to apply to manifest on the VM.
+In the Ubuntu VM, run `sudo /opt/puppetlabs/bin/puppet apply --modulepath=./modules ./manifests/site.pp` in `/home/vagrant/puppet` to apply to manifest on the VM.

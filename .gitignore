@@ -8,7 +8,8 @@ Gemfile.lock
 .rbenv-gemsets
 .ruby-version
 
-tests/.vagrant
+tests/centos/.vagrant
+tests/ubuntu/.vagrant
 
 # mac stuff
 .DS_Store

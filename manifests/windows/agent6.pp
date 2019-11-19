@@ -43,8 +43,14 @@ class datadog_agent::windows::agent6(
       notify    => Package[$datadog_agent::params::package_name]
     }
 
+    if $agent_version == 'latest' {
+      $ensure_version = 'installed'
+    } else {
+      $ensure_version = $agent_version
+    }
+
     package { $datadog_agent::params::package_name:
-      ensure          => installed,
+      ensure          => $ensure_version,
       provider        => 'windows',
       source          => $msi_full_path,
       install_options => ['/norestart', {'APIKEY' => $api_key, 'HOSTNAME' => $hostname, 'TAGS' => $tags}]

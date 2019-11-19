@@ -17,7 +17,12 @@ class datadog_agent::windows::agent6(
 ) inherits datadog_agent::params {
 
   $msi_full_path = "${msi_location}/datadog-agent-6-${agent_version}.amd64.msi"
-  $msi_source = "${baseurl}ddagent-cli-${agent_version}.msi"
+
+  if $agent_version == 'latest' {
+    $msi_source = "${baseurl}datadog-agent-6-latest.amd64.msi"
+  } else {
+    $msi_source = "${baseurl}ddagent-cli-${agent_version}.msi"
+  }
 
   if $ensure == 'present' {
     if ($agent_version in ['6.14.0', '6.14.1']) {

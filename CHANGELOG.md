@@ -10,7 +10,6 @@ Changes
 * [FEATURE] Support Oracle Linux. [#574][]. (Thanks [@atayts][]))
 * [FEATURE] Add logs parameter to mysql integration. [#572][]. (Thanks [@asenci][]))
 * [BUGFIX] Remove unnecessary restart of the agent on Windows. [#562][]. (Thanks [@jvanbrunschot][]))
-* [BUGFIX] Only download MSI if needed, on Windows. See [#563][].
 * [BUGFIX] Give Administrator group access to datadog.yaml. See [#571][].
 * [BUGFIX] Fix import of RPM key on recent versions of GPG. See [#581][]. (Thanks [@devinmatte][]))
 * [BUGFIX] Blacklist version 6.14.0 and 6.14.1 on Windows. See [#578][].
@@ -677,7 +676,6 @@ Please read the [docs]() for more details.
 [#557]: https://github.com/DataDog/puppet-datadog-agent/issues/557
 [#558]: https://github.com/DataDog/puppet-datadog-agent/issues/558
 [#562]: https://github.com/DataDog/puppet-datadog-agent/issues/562
-[#563]: https://github.com/DataDog/puppet-datadog-agent/issues/563
 [#571]: https://github.com/DataDog/puppet-datadog-agent/issues/571
 [#572]: https://github.com/DataDog/puppet-datadog-agent/issues/572
 [#574]: https://github.com/DataDog/puppet-datadog-agent/issues/574

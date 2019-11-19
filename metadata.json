@@ -18,6 +18,10 @@
       "operatingsystemrelease": ["6", "7"]
     },
     {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": ["6", "7"]
+    },
+    {
       "operatingsystem": "Scientific",
       "operatingsystemrelease": ["6", "7"]
     },

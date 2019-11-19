@@ -4,7 +4,7 @@ require 'rspec-puppet-facts'
 include RspecPuppetFacts
 
 DEBIAN_OS = %w(Ubuntu Debian)
-REDHAT_OS = %w(RedHat CentOS Fedora Amazon Scientific)
+REDHAT_OS = %w(RedHat CentOS Fedora Amazon Scientific OracleLinux)
 WINDOWS_OS = %w(Windows)
 
 if RSpec::Support::OS.windows?

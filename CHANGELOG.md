@@ -6,12 +6,14 @@ Changes
 ### Notes
 
 * [FEATURE] Official Windows support.
-* [FEATURE] Add logs parameter to mysql integration. [#572][]. (Thanks [@asenci][]))
-* [FEATURE] Add support for Oracle Linux. [#574][]. (Thanks [@atayts][]))
 * [FEATURE] Support latest version of puppet libraries [#576][]. (Thanks [@flyinbutrs][]))
+* [FEATURE] Support Oracle Linux. [#574][]. (Thanks [@atayts][]))
+* [FEATURE] Add logs parameter to mysql integration. [#572][]. (Thanks [@asenci][]))
 * [BUGFIX] Remove unnecessary restart of the agent on Windows. [#562][]. (Thanks [@jvanbrunschot][]))
 * [BUGFIX] Only download MSI if needed, on Windows. See [#563][].
 * [BUGFIX] Give Administrator group access to datadog.yaml. See [#571][].
+* [BUGFIX] Fix import of RPM key on recent versions of GPG. See [#581][]. (Thanks [@devinmatte][]))
+* [BUGFIX] Blacklist version 6.14.0 and 6.14.1 on Windows. See [#578][].
 
 # 2.8.0 / 2019-09-18
 
@@ -680,6 +682,8 @@ Please read the [docs]() for more details.
 [#572]: https://github.com/DataDog/puppet-datadog-agent/issues/572
 [#574]: https://github.com/DataDog/puppet-datadog-agent/issues/574
 [#576]: https://github.com/DataDog/puppet-datadog-agent/issues/576
+[#578]: https://github.com/DataDog/puppet-datadog-agent/issues/578
+[#581]: https://github.com/DataDog/puppet-datadog-agent/issues/581
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
@@ -715,6 +719,7 @@ Please read the [docs]() for more details.
 [@davidgibbons]: https://github.com/davidgibbons
 [@degemer]: https://github.com/degemer
 [@denmat]: https://github.com/denmat
+[@devinmatte]: https://github.com/devinmatte
 [@diogokiss]: https://github.com/diogokiss
 [@djova]: https://github.com/djova
 [@dorg-kanderson]: https://github.com/dorg-kanderson

@@ -51,7 +51,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">=4.24.0 <6.0.0"
+      "version_requirement": ">=4.24.0 <7.0.0"
     },
     {
       "name": "puppetlabs/ruby",
@@ -59,11 +59,11 @@
     },
     {
       "name": "puppetlabs/concat",
-      "version_requirement": ">=4.0.0 <6.0.0"
+      "version_requirement": ">=4.0.0 <7.0.0"
     },
     {
       "name": "puppetlabs/apt",
-      "version_requirement": ">=4.4.0 <=6.0.0"
+      "version_requirement": ">=4.4.0 <8.0.0"
     },
     {
       "name": "puppetlabs/puppetserver_gem",

@@ -17,7 +17,12 @@ class datadog_agent::windows::agent6(
 ) inherits datadog_agent::params {
 
   $msi_full_path = "${msi_location}/datadog-agent-6-${agent_version}.amd64.msi"
-  $msi_source = "${baseurl}ddagent-cli-${agent_version}.msi"
+
+  if $agent_version == 'latest' {
+    $msi_source = "${baseurl}datadog-agent-6-latest.amd64.msi"
+  } else {
+    $msi_source = "${baseurl}ddagent-cli-${agent_version}.msi"
+  }
 
   if $ensure == 'present' {
     if ($agent_version in ['6.14.0', '6.14.1']) {
@@ -31,15 +36,21 @@ class datadog_agent::windows::agent6(
     }
 
     exec { 'validate':
-      command   => "\$blacklist = '928b00d2f952219732cda9ae0515351b15f9b9c1ea1d546738f9dc0fda70c336','78b2bb2b231bcc185eb73dd367bfb6cb8a5d45ba93a46a7890fd607dc9188194';\$fileStream = [system.io.file]::openread('${msi_full_path}'); \$hasher = [System.Security.Cryptography.HashAlgorithm]::create('sha256'); \$hash = \$hasher.ComputeHash(\$fileStream); \$fileStream.close(); \$fileStream.dispose();\$hexhash = [system.bitconverter]::tostring(\$hash).ToLower().replace('-','');if (\$hexhash -match \$blacklist) { Exit 1 }",
+      command   => "\$blacklist = '928b00d2f952219732cda9ae0515351b15f9b9c1ea1d546738f9dc0fda70c336','78b2bb2b231bcc185eb73dd367bfb6cb8a5d45ba93a46a7890fd607dc9188194';\$fileStream = [system.io.file]::openread('${msi_full_path}'); \$hasher = [System.Security.Cryptography.HashAlgorithm]::create('sha256'); \$hash = \$hasher.ComputeHash(\$fileStream); \$fileStream.close(); \$fileStream.dispose();\$hexhash = [system.bitconverter]::tostring(\$hash).ToLower().replace('-','');if (\$blacklist.Contains(\$hexhash)) { Exit 1 }",
       provider  => 'powershell',
       logoutput => 'on_failure',
       require   => File['installer'],
       notify    => Package[$datadog_agent::params::package_name]
     }
 
+    if $agent_version == 'latest' {
+      $ensure_version = 'installed'
+    } else {
+      $ensure_version = $agent_version
+    }
+
     package { $datadog_agent::params::package_name:
-      ensure          => installed,
+      ensure          => $ensure_version,
       provider        => 'windows',
       source          => $msi_full_path,
       install_options => ['/norestart', {'APIKEY' => $api_key, 'HOSTNAME' => $hostname, 'TAGS' => $tags}]

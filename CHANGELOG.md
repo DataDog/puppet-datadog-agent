@@ -1,6 +1,19 @@
 Changes
 =======
 
+# 2.9.0 / 2019-11-20
+
+### Notes
+
+* [FEATURE] Official Windows support.
+* [FEATURE] Support latest version of puppet libraries [#576][]. (Thanks [@flyinbutrs][]))
+* [FEATURE] Support Oracle Linux. [#574][]. (Thanks [@atayts][]))
+* [FEATURE] Add logs parameter to mysql integration. [#572][]. (Thanks [@asenci][]))
+* [BUGFIX] Remove unnecessary restart of the agent on Windows. [#562][]. (Thanks [@jvanbrunschot][]))
+* [BUGFIX] Give Administrator group access to datadog.yaml. See [#571][].
+* [BUGFIX] Fix import of RPM key on recent versions of GPG. See [#581][]. (Thanks [@devinmatte][]))
+* [BUGFIX] Blacklist version 6.14.0 and 6.14.1 on Windows. See [#578][].
+
 # 2.8.0 / 2019-09-18
 
 ### Notes
@@ -662,6 +675,13 @@ Please read the [docs]() for more details.
 [#556]: https://github.com/DataDog/puppet-datadog-agent/issues/556
 [#557]: https://github.com/DataDog/puppet-datadog-agent/issues/557
 [#558]: https://github.com/DataDog/puppet-datadog-agent/issues/558
+[#562]: https://github.com/DataDog/puppet-datadog-agent/issues/562
+[#571]: https://github.com/DataDog/puppet-datadog-agent/issues/571
+[#572]: https://github.com/DataDog/puppet-datadog-agent/issues/572
+[#574]: https://github.com/DataDog/puppet-datadog-agent/issues/574
+[#576]: https://github.com/DataDog/puppet-datadog-agent/issues/576
+[#578]: https://github.com/DataDog/puppet-datadog-agent/issues/578
+[#581]: https://github.com/DataDog/puppet-datadog-agent/issues/581
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert
@@ -678,6 +698,8 @@ Please read the [docs]() for more details.
 [@alexharv074]: https://github.com/alexharv074
 [@alvin-huang]: https://github.com/alvin-huang
 [@arkpoah]: https://github.com/arkpoah
+[@asenci]: https://github.com/asenci
+[@atayts]: https://github.com/atayts
 [@b2jrock]: https://github.com/b2jrock
 [@bflad]: https://github.com/bflad
 [@binford2k]: https://github.com/binford2k
@@ -695,6 +717,7 @@ Please read the [docs]() for more details.
 [@davidgibbons]: https://github.com/davidgibbons
 [@degemer]: https://github.com/degemer
 [@denmat]: https://github.com/denmat
+[@devinmatte]: https://github.com/devinmatte
 [@diogokiss]: https://github.com/diogokiss
 [@djova]: https://github.com/djova
 [@dorg-kanderson]: https://github.com/dorg-kanderson
@@ -705,6 +728,7 @@ Please read the [docs]() for more details.
 [@evansj]: https://github.com/evansj
 [@ewansteele]: https://github.com/ewansteele
 [@ffleming]: https://github.com/ffleming
+[@flyinbutrs]: https://github.com/flyinbutrs
 [@flyinprogrammer]: https://github.com/flyinprogrammer
 [@fr3nd]: https://github.com/fr3nd
 [@fwelschen]: https://github.com/fwelschen
@@ -722,6 +746,7 @@ Please read the [docs]() for more details.
 [@jfrost]: https://github.com/jfrost
 [@jniesen]: https://github.com/jniesen
 [@jubagarie]: https://github.com/jubagarie
+[@jvanbrunschot]: https://github.com/jvanbrunschot
 [@kevin-bowers]: https://github.com/kevin-bowers
 [@kitchen]: https://github.com/kitchen
 [@lowkeyshift]: https://github.com/lowkeyshift

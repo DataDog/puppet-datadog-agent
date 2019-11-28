@@ -15,7 +15,7 @@ class datadog_agent::system_probe(
   }
 
   if $service_provider {
-    service { $datadog_agent::params::service_name:
+    service { $datadog_agent::params::sysprobe_service_name:
       ensure    => $service_ensure,
       enable    => $service_enable,
       provider  => $service_provider,
@@ -24,7 +24,7 @@ class datadog_agent::system_probe(
       require   => Package[$datadog_agent::params::package_name],
     }
   } else {
-    service { $datadog_agent::params::service_name:
+    service { $datadog_agent::params::sysprobe_service_name:
       ensure    => $service_ensure,
       enable    => $service_enable,
       hasstatus => false,

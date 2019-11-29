@@ -11,7 +11,7 @@ class datadog_agent::system_probe(
 
   if $::operatingsystem == 'Windows' {
     # Datadog does not currently support Windows and macOS platforms for Network Performance Monitoring
-    return()
+    fail('Network performance monitoring is only supported on Linux.')
   }
 
   if $service_provider {

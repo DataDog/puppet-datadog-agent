@@ -32,7 +32,7 @@ class datadog_agent::system_probe(
       require   => Package[$datadog_agent::params::package_name],
     }
   }
-  
+
   $sysprobe_config = {
     'system_probe_config' => {
       'enabled' => $enabled,

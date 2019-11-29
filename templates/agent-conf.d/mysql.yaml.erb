@@ -52,4 +52,4 @@ instances:
 
 <% end -%>
 
-<%= {'logs'=>@logs}.to_yaml %>
+<%= (Array({'logs'=>@logs}.to_yaml.lines))[1..-1].join %>

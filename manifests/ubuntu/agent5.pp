@@ -2,20 +2,11 @@
 #
 # This class contains the DataDog agent installation mechanism for Ubuntu
 #
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
-#
 
 class datadog_agent::ubuntu::agent5(
   String $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
   String $agent_version = $datadog_agent::params::agent_version,
-  String $location = $datadog_agent::params::agent5_default_repo,
+  Optional[String] $agent_repo_uri = undef,
   String $release = $datadog_agent::params::apt_default_release,
   String $repos = 'main',
   Boolean $skip_apt_key_trusting = false,
@@ -23,7 +14,7 @@ class datadog_agent::ubuntu::agent5(
   Boolean $service_enable = true,
   Optional[String] $service_provider = undef,
   Optional[String] $apt_keyserver = undef,
-) inherits datadog_agent::params{
+) inherits datadog_agent::params {
 
   if !$skip_apt_key_trusting {
     $key = {
@@ -34,9 +25,15 @@ class datadog_agent::ubuntu::agent5(
     $key = {}
   }
 
+  if ($agent_repo_uri != undef) {
+    $location = $agent_repo_uri
+  } else {
+    $location = 'https://apt.datadoghq.com'
+  }
+
   # This is a hack - I'm not happy about it, but we should rarely
   # hit this code path. We can't use 'Package' because we later have
-  # to ensure dastadog-agent is present.
+  # to ensure datadog-agent is present.
 
   if ($facts['apt_agent6_beta_repo'] or $facts['apt_agent6_repo']) and $agent_version == 'latest' {
     exec { 'datadog_apt-get_remove_agent6':

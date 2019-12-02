@@ -40,7 +40,9 @@ class{ 'datadog_agent':
 - By default Datadog Agent 7.x is installed.
   - To use an earlier version change the setting `agent_major_version`.
 - `agent5_enable` is no longer used, in favor of `agent_major_version`.
-- `agent6_extra_options` has been renamed to `agent_extra_options` since it now applied to both Agent version 6 and 7.
+- `agent6_extra_options` has been renamed to `agent_extra_options` since it now applies to both Agent version 6 and 7.
+- `agent6_log_file` has been renamed to `agent_log_file` since it now applies to both Agent version 6 and 7.
+- `agent5_repo_uri` and `agent6_repo_uri` become `agent_repo_uri` for all Agent versions.
 
 Usage
 -----

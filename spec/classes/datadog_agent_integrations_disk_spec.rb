@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe 'datadog_agent::integrations::disk' do
   context 'supported agents' do
-    ALL_SUPPORTED_AGENTS.each do |_, is_agent5|
-      let(:pre_condition) { "class {'::datadog_agent': agent5_enable => #{is_agent5}}" }
-      if is_agent5
+    ALL_SUPPORTED_AGENTS.each do |agent_major_version|
+      let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
+      if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/disk.yaml" }
       else
         let(:conf_file) { "#{CONF_DIR6}/disk.d/conf.yaml" }
@@ -57,11 +57,11 @@ instances:
     tag_by_filesystem: no
         HEREDOC
          }
-        it { 
+        it {
           if RSpec::Support::OS.windows?
             yaml_conf.gsub!(/\n/, "\r\n")
-          end  
-          is_expected.to contain_file(conf_file).with_content(yaml_conf) 
+          end
+          is_expected.to contain_file(conf_file).with_content(yaml_conf)
         }
       end
 
@@ -111,7 +111,7 @@ instances:
           if RSpec::Support::OS.windows?
             yaml_conf.gsub!(/\n/, "\r\n")
           end
-          is_expected.to contain_file(conf_file).with_content(yaml_conf) 
+          is_expected.to contain_file(conf_file).with_content(yaml_conf)
         }
       end
     end

@@ -12,7 +12,7 @@ define datadog_agent::integration (
   validate_legacy(Optional[Array], 'validate_array', $logs)
   validate_legacy(String, 'validate_string', $integration)
 
-  if !$::datadog_agent::agent5_enable {
+  if $::datadog_agent::agent_major_version > 5 {
     $dst = "${datadog_agent::conf6_dir}/${integration}.d/conf.yaml"
     file { "${datadog_agent::conf6_dir}/${integration}.d":
       ensure => directory,

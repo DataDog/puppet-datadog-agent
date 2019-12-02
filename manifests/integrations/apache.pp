@@ -40,7 +40,7 @@ class datadog_agent::integrations::apache (
   validate_legacy('Boolean', 'validate_bool', $disable_ssl_validation)
 
   $legacy_dst = "${datadog_agent::conf5_dir}/apache.yaml"
-  if !$::datadog_agent::agent5_enable {
+  if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::conf6_dir}/apache.d"
     file { $legacy_dst:
       ensure => 'absent'

@@ -64,7 +64,7 @@ class datadog_agent::integrations::docker_daemon(
     notify  => Service[$datadog_agent::params::service_name]
   }
 
-  if !$::datadog_agent::agent5_enable {
+  if $::datadog_agent::agent_major_version > 5 {
     $legacy_dir = "${datadog_agent::conf6_dir}/docker_daemon.d"
 
     file { $legacy_dir:
@@ -84,7 +84,7 @@ class datadog_agent::integrations::docker_daemon(
     ensure => 'absent'
   }
 
-  if !$::datadog_agent::agent5_enable {
+  if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::conf6_dir}/docker.d"
 
     file { $dst_dir:

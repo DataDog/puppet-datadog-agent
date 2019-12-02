@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe 'datadog_agent::integrations::http_check' do
   context 'supported agents' do
-    ALL_SUPPORTED_AGENTS.each do |_, is_agent5|
-      let(:pre_condition) { "class {'::datadog_agent': agent5_enable => #{is_agent5}}" }
-      if is_agent5
+    ALL_SUPPORTED_AGENTS.each do |agent_major_version|
+      let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
+      if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/http_check.yaml" }
       else
         let(:conf_file) { "#{CONF_DIR6}/http_check.d/conf.yaml" }

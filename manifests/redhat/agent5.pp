@@ -2,20 +2,9 @@
 #
 # This class contains the DataDog agent installation mechanism for Red Hat derivatives
 #
-# Parameters:
-#   $baseurl:
-#       Baseurl for the datadog yum repo
-#       Defaults to http://yum.datadoghq.com/rpm/${::architecture}/
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
-#
+
 class datadog_agent::redhat::agent5(
-  String $baseurl = $datadog_agent::params::agent5_default_repo,
+  Optional[String] $agent_repo_uri = undef,
   String $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
   Boolean $manage_repo = true,
   String $agent_version = $datadog_agent::params::agent_version,
@@ -29,7 +18,11 @@ class datadog_agent::redhat::agent5(
   if $manage_repo {
     $public_key_local = '/etc/pki/rpm-gpg/DATADOG_RPM_KEY.public'
 
-    validate_legacy('String', 'validate_string', $baseurl)
+    if ($agent_repo_uri != undef) {
+      $baseurl = $agent_repo_uri
+    } else {
+      $baseurl = "https://yum.datadoghq.com/rpm/${::architecture}/"
+    }
 
     file { 'DATADOG_RPM_KEY.public':
         owner  => root,

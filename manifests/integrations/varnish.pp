@@ -29,7 +29,7 @@ class datadog_agent::integrations::varnish (
   include datadog_agent
 
   $legacy_dst = "${datadog_agent::conf5_dir}/varnish.yaml"
-  if !$::datadog_agent::agent5_enable {
+  if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::conf6_dir}/varnish.d"
     file { $legacy_dst:
       ensure => 'absent'

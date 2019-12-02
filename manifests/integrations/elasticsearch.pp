@@ -75,7 +75,7 @@ class datadog_agent::integrations::elasticsearch(
   }
 
   $legacy_dst = "${datadog_agent::conf5_dir}/elastic.yaml"
-  if !$::datadog_agent::agent5_enable {
+  if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::conf6_dir}/elastic.d"
     file { $legacy_dst:
       ensure => 'absent'

@@ -69,14 +69,6 @@
 #   $manage_repo
 #       Boolean to indicate whether this module should attempt to manage
 #       the package repo. Default true.
-#   $proxy_host
-#       Set value of 'proxy_host' variable. Default is blank.
-#   $proxy_port
-#       Set value of 'proxy_port' variable. Default is blank.
-#   $proxy_user
-#       Set value of 'proxy_user' variable. Default is blank.
-#   $proxy_password
-#       Set value of 'proxy_password' variable. Default is blank.
 #   $graphite_listen_port
 #       Set graphite listener port
 #   $extra_template
@@ -156,8 +148,8 @@
 #   $custom_emitters
 #       Specifies a comma seperated list of non standard emitters to be used
 #       String. Default: empty
-#   $agent6_log_file
-#       Specifies the log file location for the agent6
+#   $agent_log_file
+#       Specifies the log file location (Agent 6 and 7 only).
 #       String. Default: empty
 #   $collector_log_file
 #       Specifies the log file location for the collector system
@@ -278,7 +270,7 @@ class datadog_agent(
   $dogstatsd_normalize = true,
   $device_blacklist_re = '',
   $custom_emitters = '',
-  $agent6_log_file = $datadog_agent::params::agent6_log_file,
+  String $agent_log_file = $datadog_agent::params::agent_log_file,
   $collector_log_file = '',
   $forwarder_log_file = '',
   $dogstatsd_log_file = '',
@@ -293,7 +285,7 @@ class datadog_agent(
   $sd_jmx_enable = false,
   $consul_token = '',
   $cmd_port = 5001,
-  $agent5_enable = $datadog_agent::params::agent5_enable,
+  Integer $agent_major_version = 7,
   $conf_dir = $datadog_agent::params::conf5_dir,
   $conf6_dir = $datadog_agent::params::conf6_dir,
   $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
@@ -312,9 +304,8 @@ class datadog_agent(
   $logs_enabled = $datadog_agent::params::logs_enabled,
   $logs_open_files_limit = $datadog_agent::params::logs_open_files_limit,
   $container_collect_all = $datadog_agent::params::container_collect_all,
-  Hash[String[1], Data] $agent6_extra_options = {},
-  $agent5_repo_uri = $datadog_agent::params::agent5_default_repo,
-  $agent6_repo_uri = $datadog_agent::params::agent6_default_repo,
+  Hash[String[1], Data] $agent_extra_options = {},
+  Optional[String] $agent_repo_uri = undef,
   Optional[Boolean] $use_apt_backup_keyserver = $datadog_agent::params::use_apt_backup_keyserver,
   $apt_backup_keyserver = $datadog_agent::params::apt_backup_keyserver,
   $apt_keyserver = $datadog_agent::params::apt_keyserver,
@@ -377,7 +368,6 @@ class datadog_agent(
   validate_legacy(String, 'validate_string', $statsd_forward_host)
   validate_legacy(String, 'validate_string', $device_blacklist_re)
   validate_legacy(String, 'validate_string', $custom_emitters)
-  validate_legacy(String, 'validate_string', $agent6_log_file)
   validate_legacy(String, 'validate_string', $collector_log_file)
   validate_legacy(String, 'validate_string', $forwarder_log_file)
   validate_legacy(String, 'validate_string', $dogstatsd_log_file)
@@ -393,15 +383,12 @@ class datadog_agent(
   validate_legacy(String, 'validate_string', $consul_token)
   validate_legacy(Boolean, 'validate_bool', $apm_enabled)
   validate_legacy(Boolean, 'validate_bool', $apm_non_local_traffic)
-  validate_legacy(Boolean, 'validate_bool', $agent5_enable)
   validate_legacy(String, 'validate_string', $apm_env)
   validate_legacy(Boolean, 'validate_bool', $process_enabled)
   validate_legacy(Boolean, 'validate_bool', $scrub_args)
   validate_legacy(Array, 'validate_array', $custom_sensitive_words)
   validate_legacy(Boolean, 'validate_bool', $logs_enabled)
   validate_legacy(Boolean, 'validate_bool', $container_collect_all)
-  validate_legacy(String, 'validate_string', $agent5_repo_uri)
-  validate_legacy(String, 'validate_string', $agent6_repo_uri)
   validate_legacy(String, 'validate_string', $apt_release)
   validate_legacy(Integer, 'validate_integer', $cmd_port)
 
@@ -437,13 +424,13 @@ class datadog_agent(
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {
-      if $agent5_enable {
+      if $agent_major_version == 5 {
         class { 'datadog_agent::ubuntu::agent5':
           agent_version         => $agent_version,
           service_ensure        => $service_ensure,
           service_enable        => $service_enable,
           service_provider      => $service_provider,
-          location              => $agent5_repo_uri,
+          agent_repo_uri        => $agent_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
           apt_keyserver         => $_apt_keyserver,
@@ -454,7 +441,7 @@ class datadog_agent(
           service_ensure        => $service_ensure,
           service_enable        => $service_enable,
           service_provider      => $service_provider,
-          location              => $agent6_repo_uri,
+          agent_repo_uri        => $agent_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
           apt_keyserver         => $_apt_keyserver,
@@ -462,9 +449,9 @@ class datadog_agent(
       }
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux' : {
-      if $agent5_enable {
+      if $agent_major_version == 5 {
         class { 'datadog_agent::redhat::agent5':
-          baseurl          => $agent5_repo_uri,
+          agent_repo_uri   => $agent_repo_uri,
           manage_repo      => $manage_repo,
           agent_version    => $agent_version,
           service_ensure   => $service_ensure,
@@ -473,7 +460,7 @@ class datadog_agent(
         }
       } else {
         class { 'datadog_agent::redhat::agent6':
-          baseurl          => $agent6_repo_uri,
+          agent_repo_uri   => $agent_repo_uri,
           manage_repo      => $manage_repo,
           agent_version    => $agent_version,
           service_ensure   => $service_ensure,
@@ -484,7 +471,7 @@ class datadog_agent(
     }
     'Windows' : {
       class { 'datadog_agent::windows::agent6' :
-        baseurl        => $agent6_repo_uri,
+        agent_repo_uri => $agent_repo_uri,
         agent_version  => $agent_version,
         service_ensure => $service_ensure,
         service_enable => $service_enable,
@@ -520,10 +507,14 @@ class datadog_agent(
     }
   }
 
-  if $agent5_enable {
+  if $agent_major_version == 5 {
 
     if ($::operatingsystem == 'Windows') {
       fail('Installation of agent 5 with puppet is not supported on Windows')
+    }
+
+    if !empty($agent_extra_options) {
+        notify { 'Setting agent_extra_options has no effect with Agent 5': }
     }
 
     file { '/etc/dd-agent':
@@ -607,16 +598,16 @@ class datadog_agent(
 
     # notify of broken params on agent6
     if !empty($proxy_host) {
-        notify { 'Setting proxy_host will have no effect on agent6 please use agent6_extra_options to set your proxy': }
+        notify { 'Setting proxy_host is only used with Agent 5. Please use agent_extra_options to set your proxy': }
     }
     if !empty($proxy_port) {
-        notify { 'Setting proxy_port will have no effect on agent6 please use agent6_extra_options to set your proxy': }
+        notify { 'Setting proxy_port is only used with Agent 5. Please use agent_extra_options to set your proxy': }
     }
     if !empty($proxy_user) {
-        notify { 'Setting proxy_user will have no effect on agent6 please use agent6_extra_options to set your proxy': }
+        notify { 'Setting proxy_user is only used with Agent 5. Please use agent_extra_options to set your proxy': }
     }
     if !empty($proxy_password) {
-        notify { 'Setting proxy_password will have no effect on agent6 please use agent6_extra_options to set your proxy': }
+        notify { 'Setting proxy_password is only used with Agent 5. Please use agent_extra_options to set your proxy': }
     }
 
     # lint:ignore:quoted_booleans
@@ -693,7 +684,7 @@ class datadog_agent(
     $extra_config = deep_merge(
             $base_extra_config,
             $logs_base_config,
-            $agent6_extra_options,
+            $agent_extra_options,
             $apm_analyzed_span_config,
             $statsd_forward_config,
             $host_config,
@@ -725,7 +716,7 @@ class datadog_agent(
       'dogstatsd_port' => $dogstatsd_port,
       'dogstatsd_socket' => $dogstatsd_socket,
       'dogstatsd_non_local_traffic' => $non_local_traffic,
-      'log_file' => $agent6_log_file,
+      'log_file' => $agent_log_file,
       'log_level' => $log_level,
       'tags' => unique(flatten(union($_local_tags, $_facts_tags))),
     }
@@ -743,7 +734,7 @@ class datadog_agent(
         owner   => $dd_user,
         group   => 'S-1-5-32-544', #Administrators
         mode    => '0660',
-        content => template('datadog_agent/datadog6.yaml.erb'),
+        content => template('datadog_agent/datadog.yaml.erb'),
         notify  => Service[$datadog_agent::params::service_name],
         require => File['C:/ProgramData/Datadog'],
       }
@@ -754,7 +745,7 @@ class datadog_agent(
         owner   => $dd_user,
         group   => 'dd-agent',
         mode    => '0640',
-        content => template('datadog_agent/datadog6.yaml.erb'),
+        content => template('datadog_agent/datadog.yaml.erb'),
         notify  => Service[$datadog_agent::params::service_name],
         require => File['/etc/datadog-agent'],
       }

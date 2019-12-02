@@ -70,7 +70,7 @@ class datadog_agent::integrations::snmp (
   }
 
   $legacy_dst = "${datadog_agent::conf5_dir}/snmp.yaml"
-  if !$::datadog_agent::agent5_enable {
+  if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::conf6_dir}/snmp.d"
     file { $legacy_dst:
       ensure => 'absent'

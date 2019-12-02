@@ -6,7 +6,7 @@
 class datadog_agent::ubuntu::agent6(
   String $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
   String $agent_version = $datadog_agent::params::agent_version,
-  String $location = $datadog_agent::params::agent6_default_repo,
+  Optional[String] $agent_repo_uri = undef,
   String $release = $datadog_agent::params::apt_default_release,
   String $repos = '6',
   Boolean $skip_apt_key_trusting = false,
@@ -23,6 +23,12 @@ class datadog_agent::ubuntu::agent6(
     }
   } else {
     $key = {}
+  }
+
+  if ($agent_repo_uri != undef) {
+    $location = $agent_repo_uri
+  } else {
+    $location = 'https://apt.datadoghq.com'
   }
 
   apt::source { 'datadog':

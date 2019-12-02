@@ -33,7 +33,7 @@ class datadog_agent::integrations::ntp(
   include datadog_agent
 
   $legacy_dst = "${datadog_agent::conf5_dir}/ntp.yaml"
-  if !$::datadog_agent::agent5_enable {
+  if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::conf6_dir}/ntp.d"
     file { $legacy_dst:
       ensure => 'absent'

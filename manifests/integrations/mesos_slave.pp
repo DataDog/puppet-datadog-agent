@@ -18,7 +18,7 @@ class datadog_agent::integrations::mesos_slave(
 ) inherits datadog_agent::params {
 
   $legacy_dst = "${datadog_agent::conf5_dir}/mesos_slave.yaml"
-  if !$::datadog_agent::agent5_enable {
+  if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::conf6_dir}/mesos_slave.d"
     file { $legacy_dst:
       ensure => 'absent'

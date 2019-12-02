@@ -9,7 +9,7 @@ WINDOWS_OS = %w(Windows)
 
 if RSpec::Support::OS.windows?
   ALL_OS                     = WINDOWS_OS
-  ALL_SUPPORTED_AGENTS       = { '6' => false }  # Boolean means "is agent 5". TODO: Refactor this.
+  ALL_SUPPORTED_AGENTS       = [ 6, 7 ]
   CONF_DIR6                  = 'C:/ProgramData/Datadog/conf.d'
   DD_USER                    = 'ddagentuser'
   DD_GROUP                   = 'S-1-5-32-544'
@@ -19,7 +19,7 @@ if RSpec::Support::OS.windows?
   PERMISSIONS_PROTECTED_FILE = '0660'
 else
   ALL_OS                     = DEBIAN_OS + REDHAT_OS
-  ALL_SUPPORTED_AGENTS       = { '5' => true, '6' => false } # Boolean means "is agent 5". TODO: Refactor this.
+  ALL_SUPPORTED_AGENTS       = [ 5, 6, 7 ]
   CONF_DIR6                  = '/etc/datadog-agent/conf.d'
   DD_USER                    = 'dd-agent'
   DD_GROUP                   = 'root'

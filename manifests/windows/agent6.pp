@@ -6,7 +6,7 @@
 class datadog_agent::windows::agent6(
   String $agent_version = $datadog_agent::params::agent_version,
   String $service_ensure = 'running',
-  String $baseurl = $datadog_agent::params::agent6_default_repo,
+  Optional[String] $agent_repo_uri = undef,
   String $msi_location = 'C:/Windows/temp',
   String $api_key = $datadog_agent::api_key,
   String $hostname = $datadog_agent::host,
@@ -17,6 +17,12 @@ class datadog_agent::windows::agent6(
 ) inherits datadog_agent::params {
 
   $msi_full_path = "${msi_location}/datadog-agent-6-${agent_version}.amd64.msi"
+
+  if ($agent_repo_uri != undef) {
+    $baseurl = $agent_repo_uri
+  } else {
+    $baseurl = 'https://s3.amazonaws.com/ddagent-windows-stable/'
+  }
 
   if $agent_version == 'latest' {
     $msi_source = "${baseurl}datadog-agent-6-latest.amd64.msi"

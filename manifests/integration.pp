@@ -26,7 +26,7 @@ define datadog_agent::integration (
     group   => $datadog_agent::dd_group,
     mode    => $datadog_agent::params::permissions_file,
     content => to_instances_yaml($init_config, $instances, $logs),
-    notify  => Service[$datadog_agent::service_name]
+    notify  => Service[$datadog_agent::params::service_name]
   }
 
 }

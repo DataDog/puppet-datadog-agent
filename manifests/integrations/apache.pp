@@ -35,7 +35,7 @@ class datadog_agent::integrations::apache (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  $legacy_dst = "/etc/dd-agent/conf.d/apache.yaml"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/apache.yaml"
   if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/apache.d"
     file { $legacy_dst:

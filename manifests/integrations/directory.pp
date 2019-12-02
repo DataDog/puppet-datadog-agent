@@ -88,7 +88,7 @@ class datadog_agent::integrations::directory (
     $_instances = $instances
   }
 
-  $legacy_dst = "/etc/dd-agent/conf.d/directory.yaml"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/directory.yaml"
   if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/directory.d"
     file { $legacy_dst:

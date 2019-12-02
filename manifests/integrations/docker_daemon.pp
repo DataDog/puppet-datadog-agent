@@ -77,7 +77,7 @@ class datadog_agent::integrations::docker_daemon(
     }
     $legacy_conf = "${legacy_dir}/conf.yaml"
   } else {
-    $legacy_conf = "/etc/dd-agent/conf.d/docker.yaml"
+    $legacy_conf = "${datadog_agent::params::legacy_conf_dir}/docker.yaml"
   }
 
   file { $legacy_conf:
@@ -97,7 +97,7 @@ class datadog_agent::integrations::docker_daemon(
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
-    $dst = "/etc/dd-agent/conf.d/docker_daemon.yaml"
+    $dst = "${datadog_agent::params::legacy_conf_dir}/docker_daemon.yaml"
   }
 
   file { $dst:

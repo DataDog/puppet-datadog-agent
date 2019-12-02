@@ -27,6 +27,7 @@ class datadog_agent::params {
   case $::operatingsystem {
     'Ubuntu','Debian' : {
       $rubydev_package            = 'ruby-dev'
+      $legacy_conf_dir            = '/etc/dd-agent/conf.d'
       $conf_dir                   = '/etc/datadog-agent/conf.d'
       $dd_user                    = 'dd-agent'
       $dd_group                   = 'dd-agent'
@@ -40,6 +41,7 @@ class datadog_agent::params {
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux' : {
       $rubydev_package            = 'ruby-devel'
+      $legacy_conf_dir            = '/etc/dd-agent/conf.d'
       $conf_dir                   = '/etc/datadog-agent/conf.d'
       $dd_user                    = 'dd-agent'
       $dd_group                   = 'dd-agent'
@@ -52,6 +54,7 @@ class datadog_agent::params {
       $agent_binary               = '/opt/datadog-agent/bin/agent/agent'
     }
     'Windows': {
+      $legacy_conf_dir            = 'C:/ProgramData/Datadog/agent5' # Not a real path, but integrations use it to ensure => absent so it needs to be a valid path
       $conf_dir                   = 'C:/ProgramData/Datadog/conf.d'
       $dd_user                    = 'ddagentuser'
       $dd_group                   = 'S-1-5-32-544' # Administrators group, passed as SID so it works on localized Windows versions

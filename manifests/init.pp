@@ -336,7 +336,7 @@ class datadog_agent(
 
   if $conf_dir == undef {
     if $agent_major_version == 5 {
-      $_conf_dir = '/etc/dd-agent/conf.d'
+      $_conf_dir = $datadog_agent::params::legacy_conf_dir
     } else {
       $_conf_dir = $datadog_agent::params::conf_dir
     }

@@ -38,7 +38,7 @@ class datadog_agent::integrations::solr(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  $legacy_dst = "/etc/dd-agent/conf.d/solr.yaml"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/solr.yaml"
   if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/solr.d"
     file { $legacy_dst:

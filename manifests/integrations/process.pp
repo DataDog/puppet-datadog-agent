@@ -52,7 +52,7 @@ class datadog_agent::integrations::process(
     $local_processes = $processes
   }
 
-  $legacy_dst = "/etc/dd-agent/conf.d/process.yaml"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/process.yaml"
   if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/process.d"
     file { $legacy_dst:

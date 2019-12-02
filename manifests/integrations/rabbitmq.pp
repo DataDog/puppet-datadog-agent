@@ -67,7 +67,7 @@ class datadog_agent::integrations::rabbitmq (
 
   include datadog_agent
 
-  $legacy_dst = "/etc/dd-agent/conf.d/rabbitmq.yaml"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/rabbitmq.yaml"
   if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/rabbitmq.d"
     file { $legacy_dst:

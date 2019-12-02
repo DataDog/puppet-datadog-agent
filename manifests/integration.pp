@@ -1,8 +1,8 @@
 define datadog_agent::integration (
   Array $instances,
   Optional[Hash] $init_config = undef,
-  Optional[Array] $logs        = undef,
-  String $integration = $title,
+  Optional[Array] $logs       = undef,
+  String $integration         = $title,
 ){
 
   include datadog_agent
@@ -17,7 +17,7 @@ define datadog_agent::integration (
       before => File[$dst]
     }
   } else {
-    $dst = "/etc/dd-agent/conf.d/${integration}.yaml"
+    $dst = "${datadog_agent::params::legacy_conf_dir}/${integration}.yaml"
   }
 
   file { $dst:

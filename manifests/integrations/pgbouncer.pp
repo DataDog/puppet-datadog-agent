@@ -53,7 +53,7 @@ class datadog_agent::integrations::pgbouncer(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  $legacy_dst = "/etc/dd-agent/conf.d/pgbouncer.yaml"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/pgbouncer.yaml"
   if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/pgbouncer.d"
     file { $legacy_dst:

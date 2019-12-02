@@ -111,7 +111,7 @@ class datadog_agent::integrations::mysql(
     $_instances = $instances
   }
 
-  $legacy_dst = "/etc/dd-agent/conf.d/mysql.yaml"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/mysql.yaml"
   if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/mysql.d"
     file { $legacy_dst:

@@ -32,7 +32,7 @@ class datadog_agent::integrations::ntp(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  $legacy_dst = "/etc/dd-agent/conf.d/ntp.yaml"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/ntp.yaml"
   if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/ntp.d"
     file { $legacy_dst:

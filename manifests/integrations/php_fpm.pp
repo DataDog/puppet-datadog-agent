@@ -45,7 +45,7 @@ class datadog_agent::integrations::php_fpm(
     $_instances = $instances
   }
 
-  $legacy_dst = "/etc/dd-agent/conf.d/php_fpm.yaml"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/php_fpm.yaml"
   if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/php_fpm.d"
     file { $legacy_dst:

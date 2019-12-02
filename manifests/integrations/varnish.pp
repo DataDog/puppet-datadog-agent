@@ -28,7 +28,7 @@ class datadog_agent::integrations::varnish (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  $legacy_dst = "/etc/dd-agent/conf.d/varnish.yaml"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/varnish.yaml"
   if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/varnish.d"
     file { $legacy_dst:

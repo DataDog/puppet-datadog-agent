@@ -29,7 +29,7 @@ class datadog_agent::integrations::network(
 ) inherits datadog_agent::params {
   include ::datadog_agent
 
-  $legacy_dst = "/etc/dd-agent/conf.d/network.yaml"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/network.yaml"
   if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/network.d"
     file { $legacy_dst:

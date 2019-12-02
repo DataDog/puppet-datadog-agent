@@ -23,9 +23,9 @@ class datadog_agent::integrations::fluentd(
 ) inherits datadog_agent::params {
   include ::datadog_agent
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/fluentd.yaml"
+  $legacy_dst = "/etc/dd-agent/conf.d/fluentd.yaml"
   if $::datadog_agent::agent_major_version > 5 {
-    $dst_dir = "${datadog_agent::conf6_dir}/fluentd.d"
+    $dst_dir = "${datadog_agent::params::conf_dir}/fluentd.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

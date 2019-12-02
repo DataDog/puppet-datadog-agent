@@ -27,12 +27,11 @@ class datadog_agent::params {
   case $::operatingsystem {
     'Ubuntu','Debian' : {
       $rubydev_package            = 'ruby-dev'
-      $conf5_dir                  = '/etc/dd-agent/conf.d'
-      $conf6_dir                  = '/etc/datadog-agent/conf.d'
+      $conf_dir                   = '/etc/datadog-agent/conf.d'
       $dd_user                    = 'dd-agent'
       $dd_group                   = 'root'
       $service_name               = 'datadog-agent'
-      $agent_log_file            = '/var/log/datadog/agent.log'
+      $agent_log_file             = '/var/log/datadog/agent.log'
       $package_name               = 'datadog-agent'
       $permissions_directory      = '0755'
       $permissions_file           = '0644'
@@ -41,12 +40,11 @@ class datadog_agent::params {
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux' : {
       $rubydev_package            = 'ruby-devel'
-      $conf5_dir                  = '/etc/dd-agent/conf.d'
-      $conf6_dir                  = '/etc/datadog-agent/conf.d'
+      $conf_dir                   = '/etc/datadog-agent/conf.d'
       $dd_user                    = 'dd-agent'
       $dd_group                   = 'root'
       $service_name               = 'datadog-agent'
-      $agent_log_file            = '/var/log/datadog/agent.log'
+      $agent_log_file             = '/var/log/datadog/agent.log'
       $package_name               = 'datadog-agent'
       $permissions_directory      = '0755'
       $permissions_file           = '0644'
@@ -54,12 +52,11 @@ class datadog_agent::params {
       $agent_binary               = '/opt/datadog-agent/bin/agent/agent'
     }
     'Windows': {
-      $conf5_dir                  = 'C:/ProgramData/Datadog/agent5' # Not a real path, but integrations use it to ensure => absent so it needs to be a valid path
-      $conf6_dir                  = 'C:/ProgramData/Datadog/conf.d'
+      $conf_dir                   = 'C:/ProgramData/Datadog/conf.d'
       $dd_user                    = 'ddagentuser'
       $dd_group                   = 'S-1-5-32-544' # Administrators group, passed as SID so it works on localized Windows versions
       $service_name               = 'datadogagent'
-      $agent_log_file            = 'C:/ProgramData/Datadog/logs/agent.log'
+      $agent_log_file             = 'C:/ProgramData/Datadog/logs/agent.log'
       $package_name               = 'Datadog Agent' # Must be the app's DisplayName. https://puppet.com/docs/puppet/latest/resources_package_windows.html
       $permissions_directory      = '0775' # On Windows, the Administrators group needs to maintain access,
       $permissions_file           = '0664' # otherwise puppet itself won't be able to access the file. Reported

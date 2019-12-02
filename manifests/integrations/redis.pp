@@ -74,9 +74,9 @@ class datadog_agent::integrations::redis(
     }
   }
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/redisdb.yaml"
+  $legacy_dst = "/etc/dd-agent/conf.d/redisdb.yaml"
   if $::datadog_agent::agent_major_version > 5 {
-    $dst_dir = "${datadog_agent::conf6_dir}/redisdb.d"
+    $dst_dir = "${datadog_agent::params::conf_dir}/redisdb.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

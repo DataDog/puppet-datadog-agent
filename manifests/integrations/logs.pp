@@ -42,7 +42,7 @@ class datadog_agent::integrations::logs(
   unless $::datadog_agent::agent_major_version == 5 {
     include datadog_agent
 
-    file { "${datadog_agent::conf6_dir}/logs.yaml":
+    file { "${datadog_agent::params::conf_dir}/logs.yaml":
       ensure  => file,
       owner   => $datadog_agent::params::dd_user,
       group   => $datadog_agent::params::dd_group,

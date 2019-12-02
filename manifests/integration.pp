@@ -8,8 +8,8 @@ define datadog_agent::integration (
   include datadog_agent
 
   if $::datadog_agent::agent_major_version > 5 {
-    $dst = "${datadog_agent::conf6_dir}/${integration}.d/conf.yaml"
-    file { "${datadog_agent::conf6_dir}/${integration}.d":
+    $dst = "${datadog_agent::params::conf_dir}/${integration}.d/conf.yaml"
+    file { "${datadog_agent::params::conf_dir}/${integration}.d":
       ensure => directory,
       owner  => $datadog_agent::dd_user,
       group  => $datadog_agent::dd_group,
@@ -17,7 +17,7 @@ define datadog_agent::integration (
       before => File[$dst]
     }
   } else {
-    $dst = "${datadog_agent::conf5_dir}/${integration}.yaml"
+    $dst = "/etc/dd-agent/conf.d/${integration}.yaml"
   }
 
   file { $dst:

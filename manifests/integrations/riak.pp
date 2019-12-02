@@ -24,9 +24,9 @@ class datadog_agent::integrations::riak(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/riak.yaml"
+  $legacy_dst = "/etc/dd-agent/conf.d/riak.yaml"
   if $::datadog_agent::agent_major_version > 5 {
-    $dst_dir = "${datadog_agent::conf6_dir}/riak.d"
+    $dst_dir = "${datadog_agent::params::conf_dir}/riak.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

@@ -286,8 +286,7 @@ class datadog_agent(
   String $consul_token = '',
   Integer $cmd_port = 5001,
   Integer $agent_major_version = $datadog_agent::params::agent_version,
-  $conf_dir = $datadog_agent::params::conf5_dir,
-  $conf6_dir = $datadog_agent::params::conf6_dir,
+  $conf_dir = undef,
   $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
   $service_name = $datadog_agent::params::service_name,
   $package_name = $datadog_agent::params::package_name,
@@ -332,6 +331,16 @@ class datadog_agent(
   validate_legacy(String, 'validate_re', $_listen_port, '^\d*$')
   validate_legacy(String, 'validate_re', $_pup_port, '^\d*$')
   validate_legacy(String, 'validate_re', $_syslog_port, '^\d*$')
+
+  if $conf_dir == undef {
+    if $agent_major_version == 5 {
+      $_conf_dir = '/etc/dd-agent/conf.d'
+    } else {
+      $_conf_dir = $datadog_agent::params::conf_dir
+    }
+  } else {
+    $_conf_dir = $conf_dir
+  }
 
   if $hiera_tags {
     $local_tags = lookup({ 'name' => 'datadog_agent::tags', 'merge' => 'unique', 'default_value' => []})
@@ -445,7 +454,7 @@ class datadog_agent(
       require => Package[$datadog_agent::params::package_name],
     }
 
-    file { $conf_dir:
+    file { $_conf_dir:
       ensure  => directory,
       purge   => $conf_dir_purge,
       recurse => true,
@@ -610,7 +619,7 @@ class datadog_agent(
             $host_config,
             $additional_checksd_config)
 
-    file { $conf6_dir:
+    file { $_conf_dir:
       ensure  => directory,
       purge   => $conf_dir_purge,
       recurse => true,
@@ -631,7 +640,7 @@ class datadog_agent(
       'hostname_fqdn' => $hostname_fqdn,
       'collect_ec2_tags' => $collect_ec2_tags,
       'collect_gce_tags' => $collect_gce_tags,
-      'confd_path' => $conf6_dir,
+      'confd_path' => $_conf_dir,
       'enable_metadata_collection' => $collect_instance_metadata,
       'dogstatsd_port' => $dogstatsd_port,
       'dogstatsd_socket' => $dogstatsd_socket,

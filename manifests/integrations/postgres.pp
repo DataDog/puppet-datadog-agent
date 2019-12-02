@@ -102,9 +102,9 @@ class datadog_agent::integrations::postgres(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/postgres.yaml"
+  $legacy_dst = "/etc/dd-agent/conf.d/postgres.yaml"
   if $::datadog_agent::agent_major_version > 5 {
-    $dst_dir = "${datadog_agent::conf6_dir}/postgres.d"
+    $dst_dir = "${datadog_agent::params::conf_dir}/postgres.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

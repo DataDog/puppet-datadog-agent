@@ -40,9 +40,6 @@ class datadog_agent::integrations::memcache (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('String', 'validate_string', $url)
-  validate_legacy('Array', 'validate_array', $tags)
-
   if !$instances and $url {
     $_instances = [{
       'url'   => $url,

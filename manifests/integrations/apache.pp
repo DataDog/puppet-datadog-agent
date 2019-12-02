@@ -27,17 +27,13 @@
 # }
 #
 class datadog_agent::integrations::apache (
-  $url                    = 'http://localhost/server-status?auto',
-  $username               = undef,
-  $password               = undef,
-  $tags                   = [],
-  $disable_ssl_validation = false
+  String $url                     = 'http://localhost/server-status?auto',
+  Optional[String] $username      = undef,
+  Optional[String] $password      = undef,
+  Array $tags                     = [],
+  Boolean $disable_ssl_validation = false
 ) inherits datadog_agent::params {
   include datadog_agent
-
-  validate_legacy('String', 'validate_string', $url)
-  validate_legacy('Array', 'validate_array', $tags)
-  validate_legacy('Boolean', 'validate_bool', $disable_ssl_validation)
 
   $legacy_dst = "${datadog_agent::conf5_dir}/apache.yaml"
   if $::datadog_agent::agent_major_version > 5 {

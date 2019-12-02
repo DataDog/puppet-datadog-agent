@@ -32,8 +32,6 @@ class datadog_agent::integrations::zk (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('Array', 'validate_array', $servers)
-
   $legacy_dst = "${datadog_agent::conf5_dir}/zk.yaml"
   if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::conf6_dir}/zk.d"

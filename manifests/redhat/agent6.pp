@@ -13,8 +13,6 @@ class datadog_agent::redhat::agent6(
   Optional[String] $service_provider = undef,
 ) inherits datadog_agent::params {
 
-  validate_legacy('Boolean', 'validate_bool', $manage_repo)
-  validate_legacy('Boolean', 'validate_bool', $service_enable)
   if $manage_repo {
     $public_key_local = '/etc/pki/rpm-gpg/DATADOG_RPM_KEY.public'
 

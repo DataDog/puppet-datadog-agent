@@ -41,7 +41,6 @@ class datadog_agent::integrations::logs(
 ) inherits datadog_agent::params {
   unless $::datadog_agent::agent_major_version == 5 {
     include datadog_agent
-    validate_legacy('Array', 'validate_array', $logs)
 
     file { "${datadog_agent::conf6_dir}/logs.yaml":
       ensure  => file,

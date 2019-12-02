@@ -1,16 +1,11 @@
 define datadog_agent::integration (
-  $instances,
-  $init_config = undef,
-  $logs        = undef,
-  $integration = $title,
+  Array $instances,
+  Optional[Hash] $init_config = undef,
+  Optional[Array] $logs        = undef,
+  String $integration = $title,
 ){
 
   include datadog_agent
-
-  validate_legacy(Array, 'validate_array', $instances)
-  validate_legacy(Optional[Hash], 'validate_hash', $init_config)
-  validate_legacy(Optional[Array], 'validate_array', $logs)
-  validate_legacy(String, 'validate_string', $integration)
 
   if $::datadog_agent::agent_major_version > 5 {
     $dst = "${datadog_agent::conf6_dir}/${integration}.d/conf.yaml"

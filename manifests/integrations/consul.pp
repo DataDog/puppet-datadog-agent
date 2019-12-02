@@ -35,11 +35,6 @@ class datadog_agent::integrations::consul(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('String', 'validate_string', $url)
-  validate_legacy('Boolean', 'validate_bool', $catalog_checks)
-  validate_legacy('Boolean', 'validate_bool', $new_leader_checks)
-  validate_legacy('Optional[Array]', 'validate_array', $service_whitelist)
-
   $legacy_dst = "${datadog_agent::conf5_dir}/consul.yaml"
   if $::datadog_agent::agent_major_version > 5 {
     $dst_dir = "${datadog_agent::conf6_dir}/consul.d"

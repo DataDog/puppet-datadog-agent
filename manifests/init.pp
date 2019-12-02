@@ -252,7 +252,7 @@ class datadog_agent(
   $graphite_listen_port = '',
   String $extra_template = '',
   String $ganglia_host = '',
-  Integer $ganglia_port = 8651,
+  $ganglia_port = 8651,
   Boolean $skip_ssl_validation = false,
   Boolean $skip_apt_key_trusting = false,
   Boolean $use_curl_http_client = false,

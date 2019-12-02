@@ -659,7 +659,7 @@ class datadog_agent(
 
       file { 'C:/ProgramData/Datadog/datadog.yaml':
         owner   => $dd_user,
-        group   => 'S-1-5-32-544', #Administrators
+        group   => $dd_group,
         mode    => '0660',
         content => template('datadog_agent/datadog.yaml.erb'),
         notify  => Service[$datadog_agent::params::service_name],
@@ -670,7 +670,7 @@ class datadog_agent(
 
       file { '/etc/datadog-agent/datadog.yaml':
         owner   => $dd_user,
-        group   => 'dd-agent',
+        group   => $dd_group,
         mode    => '0640',
         content => template('datadog_agent/datadog.yaml.erb'),
         notify  => Service[$datadog_agent::params::service_name],

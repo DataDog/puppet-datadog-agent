@@ -22,7 +22,7 @@ else
   ALL_SUPPORTED_AGENTS       = [ 5, 6, 7 ]
   CONF_DIR6                  = '/etc/datadog-agent/conf.d'
   DD_USER                    = 'dd-agent'
-  DD_GROUP                   = 'root'
+  DD_GROUP                   = 'dd-agent'
   SERVICE_NAME               = 'datadog-agent'
   PACKAGE_NAME               = 'datadog-agent'
   PERMISSIONS_FILE           = '0644'

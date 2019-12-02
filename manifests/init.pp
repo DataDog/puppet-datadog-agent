@@ -313,6 +313,10 @@ class datadog_agent(
   Optional[String] $agent_version = $datadog_agent::params::agent_version,
 ) inherits datadog_agent::params {
 
+  if $agent_major_version != 5 and $agent_major_version != 6 and $agent_major_version != 7 {
+    fail("agent_major_version must be either 5, 6 or 7")
+  }
+
   # Allow ports to be passed as integers or strings.
   # lint:ignore:only_variable_string
   $_dogstatsd_port = "${dogstatsd_port}"

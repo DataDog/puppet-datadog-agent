@@ -285,7 +285,7 @@ class datadog_agent(
   Boolean $sd_jmx_enable = false,
   String $consul_token = '',
   Integer $cmd_port = 5001,
-  Integer $agent_major_version = $datadog_agent::params::agent_version,
+  Integer $agent_major_version = $datadog_agent::params::agent_major_version,
   $conf_dir = undef,
   $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
   $service_name = $datadog_agent::params::service_name,

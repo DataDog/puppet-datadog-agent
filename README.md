@@ -37,14 +37,13 @@ class{ 'datadog_agent':
 
 ### Upgrade from the previous module version 2.x
 
-- By default Datadog Agent 7.x is installed.
-  - To use an earlier version change the setting `agent_major_version`.
-- `agent5_enable` is no longer used, in favor of `agent_major_version`.
+- By default Datadog Agent 7.x is installed. To use an earlier Agent version change the setting `agent_major_version`.
+- `agent5_enable` is no longer used, as it has been replaced by `agent_major_version`.
 - `agent6_extra_options` has been renamed to `agent_extra_options` since it now applies to both Agent version 6 and 7.
 - `agent6_log_file` has been renamed to `agent_log_file` since it now applies to both Agent version 6 and 7.
 - `agent5_repo_uri` and `agent6_repo_uri` become `agent_repo_uri` for all Agent versions.
 - `conf_dir` and `conf6_dir` become `conf_dir` for all Agent versions.
-- The repository file on Linux is now be named `datadog` instead of `datadog6`
+- The repository file created on Linux is now be named `datadog` for all agent versions instead of `datadog5`/`datadog6`.
 
 Usage
 -----

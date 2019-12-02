@@ -286,8 +286,8 @@ class datadog_agent(
   String $consul_token = '',
   Integer $cmd_port = 5001,
   Integer $agent_major_version = $datadog_agent::params::agent_major_version,
-  $conf_dir = undef,
-  $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
+  Optional[String] $conf_dir = undef,
+  Boolean $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
   $dd_user = $datadog_agent::params::dd_user,
   $dd_group = $datadog_agent::params::dd_group,
   $dd_groups = $datadog_agent::params::dd_groups,
@@ -304,8 +304,8 @@ class datadog_agent(
   Hash[String[1], Data] $agent_extra_options = {},
   Optional[String] $agent_repo_uri = undef,
   Optional[Boolean] $use_apt_backup_keyserver = $datadog_agent::params::use_apt_backup_keyserver,
-  $apt_backup_keyserver = $datadog_agent::params::apt_backup_keyserver,
-  $apt_keyserver = $datadog_agent::params::apt_keyserver,
+  String $apt_backup_keyserver = $datadog_agent::params::apt_backup_keyserver,
+  String $apt_keyserver = $datadog_agent::params::apt_keyserver,
   String $apt_release = $datadog_agent::params::apt_default_release,
   String $win_msi_location = 'C:/Windows/temp', # Temporary directory where the msi file is downloaded, must exist
   Enum['present', 'absent'] $win_ensure = 'present', #TODO: Implement uninstall also for apt and rpm install methods

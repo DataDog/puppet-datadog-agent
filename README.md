@@ -43,6 +43,7 @@ class{ 'datadog_agent':
 - `agent6_extra_options` has been renamed to `agent_extra_options` since it now applies to both Agent version 6 and 7.
 - `agent6_log_file` has been renamed to `agent_log_file` since it now applies to both Agent version 6 and 7.
 - `agent5_repo_uri` and `agent6_repo_uri` become `agent_repo_uri` for all Agent versions.
+- The repository file on Linux i now be named `datadog` instead of `datadog6`
 
 Usage
 -----

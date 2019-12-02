@@ -68,7 +68,7 @@
 #       statsd metrics to another host.
 #   $manage_repo
 #       Boolean to indicate whether this module should attempt to manage
-#       the package repo. Default true.
+#       the package repo. Only for RPM-based distros. Default true.
 #   $graphite_listen_port
 #       Set graphite listener port
 #   $extra_template
@@ -285,7 +285,7 @@ class datadog_agent(
   Boolean $sd_jmx_enable = false,
   String $consul_token = '',
   Integer $cmd_port = 5001,
-  Integer $agent_major_version = 7,
+  Integer $agent_major_version = $datadog_agent::params::agent_version,
   $conf_dir = $datadog_agent::params::conf5_dir,
   $conf6_dir = $datadog_agent::params::conf6_dir,
   $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
@@ -365,63 +365,42 @@ class datadog_agent(
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {
-      if $agent_major_version == 5 {
-        class { 'datadog_agent::ubuntu::agent5':
-          agent_version         => $agent_version,
-          service_ensure        => $service_ensure,
-          service_enable        => $service_enable,
-          service_provider      => $service_provider,
-          agent_repo_uri        => $agent_repo_uri,
-          release               => $apt_release,
-          skip_apt_key_trusting => $skip_apt_key_trusting,
-          apt_keyserver         => $_apt_keyserver,
-        }
-      } else {
-        class { 'datadog_agent::ubuntu::agent6':
-          agent_version         => $agent_version,
-          service_ensure        => $service_ensure,
-          service_enable        => $service_enable,
-          service_provider      => $service_provider,
-          agent_repo_uri        => $agent_repo_uri,
-          release               => $apt_release,
-          skip_apt_key_trusting => $skip_apt_key_trusting,
-          apt_keyserver         => $_apt_keyserver,
-        }
+      class { 'datadog_agent::ubuntu':
+        agent_major_version   => $agent_major_version,
+        agent_version         => $agent_version,
+        service_ensure        => $service_ensure,
+        service_enable        => $service_enable,
+        service_provider      => $service_provider,
+        agent_repo_uri        => $agent_repo_uri,
+        release               => $apt_release,
+        skip_apt_key_trusting => $skip_apt_key_trusting,
+        apt_keyserver         => $_apt_keyserver,
       }
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux' : {
-      if $agent_major_version == 5 {
-        class { 'datadog_agent::redhat::agent5':
-          agent_repo_uri   => $agent_repo_uri,
-          manage_repo      => $manage_repo,
-          agent_version    => $agent_version,
-          service_ensure   => $service_ensure,
-          service_enable   => $service_enable,
-          service_provider => $service_provider,
-        }
-      } else {
-        class { 'datadog_agent::redhat::agent6':
-          agent_repo_uri   => $agent_repo_uri,
-          manage_repo      => $manage_repo,
-          agent_version    => $agent_version,
-          service_ensure   => $service_ensure,
-          service_enable   => $service_enable,
-          service_provider => $service_provider,
-        }
+      class { 'datadog_agent::redhat':
+        agent_major_version => $agent_major_version,
+        agent_repo_uri      => $agent_repo_uri,
+        manage_repo         => $manage_repo,
+        agent_version       => $agent_version,
+        service_ensure      => $service_ensure,
+        service_enable      => $service_enable,
+        service_provider    => $service_provider,
       }
     }
     'Windows' : {
-      class { 'datadog_agent::windows::agent6' :
-        agent_repo_uri => $agent_repo_uri,
-        agent_version  => $agent_version,
-        service_ensure => $service_ensure,
-        service_enable => $service_enable,
-        msi_location   => $win_msi_location,
-        api_key        => $api_key,
-        hostname       => $host,
-        service_name   => $service_name,
-        tags           => $local_tags,
-        ensure         => $win_ensure
+      class { 'datadog_agent::windows' :
+        agent_major_version => $agent_major_version,
+        agent_repo_uri      => $agent_repo_uri,
+        agent_version       => $agent_version,
+        service_ensure      => $service_ensure,
+        service_enable      => $service_enable,
+        msi_location        => $win_msi_location,
+        api_key             => $api_key,
+        hostname            => $host,
+        service_name        => $service_name,
+        tags                => $local_tags,
+        ensure              => $win_ensure
       }
       if ($win_ensure == absent) {
         return() #Config files will remain unchanged on uninstall

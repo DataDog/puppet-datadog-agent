@@ -1,9 +1,10 @@
-# Class: datadog_agent::windows::agent6
+# Class: datadog_agent::windows
 #
 # This class contains the DataDog agent installation mechanism for Windows
 #
 
-class datadog_agent::windows::agent6(
+class datadog_agent::windows(
+  Integer $agent_major_version = $datadog_agent::params::agent_major_version,
   String $agent_version = $datadog_agent::params::agent_version,
   String $service_ensure = 'running',
   Optional[String] $agent_repo_uri = undef,
@@ -16,7 +17,7 @@ class datadog_agent::windows::agent6(
   Enum['present', 'absent'] $ensure = 'present',
 ) inherits datadog_agent::params {
 
-  $msi_full_path = "${msi_location}/datadog-agent-6-${agent_version}.amd64.msi"
+  $msi_full_path = "${msi_location}/datadog-agent-${agent_major_version}-${agent_version}.amd64.msi"
 
   if ($agent_repo_uri != undef) {
     $baseurl = $agent_repo_uri

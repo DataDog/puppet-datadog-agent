@@ -15,9 +15,9 @@ A module to:
 
 ## Requirements
 
-The current version of this Puppet module is compatible with Puppet >= 4.6.x and it support both Linux and Windows.
+The current version of this Puppet module supports both Linux and Windows and is compatible with Puppet >= 4.6.x.
 
-For detailed information on compatibility, check the [module page][2] on the Puppet forge.
+For detailed information on compatibility, check the [module page on Puppet Forge][2].
 
 ## Installation
 

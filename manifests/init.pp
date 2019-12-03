@@ -314,7 +314,7 @@ class datadog_agent(
 ) inherits datadog_agent::params {
 
   if $agent_major_version != 5 and $agent_major_version != 6 and $agent_major_version != 7 {
-    fail("agent_major_version must be either 5, 6 or 7")
+    fail('agent_major_version must be either 5, 6 or 7')
   }
 
   # Allow ports to be passed as integers or strings.

@@ -28,6 +28,7 @@ class datadog_agent::redhat(
         $defaulturl = "https://yum.datadoghq.com/stable/7/${::architecture}/"
         $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public'
       }
+      default: { fail('invalid agent_major_version') }
     }
 
     if ($agent_repo_uri != undef) {

@@ -725,7 +725,7 @@ describe 'datadog_agent' do
                                   :sd_backend_host            => 'localhost',
                                   :sd_backend_port            => 8080,
                                   :sd_jmx_enable              =>  true,
-                                  :agent_major_version => 5,
+                                  :agent_major_version        => 5,
                   }}
                   it { should contain_concat__fragment('datadog footer').with(
                   'content' => /^service_discovery_backend: docker\n/,

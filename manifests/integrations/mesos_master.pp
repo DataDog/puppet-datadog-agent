@@ -18,7 +18,7 @@ class datadog_agent::integrations::mesos_master(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  if $::datadog_agent::agent_major_version > 5 {
+  if $::datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/mesos.d"
 
     file { $dst_dir:
@@ -39,7 +39,7 @@ class datadog_agent::integrations::mesos_master(
   }
 
   $legacy_dst_master = "${datadog_agent::params::legacy_conf_dir}/mesos_master.yaml"
-  if $::datadog_agent::agent_major_version > 5 {
+  if $::datadog_agent::_agent_major_version > 5 {
     $dst_master_dir = "${datadog_agent::params::conf_dir}/mesos_master.d"
     file { $legacy_dst_master:
       ensure => 'absent'

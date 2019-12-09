@@ -62,7 +62,7 @@ class datadog_agent::integrations::mongo(
   include datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/mongo.yaml"
-  if $::datadog_agent::agent_major_version > 5 {
+  if $::datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/mongo.d"
     file { $legacy_dst:
       ensure => 'absent'

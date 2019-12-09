@@ -7,7 +7,7 @@ define datadog_agent::integration (
 
   include datadog_agent
 
-  if $::datadog_agent::agent_major_version > 5 {
+  if $::datadog_agent::_agent_major_version > 5 {
     $dst = "${datadog_agent::params::conf_dir}/${integration}.d/conf.yaml"
     file { "${datadog_agent::params::conf_dir}/${integration}.d":
       ensure => directory,

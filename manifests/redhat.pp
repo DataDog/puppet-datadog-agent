@@ -4,7 +4,7 @@
 #
 
 class datadog_agent::redhat(
-  Integer $agent_major_version = $datadog_agent::params::agent_major_version,
+  Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
   Optional[String] $agent_repo_uri = undef,
   Boolean $manage_repo = true,
   String $agent_version = $datadog_agent::params::agent_version,

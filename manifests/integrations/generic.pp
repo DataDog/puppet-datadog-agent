@@ -23,7 +23,7 @@ class datadog_agent::integrations::generic(
 ) inherits datadog_agent::params {
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/${integration_name}.yaml"
-  if $::datadog_agent::agent_major_version > 5 {
+  if $::datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/${integration_name}.d"
     file { $legacy_dst:
       ensure => 'absent'

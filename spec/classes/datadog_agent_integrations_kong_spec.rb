@@ -7,7 +7,7 @@ describe 'datadog_agent::integrations::kong' do
       if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/kong.yaml" }
       else
-        let(:conf_file) { "#{CONF_DIR6}/kong.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR}/kong.d/conf.yaml" }
       end
 
       it { should compile.with_all_deps }

@@ -7,7 +7,7 @@ describe 'datadog_agent::integrations::cassandra' do
       if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/cassandra.yaml" }
       else
-        let(:conf_file) { "#{CONF_DIR6}/cassandra.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR}/cassandra.d/conf.yaml" }
       end
 
       it { should compile.with_all_deps }

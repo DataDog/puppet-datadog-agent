@@ -7,7 +7,7 @@ describe 'datadog_agent::integrations::kubernetes_state' do
       if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/kubernetes_state.yaml" }
       else
-        let(:conf_file) { "#{CONF_DIR6}/kubernetes_state.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR}/kubernetes_state.d/conf.yaml" }
       end
 
       it { should compile.with_all_deps }

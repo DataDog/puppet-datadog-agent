@@ -7,7 +7,7 @@ describe 'datadog_agent::integrations::jmx' do
       if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/jmx.yaml" }
       else
-        let(:conf_file) { "#{CONF_DIR6}/jmx.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR}/jmx.d/conf.yaml" }
       end
 
       it { should compile.with_all_deps }

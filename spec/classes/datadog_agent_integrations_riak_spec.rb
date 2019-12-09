@@ -7,7 +7,7 @@ describe 'datadog_agent::integrations::riak' do
       if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/riak.yaml" }
       else
-        let(:conf_file) { "#{CONF_DIR6}/riak.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR}/riak.d/conf.yaml" }
       end
 
       it { should compile.with_all_deps }

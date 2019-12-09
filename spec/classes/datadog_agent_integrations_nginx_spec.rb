@@ -7,7 +7,7 @@ describe 'datadog_agent::integrations::nginx' do
       if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/nginx.yaml" }
       else
-        let(:conf_file) { "#{CONF_DIR6}/nginx.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR}/nginx.d/conf.yaml" }
       end
 
       it { should compile.with_all_deps }

@@ -7,7 +7,7 @@ describe 'datadog_agent::integrations::pgbouncer' do
       if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/pgbouncer.yaml" }
       else
-        let(:conf_file) { "#{CONF_DIR6}/pgbouncer.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR}/pgbouncer.d/conf.yaml" }
       end
 
       context 'with default parameters' do

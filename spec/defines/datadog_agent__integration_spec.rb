@@ -7,7 +7,7 @@ describe "datadog_agent::integration" do
       if agent_major_version == 5
         let(:conf_file) { '/etc/dd-agent/conf.d/test.yaml' }
       else
-        let(:conf_dir) { "#{CONF_DIR6}/test.d" }
+        let(:conf_dir) { "#{CONF_DIR}/test.d" }
         let(:conf_file) { "#{conf_dir}/conf.yaml" }
       end
 

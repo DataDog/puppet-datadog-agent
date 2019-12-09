@@ -7,7 +7,7 @@ describe 'datadog_agent::integrations::network' do
       if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/network.yaml" }
       else
-        let(:conf_file) { "#{CONF_DIR6}/network.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR}/network.d/conf.yaml" }
       end
 
       context 'with default parameters' do

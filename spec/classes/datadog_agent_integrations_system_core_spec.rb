@@ -7,7 +7,7 @@ describe 'datadog_agent::integrations::system_core' do
       if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/system_core.yaml" }
       else
-        let(:conf_file) { "#{CONF_DIR6}/system_core.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR}/system_core.d/conf.yaml" }
       end
 
       it { should compile.with_all_deps }

@@ -7,7 +7,7 @@ describe 'datadog_agent::integrations::cacti' do
       if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/cacti.yaml" }
       else
-        let(:conf_file) { "#{CONF_DIR6}/cacti.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR}/cacti.d/conf.yaml" }
       end
 
       context 'with default parameters' do

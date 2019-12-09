@@ -13,7 +13,7 @@ describe 'datadog_agent::integrations::ceph' do
       if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/ceph.yaml" }
       else
-        let(:conf_file) { "#{CONF_DIR6}/ceph.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR}/ceph.d/conf.yaml" }
       end
       let(:sudo_conf_file) { '/etc/sudoers.d/datadog_ceph' }
 

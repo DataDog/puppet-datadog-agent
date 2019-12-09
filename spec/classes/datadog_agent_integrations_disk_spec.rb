@@ -7,7 +7,7 @@ describe 'datadog_agent::integrations::disk' do
       if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/disk.yaml" }
       else
-        let(:conf_file) { "#{CONF_DIR6}/disk.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR}/disk.d/conf.yaml" }
       end
 
       it { is_expected.to compile.with_all_deps }

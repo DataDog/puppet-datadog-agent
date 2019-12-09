@@ -7,7 +7,7 @@ describe 'datadog_agent::integrations::redis' do
       if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/redisdb.yaml" }
       else
-        let(:conf_file) { "#{CONF_DIR6}/redisdb.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR}/redisdb.d/conf.yaml" }
       end
 
       it { should compile.with_all_deps }

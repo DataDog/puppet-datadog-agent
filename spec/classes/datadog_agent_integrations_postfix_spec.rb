@@ -7,7 +7,7 @@ describe 'datadog_agent::integrations::postfix' do
       if agent_major_version == 5
         let(:conf_file) { "/etc/dd-agent/conf.d/postfix.yaml" }
       else
-        let(:conf_file) { "#{CONF_DIR6}/postfix.d/conf.yaml" }
+        let(:conf_file) { "#{CONF_DIR}/postfix.d/conf.yaml" }
       end
 
       it { should compile.with_all_deps }

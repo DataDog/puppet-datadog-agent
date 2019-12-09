@@ -54,6 +54,10 @@ class datadog_agent::redhat(
         require => File['DATADOG_RPM_KEY_E09422B3.public'],
     }
 
+    yumrepo { 'datadog-beta':
+      ensure => absent,
+    }
+
     yumrepo {'datadog5':
       ensure   => absent,
     }

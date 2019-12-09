@@ -38,6 +38,10 @@ class datadog_agent::ubuntu(
     $location = 'https://apt.datadoghq.com'
   }
 
+  apt::source { 'datadog-beta':
+    ensure => absent,
+  }
+
   apt::source { 'datadog5':
     ensure => absent,
   }

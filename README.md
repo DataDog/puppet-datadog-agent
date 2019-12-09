@@ -48,9 +48,9 @@ class{ 'datadog_agent':
 Usage
 -----
 
-Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaster`, follow these configuration steps:
+Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaster` (or on a masterless host), follow these configuration steps:
 
-1. Update the default class parameters with your [API key][3].
+1. Find your Datadog [API key][3].
 
 2. Specify the module on any nodes you wish to install the Datadog Agent.
 

@@ -86,16 +86,16 @@
 
 
 class datadog_agent::integrations::tcp_check (
-  $check_name            = undef,
-  $host                  = undef,
-  $port                  = undef,
-  $timeout               = 10,
-  $threshold             = undef,
-  $window                = undef,
-  $collect_response_time = undef,
-  $skip_event            = undef,
-  $tags                  = [],
-  $instances             = undef,
+  $check_name                = undef,
+  $host                      = undef,
+  $port                      = undef,
+  Integer $timeout           = 10,
+  $threshold                 = undef,
+  $window                    = undef,
+  $collect_response_time     = undef,
+  $skip_event                = undef,
+  Array $tags                = [],
+  Optional[Array] $instances = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 

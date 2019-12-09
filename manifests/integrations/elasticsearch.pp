@@ -34,7 +34,7 @@ class datadog_agent::integrations::elasticsearch(
   Array $tags                          = [],
   String $url                          = 'http://localhost:9200',
   Optional[String] $username           = undef,
-  $instances                           = undef
+  Optional[Array] $instances           = undef
 ) inherits datadog_agent::params {
   include datadog_agent
 

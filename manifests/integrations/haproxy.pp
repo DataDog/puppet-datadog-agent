@@ -17,10 +17,10 @@
 #   }
 #
 class datadog_agent::integrations::haproxy(
-  $creds     = {},
-  $url       = "http://${::ipaddress}:8080",
-  $options   = {},
-  $instances = undef,
+  $creds                     = {},
+  $url                       = "http://${::ipaddress}:8080",
+  $options                   = {},
+  Optional[Array] $instances = undef
 ) inherits datadog_agent::params {
   include datadog_agent
 

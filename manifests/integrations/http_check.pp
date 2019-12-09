@@ -189,7 +189,7 @@ class datadog_agent::integrations::http_check (
   $allow_redirects = true,
   $tags      = [],
   $contact   = [],
-  $instances  = undef,
+  Optional[Array] $instances  = undef,
   $ca_certs  = undef,
 ) inherits datadog_agent::params {
   include datadog_agent

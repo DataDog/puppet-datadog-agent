@@ -525,9 +525,9 @@ class datadog_agent(
         order   => '08',
       }
     }
-  } else { #Agent 6
+  } else { #Agent 6/7
 
-    # notify of broken params on agent6
+    # notify of broken params on agent6/7
     if !empty($proxy_host) {
         notify { 'Setting proxy_host is only used with Agent 5. Please use agent_extra_options to set your proxy': }
     }

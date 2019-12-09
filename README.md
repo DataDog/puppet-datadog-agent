@@ -43,7 +43,7 @@ class{ 'datadog_agent':
 - `agent6_log_file` has been renamed to `agent_log_file` since it now applies to both Agent version 6 and 7.
 - `agent5_repo_uri` and `agent6_repo_uri` become `agent_repo_uri` for all Agent versions.
 - `conf_dir` and `conf6_dir` become `conf_dir` for all Agent versions.
-- The repository file created on Linux is now be named `datadog` for all agent versions instead of `datadog5`/`datadog6`.
+- The repository file created on Linux is now named `datadog` for all agent versions instead of `datadog5`/`datadog6`.
 
 Usage
 -----
@@ -322,4 +322,3 @@ pre-commit install
 [4]: https://github.com/DataDog/dogapi-rb
 [5]: https://app.datadoghq.com/account/settings#integrations
 [6]: https://app.datadoghq.com/event/stream
-

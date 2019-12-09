@@ -75,7 +75,7 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
     }
     ```
 
-    - To support reporting, your Puppet master needs the [dogapi][4] gem installed. To install, either run the Puppet Agent on your master with this configuration or install it manually with `gem`. You might need to restart your `puppetserver` service for the freshly installed `dogapi-rb` gem to be picked up.
+    - To support reporting, your Puppet master needs the [dogapi][4] gem installed. To install, either run the Puppet Agent on your master with this configuration or install it manually with `gem`. You might need to restart your `puppetserver` service for the freshly installed `dogapi` gem to be picked up.
     - `puppetserver_gem` is defined as a module dependency, it is installed automatically when the module is installed.
 
 3. Include any other integrations you want the agent to use, for example:
@@ -118,7 +118,7 @@ The field `ensure` can be either `present` (default) or `absent`, the later bein
 
 Reporting
 ---------
-Ensure `dogapi-rb` is available on your system as explained earlier.
+Ensure the `dogapi` gem is available on your system as explained earlier.
 
 To enable reporting of changes to the Datadog timeline, enable the report processor on your Puppet master, and enable reporting for your clients. The clients send a run report after each check-in back to the master.
 

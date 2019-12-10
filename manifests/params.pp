@@ -6,7 +6,7 @@
 class datadog_agent::params {
   $datadog_site                   = 'datadoghq.com'
   $dd_groups                      = undef
-  $agent_major_version            = 7
+  $default_agent_major_version    = 7
   $agent_version                  = 'latest'
   $dogapi_version                 = 'installed'
   $gem_provider                   = 'puppetserver_gem'

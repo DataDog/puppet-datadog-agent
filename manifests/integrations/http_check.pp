@@ -230,7 +230,7 @@ class datadog_agent::integrations::http_check (
   }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/http_check.yaml"
-  if $::datadog_agent::agent_major_version > 5 {
+  if $::datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/http_check.d"
     file { $legacy_dst:
       ensure => 'absent'

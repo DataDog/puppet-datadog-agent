@@ -285,7 +285,7 @@ class datadog_agent(
   Boolean $sd_jmx_enable = false,
   String $consul_token = '',
   Integer $cmd_port = 5001,
-  Integer $agent_major_version = $datadog_agent::params::agent_major_version,
+  Optional[Integer] $agent_major_version = undef,
   Optional[String] $conf_dir = undef,
   Boolean $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
   $dd_user = $datadog_agent::params::dd_user,
@@ -313,7 +313,18 @@ class datadog_agent(
   Optional[String] $agent_version = $datadog_agent::params::agent_version,
 ) inherits datadog_agent::params {
 
-  if $agent_major_version != 5 and $agent_major_version != 6 and $agent_major_version != 7 {
+  if $agent_version != 'latest' and $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)([^-\s]+)?(?:-([0-9]+))?/ {
+    $_agent_major_version = 0 + $2 # Cast to integer
+    if $agent_major_version != undef and $agent_major_version != $_agent_major_version {
+      fail('Provided and deduced agent_major_version don\'t match')
+    }
+  } elsif $agent_major_version != undef {
+    $_agent_major_version = $agent_major_version
+  } else {
+    $_agent_major_version = $datadog_agent::params::default_agent_major_version
+  }
+
+  if $_agent_major_version != 5 and $_agent_major_version != 6 and $_agent_major_version != 7 {
     fail('agent_major_version must be either 5, 6 or 7')
   }
 
@@ -335,7 +346,7 @@ class datadog_agent(
   validate_legacy(String, 'validate_re', $_syslog_port, '^\d*$')
 
   if $conf_dir == undef {
-    if $agent_major_version == 5 {
+    if $_agent_major_version == 5 {
       $_conf_dir = $datadog_agent::params::legacy_conf_dir
     } else {
       $_conf_dir = $datadog_agent::params::conf_dir
@@ -377,7 +388,7 @@ class datadog_agent(
   case $::operatingsystem {
     'Ubuntu','Debian' : {
       class { 'datadog_agent::ubuntu':
-        agent_major_version   => $agent_major_version,
+        agent_major_version   => $_agent_major_version,
         agent_version         => $agent_version,
         service_ensure        => $service_ensure,
         service_enable        => $service_enable,
@@ -390,7 +401,7 @@ class datadog_agent(
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux' : {
       class { 'datadog_agent::redhat':
-        agent_major_version => $agent_major_version,
+        agent_major_version => $_agent_major_version,
         agent_repo_uri      => $agent_repo_uri,
         manage_repo         => $manage_repo,
         agent_version       => $agent_version,
@@ -401,7 +412,7 @@ class datadog_agent(
     }
     'Windows' : {
       class { 'datadog_agent::windows' :
-        agent_major_version => $agent_major_version,
+        agent_major_version => $_agent_major_version,
         agent_repo_uri      => $agent_repo_uri,
         agent_version       => $agent_version,
         service_ensure      => $service_ensure,
@@ -438,7 +449,7 @@ class datadog_agent(
     }
   }
 
-  if $agent_major_version == 5 {
+  if $_agent_major_version == 5 {
 
     if ($::operatingsystem == 'Windows') {
       fail('Installation of agent 5 with puppet is not supported on Windows')

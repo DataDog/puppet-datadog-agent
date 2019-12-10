@@ -4,7 +4,7 @@
 #
 
 class datadog_agent::ubuntu(
-  Integer $agent_major_version = $datadog_agent::params::agent_major_version,
+  Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
   String $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
   String $agent_version = $datadog_agent::params::agent_version,
   Optional[String] $agent_repo_uri = undef,

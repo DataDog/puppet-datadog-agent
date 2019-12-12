@@ -1,14 +1,21 @@
 Changes
 =======
 
+# 2.10.0 / 2019-12-12
+
+### Notes
+
+* [FEATURE] Add Network Performance Monitoring support. See [#584][]. (Thanks [@asenci][]))
+* [BUGFIX] Fix logs section of mysql.yaml being ignored. See [#587][]. (Thanks [@asenci][]))
+
 # 2.9.0 / 2019-11-20
 
 ### Notes
 
 * [FEATURE] Official Windows support.
-* [FEATURE] Support latest version of puppet libraries [#576][]. (Thanks [@flyinbutrs][]))
-* [FEATURE] Support Oracle Linux. [#574][]. (Thanks [@atayts][]))
-* [FEATURE] Add logs parameter to mysql integration. [#572][]. (Thanks [@asenci][]))
+* [FEATURE] Support latest version of puppet libraries. See [#576][]. (Thanks [@flyinbutrs][]))
+* [FEATURE] Support Oracle Linux. See [#574][]. (Thanks [@atayts][]))
+* [FEATURE] Add logs parameter to mysql integration. See [#572][]. (Thanks [@asenci][]))
 * [BUGFIX] Remove unnecessary restart of the agent on Windows. [#562][]. (Thanks [@jvanbrunschot][]))
 * [BUGFIX] Give Administrator group access to datadog.yaml. See [#571][].
 * [BUGFIX] Fix import of RPM key on recent versions of GPG. See [#581][]. (Thanks [@devinmatte][]))
@@ -682,6 +689,8 @@ Please read the [docs]() for more details.
 [#576]: https://github.com/DataDog/puppet-datadog-agent/issues/576
 [#578]: https://github.com/DataDog/puppet-datadog-agent/issues/578
 [#581]: https://github.com/DataDog/puppet-datadog-agent/issues/581
+[#584]: https://github.com/DataDog/puppet-datadog-agent/issues/584
+[#587]: https://github.com/DataDog/puppet-datadog-agent/issues/587
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert

@@ -1,6 +1,31 @@
 Changes
 =======
 
+# 3.0.0 / 2019-12-19
+
+### Overview
+
+This release will install Agent 7.x by default.
+
+Some config parameters prefixed with `agent6`/`agent5` have been renamed to
+accomodate this change. Please read the [docs]() for more details and update
+your configuration accordingly.
+
+Datadog Agent 7 uses Python 3 by default so if you were running any custom
+checks written in Python, they must now be compatible with Python 3. If you
+were not running any custom checks or if your custom checks are already
+compatible with Python 3, then it is safe to upgrade.
+
+### Notes
+
+* [MAJOR] Agent 7 support. See [#588][].
+    * Introduces `agent_major_version` parameter that replaces `agent5_enable`.
+    * Removes `agent6`/`agent5` prefixes in argument names.
+    * Unifies config for Agent 5/6 repos and removes the use of facter.
+* [IMPROVEMENT] Removes uses of `validate_legacy`.
+* [IMPROVEMENT] Keeps the group ownership of config files as `dd-agent`.
+* [IMPROVEMENT] Removes `service_name` and `package_name` parameters.
+
 # 2.10.0 / 2019-12-12
 
 ### Notes
@@ -166,7 +191,7 @@ Changes
 # 2.0.0 / 2018-02-27
 
 ### Overview
-This release is a mejor release, there are a some breaking changes. We have
+This release is a major release, there are a some breaking changes. We have
 tried to keep the interface as similar as possible to what the community
 was already used to, but have had to make some changes and cleaned up some
 of the interfaces to some classes. Most notably the main `datadog_agent`
@@ -691,6 +716,7 @@ Please read the [docs]() for more details.
 [#581]: https://github.com/DataDog/puppet-datadog-agent/issues/581
 [#584]: https://github.com/DataDog/puppet-datadog-agent/issues/584
 [#587]: https://github.com/DataDog/puppet-datadog-agent/issues/587
+[#588]: https://github.com/DataDog/puppet-datadog-agent/issues/588
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert

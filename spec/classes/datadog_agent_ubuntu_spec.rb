@@ -17,11 +17,11 @@ describe 'datadog_agent::ubuntu' do
     end
 
     it do
-      contain_file('/etc/apt/sources.list.d/datadog5.list')
+      should contain_file('/etc/apt/sources.list.d/datadog5.list')
         .with_ensure('absent')
-      contain_file('/etc/apt/sources.list.d/datadog6.list')
+      should contain_file('/etc/apt/sources.list.d/datadog6.list')
         .with_ensure('absent')
-      contain_file('/etc/apt/sources.list.d/datadog.list')\
+      should contain_file('/etc/apt/sources.list.d/datadog.list')\
         .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+main})
     end
 
@@ -93,12 +93,12 @@ describe 'datadog_agent::ubuntu' do
     end
 
     it do
-      contain_file('/etc/apt/sources.list.d/datadog5.list')
+      should contain_file('/etc/apt/sources.list.d/datadog5.list')
         .with_ensure('absent')
-      contain_file('/etc/apt/sources.list.d/datadog6.list')
+      should contain_file('/etc/apt/sources.list.d/datadog6.list')
         .with_ensure('absent')
-      contain_file('/etc/apt/sources.list.d/datadog.list')\
-        .with_content(%r{deb\s+https://apt.datadoghq.com/\s+beta\s+main})
+      should contain_file('/etc/apt/sources.list.d/datadog.list')\
+        .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
     end
 
     # it should install the mirror
@@ -158,12 +158,12 @@ describe 'datadog_agent::ubuntu' do
     end
 
     it do
-      contain_file('/etc/apt/sources.list.d/datadog5.list')
+      should contain_file('/etc/apt/sources.list.d/datadog5.list')
         .with_ensure('absent')
-      contain_file('/etc/apt/sources.list.d/datadog6.list')
+      should contain_file('/etc/apt/sources.list.d/datadog6.list')
         .with_ensure('absent')
-      contain_file('/etc/apt/sources.list.d/datadog.list')\
-        .with_content(%r{deb\s+https://apt.datadoghq.com/\s+beta\s+main})
+      should contain_file('/etc/apt/sources.list.d/datadog.list')\
+        .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+7})
     end
 
     # it should install the mirror

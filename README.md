@@ -217,7 +217,7 @@ Run Puppet Agent
 ----------------
 
 ```
-sudo systemctl  /etc/init.d/puppetmaster restart
+sudo systemctl restart puppetserver
 sudo puppet agent --onetime --no-daemonize --no-splay --verbose
 ```
 

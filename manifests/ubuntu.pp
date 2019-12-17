@@ -35,7 +35,7 @@ class datadog_agent::ubuntu(
   if ($agent_repo_uri != undef) {
     $location = $agent_repo_uri
   } else {
-    $location = 'https://apt.datadoghq.com'
+    $location = 'https://apt.datadoghq.com/'
   }
 
   apt::source { 'datadog-beta':

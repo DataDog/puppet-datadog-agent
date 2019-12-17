@@ -26,7 +26,7 @@ class datadog_agent::windows(
   }
 
   if $agent_version == 'latest' {
-    $msi_source = "${baseurl}datadog-agent-6-latest.amd64.msi"
+    $msi_source = "${baseurl}datadog-agent-${agent_major_version}-latest.amd64.msi"
   } else {
     $msi_source = "${baseurl}ddagent-cli-${agent_version}.msi"
   }

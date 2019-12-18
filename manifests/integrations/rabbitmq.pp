@@ -65,23 +65,11 @@ class datadog_agent::integrations::rabbitmq (
   Array $exchanges_regexes   = [],
 ) inherits datadog_agent::params {
 
-  validate_legacy('String', 'validate_string', $url)
-  validate_legacy('Optional[String]', 'validate_string', $username)
-  validate_legacy('Optional[String]', 'validate_string', $password)
-  validate_legacy('Boolean', 'validate_bool', $ssl_verify)
-  validate_legacy('Boolean', 'validate_bool', $tag_families)
-  validate_legacy('Array', 'validate_array', $nodes)
-  validate_legacy('Array', 'validate_array', $nodes_regexes)
-  validate_legacy('Array', 'validate_array', $queues)
-  validate_legacy('Array', 'validate_array', $queues_regexes)
-  validate_legacy('Array', 'validate_array', $exchanges)
-  validate_legacy('Array', 'validate_array', $exchanges_regexes)
-  validate_legacy('Array', 'validate_array', $vhosts)
   include datadog_agent
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/rabbitmq.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/rabbitmq.d"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/rabbitmq.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/rabbitmq.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

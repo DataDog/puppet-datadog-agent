@@ -39,11 +39,10 @@
 class datadog_agent::integrations::logs(
   Array $logs = [],
 ) inherits datadog_agent::params {
-  unless $::datadog_agent::agent5_enable {
+  unless $::datadog_agent::_agent_major_version == 5 {
     include datadog_agent
-    validate_legacy('Array', 'validate_array', $logs)
 
-    file { "${datadog_agent::conf6_dir}/logs.yaml":
+    file { "${datadog_agent::params::conf_dir}/logs.yaml":
       ensure  => file,
       owner   => $datadog_agent::params::dd_user,
       group   => $datadog_agent::params::dd_group,

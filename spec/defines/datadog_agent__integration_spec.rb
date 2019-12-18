@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe "datadog_agent::integration" do
   context 'supported agents' do
-    ALL_SUPPORTED_AGENTS.each do |_, is_agent5|
-      let(:pre_condition) { "class {'::datadog_agent': agent5_enable => #{is_agent5}}" }
-      if is_agent5
+    ALL_SUPPORTED_AGENTS.each do |agent_major_version|
+      let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
+      if agent_major_version == 5
         let(:conf_file) { '/etc/dd-agent/conf.d/test.yaml' }
       else
-        let(:conf_dir) { "#{CONF_DIR6}/test.d" }
+        let(:conf_dir) { "#{CONF_DIR}/test.d" }
         let(:conf_file) { "#{conf_dir}/conf.yaml" }
       end
 
@@ -19,7 +19,7 @@ describe "datadog_agent::integration" do
       }}
 
       it { should compile }
-      if is_agent5
+      if agent_major_version == 5
         it { should contain_file("#{conf_dir}").that_comes_before("File[#{conf_file}]") }
       end
       it { should contain_file("#{conf_file}").with_content(/init_config: /) }

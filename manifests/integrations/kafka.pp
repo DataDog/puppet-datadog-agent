@@ -86,9 +86,9 @@ class datadog_agent::integrations::kafka(
     $servers = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/kafka.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/kafka.d"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/kafka.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/kafka.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

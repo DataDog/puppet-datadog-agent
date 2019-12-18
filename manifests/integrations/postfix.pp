@@ -29,16 +29,12 @@
 #  }
 #
 class datadog_agent::integrations::postfix (
-  $directory                 = '/var/spool/postfix',
+  String $directory          = '/var/spool/postfix',
   Array $queues              = [ 'active', 'deferred', 'incoming' ],
   Optional[Array] $tags      = [],
   Optional[Array] $instances = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
-
-  validate_legacy('String', 'validate_string', $directory)
-  validate_legacy('Optional[Array]', 'validate_array', $queues)
-  validate_legacy('Optional[Array]', 'validate_array', $tags)
 
   if !$instances and $directory {
     $_instances = [{
@@ -52,9 +48,9 @@ class datadog_agent::integrations::postfix (
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/postfix.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/postfix.d"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/postfix.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/postfix.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

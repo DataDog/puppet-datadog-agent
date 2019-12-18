@@ -83,9 +83,6 @@ class datadog_agent::integrations::mysql(
   ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('Optional[String]', 'validate_string', $sock)
-  validate_legacy('Array', 'validate_array', $tags)
-
   if ($host == undef and $sock == undef) or
     ($host != undef and $port == undef and $sock == undef) {
     fail('invalid MySQL configuration')
@@ -114,9 +111,9 @@ class datadog_agent::integrations::mysql(
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/mysql.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/mysql.d"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/mysql.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/mysql.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

@@ -18,8 +18,8 @@ class datadog_agent::integrations::mesos_master(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/mesos.d"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/mesos.d"
 
     file { $dst_dir:
       ensure  => directory,
@@ -31,16 +31,16 @@ class datadog_agent::integrations::mesos_master(
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
-    $dst = "${datadog_agent::conf5_dir}/mesos.yaml"
+    $dst = "${datadog_agent::params::legacy_conf_dir}/mesos.yaml"
   }
 
   file { $dst:
     ensure => 'absent'
   }
 
-  $legacy_dst_master = "${datadog_agent::conf5_dir}/mesos_master.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_master_dir = "${datadog_agent::conf6_dir}/mesos_master.d"
+  $legacy_dst_master = "${datadog_agent::params::legacy_conf_dir}/mesos_master.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_master_dir = "${datadog_agent::params::conf_dir}/mesos_master.d"
     file { $legacy_dst_master:
       ensure => 'absent'
     }

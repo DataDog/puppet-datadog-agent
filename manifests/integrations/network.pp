@@ -29,11 +29,9 @@ class datadog_agent::integrations::network(
 ) inherits datadog_agent::params {
   include ::datadog_agent
 
-  validate_legacy('Array', 'validate_array', $excluded_interfaces)
-
-  $legacy_dst = "${datadog_agent::conf5_dir}/network.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/network.d"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/network.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/network.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

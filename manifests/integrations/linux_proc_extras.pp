@@ -18,9 +18,9 @@ class datadog_agent::integrations::linux_proc_extras(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/linux_proc_extras.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/linux_proc_extras.d"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/linux_proc_extras.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/linux_proc_extras.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

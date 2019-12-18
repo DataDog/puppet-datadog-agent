@@ -46,18 +46,15 @@ class datadog_agent::integrations::process(
   ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('Boolean', 'validate_bool', $hiera_processes)
-  validate_legacy('Array', 'validate_array', $processes)
-
   if $hiera_processes {
     $local_processes = lookup({ 'name' => 'datadog_agent::integrations::process::processes', 'merge' => 'unique', 'default_value' => $processes })
   } else {
     $local_processes = $processes
   }
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/process.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/process.d"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/process.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/process.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

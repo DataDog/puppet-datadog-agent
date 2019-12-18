@@ -26,19 +26,17 @@
 #
 #
 class datadog_agent::integrations::cassandra(
-  $host = 'localhost',
-  $port = 7199,
-  $user = undef,
-  $password = undef,
-  $tags = {},
+  String $host               = 'localhost',
+  Integer $port              = 7199,
+  Optional[String] $user     = undef,
+  Optional[String] $password = undef,
+  Optional[Hash] $tags       = {},
 ) inherits datadog_agent::params {
   require ::datadog_agent
 
-  validate_legacy(Optional[Hash], 'validate_hash', $tags)
-
-  $legacy_dst = "${datadog_agent::conf5_dir}/cassandra.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/cassandra.d"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/cassandra.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/cassandra.d"
 
     file { $legacy_dst:
       ensure => 'absent'

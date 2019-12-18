@@ -40,9 +40,6 @@ class datadog_agent::integrations::memcache (
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('String', 'validate_string', $url)
-  validate_legacy('Array', 'validate_array', $tags)
-
   if !$instances and $url {
     $_instances = [{
       'url'   => $url,
@@ -57,9 +54,9 @@ class datadog_agent::integrations::memcache (
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/mcache.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/mcache.d"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/mcache.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/mcache.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

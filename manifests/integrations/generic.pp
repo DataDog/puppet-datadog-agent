@@ -22,12 +22,9 @@ class datadog_agent::integrations::generic(
   Optional[String] $integration_contents = undef,
 ) inherits datadog_agent::params {
 
-  validate_legacy('Optional[String]', 'validate_string', $integration_name)
-  validate_legacy('Optional[String]', 'validate_string', $integration_contents)
-
-  $legacy_dst = "${datadog_agent::conf5_dir}/${integration_name}.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/${integration_name}.d"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/${integration_name}.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/${integration_name}.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

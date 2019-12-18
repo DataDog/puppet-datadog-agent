@@ -86,16 +86,16 @@
 
 
 class datadog_agent::integrations::tcp_check (
-  $check_name            = undef,
-  $host                  = undef,
-  $port                  = undef,
-  $timeout               = 10,
-  $threshold             = undef,
-  $window                = undef,
-  $collect_response_time = undef,
-  $skip_event            = undef,
-  $tags                  = [],
-  $instances             = undef,
+  $check_name                = undef,
+  $host                      = undef,
+  $port                      = undef,
+  Integer $timeout           = 10,
+  $threshold                 = undef,
+  $window                    = undef,
+  $collect_response_time     = undef,
+  $skip_event                = undef,
+  Array $tags                = [],
+  Optional[Array] $instances = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -117,9 +117,9 @@ class datadog_agent::integrations::tcp_check (
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/tcp_check.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/tcp_check.d"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/tcp_check.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/tcp_check.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

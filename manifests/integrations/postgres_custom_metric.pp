@@ -21,8 +21,6 @@ define datadog_agent::integrations::postgres_custom_metric(
   Boolean $relation = false,
   Array $descriptors = [],
 ) {
-  validate_legacy('Hash', 'validate_hash', $metrics)
-  validate_legacy('Array', 'validate_array', $descriptors)
 
   if $query !~ '^.*%s.*$' {
     fail('custom_metrics require %s for metric substitution')

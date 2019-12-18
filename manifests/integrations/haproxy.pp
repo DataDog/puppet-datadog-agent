@@ -17,10 +17,10 @@
 #   }
 #
 class datadog_agent::integrations::haproxy(
-  $creds     = {},
-  $url       = "http://${::ipaddress}:8080",
-  $options   = {},
-  $instances = undef,
+  $creds                     = {},
+  $url                       = "http://${::ipaddress}:8080",
+  $options                   = {},
+  Optional[Array] $instances = undef
 ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -36,9 +36,9 @@ class datadog_agent::integrations::haproxy(
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/haproxy.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/haproxy.d"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/haproxy.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/haproxy.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

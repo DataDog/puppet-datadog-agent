@@ -189,7 +189,7 @@ class datadog_agent::integrations::http_check (
   $allow_redirects = true,
   $tags      = [],
   $contact   = [],
-  $instances  = undef,
+  Optional[Array] $instances  = undef,
   $ca_certs  = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
@@ -229,9 +229,9 @@ class datadog_agent::integrations::http_check (
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/http_check.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/http_check.d"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/http_check.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/http_check.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

@@ -19,16 +19,13 @@ class datadog_agent::integrations::ceph(
 ) inherits datadog_agent::params {
   include datadog_agent
 
-  validate_legacy('Array', 'validate_array', $tags)
-  validate_legacy('String', 'validate_string', $ceph_cmd)
-
   file { '/etc/sudoers.d/datadog_ceph':
     content => "# This file is required for dd ceph \ndd-agent ALL=(ALL) NOPASSWD:/usr/bin/ceph\n"
   }
 
-  $legacy_dst = "${datadog_agent::conf5_dir}/ceph.yaml"
-  if !$::datadog_agent::agent5_enable {
-    $dst_dir = "${datadog_agent::conf6_dir}/ceph.d"
+  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/ceph.yaml"
+  if $::datadog_agent::_agent_major_version > 5 {
+    $dst_dir = "${datadog_agent::params::conf_dir}/ceph.d"
     file { $legacy_dst:
       ensure => 'absent'
     }

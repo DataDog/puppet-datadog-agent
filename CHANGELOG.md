@@ -5,7 +5,7 @@ Changes
 
 ### Overview
 
-This release will install Agent 7.x by default.
+**This release will install Agent 7.x by default.**
 
 Some config parameters prefixed with `agent6`/`agent5` have been renamed to
 accomodate this change. Please read the [docs]() for more details and update

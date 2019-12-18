@@ -19,60 +19,60 @@ describe 'datadog_agent' do
         end
       end
     end
-  end
 
-  context 'autodetect major version agent 5' do
-    let(:params){ {:agent_version => '5.15.1'} }
-    let(:facts){ { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
-    it do
-      should contain_file('/etc/apt/sources.list.d/datadog.list')\
-        .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+main})
+    context 'autodetect major version agent 5' do
+        let(:params){ {:agent_version => '5.15.1'} }
+        let(:facts){ { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
+        it do
+        should contain_file('/etc/apt/sources.list.d/datadog.list')\
+            .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+main})
+        end
     end
-  end
 
-  context 'autodetect major version agent 6' do
-    let(:params){ {:agent_version => '6.15.1'} }
-    let(:facts){ { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
-    it do
-      should contain_file('/etc/apt/sources.list.d/datadog.list')\
-        .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+    context 'autodetect major version agent 6' do
+        let(:params){ {:agent_version => '6.15.1'} }
+        let(:facts){ { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
+        it do
+        should contain_file('/etc/apt/sources.list.d/datadog.list')\
+            .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+        end
     end
-  end
 
-  context 'autodetect major version agent 7' do
-    let(:params){ {:agent_version => '7.15.1'} }
-    let(:facts){ { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
-    it do
-      should contain_file('/etc/apt/sources.list.d/datadog.list')\
-        .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+7})
+    context 'autodetect major version agent 7' do
+        let(:params){ {:agent_version => '7.15.1'} }
+        let(:facts){ { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
+        it do
+        should contain_file('/etc/apt/sources.list.d/datadog.list')\
+            .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+7})
+        end
     end
-  end
 
 
-  context 'autodetect major version agent with suffix and release' do
-    let(:params){ {:agent_version => '1:6.15.1~rc.1-1'} }
-    let(:facts){ { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
-    it do
-      should contain_file('/etc/apt/sources.list.d/datadog.list')\
-        .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+    context 'autodetect major version agent with suffix and release' do
+        let(:params){ {:agent_version => '1:6.15.1~rc.1-1'} }
+        let(:facts){ { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
+        it do
+        should contain_file('/etc/apt/sources.list.d/datadog.list')\
+            .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+        end
     end
-  end
 
-  context 'autodetect major version agent with windows suffix and release' do
-    let(:params){ {:agent_version => '1:6.15.1-rc.1-1'} }
-    let(:facts){ { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
-    it do
-      should contain_file('/etc/apt/sources.list.d/datadog.list')\
-        .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+    context 'autodetect major version agent with windows suffix and release' do
+        let(:params){ {:agent_version => '1:6.15.1-rc.1-1'} }
+        let(:facts){ { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
+        it do
+        should contain_file('/etc/apt/sources.list.d/datadog.list')\
+            .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+        end
     end
-  end
 
-  context 'autodetect major version agent with release' do
-    let(:params){ {:agent_version => '1:6.15.1-1'} }
-    let(:facts){ { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
-    it do
-      should contain_file('/etc/apt/sources.list.d/datadog.list')\
-        .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+    context 'autodetect major version agent with release' do
+        let(:params){ {:agent_version => '1:6.15.1-1'} }
+        let(:facts){ { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
+        it do
+        should contain_file('/etc/apt/sources.list.d/datadog.list')\
+            .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+        end
     end
   end
 

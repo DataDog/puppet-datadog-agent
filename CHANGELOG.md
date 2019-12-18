@@ -11,10 +11,10 @@ Some config parameters prefixed with `agent6`/`agent5` have been renamed to
 accomodate this change. Please read the [docs]() for more details and update
 your configuration accordingly.
 
-Datadog Agent 7 uses Python 3 by default so if you were running any custom
-checks written in Python, they must now be compatible with Python 3. If you
-were not running any custom checks or if your custom checks are already
-compatible with Python 3, then it is safe to upgrade.
+Datadog Agent 7 uses Python 3 so if you were running any custom checks written
+in Python, they must now be compatible with Python 3. If you were not running
+any custom checks or if your custom checks are already compatible with Python 3,
+then it is safe to upgrade.
 
 ### Notes
 

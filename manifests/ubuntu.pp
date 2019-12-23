@@ -16,6 +16,13 @@ class datadog_agent::ubuntu(
   Optional[String] $apt_keyserver = undef,
 ) inherits datadog_agent::params {
 
+  if $agent_version =~  /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ {
+    $platform_agent_version = "1:${agent_version}-1"
+  }
+  else {
+    $platform_agent_version = $agent_version
+  }
+
   case $agent_major_version {
     5 : { $repos = 'main' }
     6 : { $repos = '6' }
@@ -65,7 +72,7 @@ class datadog_agent::ubuntu(
   }
 
   package { $datadog_agent::params::package_name:
-    ensure  => $agent_version,
+    ensure  => $platform_agent_version,
     require => [Apt::Source['datadog6'],
                 Class['apt::update']],
   }

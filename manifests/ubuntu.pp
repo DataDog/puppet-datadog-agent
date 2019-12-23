@@ -16,7 +16,7 @@ class datadog_agent::ubuntu(
   Optional[String] $apt_keyserver = undef,
 ) inherits datadog_agent::params {
 
-  if $agent_version =~  /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ {
+  if $agent_version =~ /^[0-9]+\.[0-9]+\.[0-9]+((?:~|-)[^0-9\s-]+[^-\s]*)?$/ {
     $platform_agent_version = "1:${agent_version}-1"
   }
   else {

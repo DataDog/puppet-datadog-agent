@@ -1,4 +1,3 @@
-include datadog_agent::params
 class datadog_agent::system_probe(
   Boolean $enabled = false,
   Optional[String] $log_file = undef,

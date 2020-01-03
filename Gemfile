@@ -13,6 +13,7 @@ group :test do
   gem "jwt", "~> 1.5.6"
   gem "rake", "~> 12.3.3" # last version to support ruby < 2.6
   gem "rspec-puppet", '2.6.9'
+  gem "ruby-pwsh", '~> 0.3.0', platforms: [:mswin, :mingw, :x64_mingw]
 end
 
 group :development do

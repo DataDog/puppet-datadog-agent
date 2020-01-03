@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  win: circleci/windows@2.2.0
 jobs:
   specs-ruby21-puppet46: &specs
     machine: true
@@ -204,6 +206,29 @@ jobs:
       RUBY_VERSION: '2.6.3'
       PUPPET_VERSION: '6.5.0'
 
+  specs-ruby25-puppet65-windows: &windows-specs
+    executor:
+      name: win/default # Comes with ruby 2.6, which is not supported on Windows as of puppet 6.10.1
+      shell: bash.exe
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: |
+            choco install ruby --allow-downgrade -y --version 2.5.3.101 # Keep version in sync with next command!
+            export PATH=/c/tools/ruby25/bin:$PATH # Make Ruby 2.5 take precedence over the pre-installed 2.6
+            ruby --version
+            choco install msys2 --allow-downgrade -y --version 20180531.0.0
+            ridk.cmd exec pacman -S --noconfirm --needed base-devel mingw-w64-x86_64-toolchain
+            powershell kill -n gpg-agent # Started by msys, if we don't kill it the job stays running forever (found by running 'ps -W' before and after the last two commands)
+            gem install bundler -v 1.17.3
+            rm Gemfile.lock && bundle install --path .bundle
+            bundle exec rake test
+    environment:
+      STRICT_VARIABLES: 'yes'
+      #RUBY_VERSION hardcoded in install script
+      PUPPET_VERSION: '6.5.0'
+
   verify-gemfile-lock-dependencies:
     machine: true
     environment:
@@ -228,8 +253,6 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      #- specs-ruby25-puppet410-windows
-      #- specs-ruby26-puppet65-windows
       - specs-ruby21-puppet46
       - specs-ruby21-puppet410
       - specs-ruby21-puppet50
@@ -256,4 +279,5 @@ workflows:
       - specs-ruby26-puppet53
       - specs-ruby26-puppet60
       - specs-ruby26-puppet65
+      - specs-ruby25-puppet65-windows
       - verify-gemfile-lock-dependencies

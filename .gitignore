@@ -3,7 +3,6 @@ spec/fixtures
 .rspec_system
 .bundle
 vendor
-Gemfile.lock
 
 .rbenv-gemsets
 .ruby-version

@@ -13,7 +13,6 @@ group :test do
   gem "jwt", "~> 1.5.6"
   gem "rake", "~> 12.3.3" # last version to support ruby < 2.6
   gem "rspec-puppet", '2.6.9'
-  gem 'rspec-puppet-facts', '~> 1.7', :require => false
 end
 
 group :development do

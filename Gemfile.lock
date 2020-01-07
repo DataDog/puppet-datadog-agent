@@ -6,9 +6,6 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     facter (2.5.6)
-    facterdb (1.0.0)
-      facter
-      jgrep
     fast_gettext (1.1.2)
     ffi (1.11.3)
     formatador (0.2.5)
@@ -35,8 +32,6 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    jgrep (1.5.1)
-    json (2.3.0)
     json_pure (1.8.6)
     jwt (1.5.6)
     listen (3.0.8)
@@ -101,11 +96,6 @@ GEM
       rspec-support (~> 3.8.0)
     rspec-puppet (2.6.9)
       rspec
-    rspec-puppet-facts (1.10.0)
-      facter
-      facterdb (>= 0.5.0)
-      json
-      puppet
     rspec-support (3.8.3)
     shellany (0.0.1)
     text (1.3.1)
@@ -134,7 +124,6 @@ DEPENDENCIES
   rspec-expectations (~> 3.8.4)
   rspec-mocks (~> 3.8.1)
   rspec-puppet (= 2.6.9)
-  rspec-puppet-facts (~> 1.7)
   xmlrpc
 
 BUNDLED WITH

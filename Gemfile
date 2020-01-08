@@ -4,19 +4,16 @@ group :test do
   gem "rb-inotify", '< 0.10.0' if RUBY_VERSION < '2.2.0'
   gem "public_suffix", "~> 3.0.0"
   gem "listen", "~> 3.0.0"
-  if RUBY_PLATFORM=~ /win32/ || RUBY_PLATFORM=~ /mingw32/
-    # Using a newer version on Windows to avoid hitting https://tickets.puppetlabs.com/browse/PUP-7383
-    gem "puppet", ENV['PUPPET_VERSION'] || '~> 4.10.2'
-  else
-    gem "puppet", ENV['PUPPET_VERSION'] || '~> 4.6.2'
-  end
+  # Puppet 4.10.2 is the minimum version we support on Windows due to https://tickets.puppetlabs.com/browse/PUP-7383
+  # On Linux we support down to 4.6
+  gem "puppet", "~> #{ENV.fetch('PUPPET_VERSION', '4.10.2')}"
   gem "puppet-lint", "~> 2.3.6"
   gem "puppet-syntax", "~> 2.5.0"
   gem "puppetlabs_spec_helper", "~> 2.14.1"
   gem "jwt", "~> 1.5.6"
   gem "rake", "~> 12.3.3" # last version to support ruby < 2.6
   gem "rspec-puppet", '2.6.9'
-  gem 'rspec-puppet-facts', '~> 1.7', :require => false
+  gem "ruby-pwsh", '~> 0.3.0', platforms: [:mswin, :mingw, :x64_mingw]
 end
 
 group :development do

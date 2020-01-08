@@ -1,7 +1,4 @@
 require 'puppetlabs_spec_helper/module_spec_helper'
-require 'rspec-puppet-facts'
-
-include RspecPuppetFacts
 
 DEBIAN_OS = %w(Ubuntu Debian)
 REDHAT_OS = %w(RedHat CentOS Fedora Amazon Scientific OracleLinux)

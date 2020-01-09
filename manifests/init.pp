@@ -426,7 +426,7 @@ class datadog_agent(
         msi_location        => $win_msi_location,
         api_key             => $api_key,
         hostname            => $host,
-        service_name        => $service_name,
+        service_name        => $datadog_agent::params::service_name,
         tags                => $local_tags,
         ensure              => $win_ensure
       }

@@ -164,33 +164,47 @@ jobs:
       RUBY_VERSION: '2.4.3'
       PUPPET_VERSION: '6.5.0'
 
-  specs-ruby26-puppet46:
+  specs-ruby25-puppet46:
     <<: *specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
+      RUBY_VERSION: '2.5.3'
       PUPPET_VERSION: '4.6.2'
 
-  specs-ruby26-puppet410:
+  specs-ruby25-puppet410:
     <<: *specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
+      RUBY_VERSION: '2.5.3'
       PUPPET_VERSION: '4.10.9'
 
-  specs-ruby26-puppet50:
+  specs-ruby25-puppet50:
     <<: *specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
+      RUBY_VERSION: '2.5.3'
       PUPPET_VERSION: '5.0.1'
 
-  specs-ruby26-puppet53:
+  specs-ruby25-puppet53:
     <<: *specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
+      RUBY_VERSION: '2.5.3'
       PUPPET_VERSION: '5.3.3'
+
+  specs-ruby25-puppet60:
+    <<: *specs
+    environment:
+      STRICT_VARIABLES: 'yes'
+      RUBY_VERSION: '2.5.3'
+      PUPPET_VERSION: '6.0.0'
+
+  specs-ruby25-puppet65:
+    <<: *specs
+    environment:
+      STRICT_VARIABLES: 'yes'
+      RUBY_VERSION: '2.5.3'
+      PUPPET_VERSION: '6.5.0'
 
   specs-ruby26-puppet60:
     <<: *specs
@@ -233,7 +247,7 @@ jobs:
     machine: true
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
+      RUBY_VERSION: '2.5.3'
     steps:
       - checkout
       - run:
@@ -273,11 +287,13 @@ workflows:
       - specs-ruby24-puppet53
       - specs-ruby24-puppet60
       - specs-ruby24-puppet65
-      - specs-ruby26-puppet46
-      - specs-ruby26-puppet410
-      - specs-ruby26-puppet50
-      - specs-ruby26-puppet53
+      - specs-ruby25-puppet46
+      - specs-ruby25-puppet410
+      - specs-ruby25-puppet50
+      - specs-ruby25-puppet53
+      - specs-ruby25-puppet60
+      - specs-ruby25-puppet65
+      - specs-ruby25-puppet65-windows
       - specs-ruby26-puppet60
       - specs-ruby26-puppet65
-      - specs-ruby25-puppet65-windows
       - verify-gemfile-lock-dependencies

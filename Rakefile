@@ -2,6 +2,7 @@ require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-syntax/tasks/puppet-syntax'
 require 'puppet_blacksmith/rake_tasks' if Bundler.rubygems.find_name('puppet-blacksmith').any?
 require 'puppet-lint/tasks/puppet-lint'
+require 'rubocop/rake_task'
 
 exclude_paths = [
   "pkg/**/*",
@@ -19,5 +20,6 @@ task :test => [
   'check:symlinks',
   'check:git_ignore',
   'check:dot_underscore',
+  'rubocop',
   'spec',
 ]

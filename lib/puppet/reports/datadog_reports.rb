@@ -3,13 +3,12 @@ require 'yaml'
 
 begin
   require 'dogapi'
-rescue LoadError => e
-  Puppet.info "You need the `dogapi` gem to use the Datadog report (run puppet with puppet_run_reports on your master)"
+rescue LoadError
+  Puppet.info 'You need the `dogapi` gem to use the Datadog report (run puppet with puppet_run_reports on your master)'
 end
 
 Puppet::Reports.register_report(:datadog_reports) do
-
-  configfile = "/etc/datadog-agent/datadog-reports.yaml"
+  configfile = '/etc/datadog-agent/datadog-reports.yaml'
   raise(Puppet::ParseError, "Datadog report config file #{configfile} not readable") unless File.readable?(configfile)
   config = YAML.load_file(configfile)
   API_KEY = config[:datadog_api_key]
@@ -22,7 +21,7 @@ Puppet::Reports.register_report(:datadog_reports) do
     rescue
       raise(Puppet::ParseError, "Invalid hostname_extraction_regex #{HOSTNAME_REGEX}")
     end
-    unless HOSTNAME_EXTRACTION_REGEX.named_captures.has_key? "hostname"
+    unless HOSTNAME_EXTRACTION_REGEX.named_captures.key? 'hostname'
       raise(Puppet::ParseError, "hostname_extraction_regex doesn't include a match group named 'hostname': #{HOSTNAME_REGEX}")
     end
   else
@@ -34,25 +33,22 @@ Puppet::Reports.register_report(:datadog_reports) do
   DESC
 
   def pluralize(number, noun)
-    begin
-      if number == 0 then
-        "no #{noun}"
-      elsif number < 1 then
-        "less than 1 #{noun}"
-      elsif number == 1 then
-        "1 #{noun}"
-      else
-        "#{number.round} #{noun}s"
-      end
-    rescue
-      "#{number} #{noun}(s)"
+    if number == 0
+      "no #{noun}"
+    elsif number < 1
+      "less than 1 #{noun}"
+    elsif number == 1
+      "1 #{noun}"
+    else
+      "#{number.round} #{noun}s"
     end
+  rescue
+    "#{number} #{noun}(s)"
   end
 
-
   def process
-    @summary = self.summary
-    @msg_host = self.host
+    @summary = summary
+    @msg_host = host
     unless HOSTNAME_EXTRACTION_REGEX.nil?
       m = @msg_host.match(HOSTNAME_EXTRACTION_REGEX)
       if !m.nil? && !m[:hostname].nil?
@@ -65,23 +61,23 @@ Puppet::Reports.register_report(:datadog_reports) do
     event_priority = 'low'
     event_data = ''
 
-    if defined?(self.status)
+    if defined?(status)
       # for puppet log format 2 and above
-      @status = self.status
+      @status = status
       if @status == 'failed'
         event_title = "Puppet failed on #{@msg_host}"
-        alert_type = "error"
-        event_priority = "normal"
+        alert_type = 'error'
+        event_priority = 'normal'
       elsif @status == 'changed'
         event_title = "Puppet changed resources on #{@msg_host}"
-        alert_type = "success"
-        event_priority = "normal"
-      elsif @status == "unchanged"
+        alert_type = 'success'
+        event_priority = 'normal'
+      elsif @status == 'unchanged'
         event_title = "Puppet ran on, and left #{@msg_host} unchanged"
-        alert_type = "success"
+        alert_type = 'success'
       else
         event_title = "Puppet ran on #{@msg_host}"
-        alert_type = "success"
+        alert_type = 'success'
       end
 
     else
@@ -90,49 +86,48 @@ Puppet::Reports.register_report(:datadog_reports) do
     end
 
     # Extract statuses
-    total_resource_count = self.resource_statuses.length
-    changed_resources    = self.resource_statuses.values.find_all {|s| s.changed }
-    failed_resources     = self.resource_statuses.values.find_all {|s| s.failed }
+    total_resource_count = resource_statuses.length
+    changed_resources    = resource_statuses.values.select { |s| s.changed }
+    failed_resources     = resource_statuses.values.select { |s| s.failed }
 
     # Little insert if we know the config
-    config_version_blurb = if defined?(self.configuration_version) then "applied version #{self.configuration_version} and" else "" end
+    config_version_blurb = defined?(configuration_version) ? "applied version #{configuration_version} and" : ''
 
     event_data << "Puppet #{config_version_blurb} changed #{pluralize(changed_resources.length, 'resource')} out of #{total_resource_count}."
 
     # List changed resources
-    if changed_resources.length > 0
+    unless changed_resources.empty?
       event_data << "\nThe resources that changed are:\n@@@\n"
-      changed_resources.each {|s| event_data << "#{s.title} in #{s.file}:#{s.line}\n" }
+      changed_resources.each { |s| event_data << "#{s.title} in #{s.file}:#{s.line}\n" }
       event_data << "\n@@@\n"
     end
 
     # List failed resources
-    if failed_resources.length > 0
+    unless failed_resources.empty?
       event_data << "\nThe resources that failed are:\n@@@\n"
-      failed_resources.each {|s| event_data << "#{s.title} in #{s.file}:#{s.line}\n" }
+      failed_resources.each { |s| event_data << "#{s.title} in #{s.file}:#{s.line}\n" }
       event_data << "\n@@@\n"
     end
 
     Puppet.debug "Sending metrics for #{@msg_host} to Datadog"
     @dog = Dogapi::Client.new(API_KEY, nil, nil, nil, nil, nil, API_URL)
     @dog.batch_metrics do
-      self.metrics.each { |metric,data|
-        data.values.each { |val|
-          name = "puppet.#{val[1].gsub(/ /, '_')}.#{metric}".downcase
+      metrics.each do |metric, data|
+        data.values.each do |val|
+          name = "puppet.#{val[1].tr(' ', '_')}.#{metric}".downcase
           value = val[2]
-          @dog.emit_point("#{name}", value, :host => "#{@msg_host}")
-        }
-      }
+          @dog.emit_point(name.to_s, value, host: @msg_host.to_s)
+        end
+      end
     end
 
     Puppet.debug "Sending events for #{@msg_host} to Datadog"
     @dog.emit_event(Dogapi::Event.new(event_data,
-                                      :msg_title => event_title,
-                                      :event_type => 'config_management.run',
-                                      :event_object => @msg_host,
-                                      :alert_type => alert_type,
-                                      :priority => event_priority,
-                                      :source_type_name => 'puppet'
-                                      ), :host => @msg_host)
+                                      msg_title: event_title,
+                                      event_type: 'config_management.run',
+                                      event_object: @msg_host,
+                                      alert_type: alert_type,
+                                      priority: event_priority,
+                                      source_type_name: 'puppet'), host: @msg_host)
   end
 end

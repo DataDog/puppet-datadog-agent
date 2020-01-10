@@ -131,3 +131,5 @@ Style/IfUnlessModifier:
   Enabled: false
 Style/SymbolProc:
   Enabled: false
+Style/NumericPredicate:
+  Enabled: false

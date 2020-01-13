@@ -85,8 +85,10 @@ describe 'datadog_agent' do
     ALL_OS.each do |operatingsystem|
       describe "datadog_agent 5 class common actions on #{operatingsystem}" do
         let(:params) do
-          { puppet_run_reports: true,
-            agent_major_version: 5 }
+          {
+            puppet_run_reports: true,
+            agent_major_version: 5,
+          }
         end
         let(:facts) do
           {
@@ -379,8 +381,10 @@ describe 'datadog_agent' do
             context 'with user provided paramaters' do
               context 'with a custom dd_url' do
                 let(:params) do
-                  { dd_url: 'https://notaurl.datadoghq.com',
-                    agent_major_version: 5 }
+                  {
+                    dd_url: 'https://notaurl.datadoghq.com',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -391,8 +395,10 @@ describe 'datadog_agent' do
               end
               context 'with a custom proxy_host' do
                 let(:params) do
-                  { proxy_host: 'localhost',
-                    agent_major_version: 5 }
+                  {
+                    proxy_host: 'localhost',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -403,8 +409,10 @@ describe 'datadog_agent' do
               end
               context 'with a custom proxy_port' do
                 let(:params) do
-                  { proxy_port: '1234',
-                    agent_major_version: 5 }
+                  {
+                    proxy_port: '1234',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -415,8 +423,10 @@ describe 'datadog_agent' do
               end
               context 'with a custom proxy_port, specified as an integer' do
                 let(:params) do
-                  { proxy_port: 1234,
-                    agent_major_version: 5 }
+                  {
+                    proxy_port: 1234,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -427,8 +437,10 @@ describe 'datadog_agent' do
               end
               context 'with a custom proxy_user' do
                 let(:params) do
-                  { proxy_user: 'notauser',
-                    agent_major_version: 5 }
+                  {
+                    proxy_user: 'notauser',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -439,8 +451,10 @@ describe 'datadog_agent' do
               end
               context 'with a custom api_key' do
                 let(:params) do
-                  { api_key: 'notakey',
-                    agent_major_version: 5 }
+                  {
+                    api_key: 'notakey',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -451,8 +465,10 @@ describe 'datadog_agent' do
               end
               context 'with a custom hostname' do
                 let(:params) do
-                  { host: 'notahost',
-                    agent_major_version: 5 }
+                  {
+                    host: 'notahost',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -463,8 +479,10 @@ describe 'datadog_agent' do
               end
               context 'with non_local_traffic set to true' do
                 let(:params) do
-                  { non_local_traffic: true,
-                    agent_major_version: 5 }
+                  {
+                    non_local_traffic: true,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -476,8 +494,10 @@ describe 'datadog_agent' do
               # Should expand testing to cover changes to the case upcase
               context 'with log level set to critical' do
                 let(:params) do
-                  { log_level: 'critical',
-                    agent_major_version: 5 }
+                  {
+                    log_level: 'critical',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -488,8 +508,10 @@ describe 'datadog_agent' do
               end
               context 'with a custom hostname' do
                 let(:params) do
-                  { host: 'notahost',
-                    agent_major_version: 5 }
+                  {
+                    host: 'notahost',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -500,8 +522,10 @@ describe 'datadog_agent' do
               end
               context 'with log_to_syslog set to false' do
                 let(:params) do
-                  { log_to_syslog: false,
-                    agent_major_version: 5 }
+                  {
+                    log_to_syslog: false,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -512,8 +536,10 @@ describe 'datadog_agent' do
               end
               context 'with skip_ssl_validation set to true' do
                 let(:params) do
-                  { skip_ssl_validation: true,
-                    agent_major_version: 5 }
+                  {
+                    skip_ssl_validation: true,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -524,8 +550,10 @@ describe 'datadog_agent' do
               end
               context 'with collect_ec2_tags set to yes' do
                 let(:params) do
-                  { collect_ec2_tags: true,
-                    agent_major_version: 5 }
+                  {
+                    collect_ec2_tags: true,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -536,8 +564,10 @@ describe 'datadog_agent' do
               end
               context 'with collect_instance_metadata set to no' do
                 let(:params) do
-                  { collect_instance_metadata: false,
-                    agent_major_version: 5 }
+                  {
+                    collect_instance_metadata: false,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -548,8 +578,10 @@ describe 'datadog_agent' do
               end
               context 'with recent_point_threshold set to 60' do
                 let(:params) do
-                  { recent_point_threshold: '60',
-                    agent_major_version: 5 }
+                  {
+                    recent_point_threshold: '60',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -560,8 +592,10 @@ describe 'datadog_agent' do
               end
               context 'with a custom port set to 17125' do
                 let(:params) do
-                  { listen_port: '17125',
-                    agent_major_version: 5 }
+                  {
+                    listen_port: '17125',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -572,8 +606,10 @@ describe 'datadog_agent' do
               end
               context 'with a custom port set to 17125, specified as an integer' do
                 let(:params) do
-                  { listen_port: 17_125,
-                    agent_major_version: 5 }
+                  {
+                    listen_port: 17_125,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -584,8 +620,10 @@ describe 'datadog_agent' do
               end
               context 'listening for graphite data on port 17124' do
                 let(:params) do
-                  { graphite_listen_port: '17124',
-                    agent_major_version: 5 }
+                  {
+                    graphite_listen_port: '17124',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -596,8 +634,10 @@ describe 'datadog_agent' do
               end
               context 'listening for graphite data on port 17124, port specified as an integer' do
                 let(:params) do
-                  { graphite_listen_port: 17_124,
-                    agent_major_version: 5 }
+                  {
+                    graphite_listen_port: 17_124,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -608,8 +648,10 @@ describe 'datadog_agent' do
               end
               context 'with configuration for a custom checks.d' do
                 let(:params) do
-                  { additional_checksd: '/etc/dd-agent/checks_custom.d',
-                    agent_major_version: 5 }
+                  {
+                    additional_checksd: '/etc/dd-agent/checks_custom.d',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -620,8 +662,10 @@ describe 'datadog_agent' do
               end
               context 'with configuration for a custom checks.d' do
                 let(:params) do
-                  { additional_checksd: '/etc/dd-agent/checks_custom.d',
-                    agent_major_version: 5 }
+                  {
+                    additional_checksd: '/etc/dd-agent/checks_custom.d',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -632,8 +676,10 @@ describe 'datadog_agent' do
               end
               context 'with configuration for a custom checks.d' do
                 let(:params) do
-                  { additional_checksd: '/etc/dd-agent/checks_custom.d',
-                    agent_major_version: 5 }
+                  {
+                    additional_checksd: '/etc/dd-agent/checks_custom.d',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -644,8 +690,10 @@ describe 'datadog_agent' do
               end
               context 'with using the Tornado HTTP client' do
                 let(:params) do
-                  { use_curl_http_client: true,
-                    agent_major_version: 5 }
+                  {
+                    use_curl_http_client: true,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -656,8 +704,10 @@ describe 'datadog_agent' do
               end
               context 'with a custom bind_host' do
                 let(:params) do
-                  { bind_host: 'test',
-                    agent_major_version: 5 }
+                  {
+                    bind_host: 'test',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -668,8 +718,10 @@ describe 'datadog_agent' do
               end
               context 'with pup enabled' do
                 let(:params) do
-                  { use_pup: true,
-                    agent_major_version: 5 }
+                  {
+                    use_pup: true,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -680,8 +732,10 @@ describe 'datadog_agent' do
               end
               context 'with a custom pup_port' do
                 let(:params) do
-                  { pup_port: '17126',
-                    agent_major_version: 5 }
+                  {
+                    pup_port: '17126',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -692,8 +746,10 @@ describe 'datadog_agent' do
               end
               context 'with a custom pup_port, specified as an integer' do
                 let(:params) do
-                  { pup_port: 17_126,
-                    agent_major_version: 5 }
+                  {
+                    pup_port: 17_126,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -704,8 +760,10 @@ describe 'datadog_agent' do
               end
               context 'with a custom pup_interface' do
                 let(:params) do
-                  { pup_interface: 'notalocalhost',
-                    agent_major_version: 5 }
+                  {
+                    pup_interface: 'notalocalhost',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -716,8 +774,10 @@ describe 'datadog_agent' do
               end
               context 'with a custom pup_url' do
                 let(:params) do
-                  { pup_url: 'http://localhost:17126',
-                    agent_major_version: 5 }
+                  {
+                    pup_url: 'http://localhost:17126',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -728,8 +788,10 @@ describe 'datadog_agent' do
               end
               context 'with use_dogstatsd set to no' do
                 let(:params) do
-                  { use_dogstatsd: false,
-                    agent_major_version: 5 }
+                  {
+                    use_dogstatsd: false,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -740,8 +802,10 @@ describe 'datadog_agent' do
               end
               context 'with use_dogstatsd set to yes' do
                 let(:params) do
-                  { use_dogstatsd: true,
-                    agent_major_version: 5 }
+                  {
+                    use_dogstatsd: true,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -752,8 +816,10 @@ describe 'datadog_agent' do
               end
               context 'with dogstatsd_port set to 8126 - must be specified as an integer!' do
                 let(:params) do
-                  { dogstatsd_port: 8126,
-                    agent_major_version: 5 }
+                  {
+                    dogstatsd_port: 8126,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -764,8 +830,10 @@ describe 'datadog_agent' do
               end
               context 'with dogstatsd_port set to 8126' do
                 let(:params) do
-                  { dogstatsd_port: 8126,
-                    agent_major_version: 5 }
+                  {
+                    dogstatsd_port: 8126,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -776,8 +844,10 @@ describe 'datadog_agent' do
               end
               context 'with dogstatsd_target set to localhost:17124' do
                 let(:params) do
-                  { dogstatsd_target: 'http://localhost:17124',
-                    agent_major_version: 5 }
+                  {
+                    dogstatsd_target: 'http://localhost:17124',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -788,8 +858,10 @@ describe 'datadog_agent' do
               end
               context 'with dogstatsd_interval set to 5' do
                 let(:params) do
-                  { dogstatsd_interval: '5',
-                    agent_major_version: 5 }
+                  {
+                    dogstatsd_interval: '5',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -800,8 +872,10 @@ describe 'datadog_agent' do
               end
               context 'with dogstatsd_interval set to 5' do
                 let(:params) do
-                  { dogstatsd_interval: '5',
-                    agent_major_version: 5 }
+                  {
+                    dogstatsd_interval: '5',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -812,8 +886,10 @@ describe 'datadog_agent' do
               end
               context 'with dogstatsd_normalize set to false' do
                 let(:params) do
-                  { dogstatsd_normalize: false,
-                    agent_major_version: 5 }
+                  {
+                    dogstatsd_normalize: false,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -824,8 +900,10 @@ describe 'datadog_agent' do
               end
               context 'with statsd_forward_host set to localhost:3958' do
                 let(:params) do
-                  { statsd_forward_host: 'localhost:3958',
-                    agent_major_version: 5 }
+                  {
+                    statsd_forward_host: 'localhost:3958',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -836,8 +914,10 @@ describe 'datadog_agent' do
               end
               context 'with statsd_forward_port set to 8126' do
                 let(:params) do
-                  { statsd_forward_port: '8126',
-                    agent_major_version: 5 }
+                  {
+                    statsd_forward_port: '8126',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -848,8 +928,10 @@ describe 'datadog_agent' do
               end
               context 'with statsd_forward_port set to 8126, specified as an integer' do
                 let(:params) do
-                  { statsd_forward_port: 8126,
-                    agent_major_version: 5 }
+                  {
+                    statsd_forward_port: 8126,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -860,8 +942,10 @@ describe 'datadog_agent' do
               end
               context 'with device_blacklist_re set to test' do
                 let(:params) do
-                  { device_blacklist_re: 'test',
-                    agent_major_version: 5 }
+                  {
+                    device_blacklist_re: 'test',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -872,8 +956,10 @@ describe 'datadog_agent' do
               end
               context 'with device_blacklist_re set to test' do
                 let(:params) do
-                  { device_blacklist_re: 'test',
-                    agent_major_version: 5 }
+                  {
+                    device_blacklist_re: 'test',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -884,9 +970,11 @@ describe 'datadog_agent' do
               end
               context 'with ganglia_host set to localhost and ganglia_port set to 12345' do
                 let(:params) do
-                  { ganglia_host: 'testhost',
+                  {
+                    ganglia_host: 'testhost',
                     ganglia_port: '12345',
-                    agent_major_version: 5 }
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -902,9 +990,11 @@ describe 'datadog_agent' do
               end
               context 'with ganglia_host set to localhost and ganglia_port set to 12345, port specified as an integer' do
                 let(:params) do
-                  { ganglia_host: 'testhost',
+                  {
+                    ganglia_host: 'testhost',
                     ganglia_port: 12_345,
-                    agent_major_version: 5 }
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -915,8 +1005,10 @@ describe 'datadog_agent' do
               end
               context 'with dogstreams set to /path/to/log1:/path/to/parser' do
                 let(:params) do
-                  { dogstreams: ['/path/to/log1:/path/to/parser'],
-                    agent_major_version: 5 }
+                  {
+                    dogstreams: ['/path/to/log1:/path/to/parser'],
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -927,8 +1019,10 @@ describe 'datadog_agent' do
               end
               context 'with custom_emitters set to /test/emitter' do
                 let(:params) do
-                  { custom_emitters: '/test/emitter/',
-                    agent_major_version: 5 }
+                  {
+                    custom_emitters: '/test/emitter/',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -939,8 +1033,10 @@ describe 'datadog_agent' do
               end
               context 'with custom_emitters set to /test/emitter' do
                 let(:params) do
-                  { custom_emitters: '/test/emitter/',
-                    agent_major_version: 5 }
+                  {
+                    custom_emitters: '/test/emitter/',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -951,8 +1047,10 @@ describe 'datadog_agent' do
               end
               context 'with collector_log_file set to /test/log' do
                 let(:params) do
-                  { collector_log_file: '/test/log',
-                    agent_major_version: 5 }
+                  {
+                    collector_log_file: '/test/log',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -963,8 +1061,10 @@ describe 'datadog_agent' do
               end
               context 'with forwarder_log_file set to /test/log' do
                 let(:params) do
-                  { forwarder_log_file: '/test/log',
-                    agent_major_version: 5 }
+                  {
+                    forwarder_log_file: '/test/log',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -975,8 +1075,10 @@ describe 'datadog_agent' do
               end
               context 'with forwarder_log_file set to /test/log' do
                 let(:params) do
-                  { forwarder_log_file: '/test/log',
-                    agent_major_version: 5 }
+                  {
+                    forwarder_log_file: '/test/log',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -987,8 +1089,10 @@ describe 'datadog_agent' do
               end
               context 'with dogstatsd_log_file set to /test/log' do
                 let(:params) do
-                  { dogstatsd_log_file: '/test/log',
-                    agent_major_version: 5 }
+                  {
+                    dogstatsd_log_file: '/test/log',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -999,8 +1103,10 @@ describe 'datadog_agent' do
               end
               context 'with pup_log_file set to /test/log' do
                 let(:params) do
-                  { pup_log_file: '/test/log',
-                    agent_major_version: 5 }
+                  {
+                    pup_log_file: '/test/log',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -1011,8 +1117,10 @@ describe 'datadog_agent' do
               end
               context 'with syslog location set to localhost' do
                 let(:params) do
-                  { syslog_host: 'localhost',
-                    agent_major_version: 5 }
+                  {
+                    syslog_host: 'localhost',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -1023,8 +1131,10 @@ describe 'datadog_agent' do
               end
               context 'with syslog port set to 8080' do
                 let(:params) do
-                  { syslog_port: '8080',
-                    agent_major_version: 5 }
+                  {
+                    syslog_port: '8080',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -1035,8 +1145,10 @@ describe 'datadog_agent' do
               end
               context 'with syslog port set to 8080, specified as an integer' do
                 let(:params) do
-                  { syslog_port: 8080,
-                    agent_major_version: 5 }
+                  {
+                    syslog_port: 8080,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -1047,8 +1159,10 @@ describe 'datadog_agent' do
               end
               context 'with apm_enabled set to true' do
                 let(:params) do
-                  { apm_enabled: true,
-                    agent_major_version: 5 }
+                  {
+                    apm_enabled: true,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -1059,9 +1173,11 @@ describe 'datadog_agent' do
               end
               context 'with apm_enabled set to true and env specified' do
                 let(:params) do
-                  { apm_enabled: true,
+                  {
+                    apm_enabled: true,
                     apm_env: 'foo',
-                    agent_major_version: 5 }
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -1087,12 +1203,14 @@ describe 'datadog_agent' do
               end
               context 'with apm_enabled and apm_analyzed_spans set' do
                 let(:params) do
-                  { apm_enabled: true,
+                  {
+                    apm_enabled: true,
                     agent_major_version: 5,
                     apm_analyzed_spans: {
                       'foo|bar' => 0.5,
                       'haz|qux' => 0.1,
-                    } }
+                    },
+                  }
                 end
 
                 it {
@@ -1118,12 +1236,14 @@ describe 'datadog_agent' do
               end
               context 'with service_discovery enabled' do
                 let(:params) do
-                  { service_discovery_backend: 'docker',
+                  {
+                    service_discovery_backend: 'docker',
                     sd_config_backend: 'etcd',
                     sd_backend_host: 'localhost',
                     sd_backend_port: 8080,
                     sd_jmx_enable: true,
-                    agent_major_version: 5 }
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -1154,8 +1274,10 @@ describe 'datadog_agent' do
               end
               context 'with extra_template enabled' do
                 let(:params) do
-                  { extra_template: 'custom_datadog/extra_template_test.erb',
-                    agent_major_version: 5 }
+                  {
+                    extra_template: 'custom_datadog/extra_template_test.erb',
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {
@@ -1231,8 +1353,10 @@ describe 'datadog_agent' do
               end
               context 'with process_agent enabled' do
                 let(:params) do
-                  { process_enabled: true,
-                    agent_major_version: 5 }
+                  {
+                    process_enabled: true,
+                    agent_major_version: 5,
+                  }
                 end
 
                 it {

@@ -133,3 +133,5 @@ Style/SymbolProc:
   Enabled: false
 Style/NumericPredicate:
   Enabled: false
+Layout/FirstHashElementLineBreak:
+  Enabled: true

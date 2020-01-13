@@ -71,6 +71,12 @@ instances:
 <% if instance['days_critical'] -%>
     days_critical: <%= instance['days_critical'] %>
 <% end -%>
+<% if instance['check_hostname'] -%>
+    check_hostname: <%= instance['check_hostname'] %>
+<% end -%>
+<% if instance['ssl_server_name'] -%>
+    ssl_server_name: <%= instance['ssl_server_name'] %>
+<% end -%>
 <% end -%>
 <% end -%>
 <% if instance['headers'] and ! instance['headers'].empty? -%>

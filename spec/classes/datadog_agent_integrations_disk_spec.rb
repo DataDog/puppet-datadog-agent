@@ -25,7 +25,11 @@ describe 'datadog_agent::integrations::disk' do
       it { is_expected.to contain_file(conf_file).that_notifies("Service[#{SERVICE_NAME}]") }
 
       context 'compile errors for incorrect values' do
-        let(:params) { { use_mount: 'heaps' } }
+        let(:params) do
+          {
+            use_mount: 'heaps',
+          }
+        end
 
         it do
           expect { is_expected.to compile }.to raise_error(%r{error\s+during\s+compilation})
@@ -64,9 +68,7 @@ instances:
         HEREDOC
         end
 
-        it {
-          is_expected.to contain_file(conf_file).with_content(yaml_conf)
-        }
+        it { is_expected.to contain_file(conf_file).with_content(yaml_conf) }
       end
 
       context 'we handle new disk configuration option' do
@@ -114,9 +116,7 @@ instances:
         HEREDOC
         end
 
-        it {
-          is_expected.to contain_file(conf_file).with_content(yaml_conf)
-        }
+        it { is_expected.to contain_file(conf_file).with_content(yaml_conf) }
       end
     end
   end

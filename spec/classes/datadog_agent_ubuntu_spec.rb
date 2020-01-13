@@ -5,7 +5,11 @@ describe 'datadog_agent::ubuntu' do
     if RSpec::Support::OS.windows?
       return
     end
-    let(:params) { { agent_major_version: 5 } }
+    let(:params) do
+      {
+        agent_major_version: 5,
+      }
+    end
     let(:facts) do
       {
         osfamily: 'debian',
@@ -85,7 +89,11 @@ describe 'datadog_agent::ubuntu' do
   end
 
   context 'agent 6' do
-    let(:params) { { agent_major_version: 6 } }
+    let(:params) do
+      {
+        agent_major_version: 6,
+      }
+    end
 
     let(:facts) do
       {
@@ -152,7 +160,11 @@ describe 'datadog_agent::ubuntu' do
   end
 
   context 'agent 7' do
-    let(:params) { { agent_major_version: 7 } }
+    let(:params) do
+      {
+        agent_major_version: 7,
+      }
+    end
 
     let(:facts) do
       {

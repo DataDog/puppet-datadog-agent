@@ -20,8 +20,17 @@ describe 'datadog_agent' do
     end
 
     context 'autodetect major version agent 5' do
-      let(:params) { { agent_version: '5.15.1' } }
-      let(:facts) { { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
+      let(:params) do
+        {
+          agent_version: '5.15.1',
+        }
+      end
+      let(:facts) do
+        {
+          osfamily: 'debian',
+          operatingsystem: 'Ubuntu',
+        }
+      end
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
@@ -30,8 +39,17 @@ describe 'datadog_agent' do
     end
 
     context 'autodetect major version agent 6' do
-      let(:params) { { agent_version: '6.15.1' } }
-      let(:facts) { { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
+      let(:params) do
+        {
+          agent_version: '6.15.1',
+        }
+      end
+      let(:facts) do
+        {
+          osfamily: 'debian',
+          operatingsystem: 'Ubuntu',
+        }
+      end
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
@@ -40,8 +58,17 @@ describe 'datadog_agent' do
     end
 
     context 'autodetect major version agent 7' do
-      let(:params) { { agent_version: '7.15.1' } }
-      let(:facts) { { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
+      let(:params) do
+        {
+          agent_version: '7.15.1',
+        }
+      end
+      let(:facts) do
+        {
+          osfamily: 'debian',
+          operatingsystem: 'Ubuntu',
+        }
+      end
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
@@ -50,8 +77,17 @@ describe 'datadog_agent' do
     end
 
     context 'autodetect major version agent with suffix and release' do
-      let(:params) { { agent_version: '1:6.15.1~rc.1-1' } }
-      let(:facts) { { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
+      let(:params) do
+        {
+          agent_version: '1:6.15.1~rc.1-1',
+        }
+      end
+      let(:facts) do
+        {
+          osfamily: 'debian',
+          operatingsystem: 'Ubuntu',
+        }
+      end
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
@@ -60,8 +96,17 @@ describe 'datadog_agent' do
     end
 
     context 'autodetect major version agent with windows suffix and release' do
-      let(:params) { { agent_version: '1:6.15.1-rc.1-1' } }
-      let(:facts) { { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
+      let(:params) do
+        {
+          agent_version: '1:6.15.1-rc.1-1',
+        }
+      end
+      let(:facts) do
+        {
+          osfamily: 'debian',
+          operatingsystem: 'Ubuntu',
+        }
+      end
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
@@ -70,8 +115,17 @@ describe 'datadog_agent' do
     end
 
     context 'autodetect major version agent with release' do
-      let(:params) { { agent_version: '1:6.15.1-1' } }
-      let(:facts) { { osfamily: 'debian', operatingsystem: 'Ubuntu' } }
+      let(:params) do
+        {
+          agent_version: '1:6.15.1-1',
+        }
+      end
+      let(:facts) do
+        {
+          osfamily: 'debian',
+          operatingsystem: 'Ubuntu',
+        }
+      end
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
@@ -1474,7 +1528,11 @@ describe 'datadog_agent' do
       end
 
       describe "datadog_agent 6 class with reports on #{operatingsystem}" do
-        let(:params) { { puppet_run_reports: true } }
+        let(:params) do
+          {
+            puppet_run_reports: true,
+          }
+        end
         let(:facts) do
           {
             operatingsystem: operatingsystem,
@@ -1496,7 +1554,11 @@ describe 'datadog_agent' do
       end
 
       describe "datadog_agent 6 class common actions on #{operatingsystem}" do
-        let(:params) { { puppet_run_reports: false } }
+        let(:params) do
+          {
+            puppet_run_reports: false,
+          }
+        end
         let(:facts) do
           {
             operatingsystem: operatingsystem,

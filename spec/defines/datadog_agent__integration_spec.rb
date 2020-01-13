@@ -16,7 +16,9 @@ describe 'datadog_agent::integration' do
       let(:params) do
         {
           instances: [
-            { 'one' => 'two' },
+            {
+              one: 'two',
+            },
           ],
         }
       end
@@ -38,7 +40,9 @@ describe 'datadog_agent::integration' do
         let(:params) do
           {
             instances: [
-              { 'one' => 'two' },
+              {
+                one: 'two',
+              },
             ],
             logs: ['one', 'two'],
           }

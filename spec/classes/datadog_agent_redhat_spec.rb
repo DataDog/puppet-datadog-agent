@@ -16,7 +16,12 @@ describe 'datadog_agent::redhat' do
 
     # it should install the mirror
     context 'with manage_repo => true' do
-      let(:params) { { manage_repo: true, agent_major_version: 5 } }
+      let(:params) do
+        {
+          manage_repo: true,
+          agent_major_version: 5,
+        }
+      end
 
       it do
         is_expected.to contain_yumrepo('datadog')
@@ -27,7 +32,11 @@ describe 'datadog_agent::redhat' do
       end
     end
     context 'with manage_repo => false' do
-      let(:params) { { manage_repo: false, agent_major_version: 5 } }
+      let(:params) do
+        {
+          manage_repo: false, agent_major_version: 5
+        }
+      end
 
       it do
         is_expected.not_to contain_yumrepo('datadog')
@@ -79,7 +88,11 @@ describe 'datadog_agent::redhat' do
 
     # it should install the mirror
     context 'with manage_repo => true' do
-      let(:params) { { manage_repo: true, agent_major_version: 6 } }
+      let(:params) do
+        {
+          manage_repo: true, agent_major_version: 6
+        }
+      end
 
       it do
         is_expected.to contain_yumrepo('datadog')
@@ -90,7 +103,11 @@ describe 'datadog_agent::redhat' do
       end
     end
     context 'with manage_repo => false' do
-      let(:params) { { manage_repo: false, agent_major_version: 6 } }
+      let(:params) do
+        {
+          manage_repo: false, agent_major_version: 6
+        }
+      end
 
       it do
         is_expected.not_to contain_yumrepo('datadog')
@@ -142,7 +159,11 @@ describe 'datadog_agent::redhat' do
 
     # it should install the mirror
     context 'with manage_repo => true' do
-      let(:params) { { manage_repo: true, agent_major_version: 7 } }
+      let(:params) do
+        {
+          manage_repo: true, agent_major_version: 7
+        }
+      end
 
       it do
         is_expected.to contain_yumrepo('datadog')
@@ -153,7 +174,12 @@ describe 'datadog_agent::redhat' do
       end
     end
     context 'with manage_repo => false' do
-      let(:params) { { manage_repo: false, agent_major_version: 7 } }
+      let(:params) do
+        {
+          manage_repo: false,
+          agent_major_version: 7,
+        }
+      end
 
       it do
         is_expected.not_to contain_yumrepo('datadog')

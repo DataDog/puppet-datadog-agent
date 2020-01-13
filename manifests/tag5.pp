@@ -9,7 +9,7 @@ define datadog_agent::tag5(
 
     if is_array($value){
       $tags = prefix($value, "${tag_name}:")
-      datadog_agent::tag{$tags: }
+      datadog_agent::tag5{$tags: }
     } else {
       if $value {
         concat::fragment{ "datadog tag ${tag_name}:${value}":

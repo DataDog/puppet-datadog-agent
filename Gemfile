@@ -28,6 +28,9 @@ group :development do
     gem "puppet-lint", "~> 2.4.2"
     gem "metadata-json-lint", "~> 1.2.2"
     gem "puppet-syntax", "~> 2.5.0"
-    gem "rspec-puppet", '2.6.9'
+    gem "rspec-puppet", "~> 2.6.9"
+    gem "rubocop", "~> 0.49.1"
+    gem "rubocop-i18n", "~> 1.2.0"
+    gem "rubocop-rspec", "~> 1.16.0"
   end
 end

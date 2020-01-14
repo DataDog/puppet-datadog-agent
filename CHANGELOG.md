@@ -1,6 +1,14 @@
 Changes
 =======
 
+# 3.1.0 / 2020-01-14
+
+* [FEATURE] Accept the same version string in Debian/Ubuntu than in other OSes when pinning the Agent. See [#591][]
+* [FEATURE] Add the `check_hostname` and `ssl_server_name` parameters to the `http_check` integration. See [#599][] (thanks [@asenci][])
+* [BUGFIX] Remove include from `system_probe.pp` that caused error "This Function Call is unacceptable as a top level construct in this location" on recent Puppet versions. See [#596][] (thanks again [@asenci][])
+* [BUGFIX] Fix broken `facts_to_tags` on Agent 5. See [#598][]
+* [CHORE] Migrate project to PDK (Puppet Development Kit). See [#597][]
+
 # 3.0.0 / 2019-12-18
 
 ### Overview
@@ -30,20 +38,20 @@ then it is safe to upgrade.
 
 ### Notes
 
-* [FEATURE] Add Network Performance Monitoring support. See [#584][]. (Thanks [@asenci][]))
-* [BUGFIX] Fix logs section of mysql.yaml being ignored. See [#587][]. (Thanks [@asenci][]))
+* [FEATURE] Add Network Performance Monitoring support. See [#584][]. (Thanks [@asenci][])
+* [BUGFIX] Fix logs section of mysql.yaml being ignored. See [#587][]. (Thanks [@asenci][])
 
 # 2.9.0 / 2019-11-20
 
 ### Notes
 
 * [FEATURE] Official Windows support.
-* [FEATURE] Support latest version of puppet libraries. See [#576][]. (Thanks [@flyinbutrs][]))
-* [FEATURE] Support Oracle Linux. See [#574][]. (Thanks [@atayts][]))
-* [FEATURE] Add logs parameter to mysql integration. See [#572][]. (Thanks [@asenci][]))
-* [BUGFIX] Remove unnecessary restart of the agent on Windows. [#562][]. (Thanks [@jvanbrunschot][]))
+* [FEATURE] Support latest version of puppet libraries. See [#576][]. (Thanks [@flyinbutrs][])
+* [FEATURE] Support Oracle Linux. See [#574][]. (Thanks [@atayts][])
+* [FEATURE] Add logs parameter to mysql integration. See [#572][]. (Thanks [@asenci][])
+* [BUGFIX] Remove unnecessary restart of the agent on Windows. [#562][]. (Thanks [@jvanbrunschot][])
 * [BUGFIX] Give Administrator group access to datadog.yaml. See [#571][].
-* [BUGFIX] Fix import of RPM key on recent versions of GPG. See [#581][]. (Thanks [@devinmatte][]))
+* [BUGFIX] Fix import of RPM key on recent versions of GPG. See [#581][]. (Thanks [@devinmatte][])
 * [BUGFIX] Blacklist version 6.14.0 and 6.14.1 on Windows. See [#578][].
 
 # 2.8.0 / 2019-09-18
@@ -52,7 +60,7 @@ then it is safe to upgrade.
 
 * [FEATURE] Initial Windows support. See [#557][]
 * [FEATURE] Add ignore_ssl_warning to HTTP check. See [#556][] (Thanks [@zabacad][])
-* [FEATURE] Add logs_open_files_limit parameter [#548][]. (Thanks [@rmrf-run][]))
+* [FEATURE] Add logs_open_files_limit parameter [#548][]. (Thanks [@rmrf-run][])
 * [BUGFIX] Fix a warning caused by calling `validate_legacy` with the default `additional_checksd` value of `undef`. See [#551][].
 * [BUGFIX] Fix Redis integration, where tags weren't evaluated when the keys param was empty. See [#558][] (Thanks [@jubagarie][])
 * [DOCUMENTATION] Fix doc for HTTP check include_content. See [#555][] (Thanks [@zabacad][])
@@ -717,6 +725,11 @@ Please read the [docs]() for more details.
 [#584]: https://github.com/DataDog/puppet-datadog-agent/issues/584
 [#587]: https://github.com/DataDog/puppet-datadog-agent/issues/587
 [#588]: https://github.com/DataDog/puppet-datadog-agent/issues/588
+[#591]: https://github.com/DataDog/puppet-datadog-agent/issues/591
+[#596]: https://github.com/DataDog/puppet-datadog-agent/issues/596
+[#597]: https://github.com/DataDog/puppet-datadog-agent/issues/597
+[#598]: https://github.com/DataDog/puppet-datadog-agent/issues/598
+[#599]: https://github.com/DataDog/puppet-datadog-agent/issues/599
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ColinHebert]: https://github.com/ColinHebert

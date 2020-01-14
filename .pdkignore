@@ -41,3 +41,6 @@
 /spec/
 /.vscode/
 /tests/
+/.github/
+/.circleci/
+/.pre-commit-config.yaml

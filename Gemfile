@@ -18,12 +18,19 @@ group :development do
   gem "json", '= 2.0.4',                                           require: false if Gem::Requirement.create('~> 2.4.2').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
   gem "json", '= 2.1.0',                                           require: false if Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
   gem "rb-readline", '= 0.5.5',                                    require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "librarian-puppet"
+  gem "kitchen-puppet"
+  gem "kitchen-vagrant"
+  gem "kitchen-verifier-serverspec"
+
   if RUBY_VERSION >= '2.3'
+    gem "test-kitchen"
     gem "puppet-module-posix-default-r#{minor_version}", '~> 0.3', require: false, platforms: [:ruby]
     gem "puppet-module-posix-dev-r#{minor_version}", '~> 0.3',     require: false, platforms: [:ruby]
     gem "puppet-module-win-default-r#{minor_version}", '~> 0.3',   require: false, platforms: [:mswin, :mingw, :x64_mingw]
     gem "puppet-module-win-dev-r#{minor_version}", '~> 0.3',       require: false, platforms: [:mswin, :mingw, :x64_mingw]
   else
+    gem "test-kitchen", '~> 1.16.0'
     gem "puppetlabs_spec_helper", "~> 2.14.1"
     gem "puppet-lint", "~> 2.4.2"
     gem "metadata-json-lint", "~> 1.2.2"

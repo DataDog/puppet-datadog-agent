@@ -4,7 +4,7 @@ driver:
 
 provisioner:
   name: puppet_apply
-  manifests_path: tests/environment/manifests
+  manifests_path: environments/etc/manifests
   modules_path: /tmp/modules
   require_puppet_repo: true
   require_chef_for_busser: false
@@ -16,19 +16,19 @@ platforms:
   - name: centos7
     driver_plugin: vagrant
     driver:
-      vagrantfile_erb: tests/centos7/Vagrantfile
+      vagrantfile_erb: environments/centos7/Vagrantfile
       provision: true
 
   - name: centos8
     driver_plugin: vagrant
     driver:
-      vagrantfile_erb: tests/centos8/Vagrantfile
+      vagrantfile_erb: environments/centos8/Vagrantfile
       provision: true
 
   - name: ubuntu1604
     driver_plugin: vagrant
     driver:
-      vagrantfile_erb: tests/ubuntu1604/Vagrantfile
+      vagrantfile_erb: environments/ubuntu1604/Vagrantfile
       provision: true
 
 verifier:

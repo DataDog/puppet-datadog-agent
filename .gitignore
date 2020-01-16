@@ -24,10 +24,11 @@ spec/fixtures
 .rbenv-gemsets
 .ruby-version
 
-tests/centos/.vagrant
-tests/ubuntu/.vagrant
+environments/**/.vagrant
 
 .DS_Store
 .project
 .envrc
 /inventory.yaml
+
+.kitchen

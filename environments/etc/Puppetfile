@@ -1,4 +1,3 @@
-mod 'datadog-datadog_agent'
 mod 'puppetlabs-apt', '2.4.0'
 mod 'puppetlabs-concat', '4.0.0'
 mod 'puppetlabs-puppetserver_gem', '1.0.0'

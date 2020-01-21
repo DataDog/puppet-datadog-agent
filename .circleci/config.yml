@@ -263,6 +263,28 @@ jobs:
           name: Run tests
           command: rvm $RUBY_VERSION --verbose do bundle exec rake test
 
+  kitchen-tests:
+    machine: true
+    environment:
+      KITCHEN_LOCAL_YAML: .kitchen.docker.yml
+      STRICT_VARIABLES: 'yes'
+      RUBY_VERSION: '2.5.3'
+    steps:
+      - checkout
+      - run:
+          name: Install Ruby versions
+          command: rvm install $RUBY_VERSION
+      - run:
+          name: Install bundler
+          command: rvm $RUBY_VERSION --verbose do gem install bundler:1.17.3
+      - run:
+          name: Install gem dependencies
+          command: rvm $RUBY_VERSION --verbose do bundle install --path .bundle
+      - run:
+          name: Execute Kitchen tests
+          command: rvm $RUBY_VERSION --verbose do bundle exec rake circle
+          no_output_timeout: 900
+
 workflows:
   version: 2
   build_and_test:
@@ -297,3 +319,4 @@ workflows:
       - specs-ruby26-puppet60
       - specs-ruby26-puppet65
       - verify-gemfile-lock-dependencies
+      - kitchen-tests

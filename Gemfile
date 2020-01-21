@@ -21,6 +21,7 @@ group :development do
   gem "librarian-puppet"
   gem "kitchen-puppet"
   gem "kitchen-vagrant"
+  gem "kitchen-docker"
   gem "kitchen-verifier-serverspec"
 
   if RUBY_VERSION >= '2.3'

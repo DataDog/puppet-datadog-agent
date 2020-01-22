@@ -56,6 +56,8 @@ GEM
     json-schema (2.8.1)
       addressable (>= 2.4)
     json_pure (1.8.6)
+    kitchen-docker (2.9.0)
+      test-kitchen (>= 1.0.0)
     kitchen-puppet (3.5.1)
       librarian-puppet (>= 3.0)
       net-ssh (>= 3)
@@ -312,6 +314,7 @@ PLATFORMS
 DEPENDENCIES
   fast_gettext
   json (= 2.1.0)
+  kitchen-docker
   kitchen-puppet
   kitchen-vagrant
   kitchen-verifier-serverspec

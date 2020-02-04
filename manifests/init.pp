@@ -200,7 +200,7 @@
 #       Where to download the agent from. When undef, it uses the following defaults:
 #       APT: https://apt.datadoghq.com/
 #       RPM: https://yum.datadoghq.com/stable/7/x86_64/ (with matching agent version and architecture)
-#       Windows: https://https://s3.amazonaws.com/ddagent-windows-stable/
+#       Windows: https://https://ddagent-windows-stable.s3.amazonaws.com/
 #       String. Default: undef
 #   $apt_release
 #       The distribution channel to be used for the APT repo. Eg: 'stable' or 'beta'.

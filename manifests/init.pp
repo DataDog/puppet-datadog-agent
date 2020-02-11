@@ -388,21 +388,18 @@ class datadog_agent(
     default:    { $_loglevel = 'INFO' }
   }
 
-  if $use_apt_backup_keyserver {
-    $_apt_keyserver = $apt_backup_keyserver
-  } else {
-    $_apt_keyserver = $apt_keyserver
-  }
-
+  # Install agent
   if $manage_install {
     case $::operatingsystem {
       'Ubuntu','Debian' : {
+        if $use_apt_backup_keyserver {
+          $_apt_keyserver = $apt_backup_keyserver
+        } else {
+          $_apt_keyserver = $apt_keyserver
+        }
         class { 'datadog_agent::ubuntu':
           agent_major_version   => $_agent_major_version,
           agent_version         => $agent_version,
-          service_ensure        => $service_ensure,
-          service_enable        => $service_enable,
-          service_provider      => $service_provider,
           agent_repo_uri        => $agent_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
@@ -415,9 +412,6 @@ class datadog_agent(
           agent_repo_uri      => $agent_repo_uri,
           manage_repo         => $manage_repo,
           agent_version       => $agent_version,
-          service_ensure      => $service_ensure,
-          service_enable      => $service_enable,
-          service_provider    => $service_provider,
         }
       }
       'Windows' : {
@@ -425,12 +419,9 @@ class datadog_agent(
           agent_major_version => $_agent_major_version,
           agent_repo_uri      => $agent_repo_uri,
           agent_version       => $agent_version,
-          service_ensure      => $service_ensure,
-          service_enable      => $service_enable,
           msi_location        => $win_msi_location,
           api_key             => $api_key,
           hostname            => $host,
-          service_name        => $datadog_agent::params::service_name,
           tags                => $local_tags,
           ensure              => $win_ensure
         }
@@ -441,6 +432,27 @@ class datadog_agent(
       default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
     }
   }
+
+  # Start service
+  if ($::operatingsystem == 'Windows') {
+    if ($win_ensure == present) {
+      service { $datadog_agent::params::service_name:
+        ensure  => $service_ensure,
+        enable  => $service_enable,
+        require => Package[$datadog_agent::params::package_name]
+      }
+    }
+  } else {
+    service { $datadog_agent::params::service_name:
+      ensure    => $service_ensure,
+      enable    => $service_enable,
+      provider  => $service_provider,
+      hasstatus => false,
+      pattern   => 'dd-agent',
+      require   => Package[$datadog_agent::params::package_name],
+    }
+  }
+
 
   if ($::operatingsystem != 'Windows') {
     if ($dd_groups) {

@@ -6,14 +6,11 @@
 class datadog_agent::windows(
   Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
   String $agent_version = $datadog_agent::params::agent_version,
-  String $service_ensure = 'running',
   Optional[String] $agent_repo_uri = undef,
   String $msi_location = 'C:/Windows/temp',
   String $api_key = $datadog_agent::api_key,
   String $hostname = $datadog_agent::host,
-  String $service_name = $datadog_agent::service_name_win,
   Array  $tags = $datadog_agent::tags,
-  Boolean $service_enable = true,
   Enum['present', 'absent'] $ensure = 'present',
 ) inherits datadog_agent::params {
 
@@ -63,11 +60,6 @@ class datadog_agent::windows(
       install_options => ['/norestart', {'APIKEY' => $api_key, 'HOSTNAME' => $hostname, 'TAGS' => $tags}]
     }
 
-    service { $service_name:
-      ensure  => $service_ensure,
-      enable  => $service_enable,
-      require => Package[$datadog_agent::params::package_name]
-    }
   } else {
     exec { 'datadog_6_14_fix':
       command  => "((New-Object System.Net.WebClient).DownloadFile('https://s3.amazonaws.com/ddagent-windows-stable/scripts/fix_6_14.ps1', \$env:temp + '\\fix_6_14.ps1')); &\$env:temp\\fix_6_14.ps1",

@@ -10,9 +10,6 @@ class datadog_agent::ubuntu(
   Optional[String] $agent_repo_uri = undef,
   String $release = $datadog_agent::params::apt_default_release,
   Boolean $skip_apt_key_trusting = false,
-  String $service_ensure = 'running',
-  Boolean $service_enable = true,
-  Optional[String] $service_provider = undef,
   Optional[String] $apt_keyserver = undef,
 ) inherits datadog_agent::params {
 
@@ -77,22 +74,4 @@ class datadog_agent::ubuntu(
                 Class['apt::update']],
   }
 
-  if $service_provider {
-    service { $datadog_agent::params::service_name:
-      ensure    => $service_ensure,
-      enable    => $service_enable,
-      provider  => $service_provider,
-      hasstatus => false,
-      pattern   => 'dd-agent',
-      require   => Package[$datadog_agent::params::package_name],
-    }
-  } else {
-    service { $datadog_agent::params::service_name:
-      ensure    => $service_ensure,
-      enable    => $service_enable,
-      hasstatus => false,
-      pattern   => 'dd-agent',
-      require   => Package[$datadog_agent::params::package_name],
-    }
-  }
 }

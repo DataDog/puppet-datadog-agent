@@ -431,6 +431,10 @@ class datadog_agent(
       }
       default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
     }
+  } else {
+    package { $datadog_agent::params::package_name:
+      ensure  => present,
+    }
   }
 
   # Start service

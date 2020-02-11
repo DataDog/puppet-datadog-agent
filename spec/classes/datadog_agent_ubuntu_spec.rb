@@ -62,30 +62,6 @@ describe 'datadog_agent::ubuntu' do
         .that_requires('exec[apt_update]')
     end
 
-    # it should be able to start the service and enable the service by default
-    it do
-      is_expected.to contain_service('datadog-agent')\
-        .that_requires('package[datadog-agent]')
-    end
-
-    context 'overriding provider' do
-      let(:params) do
-        {
-          service_provider: 'upstart',
-        }
-      end
-
-      it do
-        is_expected.to contain_service('datadog-agent')\
-          .that_requires('package[datadog-agent]')
-      end
-      it do
-        is_expected.to contain_service('datadog-agent').with(
-          'provider' => 'upstart',
-          'ensure' => 'running',
-        )
-      end
-    end
   end
 
   context 'agent 6' do
@@ -133,30 +109,6 @@ describe 'datadog_agent::ubuntu' do
         .that_requires('exec[apt_update]')
     end
 
-    # it should be able to start the service and enable the service by default
-    it do
-      is_expected.to contain_service('datadog-agent')\
-        .that_requires('package[datadog-agent]')
-    end
-
-    context 'overriding provider' do
-      let(:params) do
-        {
-          service_provider: 'upstart',
-        }
-      end
-
-      it do
-        is_expected.to contain_service('datadog-agent')\
-          .that_requires('package[datadog-agent]')
-      end
-      it do
-        is_expected.to contain_service('datadog-agent').with(
-          'provider' => 'upstart',
-          'ensure' => 'running',
-        )
-      end
-    end
   end
 
   context 'agent 7' do
@@ -204,29 +156,5 @@ describe 'datadog_agent::ubuntu' do
         .that_requires('exec[apt_update]')
     end
 
-    # it should be able to start the service and enable the service by default
-    it do
-      is_expected.to contain_service('datadog-agent')\
-        .that_requires('package[datadog-agent]')
-    end
-
-    context 'overriding provider' do
-      let(:params) do
-        {
-          service_provider: 'upstart',
-        }
-      end
-
-      it do
-        is_expected.to contain_service('datadog-agent')\
-          .that_requires('package[datadog-agent]')
-      end
-      it do
-        is_expected.to contain_service('datadog-agent').with(
-          'provider' => 'upstart',
-          'ensure' => 'running',
-        )
-      end
-    end
   end
 end

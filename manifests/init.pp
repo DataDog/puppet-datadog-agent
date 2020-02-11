@@ -433,30 +433,15 @@ class datadog_agent(
     }
   } else {
     package { $datadog_agent::params::package_name:
-      ensure  => present,
     }
   }
 
-  # Start service
-  if ($::operatingsystem == 'Windows') {
-    if ($win_ensure == present) {
-      service { $datadog_agent::params::service_name:
-        ensure  => $service_ensure,
-        enable  => $service_enable,
-        require => Package[$datadog_agent::params::package_name]
-      }
-    }
-  } else {
-    service { $datadog_agent::params::service_name:
-      ensure    => $service_ensure,
-      enable    => $service_enable,
-      provider  => $service_provider,
-      hasstatus => false,
-      pattern   => 'dd-agent',
-      require   => Package[$datadog_agent::params::package_name],
-    }
+  # Declare service
+  class { 'datadog_agent::service' :
+    service_ensure   => $service_ensure,
+    service_enable   => $service_enable,
+    service_provider => $service_provider,
   }
-
 
   if ($::operatingsystem != 'Windows') {
     if ($dd_groups) {

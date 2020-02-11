@@ -134,6 +134,27 @@ describe 'datadog_agent' do
     end
   end
 
+  context 'service' do
+    it do
+      is_expected.to contain_service('datadog-agent').with('ensure' => 'running').that_requires('package[datadog-agent]')
+    end
+  end
+
+  context 'service overriding provider' do
+    let(:params) do
+      {
+        service_provider: 'systemd',
+      }
+    end
+    it do
+      is_expected.to contain_service('datadog-agent').with(
+        'provider' => 'systemd',
+        'ensure' => 'running',
+      )
+    end
+  end
+
+
   # Test all supported OSes
   context 'all supported operating systems' do
     ALL_OS.each do |operatingsystem|

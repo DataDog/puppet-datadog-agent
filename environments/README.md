@@ -37,5 +37,4 @@ We can edit the manifest and run `vagrant up --provision` to upload the new vers
 
 # Test
 
-In the CentOS VM, run `sudo /usr/local/bin/puppet apply --modulepath=./modules ./manifests/site.pp` in `/home/vagrant/puppet` to apply to manifest on the VM.
-In the Ubuntu VM, run `sudo /opt/puppetlabs/bin/puppet apply --modulepath=./modules ./manifests/site.pp` in `/home/vagrant/puppet` to apply to manifest on the VM.
+In a VM, run `sudo puppet apply --modulepath=./modules ./manifests/site.pp` in `/home/vagrant/puppet` to apply to manifest on the VM.

@@ -61,7 +61,6 @@ describe 'datadog_agent::ubuntu' do
         .that_requires('file[/etc/apt/sources.list.d/datadog.list]')\
         .that_requires('exec[apt_update]')
     end
-
   end
 
   context 'agent 6' do
@@ -108,7 +107,6 @@ describe 'datadog_agent::ubuntu' do
         .that_requires('file[/etc/apt/sources.list.d/datadog6.list]')\
         .that_requires('exec[apt_update]')
     end
-
   end
 
   context 'agent 7' do
@@ -155,6 +153,5 @@ describe 'datadog_agent::ubuntu' do
         .that_requires('file[/etc/apt/sources.list.d/datadog6.list]')\
         .that_requires('exec[apt_update]')
     end
-
   end
 end

@@ -146,6 +146,7 @@ describe 'datadog_agent' do
         service_provider: 'systemd',
       }
     end
+
     it do
       is_expected.to contain_service('datadog-agent').with(
         'provider' => 'systemd',
@@ -153,7 +154,6 @@ describe 'datadog_agent' do
       )
     end
   end
-
 
   # Test all supported OSes
   context 'all supported operating systems' do

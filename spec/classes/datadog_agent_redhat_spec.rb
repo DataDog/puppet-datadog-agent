@@ -49,8 +49,6 @@ describe 'datadog_agent::redhat' do
       is_expected.to contain_package('datadog-agent')\
         .with_ensure('latest')
     end
-
-
   end
 
   context 'agent 6' do
@@ -97,7 +95,6 @@ describe 'datadog_agent::redhat' do
       is_expected.to contain_package('datadog-agent')\
         .with_ensure('latest')
     end
-
   end
 
   context 'agent 7' do
@@ -145,6 +142,5 @@ describe 'datadog_agent::redhat' do
       is_expected.to contain_package('datadog-agent')\
         .with_ensure('latest')
     end
-
   end
 end

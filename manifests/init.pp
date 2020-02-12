@@ -433,6 +433,8 @@ class datadog_agent(
     }
   } else {
     package { $datadog_agent::params::package_name:
+      ensure => present,
+      source => 'Agent installation not managed by Puppet, make sure the Agent is installed beforehand.',
     }
   }
 

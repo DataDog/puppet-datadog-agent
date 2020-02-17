@@ -73,7 +73,7 @@ class datadog_agent::ubuntu(
 
   package { $datadog_agent::params::package_name:
     ensure  => $platform_agent_version,
-    require => [Apt::Source['datadog6'],
+    require => [Apt::Source['datadog'],
                 Class['apt::update']],
   }
 

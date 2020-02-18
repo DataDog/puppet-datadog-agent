@@ -29,8 +29,9 @@ class datadog_agent::reports(
 
   } else {
 
+    include datadog_agent
+
     if $manage_ruby {
-      include datadog_agent
       $rubydev_package = $datadog_agent::params::rubydev_package
 
       # check to make sure that you're not installing rubydev somewhere else

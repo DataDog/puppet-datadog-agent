@@ -67,7 +67,8 @@
 #       Set the value of the statsd_forward_port varable. Used to forward all
 #       statsd metrics to another host.
 #   $manage_repo
-#       Deprecated. Use $manage_install instead.
+#       Deprecated. Only works for RPM. Install datadog-agent manually and then set
+#       manage_install=false to achieve the same behaviour as setting this to false.
 #   $manage_install
 #       Boolean to indicate whether this module should attempt to install the
 #       Agent, or assume it will be installed by other means. Default true.

@@ -1,3 +1,5 @@
+# Track control branch and fall-back to master if no matching branch.
+mod 'datadog_agent', :local => true
 mod 'puppetlabs-apt', '2.4.0'
 mod 'puppetlabs-concat', '4.0.0'
 mod 'puppetlabs-puppetserver_gem', '1.0.0'

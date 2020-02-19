@@ -197,7 +197,7 @@ describe 'datadog_agent::reports' do
         dogapi_version: 'installed',
         puppetmaster_user: 'puppet',
         puppet_gem_provider: 'gem',
-        manage_ruby: false,
+        manage_dogapi_gem: false,
       }
     end
 

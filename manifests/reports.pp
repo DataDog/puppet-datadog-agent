@@ -17,7 +17,7 @@ class datadog_agent::reports(
   $api_key,
   $puppetmaster_user,
   $dogapi_version,
-  $manage_ruby = true,
+  $manage_dogapi_gem = true,
   $hostname_extraction_regex = undef,
   $datadog_site = 'datadoghq.com',
   $puppet_gem_provider = $datadog_agent::params::gem_provider,
@@ -31,7 +31,7 @@ class datadog_agent::reports(
 
     include datadog_agent
 
-    if $manage_ruby {
+    if $manage_dogapi_gem {
       $rubydev_package = $datadog_agent::params::rubydev_package
 
       # check to make sure that you're not installing rubydev somewhere else

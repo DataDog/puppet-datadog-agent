@@ -137,6 +137,41 @@ describe 'datadog_agent' do
   # Test all supported OSes
   context 'all supported operating systems' do
     ALL_OS.each do |operatingsystem|
+      let(:facts) do
+        {
+          operatingsystem: operatingsystem,
+          osfamily: getosfamily(operatingsystem),
+        }
+      end
+
+      if WINDOWS_OS.include?(operatingsystem)
+        describe 'starts service on #{operatingsystem}' do
+          it do
+            is_expected.to contain_service('datadogagent').with('ensure' => 'running').that_requires('package[Datadog Agent]')
+          end
+        end
+      else
+        describe 'starts service on #{operatingsystem}' do
+          it do
+            is_expected.to contain_service('datadog-agent').with('ensure' => 'running').that_requires('package[datadog-agent]')
+          end
+        end
+        describe 'starts service overriding provider on #{operatingsystem}' do
+          let(:params) do
+            {
+              service_provider: 'systemd',
+            }
+          end
+
+          it do
+            is_expected.to contain_service('datadog-agent').with(
+              'provider' => 'systemd',
+              'ensure' => 'running',
+            )
+          end
+        end
+      end
+
       describe "datadog_agent 5 class common actions on #{operatingsystem}" do
         let(:params) do
           {
@@ -1481,25 +1516,6 @@ describe 'datadog_agent' do
                   )
                 }
               end
-
-              context 'with service provider override' do
-                let(:params) do
-                  {
-                    service_provider: 'upstart',
-                  }
-                end
-
-                it do
-                  is_expected.to contain_service('datadog-agent')\
-                    .that_requires('package[datadog-agent]')
-                end
-                it do
-                  is_expected.to contain_service('datadog-agent').with(
-                    'provider' => 'upstart',
-                    'ensure' => 'running',
-                  )
-                end
-              end
             end
           end
 
@@ -1527,7 +1543,7 @@ describe 'datadog_agent' do
         end
       end
 
-      describe "datadog_agent 6 class with reports on #{operatingsystem}" do
+      describe "datadog_agent 6/7 class with reports on #{operatingsystem}" do
         let(:params) do
           {
             puppet_run_reports: true,
@@ -1553,7 +1569,7 @@ describe 'datadog_agent' do
         end
       end
 
-      describe "datadog_agent 6 class common actions on #{operatingsystem}" do
+      describe "datadog_agent 6/7 class common actions on #{operatingsystem}" do
         let(:params) do
           {
             puppet_run_reports: false,
@@ -2075,27 +2091,6 @@ describe 'datadog_agent' do
                   'content' => %r{^logs_config:\n\ \ container_collect_all: true\n},
                 )
               }
-            end
-
-            unless WINDOWS_OS.include?(operatingsystem)
-              context 'with service provider override' do
-                let(:params) do
-                  {
-                    service_provider: 'upstart',
-                  }
-                end
-
-                it do
-                  is_expected.to contain_service('datadog-agent')\
-                    .that_requires('package[datadog-agent]')
-                end
-                it do
-                  is_expected.to contain_service('datadog-agent').with(
-                    'provider' => 'upstart',
-                    'ensure' => 'running',
-                  )
-                end
-              end
             end
           end
         end

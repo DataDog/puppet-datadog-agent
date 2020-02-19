@@ -44,36 +44,10 @@ describe 'datadog_agent::redhat' do
         is_expected.not_to contain_yumrepo('datadog6')
       end
     end
-    context 'overriding provider' do
-      let(:params) do
-        {
-          service_provider: 'upstart',
-          agent_major_version: 5,
-        }
-      end
-
-      it do
-        is_expected.to contain_service('datadog-agent')\
-          .that_requires('package[datadog-agent]')
-      end
-      it do
-        is_expected.to contain_service('datadog-agent').with(
-          'provider' => 'upstart',
-          'ensure' => 'running',
-        )
-      end
-    end
-
     # it should install the packages
     it do
       is_expected.to contain_package('datadog-agent')\
         .with_ensure('latest')
-    end
-
-    # it should be able to start the service and enable the service by default
-    it do
-      is_expected.to contain_service('datadog-agent')\
-        .that_requires('Package[datadog-agent]')
     end
   end
 
@@ -115,36 +89,11 @@ describe 'datadog_agent::redhat' do
         is_expected.not_to contain_yumrepo('datadog6')
       end
     end
-    context 'overriding provider' do
-      let(:params) do
-        {
-          service_provider: 'upstart',
-          agent_major_version: 6,
-        }
-      end
-
-      it do
-        is_expected.to contain_service('datadog-agent')\
-          .that_requires('package[datadog-agent]')
-      end
-      it do
-        is_expected.to contain_service('datadog-agent').with(
-          'provider' => 'upstart',
-          'ensure' => 'running',
-        )
-      end
-    end
 
     # it should install the packages
     it do
       is_expected.to contain_package('datadog-agent')\
         .with_ensure('latest')
-    end
-
-    # it should be able to start the service and enable the service by default
-    it do
-      is_expected.to contain_service('datadog-agent')\
-        .that_requires('Package[datadog-agent]')
     end
   end
 
@@ -187,36 +136,11 @@ describe 'datadog_agent::redhat' do
         is_expected.not_to contain_yumrepo('datadog6')
       end
     end
-    context 'overriding provider' do
-      let(:params) do
-        {
-          service_provider: 'upstart',
-          agent_major_version: 7,
-        }
-      end
-
-      it do
-        is_expected.to contain_service('datadog-agent')\
-          .that_requires('package[datadog-agent]')
-      end
-      it do
-        is_expected.to contain_service('datadog-agent').with(
-          'provider' => 'upstart',
-          'ensure' => 'running',
-        )
-      end
-    end
 
     # it should install the packages
     it do
       is_expected.to contain_package('datadog-agent')\
         .with_ensure('latest')
-    end
-
-    # it should be able to start the service and enable the service by default
-    it do
-      is_expected.to contain_service('datadog-agent')\
-        .that_requires('Package[datadog-agent]')
     end
   end
 end

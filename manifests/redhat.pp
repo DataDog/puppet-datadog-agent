@@ -8,9 +8,6 @@ class datadog_agent::redhat(
   Optional[String] $agent_repo_uri = undef,
   Boolean $manage_repo = true,
   String $agent_version = $datadog_agent::params::agent_version,
-  String $service_ensure = 'running',
-  Boolean $service_enable = true,
-  Optional[String] $service_provider = undef,
 ) inherits datadog_agent::params {
 
   if $manage_repo {
@@ -80,25 +77,6 @@ class datadog_agent::redhat(
 
   package { $datadog_agent::params::package_name:
     ensure  => $agent_version,
-  }
-
-  if $service_provider {
-    service { $datadog_agent::params::service_name:
-      ensure    => $service_ensure,
-      enable    => $service_enable,
-      provider  => $service_provider,
-      hasstatus => false,
-      pattern   => 'dd-agent',
-      require   => Package[$datadog_agent::params::package_name],
-    }
-  } else {
-    service { $datadog_agent::params::service_name:
-      ensure    => $service_ensure,
-      enable    => $service_enable,
-      hasstatus => false,
-      pattern   => 'dd-agent',
-      require   => Package[$datadog_agent::params::package_name],
-    }
   }
 
 }

@@ -188,4 +188,41 @@ describe 'datadog_agent::reports' do
       it { is_expected.to contain_file(conf_file).without_content(%r{hostname_extraction_regex:}) }
     end
   end
+
+  context 'disabled ruby-manage' do
+    let(:params) do
+      {
+        api_key: 'notanapikey',
+        hostname_extraction_regex: nil,
+        dogapi_version: 'installed',
+        puppetmaster_user: 'puppet',
+        puppet_gem_provider: 'gem',
+        manage_dogapi_gem: false,
+      }
+    end
+
+    describe 'datadog_agent class dogapi version override' do
+      let(:facts) do
+        {
+          operatingsystem: 'Debian',
+          osfamily: 'debian',
+        }
+      end
+
+      it { is_expected.not_to contain_class('ruby').with_rubygems_update(false) }
+      it { is_expected.not_to contain_class('ruby::params') }
+      it { is_expected.not_to contain_package('ruby').with_ensure('installed') }
+      it { is_expected.not_to contain_package('rubygems').with_ensure('installed') }
+
+      it { is_expected.not_to contain_package('ruby-dev') }
+
+      it { is_expected.not_to contain_package('dogapi') }
+
+      it do
+        is_expected.to contain_file('/etc/datadog-agent/datadog-reports.yaml')\
+          .with_owner('puppet')\
+          .with_group('root')
+      end
+    end
+  end
 end

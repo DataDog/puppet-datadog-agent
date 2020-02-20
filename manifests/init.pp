@@ -33,7 +33,7 @@
 #   $puppet_run_reports
 #       Will send results from your puppet agent runs back to the datadog service.
 #   $manage_dogapi_gem
-#       Invoke the ruby class to manage ruby install
+#       When reports are enabled, ensure the dogapi gem (required) is installed.
 #   $puppetmaster_user
 #       Will chown the api key used by the report processor to this user.
 #       Defaults to the user the puppetmaster is configured to run as.

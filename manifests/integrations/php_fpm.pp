@@ -16,7 +16,7 @@
 #        Optional array of tags
 #
 #   $use_fastcgi
-#        Use fastcgu to get stats.  Default: false
+#        Use fastcgi to get stats.  Default: false
 #
 # Sample Usage:
 #

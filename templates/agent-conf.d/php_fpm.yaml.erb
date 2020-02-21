@@ -6,6 +6,8 @@ instances:
 <%- (Array(@_instances)).each do |instance| -%>
   - # Get metrics from your FPM pool with this URL
     status_url: <%= instance['status_url'] %>
+    # Get metrics using fastcgi
+    use_fastcgi: <%= instance['use_fastcgi'] %>
     # Get a reliable service check of your FPM pool with that one
     ping_url: <%= instance['ping_url'] %>
     # Set the expected reply to the ping.

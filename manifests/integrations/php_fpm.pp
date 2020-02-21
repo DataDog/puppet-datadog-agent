@@ -33,7 +33,7 @@ class datadog_agent::integrations::php_fpm(
   $http_host        = undef,
   $tags             = [],
   $instances        = undef,
-  $use_fastcgi      = false
+  $use_fastcgi      = 'false'
 ) inherits datadog_agent::params {
   include datadog_agent
 

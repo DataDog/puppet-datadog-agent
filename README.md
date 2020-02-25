@@ -1,31 +1,22 @@
-Puppet & Datadog
-================
+# Datadog Puppet Module
 
-[![Build Status](https://img.shields.io/circleci/build/gh/DataDog/puppet-datadog-agent.svg)](https://circleci.com/gh/DataDog/puppet-datadog-agent)
-[![Puppet Forge](https://img.shields.io/puppetforge/v/datadog/datadog_agent.svg)](https://forge.puppetlabs.com/datadog/datadog_agent)
-[![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/datadog/datadog_agent.svg)](https://forge.puppetlabs.com/datadog/datadog_agent)
+This module installs the Datadog Agent and sends Puppet reports to Datadog.
 
+## Setup
 
-## Description
+### Requirements
 
-A module to:
+The Datadog Puppet module supports Linux and Windows and is compatible with Puppet >= 4.6.x or Puppet Enterprise version >= 2016.4. For detailed information on compatibility, check the [module page on Puppet Forge][2].
 
-1. Install the [Datadog][1] Agent.
-2. Send Puppet run reports to [Datadog][1].
+### Installation
 
-## Requirements
+1. Install the [datadog_agent][2] Puppet module in your Puppet master's module path:
 
-The current version of this Puppet module supports both Linux and Windows and is compatible with Puppet >= 4.6.x.
+    ```
+    puppet module install datadog-datadog_agent
+    ```
 
-For detailed information on compatibility, check the [module page on Puppet Forge][2].
-
-## Installation
-
-Install `datadog_agent` as a module in your Puppet master's module path.
-
-```
-puppet module install datadog-datadog_agent
-```
+2. 
 
 **Note**: For CentOS versions <7.0, specify the service provider as `upstart`:
 
@@ -35,7 +26,7 @@ class{ 'datadog_agent':
   }
 ```
 
-### Upgrade from the previous module version 2.x
+#### Upgrading
 
 - By default Datadog Agent 7.x is installed. To use an earlier Agent version change the setting `agent_major_version`.
 - `agent5_enable` is no longer used, as it has been replaced by `agent_major_version`.
@@ -45,8 +36,7 @@ class{ 'datadog_agent':
 - `conf_dir` and `conf6_dir` become `conf_dir` for all Agent versions.
 - The repository file created on Linux is now named `datadog` for all agent versions instead of `datadog5`/`datadog6`.
 
-Usage
------
+### Configuration
 
 Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaster` (or on a masterless host), follow these configuration steps:
 
@@ -285,92 +275,7 @@ These variables can be set in the `datadog_agent` class to control settings in t
 - `hostname_extraction_regex` is useful when the Puppet module and the Datadog Agent are reporting different host names for the same host in the infrastructure list.
 
 
-Module Development and Testing
-==============================
-
-### Clone the repo
-
-```
-git clone git@github.com:DataDog/puppet-datadog-agent.git
-cd puppet-datadog-agent
-```
-
-### Install dependencies
-
-```
-bundle install
-rake lint              # Check Puppet manifests with puppet-lint / Run puppet-lint
-rake spec              # Run spec tests in a clean fixtures directory
-rake syntax            # Syntax check Puppet manifests and templates
-rake syntax:manifests  # Syntax check Puppet manifests
-rake syntax:templates  # Syntax check Puppet templates
-pip install pre-commit
-pre-commit install
-```
-
-### Manual testing
-
-To test the roles provided by this project, you can follow the instructions in the manual tests [readme.md](./environments/readme.md).
-
-### Integration testing
-
-This project uses [kitchen](https://kitchen.ci/) as its integration tests engine. To really verify integration tests, you should have [vagrant](https://www.vagrantup.com/) installed on your machine as it is used as driver-engine.
-
-Kitchen allows you to test specific recipes described in [kitchen.yml](./kitchen.yml). For now, there is only a basic one on ubuntu but that should be enough to develop others or to add features in TDD.
-
-To list available targets, you can use the `list` command:
-
-```bash
-bundle exec kitchen list
-```
-
-To test a specific target, you can run:
-
-```bash
-bundle exec kitchen test <target>
-```
-
-So for example, if you want to test the agent installation, you can run:
-
-```bash
-bundle exec kitchen test dd-agent-ubuntu1604
-```
-
-More information about kitchen on its [Getting Started](https://kitchen.ci/docs/getting-started/introduction/).
-
-### Development loop
-
-To develop some fixes or some features, the easiest way is to work on the platform and version of your choice, setting the machine up with the `create` command and applying the recipe with the `converge` command. If you want to explore the machine and try different things, you can also login into the machine with the `login` command.
-
-```bash
-# Create the relevant vagrant virtual machine
-bundle exec kitchen create dd-agent-ubuntu1604
-
-# Converge to test your recipe
-bundle exec kitchen converge dd-agent-ubuntu1604
-
-# Login to your machine to check stuff
-bundle exec kitchen login dd-agent-ubuntu1604
-
-# Verify the integration tests for your machine
-bundle exec kitchen verify dd-agent-ubuntu1604
-
-# Clean your machine
-bundle exec kitchen destroy dd-agent-ubuntu1604
-```
-
-It is advised that you work in TDD and that you write tests before making changes so that developing your feature or fix is just making tests pass.
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
-
-[1]: http://www.datadoghq.com
-[2]: https://forge.puppetlabs.com/datadog/datadog_agent
+[2]: https://forge.puppet.com/datadog/datadog_agent
 [3]: https://app.datadoghq.com/account/settings#api
 [4]: https://github.com/DataDog/dogapi-rb
 [5]: https://app.datadoghq.com/account/settings#integrations

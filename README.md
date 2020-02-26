@@ -16,7 +16,7 @@ Install the [datadog_agent][1] Puppet module in your Puppet master's module path
 puppet module install datadog-datadog_agent
 ```
 
-**Note**: For CentOS versions <7.0, specify the service provider as `upstart`:
+**Note**: For CentOS/RHEL versions <7.0 and for Ubuntu < 15.04, specify the service provider as `upstart`:
 
 ```conf
 class{ 'datadog_agent':
@@ -159,7 +159,7 @@ Class Datadog_reports is already defined in Puppet::Reports
 
 ## Step-by-step
 
-This is the minimal set of modifications to get started. These files assume Puppet 4.5.x or higher.
+This is the minimal set of modifications to get started.
 
 1. Edit your `/etc/puppetlabs/puppet/puppet.conf` file to add the puppet Agent:
 
@@ -217,7 +217,24 @@ This is the minimal set of modifications to get started. These files assume Pupp
 
 ## Masterless Puppet
 
-To use this specific setup, see this [Github gist][6]. This applies to older puppets and is untested on >=4.x Puppet versions.
+1. The Datadog module and its dependencies have to be installed on all nodes running masterless.
+2. Add this to each node's `site.pp` file:
+    ```conf
+    class { "datadog_agent":
+        api_key            => "your_api_key_here",
+        puppet_run_reports => true
+    }
+   ```
+
+3. Configure reports in the `[main]` section of `puppet.conf`:
+    ```conf
+    [main]
+    reports=datadog_reports
+    ```
+4. Run puppet in masterless configuration:
+    ```shell
+    puppet apply --modulepath <path_to_modules> <path_to_site.pp>
+    ```
 
 ## Client Settings
 
@@ -225,7 +242,7 @@ To use this specific setup, see this [Github gist][6]. This applies to older pup
 
 The Datadog Agent configuration file is recreated from the template every Puppet run. If you need to tag your nodes, add an array entry in Hiera:
 
-```text
+```conf
 datadog_agent::tags:
 - 'keyname:value'
 - 'anotherkey:%{factname}'

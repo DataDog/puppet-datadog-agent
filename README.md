@@ -26,20 +26,20 @@ class{ 'datadog_agent':
 
 #### Upgrading
 
-- By default Datadog Agent 7.x is installed. To use an earlier Agent version change the setting `agent_major_version`.
+- By default Datadog Agent v7.x is installed. To use an earlier Agent version, change the setting `agent_major_version`.
 - `agent5_enable` is no longer used, as it has been replaced by `agent_major_version`.
-- `agent6_extra_options` has been renamed to `agent_extra_options` since it now applies to both Agent version 6 and 7.
-- `agent6_log_file` has been renamed to `agent_log_file` since it now applies to both Agent version 6 and 7.
+- `agent6_extra_options` has been renamed to `agent_extra_options` since it now applies to both Agent v6 and v7.
+- `agent6_log_file` has been renamed to `agent_log_file` since it now applies to both Agent v6 and v7.
 - `agent5_repo_uri` and `agent6_repo_uri` become `agent_repo_uri` for all Agent versions.
 - `conf_dir` and `conf6_dir` become `conf_dir` for all Agent versions.
-- The repository file created on Linux is now named `datadog` for all agent versions instead of `datadog5`/`datadog6`.
+- The repository file created on Linux is now named `datadog` for all Agent versions instead of `datadog5`/`datadog6`.
 
 ### Configuration
 
 Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaster` (or on a masterless host), follow these configuration steps:
 
-1. Find your Datadog [API key][2].
-2. Specify the module on any nodes you wish to install the Datadog Agent.
+1. Obtain your [Datadog API key][2].
+2. Specify the module to install the Datadog Agent on your nodes.
 
    ```conf
    include datadog_agent
@@ -62,16 +62,16 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
    }
    ```
 
-    - To support reporting, your Puppet master needs the [dogapi][3] gem installed. To install, either run the Puppet Agent on your master with this configuration or install it manually with `gem`. You might need to restart your `puppetserver` service for the freshly installed `dogapi` gem to be picked up.
-    - `puppetserver_gem` is defined as a module dependency, it is installed automatically when the module is installed.
+    - To support reporting, your Puppet master needs the [dogapi][3] gem installed. To install, either run the Puppet Agent on your master with this configuration or install it manually with `gem`. You may need to restart your `puppetserver` service after installing the `dogapi` gem.
+    - `puppetserver_gem` is defined as a module dependency. It is installed automatically when the module is installed.
 
-3. Include any other integrations you want the agent to use, for example:
+3. (Optional) Include integrations to use with the Agent, for example:
 
    ```conf
    include 'datadog_agent::integrations::mongo'
    ```
 
-    Some integrations do not come as a dedicated class. To install one of them, add its configuration in the manifest. Below is an example for the `ntp` check:
+    Add the integration configuration to the manifest if it does not have a [manifest with a dedicated class][6]. Below is an example for the `ntp` check:
 
    ```conf
    class { 'datadog_agent':
@@ -87,9 +87,9 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
    }
    ```
 
-### Installing and pinning specific versions of integrations
+#### Integration versions
 
-You can specify a given integration and version number to be installed by using `datadog_agent::install_integration`. This will use the `datadog-agent integration` command to ensure a specific integration is installed or uninstalled.
+To install and pin specific integration versions, specify an integration and version number by using `datadog_agent::install_integration`. This uses the `datadog-agent integration` command to ensure a specific integration is installed or uninstalled, for example:
 
 ```conf
 datadog_agent::install_integration { "mongo-1.9":
@@ -99,13 +99,16 @@ datadog_agent::install_integration { "mongo-1.9":
 }
 ```
 
-The field `ensure` can be either `present` (default) or `absent`, the later being useful to remove a previously pinned version of an integration.
+`ensure` has two options:
 
-## Reporting
+- `present` (default)
+- `absent` (removes a previously pinned version of an integration)
 
-Ensure the `dogapi` gem is available on your system as explained earlier.
+### Reporting
 
-To enable reporting of changes to the Datadog timeline, enable the report processor on your Puppet master, and enable reporting for your clients. The clients send a run report after each check-in back to the master.
+Ensure the [dogapi][3] gem is available on your system.
+
+To report changes to your Datadog timeline, enable the report processor on your Puppet master and reporting for your clients. The clients send a run report after each check-in back to the master.
 
 Set the `puppet_run_reports` option to true in the node configuration manifest for your master:
 
@@ -117,11 +120,12 @@ class { "datadog-agent":
 }
 ```
 
-On Puppet >=4.x the location for your configuration file is `/etc/puppetlabs/puppet/puppet.conf`.
+The Puppet configuration file is located in:
 
-On older Puppets, the location is `/etc/puppet/puppet.conf`.
+- `/etc/puppetlabs/puppet/puppet.conf` (Puppet >=4.x)
+- `/etc/puppet/puppet.conf` (Puppet <4.x)
 
-Add these configuration options in the pertinent location:
+Add these configuration options to the appropriate location:
 
 ```ini
 [main]
@@ -131,7 +135,7 @@ Add these configuration options in the pertinent location:
 [master]
 # Enable reporting to Datadog
 reports=datadog_reports
-# If you use other reports already, just add datadog_reports at the end
+# If you use other reports, add datadog_reports to the end
 # reports=store,log,datadog_reports
 # ...
 
@@ -141,7 +145,7 @@ pluginsync=true
 report=true
 ```
 
-On all of your Puppet client nodes add the following in the same location:
+On all of your Puppet client nodes, add the following in the same location:
 
 ```ini
 [agent]
@@ -149,7 +153,9 @@ On all of your Puppet client nodes add the following in the same location:
 report=true
 ```
 
-If you see the following, ensure `reports=datadog_reports` is defined in **[master]**, not **[main]**.
+#### Troubleshooting
+
+If you see the following error, ensure `reports=datadog_reports` is defined in `[master]`, not `[main]`.
 
 ```text
 err: Could not send report:
@@ -157,11 +163,11 @@ Error 400 on SERVER: Could not autoload datadog_reports:
 Class Datadog_reports is already defined in Puppet::Reports
 ```
 
-## Step-by-step
+### Step-by-step
 
 This is the minimal set of modifications to get started.
 
-1. Edit your `/etc/puppetlabs/puppet/puppet.conf` file to add the puppet Agent:
+1. Edit `/etc/puppetlabs/puppet/puppet.conf` to add the Puppet Agent:
 
     ```ini
     [master]
@@ -174,9 +180,9 @@ This is the minimal set of modifications to get started.
     pluginsync = true
     ```
 
-     _Note: This may be file `/etc/puppet/puppet/puppet.conf` on older puppets_
+     **Note**: For older versions of Puppet, edit `/etc/puppet/puppet/puppet.conf`.
 
-2. Edit your `/etc/puppetlabs/code/environments/production/manifests/10_nodes.pp` file to configure your Agent:
+2. Edit `/etc/puppetlabs/code/environments/production/manifests/10_nodes.pp` to configure your Agent:
 
     ```conf
     node "default" {
@@ -192,9 +198,9 @@ This is the minimal set of modifications to get started.
     }
     ```
 
-     _Note: This may be file `/etc/puppet/manifests/nodes.pp` on older puppets_
+     **Note**: For older versions of Puppet, edit `/etc/puppet/manifests/nodes.pp`.
 
-3. Run Puppet Agent
+3. Run the Puppet Agent
 
     ```shell
     sudo systemctl restart puppetserver
@@ -210,10 +216,7 @@ This is the minimal set of modifications to get started.
     notice: Finished catalog run in 0.81 seconds
     ```
 
-4. Verify on Datadog
-
-    1. Search for `puppet` on [the Integrations page][4]. The Puppet integration tile displays the install status.
-    2. Search for `sources:puppet` in the [Event Stream][5] to see your Puppet events.
+4. Verify your Puppet data is in Datadog by searching for `sources:puppet` in the [Event Stream][5].
 
 ## Masterless Puppet
 
@@ -236,7 +239,7 @@ This is the minimal set of modifications to get started.
     puppet apply --modulepath <path_to_modules> <path_to_site.pp>
     ```
 
-## Client Settings
+## Client settings
 
 ### Tagging client nodes
 
@@ -283,4 +286,4 @@ These variables can be set in the `datadog_agent` class to control settings in t
 [3]: https://github.com/DataDog/dogapi-rb
 [4]: https://app.datadoghq.com/account/settings#integrations
 [5]: https://app.datadoghq.com/event/stream
-[6]: https://gist.github.com/LeoCavaille/cd412c7a9ff5caec462f
+[6]: https://github.com/DataDog/puppet-datadog-agent/tree/master/manifests/integrations

@@ -53,7 +53,7 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
    }
    ```
 
-    On your `puppetserver`, enable reporting:
+3. On your `puppetserver`, enable reporting:
 
    ```conf
    class { 'datadog_agent':
@@ -62,10 +62,10 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
    }
    ```
 
-    - To support reporting, your Puppet master needs the [dogapi][3] gem installed. To install, either run the Puppet Agent on your master with this configuration or install it manually with `gem`. You may need to restart your `puppetserver` service after installing the `dogapi` gem.
+    - To support reporting, your Puppet master needs the [dogapi][3] gem installed by running the Puppet Agent on your master with this configuration or installing it manually with `gem`. You may need to restart your `puppetserver` service after installing the `dogapi` gem.
     - `puppetserver_gem` is defined as a module dependency. It is installed automatically when the module is installed.
 
-3. (Optional) Include integrations to use with the Agent, for example:
+4. (Optional) Include integrations to use with the Agent, for example:
 
    ```conf
    include 'datadog_agent::integrations::mongo'
@@ -129,14 +129,14 @@ Add these configuration options to the appropriate location:
 
 ```ini
 [main]
-# No need to modify this section
+# No modification needed to this section
 # ...
 
 [master]
 # Enable reporting to Datadog
 reports=datadog_reports
-# If you use other reports, add datadog_reports to the end
-# reports=store,log,datadog_reports
+# If you use other reports, add datadog_reports to the end,
+# for example: reports=store,log,datadog_reports
 # ...
 
 [agent]
@@ -200,7 +200,7 @@ This is the minimal set of modifications to get started.
 
      **Note**: For older versions of Puppet, edit `/etc/puppet/manifests/nodes.pp`.
 
-3. Run the Puppet Agent
+3. Run the Puppet Agent:
 
     ```shell
     sudo systemctl restart puppetserver
@@ -224,7 +224,7 @@ This is the minimal set of modifications to get started.
 2. Add this to each node's `site.pp` file:
     ```conf
     class { "datadog_agent":
-        api_key            => "your_api_key_here",
+        api_key            => "<YOUR_DD_API_KEY>",
         puppet_run_reports => true
     }
    ```
@@ -256,30 +256,29 @@ datadog_agent::tags:
 These variables can be set in the `datadog_agent` class to control settings in the Agent:
 
 | variable name               | description                                                                                                                                                                                      |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `agent_major_version`       | The version of the Agent to install: either 5, 6 or 7 (default: 7).                                                                                                                              |
-| `agent_version`             | Lets you pin a specific minor version of the agent to install, eg: `1:7.16.0-1`. Leave empty to install the latest version (not recommended).                                                    |
-| `collect_ec2_tags`          | Set this to yes to have an instance's custom EC2 tags used as agent tags.                                                                                                                        |
-| `collect_instance_metadata` | Set this to yes to have an instance's EC2 metadata used as agent tags.                                                                                                                           |
-| `datadog_site`              | The Datadog site to report to. Defaults to `datadoghq.com`, set to `datadoghq.eu` to report to the EU site (Agent versions 6 and 7 only).                                                        |
+| `agent_version`             | Lets you pin a specific minor version of the Agent to install, for example: `1:7.16.0-1`. Leave empty to install the latest version.                                                             |
+| `collect_ec2_tags`          | Collect an instance's custom EC2 tags as Agent tags by using `yes`.                                                                                                                              |
+| `collect_instance_metadata` | Collect an instance's EC2 metadata as Agent tags by using `yes`.                                                                                                                                 |
+| `datadog_site`              | The Datadog site to report to. Defaults to `datadoghq.com`, set to `datadoghq.eu` to report to the EU site (Agent v6 and v7 only).                                                               |
 | `dd_url`                    | The Datadog intake server URL. You are unlikely to need to change this. Overrides `datadog_site`                                                                                                 |
 | `host`                      | Overrides the node's host name.                                                                                                                                                                  |
 | `local_tags`                | An array of `<KEY:VALUE>` strings that are set as tags for the node.                                                                                                                             |
-| `non_local_traffic`         | Set this to allow other nodes to relay their traffic through this one.                                                                                                                           |
-| `apm_enabled`               | A boolean to enable the APM Agent (defaults to false).                                                                                                                                           |
-| `apm_analyzed_spans`        | A hash to add APM events for the Trace Search & Analytics tool. (defaults to undef). For example: `{ 'app\|rails.request' => 1, 'service-name\|operation-name' => 0.8 }`                         |
-| `process_enabled`           | A boolean to enable the process agent (defaults to false).                                                                                                                                       |
-| `scrub_args`                | A boolean to enable the process cmdline scrubbing (defaults to true).                                                                                                                            |
-| `custom_sensitive_words`    | An array to add more words beyond the default ones used by the scrubbing feature (defaults to []).                                                                                               |
-| `logs_enabled`              | A boolean to enable the logs agent (defaults to false).                                                                                                                                          |
+| `non_local_traffic`         | Allow other nodes to relay their traffic through this node.                                                                                                                                      |
+| `apm_enabled`               | A boolean to enable the APM Agent (defaults to false)..                                                                                                                                          |
+| `apm_analyzed_spans`        | A hash to add APM events for trace search & analytics (defaults to undef), for example:<br>`{ 'app\|rails.request' => 1, 'service-name\|operation-name' => 0.8 }`                                |
+| `process_enabled`           | A boolean to enable the process Agent (defaults to false)..                                                                                                                                      |
+| `scrub_args`                | A boolean to enable the process cmdline scrubbing (defaults to true)..                                                                                                                           |
+| `custom_sensitive_words`    | An array to add more words beyond the default ones used by the scrubbing feature (defaults to `[]`).                                                                                             |
+| `logs_enabled`              | A boolean to enable the logs Agent (defaults to false)..                                                                                                                                         |
 | `container_collect_all`     | A boolean to enable logs collection for all containers.                                                                                                                                          |
-| `agent_extra_options`       | A hash to provide additional configuration options (Agent versions 6 and 7 only).                                                                                                                |
-| `hostname_extraction_regex` | A regex used to extract the hostname captured group to report the run in Datadog instead of reporting the Puppet nodename, for example:<br>`'^(?<hostname>.*\.datadoghq\.com)(\.i-\w{8}\..*)?$'` |
+| `agent_extra_options`<sup>1</sup>       | A hash to provide additional configuration options (Agent v6 and v7 only)..                                                                                                                      |
+| `hostname_extraction_regex`<sup>2</sup>  | A regex used to extract the hostname captured group to report the run in Datadog instead of reporting the Puppet nodename, for example:<br>`'^(?<hostname>.*\.datadoghq\.com)(\.i-\w{8}\..*)?$'` |
 
-#### Notes
+(1) `agent_extra_options` is used to provide a fine grain control of additional Agent v6/v7 config options. A deep merge is performed that may override options provided in the `datadog_agent` class parameters.
 
-- `agent_extra_options` is used to provide a fine grain control of additional Agent v6/v7 config options. A deep merge is performed that may override options provided in the `datadog_agent` class parameters.
-- `hostname_extraction_regex` is useful when the Puppet module and the Datadog Agent are reporting different host names for the same host in the infrastructure list.
+(2) `hostname_extraction_regex` is useful when the Puppet module and the Datadog Agent are reporting different host names for the same host in the infrastructure list.
 
 [1]: https://forge.puppet.com/datadog/datadog_agent
 [2]: https://app.datadoghq.com/account/settings#api

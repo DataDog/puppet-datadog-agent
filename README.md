@@ -71,7 +71,7 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
    include 'datadog_agent::integrations::mongo'
    ```
 
-    Add the integration configuration to the manifest if it does not have a [manifest with a dedicated class][6]. Below is an example for the `ntp` check:
+    If an integration does not have a [manifest with a dedicated class][6], you can still add a configuration for it. Below is an example for the `ntp` check:
 
    ```conf
    class { 'datadog_agent':
@@ -108,7 +108,7 @@ datadog_agent::install_integration { "mongo-1.9":
 
 Ensure the [dogapi][3] gem is available on your system.
 
-To report changes to your Datadog timeline, enable the report processor on your Puppet master and reporting for your clients. The clients send a run report after each check-in back to the master.
+To enable reporting of changes to your Datadog timeline, enable the report processor on your Puppet master and reporting for your clients. The clients send a run report after each check-in back to the master.
 
 Set the `puppet_run_reports` option to true in the node configuration manifest for your master:
 
@@ -120,10 +120,8 @@ class { "datadog-agent":
 }
 ```
 
-The Puppet configuration file is located in:
+The Puppet configuration file is located in `/etc/puppetlabs/puppet/puppet.conf`.
 
-- `/etc/puppetlabs/puppet/puppet.conf` (Puppet >=4.x)
-- `/etc/puppet/puppet.conf` (Puppet <4.x)
 
 Add these configuration options to the appropriate location:
 
@@ -180,7 +178,6 @@ This is the minimal set of modifications to get started.
     pluginsync = true
     ```
 
-     **Note**: For older versions of Puppet, edit `/etc/puppet/puppet/puppet.conf`.
 
 2. Edit `/etc/puppetlabs/code/environments/production/manifests/10_nodes.pp` to configure your Agent:
 
@@ -251,7 +248,7 @@ datadog_agent::tags:
 - 'anotherkey:%{factname}'
 ```
 
-### Extra configuration variables
+### Configuration variables
 
 These variables can be set in the `datadog_agent` class to control settings in the Agent:
 
@@ -266,7 +263,7 @@ These variables can be set in the `datadog_agent` class to control settings in t
 | `host`                      | Overrides the node's host name.                                                                                                                                                                  |
 | `local_tags`                | An array of `<KEY:VALUE>` strings that are set as tags for the node.                                                                                                                             |
 | `non_local_traffic`         | Allow other nodes to relay their traffic through this node.                                                                                                                                      |
-| `apm_enabled`               | A boolean to enable the APM Agent (defaults to false)..                                                                                                                                          |
+| `apm_enabled`               | A boolean to enable the APM Agent (defaults to false).                                                                                                                                           |
 | `apm_analyzed_spans`        | A hash to add APM events for trace search & analytics (defaults to undef), for example:<br>`{ 'app\|rails.request' => 1, 'service-name\|operation-name' => 0.8 }`                                |
 | `process_enabled`           | A boolean to enable the process Agent (defaults to false)..                                                                                                                                      |
 | `scrub_args`                | A boolean to enable the process cmdline scrubbing (defaults to true)..                                                                                                                           |

@@ -32,9 +32,9 @@ To test the roles provided by this project, you can follow the instructions in t
 
 ### Integration testing
 
-This project uses [kitchen](https://kitchen.ci/) as its integration tests engine. To really verify integration tests, you should have [vagrant](https://www.vagrantup.com/) installed on your machine as it is used as driver-engine.
+This project uses [Kitchen](https://github.com/test-kitchen/test-kitchen) as its integration tests engine. To really verify integration tests, you should have [Vagrant](https://www.vagrantup.com/) installed on your machine as it is used as a driver-engine.
 
-Kitchen allows you to test specific recipes described in [kitchen.yml](./kitchen.yml). For now, there is only a basic one on ubuntu but that should be enough to develop others or to add features in TDD.
+Kitchen allows you to test specific recipes described in [kitchen.yml](./kitchen.yml). For now, there is only a basic one on Ubuntu, but that should be enough to develop others or to add features in TDD.
 
 To list available targets, you can use the `list` command:
 
@@ -48,17 +48,17 @@ To test a specific target, you can run:
 bundle exec kitchen test <target>
 ```
 
-So for example, if you want to test the agent installation, you can run:
+So for example, if you want to test the Agent installation, you can run:
 
 ```bash
 bundle exec kitchen test dd-agent-ubuntu1604
 ```
 
-More information about kitchen on its [Getting Started](https://kitchen.ci/docs/getting-started/introduction/).
+More information about kitchen on its [Getting Started](https://github.com/test-kitchen/test-kitchen/wiki/Getting-Started).
 
 ### Development loop
 
-To develop some fixes or some features, the easiest way is to work on the platform and version of your choice, setting the machine up with the `create` command and applying the recipe with the `converge` command. If you want to explore the machine and try different things, you can also login into the machine with the `login` command.
+To develop fixes or features, work on the platform and version of your choice, setting the machine up with the `create` command and applying the recipe with the `converge` command. If you want to explore the machine and try different things, you can also log into the machine with the `login` command.
 
 ```bash
 # Create the relevant vagrant virtual machine

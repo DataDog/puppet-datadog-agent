@@ -250,6 +250,7 @@ class datadog_agent(
   Boolean $manage_repo = true,
   Boolean $manage_dogapi_gem = true,
   Boolean $manage_install = true,
+  Boolean $manage_service = true,
   $hostname_extraction_regex = undef,
   Boolean $hostname_fqdn = false,
   $dogstatsd_port = 8125,
@@ -443,10 +444,15 @@ class datadog_agent(
   }
 
   # Declare service
-  class { 'datadog_agent::service' :
-    service_ensure   => $service_ensure,
-    service_enable   => $service_enable,
-    service_provider => $service_provider,
+  if $manage_service {
+    class { 'datadog_agent::service' :
+      service_ensure   => $service_ensure,
+      service_enable   => $service_enable,
+      service_provider => $service_provider,
+    }
+  } else {
+      service { $datadog_agent::params::service_name:
+      }
   }
 
   if ($::operatingsystem != 'Windows') {

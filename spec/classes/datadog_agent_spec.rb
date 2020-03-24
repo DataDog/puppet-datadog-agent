@@ -1925,6 +1925,62 @@ describe 'datadog_agent' do
                 )
               }
             end
+
+            context 'with apm_enabled set to true and apm_obfuscation specified' do
+              let(:params) do
+                {
+                  apm_enabled: true,
+                  apm_obfuscation: {
+                    elasticsearch: {
+                      enable: true,
+                      keep_values: [
+                        'user_id',
+                        'category_id',
+                      ],
+                    },
+                    redis: {
+                      enable: true,
+                    },
+                    memcached: {
+                      enable: true,
+                    },
+                    http: {
+                      remove_query_string: true,
+                      remove_paths_with_digits: true,
+                    },
+                    mongodb: {
+                      enable: true,
+                      keep_values: [
+                        'uid',
+                        'cat_id',
+                      ],
+                    },
+                  },
+                }
+              end
+
+              it {
+                is_expected.to contain_file(config_yaml_file).with(
+                  'content' => %r{^apm_config:\n},
+                )
+              }
+              it {
+                is_expected.to contain_file(config_yaml_file).with(
+                  'content' => %r{^apm_config:\n\ \ enabled: true\n},
+                )
+              }
+              it {
+                is_expected.to contain_file(config_yaml_file).with(
+                  'content' => %r{^\ \ obfuscation:\n},
+                )
+              }
+              it {
+                is_expected.to contain_file(config_yaml_file).with(
+                  'content' => %r{elasticsearch},
+                )
+              }
+            end
+
             context 'with extra_options and Process enabled' do
               let(:params) do
                 {

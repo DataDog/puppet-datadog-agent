@@ -180,6 +180,9 @@
 #   $apm_analyzed_spans
 #       Hash defining the APM spans to analyze and their rates.
 #       Optional Hash. Default: undef.
+#   $apm_obfuscation
+#       Hash defining obfuscation rules for sensitive data. (Agent 6 and 7 only).
+#       Optional Hash. Default: undef
 #   $process_enabled
 #       String to enable the process/container agent
 #       Boolean. Default: false
@@ -307,6 +310,7 @@ class datadog_agent(
   String $apm_env = 'none',
   Boolean $apm_non_local_traffic = false,
   Optional[Hash[String, Float[0, 1]]] $apm_analyzed_spans = undef,
+  Optional[Hash[String, Data]] $apm_obfuscation = undef,
   Boolean $process_enabled = $datadog_agent::params::process_default_enabled,
   Boolean $scrub_args = $datadog_agent::params::process_default_scrub_args,
   Array $custom_sensitive_words = $datadog_agent::params::process_default_custom_words,
@@ -539,7 +543,7 @@ class datadog_agent(
       }
     }
 
-    if ($apm_enabled == true) and ($apm_env != 'none') or $apm_analyzed_spans {
+    if ($apm_enabled == true) and (($apm_env != 'none') or $apm_analyzed_spans or $apm_obfuscation) {
       concat::fragment{ 'datadog apm footer':
         target  => '/etc/dd-agent/datadog.conf',
         content => template('datadog_agent/datadog_apm_footer.conf.erb'),
@@ -618,6 +622,16 @@ class datadog_agent(
         $apm_analyzed_span_config = {}
     }
 
+    if $apm_obfuscation {
+        $apm_obfuscation_config = {
+          'apm_config' => {
+            'obfuscation' => $apm_obfuscation
+          }
+        }
+    } else {
+        $apm_obfuscation_config = {}
+    }
+
     if $statsd_forward_host != '' {
         if $_statsd_forward_port != '' {
             $statsd_forward_config = {
@@ -646,6 +660,7 @@ class datadog_agent(
             $logs_base_config,
             $agent_extra_options,
             $apm_analyzed_span_config,
+            $apm_obfuscation_config,
             $statsd_forward_config,
             $host_config,
             $additional_checksd_config)

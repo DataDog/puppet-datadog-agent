@@ -15,6 +15,9 @@
 #   $tags
 #        Optional array of tags
 #
+#   $use_fastcgi
+#        Use fastcgi to get stats.  Default: false
+#
 # Sample Usage:
 #
 #  class { 'datadog_agent::integrations::php_fpm' :
@@ -29,7 +32,8 @@ class datadog_agent::integrations::php_fpm(
   $ping_reply       = 'pong',
   $http_host        = undef,
   $tags             = [],
-  $instances        = undef
+  $instances        = undef,
+  $use_fastcgi      = 'false'
 ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -40,6 +44,7 @@ class datadog_agent::integrations::php_fpm(
       'ping_url' => $ping_url,
       'ping_reply' => $ping_reply,
       'tags' => $tags,
+      'use_fastcgi' => $use_fastcgi,
     }]
   } else {
     $_instances = $instances

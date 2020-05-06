@@ -1,6 +1,6 @@
-# Test setup
+# [DEPRECATED] Manual test setup
 
-This is an example setup, based on vagrant + virtualbox, that allows to easily run puppet commands to test the module.
+This is an example setup, based on vagrant + virtualbox, that allows to easily run puppet commands to test the module
 
 # Requirements
 
@@ -9,7 +9,7 @@ This is an example setup, based on vagrant + virtualbox, that allows to easily r
 
 # Setup
 
-in `puppet-datadog-agent/tests/ubuntu` or `puppet-datadog-agent/tests/centos`:
+in `puppet-datadog-agent/environments/ubuntu1604` or `puppet-datadog-agent/environments/centos8`:
 
 - provision VM: `vagrant up`
 - connect to the VM to check the configuration: `vagrant ssh`
@@ -32,10 +32,9 @@ mod 'datadog-datadog_agent',
 
 ## Manifest
 
-The default manifest is `tests/environment/manifests/site.pp` and simply run the module with the default options.
+The default manifest is `environments/etc/manifests/site.pp` and simply run the module with the default options.
 We can edit the manifest and run `vagrant up --provision` to upload the new version to the VM.
 
 # Test
 
-In the CentOS VM, run `sudo /usr/local/bin/puppet apply --modulepath=./modules ./manifests/site.pp` in `/home/vagrant/puppet` to apply to manifest on the VM.
-In the Ubuntu VM, run `sudo /opt/puppetlabs/bin/puppet apply --modulepath=./modules ./manifests/site.pp` in `/home/vagrant/puppet` to apply to manifest on the VM.
+In a VM, run `sudo puppet apply --modulepath=./modules ./manifests/site.pp` in `/home/vagrant/puppet` to apply to manifest on the VM.

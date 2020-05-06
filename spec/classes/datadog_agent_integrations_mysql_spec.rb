@@ -4,96 +4,110 @@ describe 'datadog_agent::integrations::mysql' do
   context 'supported agents' do
     ALL_SUPPORTED_AGENTS.each do |agent_major_version|
       let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
+
       if agent_major_version == 5
-        let(:conf_file) { "/etc/dd-agent/conf.d/mysql.yaml" }
+        let(:conf_file) { '/etc/dd-agent/conf.d/mysql.yaml' }
       else
         let(:conf_file) { "#{CONF_DIR}/mysql.d/conf.yaml" }
       end
 
       context 'with default parameters' do
-        it { should compile }
+        it { is_expected.to compile }
       end
 
       context 'with password set' do
-        let(:params) {{
-          password: 'foobar',
-        }}
+        let(:params) do
+          {
+            password: 'foobar',
+          }
+        end
 
-        it { should compile.with_all_deps }
-        it { should contain_file(conf_file).with(
-          owner: DD_USER,
-          group: DD_GROUP,
-          mode: PERMISSIONS_PROTECTED_FILE,
-        )}
-        it { should contain_file(conf_file).that_requires("Package[#{PACKAGE_NAME}]") }
-        it { should contain_file(conf_file).that_notifies("Service[#{SERVICE_NAME}]") }
+        it { is_expected.to compile.with_all_deps }
+        it {
+          is_expected.to contain_file(conf_file).with(
+            owner: DD_USER,
+            group: DD_GROUP,
+            mode: PERMISSIONS_PROTECTED_FILE,
+          )
+        }
+        it { is_expected.to contain_file(conf_file).that_requires("Package[#{PACKAGE_NAME}]") }
+        it { is_expected.to contain_file(conf_file).that_notifies("Service[#{SERVICE_NAME}]") }
 
-        it { should contain_file(conf_file).with_content(%r{pass: foobar}) }
-        it { should contain_file(conf_file).without_content(%r{tags: }) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{pass: foobar}) }
+        it { is_expected.to contain_file(conf_file).without_content(%r{tags: }) }
 
         context 'with defaults' do
-          it { should contain_file(conf_file).with_content(%r{server: localhost}) }
-          it { should contain_file(conf_file).with_content(%r{user: datadog}) }
-          it { should contain_file(conf_file).without_content(%r{sock: }) }
-          it { should contain_file(conf_file).with_content(%r{replication: 0}) }
-          it { should contain_file(conf_file).with_content(%r{galera_cluster: 0}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{server: localhost}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{user: datadog}) }
+          it { is_expected.to contain_file(conf_file).without_content(%r{sock: }) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{replication: 0}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{galera_cluster: 0}) }
         end
 
         context 'with parameters set' do
-          let(:params) {{
-            password: 'foobar',
-            host: 'mysql1',
-            user: 'baz',
-            sock: '/tmp/mysql.foo.sock',
-            replication: '1',
-            galera_cluster: '1',
-          }}
+          let(:params) do
+            {
+              password: 'foobar',
+              host: 'mysql1',
+              user: 'baz',
+              sock: '/tmp/mysql.foo.sock',
+              replication: '1',
+              galera_cluster: '1',
+            }
+          end
 
-          it { should contain_file(conf_file).with_content(%r{pass: foobar}) }
-          it { should contain_file(conf_file).with_content(%r{server: mysql1}) }
-          it { should contain_file(conf_file).with_content(%r{user: baz}) }
-          it { should contain_file(conf_file).with_content(%r{sock: /tmp/mysql.foo.sock}) }
-          it { should contain_file(conf_file).with_content(%r{replication: 1}) }
-          it { should contain_file(conf_file).with_content(%r{galera_cluster: 1}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{pass: foobar}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{server: mysql1}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{user: baz}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{sock: /tmp/mysql.foo.sock}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{replication: 1}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{galera_cluster: 1}) }
         end
 
         context 'with tags parameter array' do
-          let(:params) {{
-            password: 'foobar',
-            tags: %w{ foo bar baz },
-          }}
-          it { should contain_file(conf_file).with_content(/tags:[^-]+- foo\s+- bar\s+- baz\s*?[^-]/m) }
+          let(:params) do
+            {
+              password: 'foobar',
+              tags: ['foo', 'bar', 'baz'],
+            }
+          end
+
+          it { is_expected.to contain_file(conf_file).with_content(%r{tags:[^-]+- foo\s+- bar\s+- baz\s*?[^-]}m) }
         end
 
         context 'tags not array' do
-          let(:params) {{
-            password: 'foobar',
-            tags: 'aoeu',
-          }}
+          let(:params) do
+            {
+              password: 'foobar',
+              tags: 'aoeu',
+            }
+          end
 
-          it { should_not compile }
+          it { is_expected.not_to compile }
         end
       end
     end
 
     context 'with queries parameter set' do
-      let(:params) {{
-        password: 'foobar',
-        queries: [
-          {
-            'query'  => 'SELECT TIMESTAMPDIFF(second,MAX(create_time),NOW()) as last_accessed FROM requests',
-            'metric' => 'app.seconds_since_last_request',
-            'type'   => 'gauge',
-            'field'  => 'last_accessed'
-          }
-        ]
-      }}
+      let(:params) do
+        {
+          password: 'foobar',
+          queries: [
+            {
+              'query'  => 'SELECT TIMESTAMPDIFF(second,MAX(create_time),NOW()) as last_accessed FROM requests',
+              'metric' => 'app.seconds_since_last_request',
+              'type'   => 'gauge',
+              'field'  => 'last_accessed',
+            },
+          ],
+        }
+      end
 
-      it { should contain_file(conf_file).with_content(/- query/) }
-      it { should contain_file(conf_file).with_content(%r{query: SELECT TIMESTAMPDIFF\(second,MAX\(create_time\),NOW\(\)\) as last_accessed FROM requests}) }
-      it { should contain_file(conf_file).with_content(%r{metric: app.seconds_since_last_request}) }
-      it { should contain_file(conf_file).with_content(%r{type: gauge}) }
-      it { should contain_file(conf_file).with_content(%r{field: last_accessed}) }
+      it { is_expected.to contain_file(conf_file).with_content(%r{- query}) }
+      it { is_expected.to contain_file(conf_file).with_content(%r{query: SELECT TIMESTAMPDIFF\(second,MAX\(create_time\),NOW\(\)\) as last_accessed FROM requests}) }
+      it { is_expected.to contain_file(conf_file).with_content(%r{metric: app.seconds_since_last_request}) }
+      it { is_expected.to contain_file(conf_file).with_content(%r{type: gauge}) }
+      it { is_expected.to contain_file(conf_file).with_content(%r{field: last_accessed}) }
     end
   end
 end

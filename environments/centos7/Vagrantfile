@@ -1,0 +1,19 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/centos7"
+  config.vm.provision "file", source: "../../environments/etc", destination: "$HOME/puppet"
+  config.vm.synced_folder "../../", "/puppet-datadog-agent"
+  config.vm.provision "shell", inline: <<-SHELL
+    #install puppet 5
+    rpm -ivh http://yum.puppetlabs.com/puppet5-release-el-7.noarch.rpm
+    yum install -y puppet
+    ln -s /opt/puppetlabs/puppet/bin/puppet /usr/bin/puppet
+
+    # install modules
+    cd /home/vagrant/puppet
+    /opt/puppetlabs/puppet/bin/gem install r10k -v 2.6.7
+    /opt/puppetlabs/puppet/bin/r10k puppetfile install --moduledir=/home/vagrant/puppet/modules
+
+    # link local module
+    ln -s /puppet-datadog-agent /home/vagrant/puppet/modules/datadog_agent
+  SHELL
+end

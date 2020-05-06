@@ -6,25 +6,28 @@ describe 'datadog_agent::integrations::logs' do
     let(:conf_file) { "#{CONF_DIR}/logs.yaml" }
 
     context 'with default parameters' do
-      it { should compile }
+      it { is_expected.to compile }
     end
 
     context 'with parameters set' do
-      let(:params) {{
-        logs: [
-          {
-            'type' => 'file',
-            'path' => 'apath.log',
-          },
-          {
-            'type' => 'docker',
-          },
-        ],
-      }}
-      it { should contain_file(conf_file).with_content(%r{logs:}) }
-      it { should contain_file(conf_file).with_content(%r{- type: file}) }
-      it { should contain_file(conf_file).with_content(%r{path: apath.log}) }
-      it { should contain_file(conf_file).with_content(%r{- type: docker}) }
+      let(:params) do
+        {
+          logs: [
+            {
+              'type' => 'file',
+              'path' => 'apath.log',
+            },
+            {
+              'type' => 'docker',
+            },
+          ],
+        }
+      end
+
+      it { is_expected.to contain_file(conf_file).with_content(%r{logs:}) }
+      it { is_expected.to contain_file(conf_file).with_content(%r{- type: file}) }
+      it { is_expected.to contain_file(conf_file).with_content(%r{path: apath.log}) }
+      it { is_expected.to contain_file(conf_file).with_content(%r{- type: docker}) }
     end
   end
 end

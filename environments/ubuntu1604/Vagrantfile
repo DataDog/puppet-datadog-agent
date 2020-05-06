@@ -1,0 +1,19 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "puppetlabs/ubuntu-16.04-64-puppet"
+  config.vm.box_version = "1.0.0"
+  config.vm.provision "file", source: "../../environments/etc", destination: "$HOME/puppet"
+  config.vm.synced_folder "../../", "/puppet-datadog-agent"
+  config.vm.provision "shell", inline: <<-SHELL
+
+    #install puppet 4
+    ln -s /opt/puppetlabs/puppet/bin/puppet /usr/bin/puppet
+
+    # install modules
+    cd /home/vagrant/puppet
+    /opt/puppetlabs/puppet/bin/gem install r10k -v 2.6.7
+    /opt/puppetlabs/puppet/bin/r10k puppetfile install --moduledir=/home/vagrant/puppet/modules
+
+    # link local module
+    ln -s /puppet-datadog-agent /home/vagrant/puppet/modules/datadog_agent
+  SHELL
+end

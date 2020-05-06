@@ -1,57 +1,12 @@
 {
   "name": "datadog-datadog_agent",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "author": "James Turnbull <james@lovedthanlost.net>, Rob Terhaar <rob@atlanticdynamic>, Jaime Fullaondo <jaime.fullaondo@datadoghq.com>, Albert Vaca <albert.vaca@datadoghq.com>",
   "summary": "Install the Datadog monitoring agent and report Puppet runs to Datadog",
   "license": "Apache-2.0",
   "source": "git://github.com/DataDog/puppet-datadog-agent.git",
   "project_page": "https://github.com/DataDog/puppet-datadog-agent",
   "issues_url": "https://github.com/DataDog/puppet-datadog-agent/issues",
-  "description": "This will install the Datadog monitoring agent. Sign up and get your API key at: http://www.datadoghq.com",
-  "operatingsystem_support": [
-    {
-      "operatingsystem": "RedHat",
-      "operatingsystemrelease": ["6", "7"]
-    },
-    {
-      "operatingsystem": "CentOS",
-      "operatingsystemrelease": ["6", "7"]
-    },
-    {
-      "operatingsystem": "OracleLinux",
-      "operatingsystemrelease": ["6", "7"]
-    },
-    {
-      "operatingsystem": "Scientific",
-      "operatingsystemrelease": ["6", "7"]
-    },
-    {
-      "operatingsystem": "Fedora",
-      "operatingsystemrelease": ["19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29"]
-    },
-    {
-      "operatingsystem": "Debian",
-      "operatingsystemrelease": ["6", "7", "8", "9"]
-    },
-    {
-      "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": ["14.04", "16.04", "17.04", "17.10", "18.04", "18.10"]
-    },
-    {
-      "operatingsystem": "Windows",
-      "operatingsystemrelease": [ "Server 2008 R2", "Server 2012", "Server 2012 R2", "Server 2016", "Server 2019", "7", "8", "10" ]
-    }
-  ],
-  "requirements": [
-    {
-      "name": "pe",
-      "version_requirement": ">=2016.4.x"
-    },
-    {
-      "name": "puppet",
-      "version_requirement": ">=4.6.0 <7.0.0"
-    }
-  ],
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
@@ -81,5 +36,94 @@
       "name": "puppetlabs/powershell",
       "version_requirement": ">=2.3.0 <3.0.0"
     }
-  ]
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Fedora",
+      "operatingsystemrelease": [
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+        "25",
+        "26",
+        "27",
+        "28",
+        "29"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7",
+        "8",
+        "9"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "14.04",
+        "16.04",
+        "17.04",
+        "17.10",
+        "18.04",
+        "18.10"
+      ]
+    },
+    {
+      "operatingsystem": "Windows",
+      "operatingsystemrelease": [
+        "Server 2008 R2",
+        "Server 2012",
+        "Server 2012 R2",
+        "Server 2016",
+        "Server 2019",
+        "7",
+        "8",
+        "10"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">=4.6.0 <7.0.0"
+    }
+  ],
+  "description": "This will install the Datadog monitoring agent. Sign up and get your API key at: http://www.datadoghq.com",
+  "pdk-version": "1.15.0",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#1.15.0",
+  "template-ref": "tags/1.15.0-0-g0bc522e"
 }

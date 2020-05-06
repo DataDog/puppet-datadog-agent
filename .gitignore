@@ -1,15 +1,34 @@
-pkg/*
+.git/
+.*.sw[op]
+.metadata
+.yardoc
+.yardwarns
+*.iml
+/.bundle/
+/.idea/
+/.vagrant/
+/coverage/
+/bin/
+/doc/
+/Gemfile.local
+/junit/
+/log/
+/pkg/
+/tmp/
+/vendor/
+/convert_report.txt
+/update_report.txt
 spec/fixtures
 .rspec_system
-.bundle
-vendor
-Gemfile.lock
 
 .rbenv-gemsets
 .ruby-version
 
-tests/centos/.vagrant
-tests/ubuntu/.vagrant
+environments/**/.vagrant
 
-# mac stuff
 .DS_Store
+.project
+.envrc
+/inventory.yaml
+
+.kitchen

@@ -32,6 +32,8 @@
 #       the scheme: "fact_name:fact_value".
 #   $puppet_run_reports
 #       Will send results from your puppet agent runs back to the datadog service.
+#   $manage_dogapi_gem
+#       When reports are enabled, ensure the dogapi gem (required) is installed.
 #   $puppetmaster_user
 #       Will chown the api key used by the report processor to this user.
 #       Defaults to the user the puppetmaster is configured to run as.
@@ -67,8 +69,11 @@
 #       Set the value of the statsd_forward_port varable. Used to forward all
 #       statsd metrics to another host.
 #   $manage_repo
-#       Boolean to indicate whether this module should attempt to manage
-#       the package repo. Only for RPM-based distros. Default true.
+#       Deprecated. Only works for RPM. Install datadog-agent manually and then set
+#       manage_install=false to achieve the same behaviour as setting this to false.
+#   $manage_install
+#       Boolean to indicate whether this module should attempt to install the
+#       Agent, or assume it will be installed by other means. Default true.
 #   $graphite_listen_port
 #       Set graphite listener port
 #   $extra_template
@@ -175,6 +180,9 @@
 #   $apm_analyzed_spans
 #       Hash defining the APM spans to analyze and their rates.
 #       Optional Hash. Default: undef.
+#   $apm_obfuscation
+#       Hash defining obfuscation rules for sensitive data. (Agent 6 and 7 only).
+#       Optional Hash. Default: undef
 #   $process_enabled
 #       String to enable the process/container agent
 #       Boolean. Default: false
@@ -243,6 +251,8 @@ class datadog_agent(
   $service_ensure = 'running',
   $service_enable = true,
   Boolean $manage_repo = true,
+  Boolean $manage_dogapi_gem = true,
+  Boolean $manage_install = true,
   $hostname_extraction_regex = undef,
   Boolean $hostname_fqdn = false,
   $dogstatsd_port = 8125,
@@ -300,6 +310,7 @@ class datadog_agent(
   String $apm_env = 'none',
   Boolean $apm_non_local_traffic = false,
   Optional[Hash[String, Float[0, 1]]] $apm_analyzed_spans = undef,
+  Optional[Hash[String, Data]] $apm_obfuscation = undef,
   Boolean $process_enabled = $datadog_agent::params::process_default_enabled,
   Boolean $scrub_args = $datadog_agent::params::process_default_scrub_args,
   Array $custom_sensitive_words = $datadog_agent::params::process_default_custom_words,
@@ -385,56 +396,61 @@ class datadog_agent(
     default:    { $_loglevel = 'INFO' }
   }
 
-  if $use_apt_backup_keyserver {
-    $_apt_keyserver = $apt_backup_keyserver
+  # Install agent
+  if $manage_install {
+    case $::operatingsystem {
+      'Ubuntu','Debian' : {
+        if $use_apt_backup_keyserver {
+          $_apt_keyserver = $apt_backup_keyserver
+        } else {
+          $_apt_keyserver = $apt_keyserver
+        }
+        class { 'datadog_agent::ubuntu':
+          agent_major_version   => $_agent_major_version,
+          agent_version         => $agent_version,
+          agent_repo_uri        => $agent_repo_uri,
+          release               => $apt_release,
+          skip_apt_key_trusting => $skip_apt_key_trusting,
+          apt_keyserver         => $_apt_keyserver,
+        }
+      }
+      'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux' : {
+        class { 'datadog_agent::redhat':
+          agent_major_version => $_agent_major_version,
+          agent_repo_uri      => $agent_repo_uri,
+          manage_repo         => $manage_repo,
+          agent_version       => $agent_version,
+        }
+      }
+      'Windows' : {
+        class { 'datadog_agent::windows' :
+          agent_major_version => $_agent_major_version,
+          agent_repo_uri      => $agent_repo_uri,
+          agent_version       => $agent_version,
+          msi_location        => $win_msi_location,
+          api_key             => $api_key,
+          hostname            => $host,
+          tags                => $local_tags,
+          ensure              => $win_ensure
+        }
+        if ($win_ensure == absent) {
+          return() #Config files will remain unchanged on uninstall
+        }
+      }
+      default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
+    }
   } else {
-    $_apt_keyserver = $apt_keyserver
+    package { $datadog_agent::params::package_name:
+      ensure => present,
+      source => 'Agent installation not managed by Puppet, make sure the Agent is installed beforehand.',
+    }
   }
 
-  case $::operatingsystem {
-    'Ubuntu','Debian' : {
-      class { 'datadog_agent::ubuntu':
-        agent_major_version   => $_agent_major_version,
-        agent_version         => $agent_version,
-        service_ensure        => $service_ensure,
-        service_enable        => $service_enable,
-        service_provider      => $service_provider,
-        agent_repo_uri        => $agent_repo_uri,
-        release               => $apt_release,
-        skip_apt_key_trusting => $skip_apt_key_trusting,
-        apt_keyserver         => $_apt_keyserver,
-      }
-    }
-    'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux' : {
-      class { 'datadog_agent::redhat':
-        agent_major_version => $_agent_major_version,
-        agent_repo_uri      => $agent_repo_uri,
-        manage_repo         => $manage_repo,
-        agent_version       => $agent_version,
-        service_ensure      => $service_ensure,
-        service_enable      => $service_enable,
-        service_provider    => $service_provider,
-      }
-    }
-    'Windows' : {
-      class { 'datadog_agent::windows' :
-        agent_major_version => $_agent_major_version,
-        agent_repo_uri      => $agent_repo_uri,
-        agent_version       => $agent_version,
-        service_ensure      => $service_ensure,
-        service_enable      => $service_enable,
-        msi_location        => $win_msi_location,
-        api_key             => $api_key,
-        hostname            => $host,
-        service_name        => $service_name,
-        tags                => $local_tags,
-        ensure              => $win_ensure
-      }
-      if ($win_ensure == absent) {
-        return() #Config files will remain unchanged on uninstall
-      }
-    }
-    default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
+  # Declare service
+  class { 'datadog_agent::service' :
+    service_ensure   => $service_ensure,
+    service_enable   => $service_enable,
+    service_provider => $service_provider,
   }
 
   if ($::operatingsystem != 'Windows') {
@@ -527,7 +543,7 @@ class datadog_agent(
       }
     }
 
-    if ($apm_enabled == true) and ($apm_env != 'none') or $apm_analyzed_spans {
+    if ($apm_enabled == true) and (($apm_env != 'none') or $apm_analyzed_spans or $apm_obfuscation) {
       concat::fragment{ 'datadog apm footer':
         target  => '/etc/dd-agent/datadog.conf',
         content => template('datadog_agent/datadog_apm_footer.conf.erb'),
@@ -606,6 +622,16 @@ class datadog_agent(
         $apm_analyzed_span_config = {}
     }
 
+    if $apm_obfuscation {
+        $apm_obfuscation_config = {
+          'apm_config' => {
+            'obfuscation' => $apm_obfuscation
+          }
+        }
+    } else {
+        $apm_obfuscation_config = {}
+    }
+
     if $statsd_forward_host != '' {
         if $_statsd_forward_port != '' {
             $statsd_forward_config = {
@@ -634,6 +660,7 @@ class datadog_agent(
             $logs_base_config,
             $agent_extra_options,
             $apm_analyzed_span_config,
+            $apm_obfuscation_config,
             $statsd_forward_config,
             $host_config,
             $additional_checksd_config)
@@ -706,6 +733,7 @@ class datadog_agent(
     class { 'datadog_agent::reports':
       api_key                   => $api_key,
       datadog_site              => $datadog_site,
+      manage_dogapi_gem         => $manage_dogapi_gem,
       puppet_gem_provider       => $puppet_gem_provider,
       dogapi_version            => $datadog_agent::params::dogapi_version,
       puppetmaster_user         => $puppetmaster_user,

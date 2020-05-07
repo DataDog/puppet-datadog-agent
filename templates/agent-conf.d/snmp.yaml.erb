@@ -1,12 +1,22 @@
 ### MANAGED BY PUPPET
-
+<% require 'yaml' %>
+<% if @init_config && !@init_config.empty? && @instances && !@instances.empty? -%>
+<%= {'init_config' => @init_config, 'instances' => @instances}.to_yaml -%>
+<% else -%>
+<% if @init_config && !@init_config.empty? -%>
+<%= (Array({'init_config' => @init_config}.to_yaml.lines))[1..-1].join %>
+<% else -%>
 init_config:
 <% if @mibs_folder -%>  mibs_folder: <%= @mibs_folder %><% end -%>
 <% if @ignore_nonincreasing_oid -%>  ignore_nonincreasing_oid: <%= @ignore_nonincreasing_oid %><% end -%>
 <% if @oid_batch_size -%>  oid_batch_size: <%= @oid_batch_size %><% end -%>
+<% end -%>
 
+<% if @instances && !@instances.empty? -%>
+<%= (Array({'instances' => @instances}.to_yaml.lines))[1..-1].join %>
+<% else -%>
 instances:
-<% (Hash(@_instances)).each do |version, instances| -%>
+<% (Hash(@versioned_instances)).each do |version, instances| -%>
 <% (Array(instances)).each do |instance| -%>
   - ip_address: <%= instance['ip_address'] %>
 <% case version
@@ -65,3 +75,5 @@ instances:
 <% end end end end -%>
 <% if metric['force_type'] -%>        forced_type: <%= metric['forced_type']%><% end -%>
 <% end end end end -%>
+<% end -%>
+<% end -%>

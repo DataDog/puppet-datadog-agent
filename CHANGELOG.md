@@ -1,10 +1,19 @@
 Changes
 =======
 
+# 3.2.0 / 2020-05-07
+
+* [FEATURE] Add `manage_install` option to disable installing the Agent. See [#608][]
+* [FEATURE] Add `manage_dogapi_gem`, to disable the management of ruby in reports. See [#613][]
+* [FEATURE] Add `fastcgi` option to the php-fpm integration. See [#616][] (Thanks [@ChannoneArif-nbcuni][])
+* [FEATURE] Add automatic scrubbing for tracing with the `apm_obfuscation` option. See [#615][]
+* [FEATURE] Support for additional parameters in the snmp integration. See [#621][] (Thanks [@asenci][])
+* [BUGFIX] Fix missing newlines between fields in snmp integration config See [#622][]
+
 # 3.1.0 / 2020-01-14
 
 * [FEATURE] Accept the same version string in Debian/Ubuntu than in other OSes when pinning the Agent. See [#591][]
-* [FEATURE] Add the `check_hostname` and `ssl_server_name` parameters to the `http_check` integration. See [#599][] (thanks [@asenci][])
+* [FEATURE] Add the `check_hostname` and `ssl_server_name` parameters to the `http_check` integration. See [#599][] (Thanks [@asenci][])
 * [BUGFIX] Remove include from `system_probe.pp` that caused error "This Function Call is unacceptable as a top level construct in this location" on recent Puppet versions. See [#596][] (thanks again [@asenci][])
 * [BUGFIX] Fix broken `facts_to_tags` on Agent 5. See [#598][]
 * [CHORE] Migrate project to PDK (Puppet Development Kit). See [#597][]
@@ -730,8 +739,15 @@ Please read the [docs]() for more details.
 [#597]: https://github.com/DataDog/puppet-datadog-agent/issues/597
 [#598]: https://github.com/DataDog/puppet-datadog-agent/issues/598
 [#599]: https://github.com/DataDog/puppet-datadog-agent/issues/599
+[#608]: https://github.com/DataDog/puppet-datadog-agent/issues/608
+[#613]: https://github.com/DataDog/puppet-datadog-agent/issues/613
+[#615]: https://github.com/DataDog/puppet-datadog-agent/issues/615
+[#616]: https://github.com/DataDog/puppet-datadog-agent/issues/616
+[#621]: https://github.com/DataDog/puppet-datadog-agent/issues/621
+[#622]: https://github.com/DataDog/puppet-datadog-agent/issues/622
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
+[@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
 [@ColinHebert]: https://github.com/ColinHebert
 [@ColinHerbert]: https://github.com/ColinHerbert
 [@DDRBoxman]: https://github.com/DDRBoxman

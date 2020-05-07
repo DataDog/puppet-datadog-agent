@@ -7,9 +7,15 @@
 <%= (Array({'init_config' => @init_config}.to_yaml.lines))[1..-1].join %>
 <% else -%>
 init_config:
-<% if @mibs_folder -%>  mibs_folder: <%= @mibs_folder %><% end -%>
-<% if @ignore_nonincreasing_oid -%>  ignore_nonincreasing_oid: <%= @ignore_nonincreasing_oid %><% end -%>
-<% if @oid_batch_size -%>  oid_batch_size: <%= @oid_batch_size %><% end -%>
+<% if @mibs_folder -%>
+  mibs_folder: <%= @mibs_folder %>
+<% end -%>
+<% if @ignore_nonincreasing_oid -%>
+  ignore_nonincreasing_oid: <%= @ignore_nonincreasing_oid %>
+<% end -%>
+<% if @oid_batch_size -%>
+  oid_batch_size: <%= @oid_batch_size %>
+<% end -%>
 <% end -%>
 
 <% if @instances && !@instances.empty? -%>
@@ -27,25 +33,45 @@ instances:
     community_string: <%= instance['community_string'] %>
 <% when 3-%>
     user: <%= instance['user'] %>
-<% if instance['authKey'] -%>    authKey: <%= instance['authKey'] %><% end -%>
-<% if instance['privKey'] -%>    privKey: <%= instance['privKey'] %><% end -%>
-<% if instance['authProtocol'] -%>    authProtocol: <%= instance['authProtocol'] %><% end -%>
+<% if instance['authKey'] -%>
+    authKey: <%= instance['authKey'] %>
+<% end -%>
+<% if instance['privKey'] -%>
+    privKey: <%= instance['privKey'] %>
+<% end -%>
+<% if instance['authProtocol'] -%>
+    authProtocol: <%= instance['authProtocol'] %>
+<% end -%>
 <% if instance['privProtocol'] -%>
     privProtocol: <%= instance['privProtocol'] %>
 <% end -%>
 <% end -%>
-<% if instance['host'] -%>    host: <%= instance['host'] %><% end -%>
-<% if instance['port'] -%>    port: <%= instance['port'] %><% end -%>
-<% if instance['timeout'] -%>    timeout: <%= instance['timeout'] %><% end -%>
-<% if instance['retries'] -%>    retries: <%= instance['retries'] %><% end -%>
-<% if instance['enforce_mib_constraints'] -%>    enforce_mib_constraints: <%= instance['retries'] %><% end -%>
-<% if instance['name'] -%>    name: <%= instance['name'] %><% end -%>
-<% if instance['tags'] -%>    tags:
+<% if instance['host'] -%>
+    host: <%= instance['host'] %>
+<% end -%>
+<% if instance['port'] -%>
+    port: <%= instance['port'] %>
+<% end -%>
+<% if instance['timeout'] -%>
+    timeout: <%= instance['timeout'] %>
+<% end -%>
+<% if instance['retries'] -%>
+    retries: <%= instance['retries'] %>
+<% end -%>
+<% if instance['enforce_mib_constraints'] -%>
+    enforce_mib_constraints: <%= instance['retries'] %>
+<% end -%>
+<% if instance['name'] -%>
+    name: <%= instance['name'] %>
+<% end -%>
+<% if instance['tags'] -%>
+    tags:
 <% (Array(instance['tags'])).each do |tag| -%>
       - <%= tag %>
 <% end -%>
 <% end -%>
-<% if instance['metrics'] -%>    metrics:
+<% if instance['metrics'] -%>
+    metrics:
 <% (Array(instance['metrics'])).each do |metric| -%>
 <% if metric['MIB'] -%>
       - MIB: <%= metric['MIB'] %>
@@ -61,19 +87,25 @@ instances:
 <% else -%>
       - OID: <%= metric['OID'] -%>
 <% end -%>
-<% if metric['name'] -%>      name: <%= metric['name'] %><% end -%>
+<% if metric['name'] -%>
+      name: <%= metric['name'] %>
+<% end -%>
 <% if metric['metric_tags'] -%>
         metric_tags:
 <% (Array(metric['metric_tags'])).each do |metric_tag| -%>
 <% if metric['table'] -%>
           - tag: <%= metric_tag['tag'] %>
-<% if metric_tag['index'] -%>            index: <%= metric_tag['index'] %>
-<% else if metric_tag['column'] -%>            column: <%= metric_tag['column'] %>
+<% if metric_tag['index'] -%>
+            index: <%= metric_tag['index'] %>
+<% else if metric_tag['column'] -%>
+            column: <%= metric_tag['column'] %>
 <% end end -%>
 <% else if metric['symbol'] -%>
           - <%= metric_tag %>
 <% end end end end -%>
-<% if metric['force_type'] -%>        forced_type: <%= metric['forced_type']%><% end -%>
+<% if metric['force_type'] -%>
+        forced_type: <%= metric['forced_type']%>
+<% end -%>
 <% end end end end -%>
 <% end -%>
 <% end -%>

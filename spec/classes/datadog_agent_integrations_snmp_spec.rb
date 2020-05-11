@@ -30,10 +30,48 @@ describe 'datadog_agent::integrations::snmp' do
         let(:params) do
           {
             ignore_nonincreasing_oid: true,
+            instances: {
+              ip_address: 'localhost',
+              port: 161,
+              community_string: 'public',
+              tags: [
+                'optional_tag_1',
+              ],
+              metrics: [
+                {
+                  MIB: 'IF-MIB',
+                  table: 'ifTable',
+                  symbols: [
+                    'ifInOctets',
+                    'ifOutOctets',
+                  ],
+                  metric_tags: [
+                    {
+                      tag: 'interface',
+                      column: 'ifDescr',
+                    },
+                    {
+                      tag: 'interface_index',
+                      column: 'ifIndex',
+                    },
+                  ],
+                },
+              ],
+            },
           }
         end
 
         it { is_expected.to contain_file(conf_file).with_content(%r{ignore_nonincreasing_oid: true}) }
+
+        it do
+          content = get_from_catalogue('file', conf_file, 'content')
+          yaml = YAML.safe_load(content)
+          expect(yaml).to include('init_config')
+          expect(yaml['init_config']).to include('ignore_nonincreasing_oid')
+          expect(yaml).to include('instances')
+          expect(yaml['instances']).to include('tags')
+          expect(yaml['instances']['tags']).to include('optional_tag_1')
+        end
       end
     end
   end

@@ -67,3 +67,8 @@ RSpec.configure do |c|
     },
   }
 end
+
+# Get parameters from catalogue.
+def get_from_catalogue(type, name, parameter)
+  catalogue.resource(type, name).send(:parameters)[parameter.to_sym]
+end

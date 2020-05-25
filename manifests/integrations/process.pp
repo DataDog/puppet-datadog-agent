@@ -42,6 +42,7 @@
 #
 class datadog_agent::integrations::process(
   Boolean $hiera_processes = false,
+  $init_config = {},
   Array $processes = [],
   ) inherits datadog_agent::params {
   include datadog_agent

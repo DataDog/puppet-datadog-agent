@@ -64,4 +64,4 @@
 require 'yaml'
 %>
 
-<%= {'init_config'=>nil, 'instances'=>@local_processes}.to_yaml %>
+<%= {'init_config'=>@init_config, 'instances'=>@local_processes}.to_yaml %>

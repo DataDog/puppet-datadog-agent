@@ -558,6 +558,15 @@ class datadog_agent(
         order   => '08',
       }
     }
+
+    file {'/etc/dd-agent/install_info':
+      owner   => $dd_user,
+      group   => $dd_group,
+      mode    => '0640',
+      content => template('datadog_agent/install_info.erb'),
+      require => File['/etc/dd-agent'],
+    }
+
   } else { #Agent 6/7
 
     # notify of broken params on agent6/7
@@ -714,6 +723,14 @@ class datadog_agent(
         require => File['C:/ProgramData/Datadog'],
       }
 
+      file { 'C:/ProgramData/Datadog/install_info':
+        owner   => $dd_user,
+        group   => $dd_group,
+        mode    => '0660',
+        content => template('datadog_agent/install_info.erb'),
+        require => File['C:/ProgramData/Datadog'],
+      }
+
     } else {
 
       file { '/etc/datadog-agent/datadog.yaml':
@@ -722,6 +739,14 @@ class datadog_agent(
         mode    => '0640',
         content => template('datadog_agent/datadog.yaml.erb'),
         notify  => Service[$datadog_agent::params::service_name],
+        require => File['/etc/datadog-agent'],
+      }
+
+      file { '/etc/datadog-agent/install_info':
+        owner   => $dd_user,
+        group   => $dd_group,
+        mode    => '0640',
+        content => template('datadog_agent/install_info.erb'),
         require => File['/etc/datadog-agent'],
       }
 

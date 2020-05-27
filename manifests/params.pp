@@ -23,6 +23,7 @@ class datadog_agent::params {
   $apt_backup_keyserver           = 'hkp://pool.sks-keyservers.net:80'
   $apt_keyserver                  = 'hkp://keyserver.ubuntu.com:80'
   $sysprobe_service_name          = 'datadog-agent-sysprobe'
+  $module_metadata                = load_module_metadata($module_name)
 
   case $::operatingsystem {
     'Ubuntu','Debian' : {

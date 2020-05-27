@@ -1592,16 +1592,36 @@ describe 'datadog_agent' do
 
         config_dir = WINDOWS_OS.include?(operatingsystem) ? 'C:/ProgramData/Datadog' : '/etc/datadog-agent'
         config_yaml_file = config_dir + '/datadog.yaml'
+        install_info_file = config_dir + '/install_info'
         log_file = WINDOWS_OS.include?(operatingsystem) ? 'C:/ProgramData/Datadog/logs/agent.log' : '\/var\/log\/datadog\/agent.log'
 
         it { is_expected.to contain_file(config_dir) }
         it { is_expected.to contain_file(config_yaml_file) }
+        it { is_expected.to contain_file(install_info_file) }
         it { is_expected.to contain_file(config_dir + '/conf.d').with_ensure('directory') }
 
         # Agent 5 files
         it { is_expected.not_to contain_file('/etc/dd-agent') }
         it { is_expected.not_to contain_concat('/etc/dd-agent/datadog.conf') }
         it { is_expected.not_to contain_file('/etc/dd-agent/conf.d').with_ensure('directory') }
+
+        describe 'install_info check' do
+          it {
+            is_expected.to contain_file(install_info_file).with(
+              'content' => %r{^\ \ tool:puppet\n},
+            )
+          }
+          it {
+            is_expected.to contain_file(install_info_file).with(
+              'content' => %r{^\ \ tool_version:puppet-[0-9]\.[0-9]\.[0-9]\n},
+            )
+          }
+          it {
+            is_expected.to contain_file(install_info_file).with(
+              'content' => %r{^\ \ installer_version:datadog_module-[0-9]\.[0-9]\.[0-9]\n},
+            )
+          }
+        end
 
         describe 'agent6 parameter check' do
           context 'with defaults' do

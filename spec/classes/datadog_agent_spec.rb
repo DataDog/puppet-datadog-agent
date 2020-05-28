@@ -1608,17 +1608,17 @@ describe 'datadog_agent' do
         describe 'install_info check' do
           it {
             is_expected.to contain_file(install_info_file).with(
-              'content' => %r{^\ \ tool:puppet\n},
+              'content' => %r{^\ \ tool:\s*puppet\n},
             )
           }
           it {
             is_expected.to contain_file(install_info_file).with(
-              'content' => %r{^\ \ tool_version:puppet-[0-9]\.[0-9]\.[0-9]\n},
+              'content' => %r{^\ \ tool_version:\s*puppet-(\d\.\d\.\d|unknown)\n},
             )
           }
           it {
             is_expected.to contain_file(install_info_file).with(
-              'content' => %r{^\ \ installer_version:datadog_module-[0-9]\.[0-9]\.[0-9]\n},
+              'content' => %r{^\ \ installer_version:\s*datadog_module-\d\.\d\.\d\n},
             )
           }
         end

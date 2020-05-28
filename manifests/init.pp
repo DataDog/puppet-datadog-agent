@@ -384,6 +384,8 @@ class datadog_agent(
     $local_integrations = $integrations
   }
 
+  $_puppetversion = lookup({ 'name' => '::puppetversion', 'default_value' => 'unknown'})
+
   include datadog_agent::params
   case upcase($log_level) {
     'CRITICAL': { $_loglevel = 'CRITICAL' }

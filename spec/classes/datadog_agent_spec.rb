@@ -1591,8 +1591,8 @@ describe 'datadog_agent' do
         end
 
         config_dir = WINDOWS_OS.include?(operatingsystem) ? 'C:/ProgramData/Datadog' : '/etc/datadog-agent'
-        config_yaml_file = config_dir + '/datadog.yaml'
-        install_info_file = config_dir + '/install_info'
+        config_yaml_file = File.join(config_dir, 'datadog.yaml')
+        install_info_file = File.join(config_dir, 'install_info')
         log_file = WINDOWS_OS.include?(operatingsystem) ? 'C:/ProgramData/Datadog/logs/agent.log' : '\/var\/log\/datadog\/agent.log'
 
         it { is_expected.to contain_file(config_dir) }
@@ -1606,21 +1606,18 @@ describe 'datadog_agent' do
         it { is_expected.not_to contain_file('/etc/dd-agent/conf.d').with_ensure('directory') }
 
         describe 'install_info check' do
-          it {
-            is_expected.to contain_file(install_info_file).with(
-              'content' => %r{^\ \ tool:\s*puppet\n},
+          let!(:install_info) do
+            contents = catalogue.resource('file', install_info_file).send(:parameters)[:content]
+            YAML.safe_load(contents)
+          end
+
+          it 'adds an install_info' do
+            expect(install_info['install_method']).to match(
+              'tool' => 'puppet',
+              'tool_version' => %r{^puppet-(\d+\.\d+\.\d+|unknown)$},
+              'installer_version' => %r{^datadog_module-\d+\.\d+\.\d+$},
             )
-          }
-          it {
-            is_expected.to contain_file(install_info_file).with(
-              'content' => %r{^\ \ tool_version:\s*puppet-(\d\.\d\.\d|unknown)\n},
-            )
-          }
-          it {
-            is_expected.to contain_file(install_info_file).with(
-              'content' => %r{^\ \ installer_version:\s*datadog_module-\d\.\d\.\d\n},
-            )
-          }
+          end
         end
 
         describe 'agent6 parameter check' do

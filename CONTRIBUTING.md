@@ -13,15 +13,32 @@ git clone git@github.com:DataDog/puppet-datadog-agent.git
 cd puppet-datadog-agent
 ```
 
-### Install dependencies
+### Install dependencies and automatic tests
 
+First, to install the Ruby dependencies run:
+
+```bash
+gem install bundler:1.17.3
+bundle install --path .bundle
 ```
-bundle install
+
+Afterwards, on the first run of the tests, further dependencies will be installed.
+The tests can be run with:
+```bash
+bundle exec rake test
+```
+
+The `test` task has a few different steps, which you can run separately:
+```bash
 rake lint              # Check Puppet manifests with puppet-lint / Run puppet-lint
 rake spec              # Run spec tests in a clean fixtures directory
 rake syntax            # Syntax check Puppet manifests and templates
 rake syntax:manifests  # Syntax check Puppet manifests
 rake syntax:templates  # Syntax check Puppet templates
+```
+
+Lastly, you should install the pre-commit hook:
+```bash
 pip install pre-commit
 pre-commit install
 ```

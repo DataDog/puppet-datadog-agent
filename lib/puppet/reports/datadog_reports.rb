@@ -14,6 +14,13 @@ Puppet::Reports.register_report(:datadog_reports) do
   API_KEY = config[:datadog_api_key]
   API_URL = config[:api_url]
 
+  if ENV['DD_PROXY_HTTP'].nil?
+    ENV['DD_PROXY_HTTP'] = config[:proxy_http]
+  end
+  if ENV['DD_PROXY_HTTPS'].nil?
+    ENV['DD_PROXY_HTTPS'] = config[:proxy_https]
+  end
+
   # if need be initialize the regex
   if !config[:hostname_extraction_regex].nil?
     begin

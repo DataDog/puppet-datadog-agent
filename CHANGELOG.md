@@ -1,6 +1,13 @@
 Changes
 =======
 
+# 3.3.0 / 2020-06-10
+
+* [FEATURE] Add install_info file. See [#628][]
+* [FEATURE] Add init_config argument to process integration. See [#624][] (Thanks [@ffrants][])
+* [FEATURE] Update cassandra.yaml.erb template. See [#626][] (Thanks [@ffrants][])
+* [BUGFIX] Pass proxy configuration from agent_extra_options to dogapi. See [#630][]
+
 # 3.2.0 / 2020-05-07
 
 * [FEATURE] Add `manage_install` option to disable installing the Agent. See [#608][]
@@ -745,6 +752,10 @@ Please read the [docs]() for more details.
 [#616]: https://github.com/DataDog/puppet-datadog-agent/issues/616
 [#621]: https://github.com/DataDog/puppet-datadog-agent/issues/621
 [#622]: https://github.com/DataDog/puppet-datadog-agent/issues/622
+[#624]: https://github.com/DataDog/puppet-datadog-agent/issues/624
+[#626]: https://github.com/DataDog/puppet-datadog-agent/issues/626
+[#628]: https://github.com/DataDog/puppet-datadog-agent/issues/628
+[#630]: https://github.com/DataDog/puppet-datadog-agent/issues/630
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
@@ -792,6 +803,7 @@ Please read the [docs]() for more details.
 [@evansj]: https://github.com/evansj
 [@ewansteele]: https://github.com/ewansteele
 [@ffleming]: https://github.com/ffleming
+[@ffrants]: https://github.com/ffrants
 [@flyinbutrs]: https://github.com/flyinbutrs
 [@flyinprogrammer]: https://github.com/flyinprogrammer
 [@fr3nd]: https://github.com/fr3nd

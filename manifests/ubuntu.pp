@@ -54,12 +54,13 @@ class datadog_agent::ubuntu(
     ensure => absent,
   }
 
+  # require apt causes cyclical dependency error
   apt::source { 'datadog':
     comment  => 'Datadog Agent Repository',
     location => $location,
     release  => $release,
     repos    => $repos,
-    require  => Class['apt'],
+    # require  => Class['apt'],
     key      => $key,
   }
 

@@ -451,6 +451,13 @@ class datadog_agent(
           return() #Config files will remain unchanged on uninstall
         }
       }
+      'OpenSuSE', 'SLES' : {
+        class { 'datadog_agent::suse' :
+          agent_major_version => $_agent_major_version,
+          agent_repo_uri      => $agent_repo_uri,
+          agent_version       => $agent_version,
+        }
+      }
       default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
     }
   } else {

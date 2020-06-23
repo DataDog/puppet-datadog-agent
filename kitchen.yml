@@ -66,6 +66,25 @@ platforms:
 
         - gem install r10k -v 2.6.7
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
+        
+  - name: opensuse/leap-15
+    driver_config:
+      # we use a custom image that runs systemd
+      image: 'datadog/docker-library:chef_kitchen_systemd_opensuse_leap_15'
+      run_command: /root/start.sh
+
+    driver:
+      provision_command:
+        - zypper ar -G https://yum.puppet.com/puppet/sles/15/x86_64/ puppet-repo
+        - zypper install -y puppet-agent ruby=2.5
+        - gem install bundler serverspec rspec
+        - ln -s /usr/bin/rspec.ruby2.5 /usr/bin/rspec
+        - ln -s /opt/puppetlabs/puppet/bin/puppet /usr/bin/puppet
+        - mkdir /home/kitchen/puppet
+        - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
+
+        - /opt/puppetlabs/puppet/bin/gem install r10k -v 2.6.7
+        - cd /home/kitchen/puppet && /opt/puppetlabs/puppet/bin/r10k puppetfile install --moduledir=/tmp/modules
 
 verifier:
   name: serverspec

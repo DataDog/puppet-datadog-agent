@@ -35,6 +35,10 @@
     {
       "name": "puppetlabs/powershell",
       "version_requirement": ">=2.3.0 <5.0.0"
+    },
+    {
+      "name": "puppet/zypprepo",
+      "version_requirement": ">=3.1.0 <4.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -113,6 +117,23 @@
         "7",
         "8",
         "10"
+      ]
+    },
+    {
+      "operatingsystem": "SLES",
+      "operatingsystemrelease": [
+        "11",
+        "12",
+        "15"
+      ]
+    },
+    {
+      "operatingsystem": "OpenSUSE",
+      "operatingsystemrelease": [
+        "11",
+        "12",
+        "13",
+        "15"
       ]
     }
   ],

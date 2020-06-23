@@ -59,7 +59,6 @@ class datadog_agent::ubuntu(
     location => $location,
     release  => $release,
     repos    => $repos,
-    require  => Class['apt'],
     key      => $key,
   }
 

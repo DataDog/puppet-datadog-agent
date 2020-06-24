@@ -247,6 +247,17 @@ datadog_agent::tags:
 - 'keyname:value'
 - 'anotherkey:%{factname}'
 ```
+To generate tags from custom facts classify your nodes with Puppet facts as an array to the ```facts_to_tags``` paramter either through the Puppet Enterprise console or Hiera. Here is an example:
+
+```conf
+class { "datadog_agent":
+  api_key            => "<YOUR_DD_API_KEY>",
+  facts_to_tags      => ["osfamily","networking.domain","my_custom_fact"],
+}
+```
+Tips: 
+1. For structured facts index into the specific fact value otherwise the entire array will come over as a string and ultimately be difficult to use.
+2. Dynamic facts such as CPU usage, Uptime, and others that are expected to change each run are not ideal for tagging.  Static facts that are expected to stay for the life of a node are best candidates for tagging.
 
 ### Configuration variables
 

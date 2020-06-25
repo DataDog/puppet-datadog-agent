@@ -54,6 +54,8 @@ Puppet::Reports.register_report(:datadog_reports) do
   end
 
   def process
+    # Here we have access to methods in Puppet::Transaction::Report
+    # https://puppet.com/docs/puppet/latest/format_report.html#puppet::transaction::report
     @summary = summary
     @msg_host = host
     unless HOSTNAME_EXTRACTION_REGEX.nil?

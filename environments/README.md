@@ -1,4 +1,4 @@
-# [DEPRECATED] Manual test setup
+# Manual test setup
 
 This is an example setup, based on vagrant + virtualbox, that allows to easily run puppet commands to test the module
 

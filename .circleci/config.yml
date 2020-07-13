@@ -266,7 +266,6 @@ jobs:
   kitchen-tests:
     machine: true
     environment:
-      KITCHEN_LOCAL_YAML: .kitchen.docker.yml
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.5.3'
     steps:

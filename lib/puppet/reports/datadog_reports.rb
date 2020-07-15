@@ -118,8 +118,10 @@ Puppet::Reports.register_report(:datadog_reports) do
       event_data << "\n@@@\n"
     end
 
+    # instantiate DogAPI client
+    @dog = Dogapi::Client.new(API_KEY, nil, @msg_host, nil, nil, nil, API_URL)
+
     Puppet.debug "Sending metrics for #{@msg_host} to Datadog"
-    @dog = Dogapi::Client.new(API_KEY, nil, nil, nil, nil, nil, API_URL)
     @dog.batch_metrics do
       metrics.each do |metric, data|
         data.values.each do |val|

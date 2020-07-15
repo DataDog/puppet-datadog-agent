@@ -5,7 +5,7 @@ Changes
 
 * [BUGFIX] Update MSI validation resource to prevent false change reports. See [#636][] (Thanks [@murdok5][])
 * [BUGFIX] Report procesor: pass `msg_host` to Dogapi::Client as host. See [#511][] (Thanks [@dbednall][])
-* [BUGFIX] Fix apt dependency circle See [#633][] (Thanks [@vaisingh][])
+* [BUGFIX] Fix apt dependency circle. See [#633][] (Thanks [@vaisingh][])
 * [CHORE] Add some more logging to Puppet reports. See [#639][]
 
 # 3.3.0 / 2020-06-10

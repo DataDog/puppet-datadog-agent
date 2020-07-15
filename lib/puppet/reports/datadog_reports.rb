@@ -64,6 +64,7 @@ Puppet::Reports.register_report(:datadog_reports) do
         @msg_host = m[:hostname]
       end
     end
+    Puppet.info "Processing reports for #{@msg_host}"
 
     event_title = ''
     alert_type = ''

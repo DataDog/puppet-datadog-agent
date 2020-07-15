@@ -39,12 +39,22 @@ class datadog_agent::windows(
       provider => 'windows',
     }
 
-    exec { 'validate':
-      command   => "\$blacklist = '928b00d2f952219732cda9ae0515351b15f9b9c1ea1d546738f9dc0fda70c336','78b2bb2b231bcc185eb73dd367bfb6cb8a5d45ba93a46a7890fd607dc9188194';\$fileStream = [system.io.file]::openread('${msi_full_path}'); \$hasher = [System.Security.Cryptography.HashAlgorithm]::create('sha256'); \$hash = \$hasher.ComputeHash(\$fileStream); \$fileStream.close(); \$fileStream.dispose();\$hexhash = [system.bitconverter]::tostring(\$hash).ToLower().replace('-','');if (\$blacklist.Contains(\$hexhash)) { Exit 1 }",
+    exec { 'assert-acceptable-msi':,
+      command   => 'Exit 1',
+      unless    => @(ACCEPTABLE),
+        $blacklist = '928b00d2f952219732cda9ae0515351b15f9b9c1ea1d546738f9dc0fda70c336','78b2bb2b231bcc185eb73dd367bfb6cb8a5d45ba93a46a7890fd607dc9188194';
+        $fileStream = [system.io.file]::openread('${msi_full_path}');
+        $hasher = [System.Security.Cryptography.HashAlgorithm]::create('sha256');
+        $hash = $hasher.ComputeHash($fileStream);
+        $fileStream.close();
+        $fileStream.dispose();
+        $hexhash = [system.bitconverter]::tostring($hash).ToLower().replace('-','');
+        if ($blacklist.Contains($hexhash)) { Exit 1 } else { Exit 0 }
+        | ACCEPTABLE
       provider  => 'powershell',
       logoutput => 'on_failure',
       require   => File['installer'],
-      notify    => Package[$datadog_agent::params::package_name]
+      notify    => Package[$datadog_agent::params::package_name],
     }
 
     if $agent_version == 'latest' {

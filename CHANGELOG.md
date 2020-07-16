@@ -1,6 +1,13 @@
 Changes
 =======
 
+# 3.4.0 / 2020-07-15
+
+* [BUGFIX] Update MSI validation resource to prevent false change reports. See [#636][] (Thanks [@murdok5][])
+* [BUGFIX] Report procesor: pass `msg_host` to Dogapi::Client as host. See [#511][] (Thanks [@dbednall][])
+* [BUGFIX] Fix apt dependency circle. See [#633][] (Thanks [@vaisingh][])
+* [CHORE] Add some more logging to Puppet reports. See [#639][]
+
 # 3.3.0 / 2020-06-10
 
 * [FEATURE] Add install_info file. See [#628][]
@@ -709,6 +716,7 @@ Please read the [docs]() for more details.
 [#506]: https://github.com/DataDog/puppet-datadog-agent/issues/506
 [#507]: https://github.com/DataDog/puppet-datadog-agent/issues/507
 [#508]: https://github.com/DataDog/puppet-datadog-agent/issues/508
+[#511]: https://github.com/DataDog/puppet-datadog-agent/issues/511
 [#513]: https://github.com/DataDog/puppet-datadog-agent/issues/513
 [#514]: https://github.com/DataDog/puppet-datadog-agent/issues/514
 [#515]: https://github.com/DataDog/puppet-datadog-agent/issues/515
@@ -756,6 +764,9 @@ Please read the [docs]() for more details.
 [#626]: https://github.com/DataDog/puppet-datadog-agent/issues/626
 [#628]: https://github.com/DataDog/puppet-datadog-agent/issues/628
 [#630]: https://github.com/DataDog/puppet-datadog-agent/issues/630
+[#633]: https://github.com/DataDog/puppet-datadog-agent/issues/633
+[#636]: https://github.com/DataDog/puppet-datadog-agent/issues/636
+[#639]: https://github.com/DataDog/puppet-datadog-agent/issues/639
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
@@ -790,6 +801,7 @@ Please read the [docs]() for more details.
 [@dan70402]: https://github.com/dan70402
 [@davejrt]: https://github.com/davejrt
 [@davidgibbons]: https://github.com/davidgibbons
+[@dbednall]: https://github.com/dbednall
 [@degemer]: https://github.com/degemer
 [@denmat]: https://github.com/denmat
 [@devinmatte]: https://github.com/devinmatte
@@ -831,6 +843,7 @@ Please read the [docs]() for more details.
 [@mraylu]: https://github.com/mraylu
 [@mrunkel-ut]: https://github.com/mrunkel-ut
 [@mtougeron]: https://github.com/mtougeron
+[@murdok5]: https://github.com/murdok5
 [@npaufler]: https://github.com/npaufler
 [@o0oxid]: https://github.com/o0oxid
 [@obi11235]: https://github.com/obi11235
@@ -860,6 +873,7 @@ Please read the [docs]() for more details.
 [@tommoyangn]: https://github.com/tommoyangn
 [@turnopil]: https://github.com/turnopil
 [@tuxinaut]: https://github.com/tuxinaut
+[@vaisingh]: https://github.com/vaisingh
 [@yrcjaya]: https://github.com/yrcjaya
 [@zabacad]: https://github.com/zabacad
 [@zickzackv]: https://github.com/zickzackv

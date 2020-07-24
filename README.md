@@ -66,14 +66,14 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
     - `puppetserver_gem` is defined as a module dependency. It is installed automatically when the module is installed.
 
 4. (Optional) Enable tagging of reports with facts
-    Tags can be added to reports that are sent to DataDog as Events.  These tags can be sourced from Puppet facts for the given node the report is regarding.  These should be 1:1 and not involve strcutured facts (hashes, array's, etc) to ensure readability. To enable simply set the parameter `datadog_agent::reports::report_fact_tags` to the array value of facts - for example `["virtual","trusted.extensions.pp_role","operatingsystem"]` will result in 3 separate tags per report event.
+    You can add tags to reports that are sent to Datadog as events. These tags can be sourced from Puppet facts for the given node the report is regarding. These should be 1:1 and not involve structured facts (hashes, arrays, etc.) to ensure readability. To enable tagging, set the parameter `datadog_agent::reports::report_fact_tags` to the array value of facts—for example `["virtual","trusted.extensions.pp_role","operatingsystem"]` results in three separate tags per report event.
 
-    NOTE: Changing these settings requires a restart of pe-puppetserver (or puppetserver) to re-read the report processor. Ensure the changes are deployed prior to restarting the service(S).
+    NOTE: Changing these settings requires a restart of pe-puppetserver (or puppetserver) to re-read the report processor. Ensure the changes are deployed prior to restarting the service(s).
 
     Tips:
-    - Use dot index to specific a target fact, otherwise the entire fact data set will become the value as a string (not very useful)
-    - Do not duplicate common data from monitoring like hostname, uptime, memory, etc
-    - Coordinate core facts like role, owner, template, datacenter that help you build meaningful coorlation to the same tags from metrics
+    - Use dot index to specify a target fact; otherwise, the entire fact data set becomes the value as a string (not very useful)
+    - Do not duplicate common data from monitoring like hostname, uptime, memory, etc.
+    - Coordinate core facts like role, owner, template, datacenter, etc., that help you build meaningful correlations to the same tags from metrics
 
 
 5. (Optional) Include integrations to use with the Agent, for example:

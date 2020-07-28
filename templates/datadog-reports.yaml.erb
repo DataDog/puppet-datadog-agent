@@ -12,3 +12,9 @@
 <% if @proxy_https -%>
 :proxy_https: <%= @proxy_https %>
 <% end -%>
+<% if @report_fact_tags -%>
+:report_fact_tags:
+<%- @report_fact_tags.each do |tag| -%>
+  - <%= tag %>
+  <%- end -%>
+<% end -%>

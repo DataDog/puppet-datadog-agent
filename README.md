@@ -65,7 +65,18 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
     - To support reporting, your Puppet master needs the [dogapi][3] gem installed by running the Puppet Agent on your master with this configuration or installing it manually with `gem`. You may need to restart your `puppetserver` service after installing the `dogapi` gem.
     - `puppetserver_gem` is defined as a module dependency. It is installed automatically when the module is installed.
 
-4. (Optional) Include integrations to use with the Agent, for example:
+4. (Optional) Enable tagging of reports with facts
+    You can add tags to reports that are sent to Datadog as events. These tags can be sourced from Puppet facts for the given node the report is regarding. These should be 1:1 and not involve structured facts (hashes, arrays, etc.) to ensure readability. To enable tagging, set the parameter `datadog_agent::reports::report_fact_tags` to the array value of facts—for example `["virtual","trusted.extensions.pp_role","operatingsystem"]` results in three separate tags per report event.
+
+    NOTE: Changing these settings requires a restart of pe-puppetserver (or puppetserver) to re-read the report processor. Ensure the changes are deployed prior to restarting the service(s).
+
+    Tips:
+    - Use dot index to specify a target fact; otherwise, the entire fact data set becomes the value as a string (not very useful)
+    - Do not duplicate common data from monitoring like hostname, uptime, memory, etc.
+    - Coordinate core facts like role, owner, template, datacenter, etc., that help you build meaningful correlations to the same tags from metrics
+
+
+5. (Optional) Include integrations to use with the Agent, for example:
 
    ```conf
    include 'datadog_agent::integrations::mongo'

@@ -62,6 +62,8 @@
 #       Valid values here are: true or false.
 #   $dogstatsd_port
 #       Set value of the 'dogstatsd_port' variable. Defaultis 8125.
+#   $report_fact_tags
+#       Sets tags for report events sent to Datadog from specified facts
 #   $statsd_forward_host
 #       Set the value of the statsd_forward_host varable. Used to forward all
 #       statsd metrics to another host.
@@ -776,6 +778,7 @@ class datadog_agent(
       hostname_extraction_regex => $hostname_extraction_regex,
       proxy_http                => $proxy_http,
       proxy_https               => $proxy_https,
+      report_fact_tags          => $report_fact_tags,
     }
   }
 

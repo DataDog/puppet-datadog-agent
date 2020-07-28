@@ -21,6 +21,7 @@ class datadog_agent::reports(
   $hostname_extraction_regex = undef,
   $proxy_http = undef,
   $proxy_https = undef,
+  $report_fact_tags = [],
   $datadog_site = 'datadoghq.com',
   $puppet_gem_provider = $datadog_agent::params::gem_provider,
 ) inherits datadog_agent::params {

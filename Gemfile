@@ -22,6 +22,7 @@ group :development do
   gem "kitchen-puppet"
   gem "kitchen-docker"
   gem "kitchen-verifier-serverspec"
+  gem "mixlib-shellout", "~> 2.2.7",                               platforms: [:ruby]
 
   if RUBY_VERSION >= '2.3'
     gem "test-kitchen"

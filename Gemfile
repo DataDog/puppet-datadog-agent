@@ -20,7 +20,6 @@ group :development do
   gem "rb-readline", '= 0.5.5',                                    require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "librarian-puppet"
   gem "kitchen-puppet"
-  gem "kitchen-vagrant"
   gem "kitchen-docker"
   gem "kitchen-verifier-serverspec"
 

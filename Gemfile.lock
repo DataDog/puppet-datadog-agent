@@ -62,8 +62,6 @@ GEM
       librarian-puppet (>= 3.0)
       net-ssh (>= 3)
       test-kitchen (>= 1.4)
-    kitchen-vagrant (1.6.0)
-      test-kitchen (>= 1.4, < 3)
     kitchen-verifier-serverspec (0.7.0)
       net-ssh (>= 3)
       test-kitchen (>= 1.4)

@@ -17,7 +17,7 @@ describe 'datadog_agent::install_integration' do
         let(:agent_binary) { '/opt/datadog-agent/bin/agent/agent' }
       end
 
-      describe 'installing an integration' do
+      describe 'installing a core integration' do
         let(:pre_condition) { "class {'::datadog_agent': }" }
         let(:title) { 'test' }
         let(:params) do
@@ -30,6 +30,22 @@ describe 'datadog_agent::install_integration' do
         it { is_expected.to compile }
 
         it { is_expected.to contain_exec('install datadog-mongo==1.9.0').with_command("#{agent_binary} integration install datadog-mongo==1.9.0") }
+      end
+
+      describe 'installing a third-party integration' do
+        let(:pre_condition) { "class {'::datadog_agent': }" }
+        let(:title) { 'test' }
+        let(:params) do
+          {
+            integration_name: 'datadog-aqua',
+            version: '1.0.0',
+            third_party: true,
+          }
+        end
+
+        it { is_expected.to compile }
+
+        it { is_expected.to contain_exec('install datadog-aqua==1.0.0').with_command("#{agent_binary} integration install --third-party datadog-aqua==1.0.0") }
       end
 
       describe 'removing an integration' do

@@ -107,6 +107,7 @@ datadog_agent::install_integration { "mongo-1.9":
     ensure => present,
     integration_name => 'datadog-mongo',
     version => '1.9.0',
+    third_party => false,
 }
 ```
 
@@ -114,6 +115,8 @@ datadog_agent::install_integration { "mongo-1.9":
 
 - `present` (default)
 - `absent` (removes a previously pinned version of an integration)
+
+To install a third-party integration set the `third_party` parameter to `true`.
 
 ### Reporting
 

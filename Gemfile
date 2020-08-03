@@ -40,5 +40,6 @@ group :development do
     gem "rubocop", "~> 0.49.1"
     gem "rubocop-i18n", "~> 1.2.0"
     gem "rubocop-rspec", "~> 1.16.0"
+    gem "artifactory", "~> 2.8.2"
   end
 end

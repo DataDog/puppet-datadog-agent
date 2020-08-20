@@ -233,9 +233,8 @@ jobs:
             export PATH=/c/tools/ruby25/bin:$PATH # Make Ruby 2.5 take precedence over the pre-installed 2.6
             ruby --version
             curl -O http://repo.msys2.org/msys/x86_64/msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz
-            curl -O http://repo.msys2.org/msys/x86_64/msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz.sig
-            choco install msys2 --allow-downgrade -y --version 20180531.0.0 --params "/NoUpdate"
-            ridk.cmd exec pacman-key --verify msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz.sig
+            choco install msys2 --params "/NoUpdate" --allow-downgrade -y --version 20180531.0.0
+            refreshenv
             ridk.cmd exec pacman -U msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz
             ridk.cmd install 2 3
             ridk.cmd exec pacman -S --noconfirm --needed base-devel mingw-w64-x86_64-toolchain

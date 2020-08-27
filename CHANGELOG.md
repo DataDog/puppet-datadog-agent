@@ -1,7 +1,7 @@
 Changes
 =======
 
-# 3.5.0 / 2020-08-20
+# 3.5.0 / 2020-08-27
 
 * [FEATURE] Update report processor to add tag function based on Puppet facts. See [#641][] (Thanks [@murdok5][])
 * [FEATURE] Add support for third-party integrations. See [#643][]

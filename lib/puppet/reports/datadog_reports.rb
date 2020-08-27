@@ -146,6 +146,6 @@ Puppet::Reports.register_report(:datadog_reports) do
                                       priority: event_priority,
                                       source_type_name: 'puppet',
                                       tags: dog_tags),
-                                      host: @msg_host)
+                    host: @msg_host)
   end
 end

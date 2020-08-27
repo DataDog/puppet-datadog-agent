@@ -259,6 +259,7 @@ class datadog_agent(
   Boolean $hostname_fqdn = false,
   $dogstatsd_port = 8125,
   $dogstatsd_socket = '',
+  Array $report_fact_tags = [],
   String $statsd_forward_host = '',
   $statsd_forward_port = '',
   String $statsd_histogram_percentiles = '0.95',

@@ -1,6 +1,11 @@
 Changes
 =======
 
+# 3.5.0 / 2020-08-27
+
+* [FEATURE] Update report processor to add tag function based on Puppet facts. See [#641][] (Thanks [@murdok5][])
+* [FEATURE] Add support for third-party integrations. See [#643][]
+
 # 3.4.0 / 2020-07-15
 
 * [BUGFIX] Update MSI validation resource to prevent false change reports. See [#636][] (Thanks [@murdok5][])
@@ -767,6 +772,8 @@ Please read the [docs]() for more details.
 [#633]: https://github.com/DataDog/puppet-datadog-agent/issues/633
 [#636]: https://github.com/DataDog/puppet-datadog-agent/issues/636
 [#639]: https://github.com/DataDog/puppet-datadog-agent/issues/639
+[#641]: https://github.com/DataDog/puppet-datadog-agent/issues/641
+[#643]: https://github.com/DataDog/puppet-datadog-agent/issues/643
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

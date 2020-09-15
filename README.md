@@ -67,7 +67,7 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
     }
     ```
 
-    Refer to the [comments in code][6] for all arguments available for the integration.
+    Refer to the [comments in code][6] for all arguments available for a given integration.
 
     If an integration does not have a [manifest with a dedicated class][7], you can still add a configuration for it. Below is an example for the `ntp` check:
 
@@ -141,7 +141,6 @@ To enable reporting of Puppet runs to your Datadog timeline, enable the report p
 
     [agent]
     # ...
-    pluginsync=true
     report=true
     ```
 

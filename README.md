@@ -2,8 +2,6 @@
 
 This module installs the Datadog Agent and sends Puppet reports to Datadog.
 
-## Setup
-
 ### Requirements
 
 The Datadog Puppet module supports Linux and Windows and is compatible with Puppet >= 4.6.x or Puppet Enterprise version >= 2016.4. For detailed information on compatibility, check the [module page on Puppet Forge][1].
@@ -87,7 +85,7 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
 
 5. (Optional) To collect metrics and events about Puppet itself, refer to the section about [Reporting](#reporting).
 
-### Integration versions
+### Upgrading integrations
 
 To install and pin specific integration versions, use `datadog_agent::install_integration`. This calls the `datadog-agent integration` command to ensure a specific integration is installed or uninstalled, for example:
 
@@ -100,12 +98,12 @@ datadog_agent::install_integration { "mongo-1.9":
 }
 ```
 
-`ensure` has two options:
+The `ensure` argument can take two values:
 
 - `present` (default)
 - `absent` (removes a previously pinned version of an integration)
 
-To install a third-party integration set the `third_party` parameter to `true`.
+To install a third-party integration (eg: from the marketplace) set the `third_party` argument to `true`.
 
 Note it's not possible to downgrade an integration to a version older than the one bundled with the Agent.
 
@@ -207,8 +205,6 @@ If you see the following error, ensure `reports=datadog_reports` is defined in `
     puppet apply --modulepath <path_to_modules> <path_to_site.pp>
     ```
 
-## Client settings
-
 ### Tagging client nodes
 
 The Datadog Agent configuration file is recreated from the template every Puppet run. If you need to tag your nodes, add an array entry in Hiera:
@@ -232,7 +228,7 @@ Tips:
 
 ### Configuration variables
 
-These variables can be set in the `datadog_agent` class to control settings in the Agent. Refer to the [comments in code] for a full list of arguments:
+These variables can be set in the `datadog_agent` class to control settings in the Agent. Refer to the [comments in code][8] for the full list of supported arguments.
 
 | variable name                           | description                                                                                                                                                                                      |
 |-----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -264,5 +260,6 @@ These variables can be set in the `datadog_agent` class to control settings in t
 [3]: https://github.com/DataDog/dogapi-rb
 [4]: https://app.datadoghq.com/account/settings#integrations
 [5]: https://app.datadoghq.com/event/stream
-[6]: https://github.com/DataDog/puppet-datadog-agent/blob/master/manifests/integrations/mongo.pp#L1
+[6]: https://github.com/DataDog/puppet-datadog-agent/blob/master/manifests/integrations/mongo.pp
 [7]: https://github.com/DataDog/puppet-datadog-agent/tree/master/manifests/integrations
+[8]: https://github.com/DataDog/puppet-datadog-agent/blob/master/manifests/init.pp

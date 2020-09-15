@@ -8,7 +8,7 @@
 #       Defaults to https://app.datadoghq.com.
 #   $datadog_site:
 #       The site of the Datadog intake to send Agent data to. Defaults to 'datadoghq.com',
-#       set to 'datadoghq.eu' to send data to the EU site.
+#       can be set to 'datadoghq.eu' to send data to the EU site or 'us3.datadoghq.com'.
 #       This option is only available with agent version >= 6.6.0.
 #   $host:
 #       Force the hostname to whatever you want. (default: auto-detected)

@@ -49,7 +49,10 @@ platforms:
         - gem install r10k -v 2.6.7
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
-  - name: ubuntu-1604-puppet-6 # we use the official image
+  - name: ubuntu-1604-puppet-6
+    driver_config:
+       # we use the official image
+      image: 'ubuntu:16.04'
     driver:
       provision_command:
         - apt-get install -y apt-utils apt-transport-https ca-certificates

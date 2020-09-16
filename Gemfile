@@ -25,7 +25,7 @@ group :development do
   gem "mixlib-shellout", "~> 2.2.7",                               platforms: [:ruby]
 
   if RUBY_VERSION >= '2.3'
-    gem "test-kitchen"
+    gem "test-kitchen", '~> 2.5.4'
     gem "puppet-module-posix-default-r#{minor_version}", '~> 0.3', require: false, platforms: [:ruby]
     gem "puppet-module-posix-dev-r#{minor_version}", '~> 0.3',     require: false, platforms: [:ruby]
     gem "puppet-module-win-default-r#{minor_version}", '~> 0.3',   require: false, platforms: [:mswin, :mingw, :x64_mingw]

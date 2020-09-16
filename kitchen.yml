@@ -6,14 +6,15 @@ provisioner:
   name: puppet_apply
   manifests_path: environments/etc/manifests
   modules_path: /tmp/modules
-  require_puppet_repo: true
+  require_puppet_repo: false
+  require_puppet_collections: false
   require_chef_for_busser: false
   puppet_debug: true
   puppet_verbose: true
   custom_pre_apply_command: 'cp -r /tmp/modules/* /tmp/kitchen/modules/'
 
 platforms:
-  - name: centos-7
+  - name: centos-7-puppet-5
     driver_config:
       # we use a custom image that runs systemd
       image: 'datadog/docker-library:chef_kitchen_systemd_centos_7'
@@ -21,16 +22,17 @@ platforms:
 
     driver:
       provision_command:
-        - rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
-        - yum install -y puppet
+        - rpm -ivh http://yum.puppetlabs.com/puppet5-release-el-7.noarch.rpm
+        - yum install -y puppet gem
 
         - mkdir /home/kitchen/puppet
         - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
 
         - gem install r10k -v 2.6.7
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
+        - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
-  - name: centos-8
+  - name: centos-8-puppet-5
     driver_config:
       # we use a custom image that runs systemd
       image: 'datadog/docker-library:chef_kitchen_systemd_centos_8'
@@ -38,8 +40,8 @@ platforms:
 
     driver:
       provision_command:
-        - dnf install -y https://yum.puppetlabs.com/puppet-release-el-8.noarch.rpm
-        - dnf install -y puppet
+        - dnf install -y https://yum.puppetlabs.com/puppet5-release-el-8.noarch.rpm
+        - dnf install -y puppet gem
 
         - mkdir /home/kitchen/puppet
         - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
@@ -47,7 +49,7 @@ platforms:
         - gem install r10k -v 2.6.7
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
-  - name: ubuntu-16.04 # we use the official image
+  - name: ubuntu-1604-puppet-6 # we use the official image
     driver:
       provision_command:
         - apt-get install -y apt-utils apt-transport-https ca-certificates

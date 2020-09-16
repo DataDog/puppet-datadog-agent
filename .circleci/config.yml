@@ -229,6 +229,7 @@ jobs:
       - run:
           name: Run tests
           command: |
+            set -e
             choco install ruby --allow-downgrade -y --version 2.5.3.101 # Keep version in sync with next command!
             export PATH=/c/tools/ruby25/bin:$PATH # Make Ruby 2.5 take precedence over the pre-installed 2.6
             ruby --version

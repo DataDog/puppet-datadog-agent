@@ -237,7 +237,7 @@ jobs:
             refreshenv
             ridk.cmd exec pacman -U msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz
             ridk.cmd install 2 3
-            ridk.cmd exec pacman -S --noconfirm --needed base-devel mingw-w64-x86_64-toolchain
+            ridk.cmd exec pacman -S --noconfirm --needed base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-ruby-xmlrpc
             powershell kill -n gpg-agent # Started by msys, if we don't kill it the job stays running forever (found by running 'ps -W' before and after the last two commands)
             gem install bundler -v 1.17.3
             rm Gemfile.lock && bundle install --path .bundle

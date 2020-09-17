@@ -6,23 +6,24 @@ provisioner:
   name: puppet_apply
   manifests_path: environments/etc/manifests
   modules_path: /tmp/modules
-  require_puppet_repo: true
+  require_puppet_repo: false
+  require_puppet_collections: false
   require_chef_for_busser: false
   puppet_debug: true
   puppet_verbose: true
   custom_pre_apply_command: 'cp -r /tmp/modules/* /tmp/kitchen/modules/'
 
 platforms:
-  - name: centos-7
+  - name: centos-7-puppet-5
     driver_config:
       # we use a custom image that runs systemd
       image: 'datadog/docker-library:chef_kitchen_systemd_centos_7'
       run_command: /root/start.sh
-
     driver:
       provision_command:
-        - rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
-        - yum install -y puppet
+        - rpm -ivh http://yum.puppetlabs.com/puppet5-release-el-7.noarch.rpm #installs the puppet-agent repo
+        - yum install -y puppet-agent rubygems
+        - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
         - mkdir /home/kitchen/puppet
         - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
@@ -30,16 +31,16 @@ platforms:
         - gem install r10k -v 2.6.7
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
-  - name: centos-8
+  - name: centos-8-puppet-5
     driver_config:
       # we use a custom image that runs systemd
       image: 'datadog/docker-library:chef_kitchen_systemd_centos_8'
       run_command: /root/start.sh
-
     driver:
       provision_command:
-        - dnf install -y https://yum.puppetlabs.com/puppet-release-el-8.noarch.rpm
-        - dnf install -y puppet
+        - dnf install -y https://yum.puppetlabs.com/puppet5-release-el-8.noarch.rpm #installs the puppet-agent repo
+        - dnf install -y puppet-agent rubygems
+        - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
         - mkdir /home/kitchen/puppet
         - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
@@ -47,13 +48,18 @@ platforms:
         - gem install r10k -v 2.6.7
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
-  - name: ubuntu-16.04 # we use the official image
+  - name: ubuntu-1604-puppet-6
+    driver_config:
+       # we use the official image
+      image: 'ubuntu:16.04'
     driver:
       provision_command:
         - apt-get install -y apt-utils apt-transport-https ca-certificates
         - wget https://apt.puppetlabs.com/puppet6-release-xenial.deb
-        - dpkg -i puppet6-release-xenial.deb
-        - apt-get install -y puppet
+        - dpkg -i puppet6-release-xenial.deb #installs the puppet-agent repo
+        - apt-get update
+        - apt-get install -y puppet-agent rubygems
+        - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
         - mkdir /home/kitchen/puppet
         - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile

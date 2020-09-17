@@ -229,12 +229,12 @@ jobs:
       - run:
           name: Run tests
           command: |
+            set -e
             choco install ruby --allow-downgrade -y --version 2.5.3.101 # Keep version in sync with next command!
             export PATH=/c/tools/ruby25/bin:$PATH # Make Ruby 2.5 take precedence over the pre-installed 2.6
             ruby --version
-            choco install msys2 --allow-downgrade -y --version 20180531.0.0
+            choco install msys2 --allow-downgrade -y --version 20200903.0.0
             ridk.cmd exec pacman -S --noconfirm --needed base-devel mingw-w64-x86_64-toolchain
-            powershell kill -n gpg-agent # Started by msys, if we don't kill it the job stays running forever (found by running 'ps -W' before and after the last two commands)
             gem install bundler -v 1.17.3
             rm Gemfile.lock && bundle install --path .bundle
             bundle exec rake test

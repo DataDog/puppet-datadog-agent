@@ -20,12 +20,12 @@ group :development do
   gem "rb-readline", '= 0.5.5',                                    require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "librarian-puppet"
   gem "kitchen-puppet"
-  gem "kitchen-vagrant"
   gem "kitchen-docker"
   gem "kitchen-verifier-serverspec"
+  gem "mixlib-shellout", "~> 2.2.7",                               platforms: [:ruby]
 
   if RUBY_VERSION >= '2.3'
-    gem "test-kitchen"
+    gem "test-kitchen", '~> 2.5.4'
     gem "puppet-module-posix-default-r#{minor_version}", '~> 0.3', require: false, platforms: [:ruby]
     gem "puppet-module-posix-dev-r#{minor_version}", '~> 0.3',     require: false, platforms: [:ruby]
     gem "puppet-module-win-default-r#{minor_version}", '~> 0.3',   require: false, platforms: [:mswin, :mingw, :x64_mingw]
@@ -40,5 +40,6 @@ group :development do
     gem "rubocop", "~> 0.49.1"
     gem "rubocop-i18n", "~> 1.2.0"
     gem "rubocop-rspec", "~> 1.16.0"
+    gem "artifactory", "~> 2.8.2"
   end
 end

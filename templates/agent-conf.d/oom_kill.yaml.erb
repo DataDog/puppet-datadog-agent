@@ -1,0 +1,17 @@
+### MANAGED BY PUPPET
+
+# init_config:
+
+# instances:
+#     # For every instance, you have an `collect_oom_kill` and (optionally)
+#     # a list of tags.
+
+#     -   collect_oom_kill: true
+#         tags:
+#             -   instance:foo
+
+<%
+require 'yaml'
+%>
+
+<%= {'init_config'=>nil, 'instances'=>@instances}.to_yaml %>

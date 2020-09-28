@@ -1,6 +1,11 @@
 Changes
 =======
 
+# 3.6.0 / 2020-09-28
+
+* [FEATURE] Add OOM kill check. [#653][]
+* [BUGFIX] Relax constraint on Powershell dependency [#654][]
+
 # 3.5.0 / 2020-08-27
 
 * [FEATURE] Update report processor to add tag function based on Puppet facts. See [#641][] (Thanks [@murdok5][])
@@ -774,6 +779,8 @@ Please read the [docs]() for more details.
 [#639]: https://github.com/DataDog/puppet-datadog-agent/issues/639
 [#641]: https://github.com/DataDog/puppet-datadog-agent/issues/641
 [#643]: https://github.com/DataDog/puppet-datadog-agent/issues/643
+[#653]: https://github.com/DataDog/puppet-datadog-agent/issues/653
+[#654]: https://github.com/DataDog/puppet-datadog-agent/issues/654
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

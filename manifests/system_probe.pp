@@ -2,6 +2,7 @@ class datadog_agent::system_probe(
   Boolean $enabled = false,
   Optional[String] $log_file = undef,
   Optional[String] $sysprobe_socket = undef,
+  Optional[Boolean] $enable_oom_kill = false,
 
   Boolean $service_enable = true,
   String $service_ensure = 'running',
@@ -37,6 +38,7 @@ class datadog_agent::system_probe(
       'enabled' => $enabled,
       'sysprobe_socket' => $sysprobe_socket,
       'log_file' => $log_file,
+      'enable_oom_kill' => $enable_oom_kill,
     }
   }
 

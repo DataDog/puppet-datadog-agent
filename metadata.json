@@ -34,7 +34,7 @@
     },
     {
       "name": "puppetlabs/powershell",
-      "version_requirement": ">=2.3.0 <3.0.0"
+      "version_requirement": ">=2.3.0 <5.0.0"
     }
   ],
   "operatingsystem_support": [

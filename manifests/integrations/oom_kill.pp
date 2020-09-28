@@ -25,9 +25,6 @@ class datadog_agent::integrations::oom_kill(
   include datadog_agent
 
   $dst_dir = "${datadog_agent::params::conf_dir}/oom_kill.d"
-  file { $legacy_dst:
-    ensure => 'absent'
-  }
   file { $dst_dir:
     ensure  => directory,
     owner   => $datadog_agent::params::dd_user,

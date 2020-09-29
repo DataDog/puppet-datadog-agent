@@ -48,15 +48,28 @@ class datadog_agent (
     ensure  => $agent_version,
   }
 
-  service { $service_name:
-    ensure    => $service_ensure,
-    hasstatus => false,
-    pattern   => 'dd-agent',
-    require   => Package[$package_name],
-    start     => 'initctl start datadog-agent || true',
-    stop      => 'initctl stop datadog-agent || true',
-    status    => 'initctl status datadog-agent || true',
-    restart   => 'initctl restart datadog-agent || true';
+  if ($operatingsystem == 'Amazon') and ($operatingsystemmajrelease == '2') {
+    service { $service_name:
+      ensure    => $service_ensure,
+      hasstatus => false,
+      pattern   => 'dd-agent',
+      require   => Package[$package_name],
+      start     => 'systemctl start datadog-agent.service || true',
+      stop      => 'systemctl stop datadog-agent.service || true',
+      status    => 'systemctl status datadog-agent.service || true',
+      restart   => 'systemctl restart datadog-agent.service || true';
+    }
+  } else {
+    service { $service_name:
+      ensure    => $service_ensure,
+      hasstatus => false,
+      pattern   => 'dd-agent',
+      require   => Package[$package_name],
+      start     => 'initctl start datadog-agent || true',
+      stop      => 'initctl stop datadog-agent || true',
+      status    => 'initctl status datadog-agent || true',
+      restart   => 'initctl restart datadog-agent || true';
+    }
   }
   
   file { '/etc/datadog-agent':

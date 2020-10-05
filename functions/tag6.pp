@@ -18,7 +18,7 @@ function datadog_agent::tag6(
     }
 
     if $lookup {
-      $match_as_string = getvar($tag_names)
+      $match_as_string = $facts[$tag_names]
       if $match_as_string == undef {
         $value = $facts.dig(*split($tag_names, '[.]'))
       } else {

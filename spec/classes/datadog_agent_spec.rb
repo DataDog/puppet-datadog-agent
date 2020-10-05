@@ -2177,7 +2177,7 @@ describe 'datadog_agent' do
         {
           agent_major_version: 6,
           puppet_run_reports: true,
-          facts_to_tags: ['osfamily', 'facts_array'],
+          facts_to_tags: ['osfamily', 'facts_array', 'facts_hash.actor.first_name', 'looks.like.a.hash'],
         }
       end
       let(:facts) do
@@ -2185,10 +2185,17 @@ describe 'datadog_agent' do
           operatingsystem: 'CentOS',
           osfamily: 'redhat',
           facts_array: ['one', 'two'],
+          facts_hash: {
+            actor: {
+              first_name: "Macaulay",
+              last_name: "Culkin",
+            },
+          },
+          'looks.like.a.hash': 'but_its_not',
         }
       end
 
-      it { is_expected.to contain_file('/etc/datadog-agent/datadog.yaml').with_content(%r{tags:\n- osfamily:redhat\n- facts_array:one\n- facts_array:two}) }
+      it { is_expected.to contain_file('/etc/datadog-agent/datadog.yaml').with_content(%r{tags:\n- osfamily:redhat\n- facts_array:one\n- facts_array:two\n- facts_hash.actor.first_name:Macaulay\n- looks.like.a.hash:but_its_not}) }
     end
 
     describe 'a5 ensure facts_array outputs a list of tags' do

@@ -30,6 +30,9 @@
 #   $facts_to_tags
 #       Optional array of facts' names that you can use to define tags following
 #       the scheme: "fact_name:fact_value".
+#   $trusted_facts_to_tags
+#       Optional array of trusted facts' names that you can use to define tags following
+#       the scheme: "fact_name:fact_value".
 #   $puppet_run_reports
 #       Will send results from your puppet agent runs back to the datadog service.
 #   $manage_dogapi_gem
@@ -243,6 +246,7 @@ class datadog_agent(
   $hiera_integrations = false,
   Boolean $hiera_tags = false,
   Array $facts_to_tags = [],
+  Array $trusted_facts_to_tags = [],
   Boolean $puppet_run_reports = false,
   String $puppetmaster_user = $settings::user,
   String $puppet_gem_provider = $datadog_agent::params::gem_provider,
@@ -689,8 +693,9 @@ class datadog_agent(
       notify  => Service[$datadog_agent::params::service_name]
     }
 
-    $_local_tags = datadog_agent::tag6($local_tags, false)
-    $_facts_tags = datadog_agent::tag6($facts_to_tags, true)
+    $_local_tags = datadog_agent::tag6($local_tags, false, undef)
+    $_facts_tags = datadog_agent::tag6($facts_to_tags, true, $facts)
+    $_trusted_facts_tags = datadog_agent::tag6($trusted_facts_to_tags, true, $trusted)
 
     $_agent_config = {
       'api_key' => $api_key,
@@ -707,7 +712,7 @@ class datadog_agent(
       'dogstatsd_non_local_traffic' => $non_local_traffic,
       'log_file' => $agent_log_file,
       'log_level' => $log_level,
-      'tags' => unique(flatten(union($_local_tags, $_facts_tags))),
+      'tags' => unique(flatten(union($_local_tags, $_facts_tags, $_trusted_facts_tags))),
     }
 
     $agent_config = deep_merge($_agent_config, $extra_config)

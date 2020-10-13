@@ -2171,6 +2171,45 @@ describe 'datadog_agent' do
     end
   end
 
+  context 'with trusted_facts to tags set' do
+    Puppet::Util::Log.level = :debug
+    Puppet::Util::Log.newdestination(:console)
+
+    describe 'a6 ensure facts_array outputs a list of tags' do
+      let(:params) do
+        {
+          agent_major_version: 6,
+          puppet_run_reports: true,
+          facts_to_tags: ['osfamily'],
+          trusted_facts_to_tags: ['extensions.trusted_fact', 'extensions.facts_array', 'extensions.facts_hash.actor.first_name'],
+        }
+      end
+      let(:facts) do
+        {
+          'operatingsystem' => 'CentOS',
+          'osfamily' => 'redhat',
+        }
+      end
+      let(:trusted_facts) do
+        {
+          'trusted_fact' => 'test',
+          'facts_array' => ['one', 'two'],
+          'facts_hash' => {
+            'actor' => {
+              'first_name' => 'Macaulay',
+              'last_name' => 'Culkin',
+            },
+          },
+        }
+      end
+
+      it do
+        is_expected.to contain_file('/etc/datadog-agent/datadog.yaml')
+          .with_content(%r{tags:\n- osfamily:redhat\n- extensions.trusted_fact:test\n- extensions.facts_array:one\n- extensions.facts_array:two\n- extensions.facts_hash.actor.first_name:Macaulay})
+      end
+    end
+  end
+
   context 'with facts to tags set' do
     describe 'a6 ensure facts_array outputs a list of tags' do
       let(:params) do

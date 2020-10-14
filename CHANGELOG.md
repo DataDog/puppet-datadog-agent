@@ -1,6 +1,10 @@
 Changes
 =======
 
+# 3.8.0 / 2020-10-14
+
+* [FEATURE] Add trusted_facts_to_tags argument to add Agent tags from trusted facts [#658][]
+
 # 3.7.0 / 2020-10-06
 
 * [FEATURE] Allow digging into hashes in facts for tags on Puppet < 6.0 [#656][]
@@ -786,6 +790,8 @@ Please read the [docs]() for more details.
 [#653]: https://github.com/DataDog/puppet-datadog-agent/issues/653
 [#654]: https://github.com/DataDog/puppet-datadog-agent/issues/654
 [#656]: https://github.com/DataDog/puppet-datadog-agent/issues/656
+[#658]: https://github.com/DataDog/puppet-datadog-agent/issues/658
+
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

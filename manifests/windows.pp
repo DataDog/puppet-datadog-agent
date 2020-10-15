@@ -11,6 +11,8 @@ class datadog_agent::windows(
   String $api_key = $datadog_agent::api_key,
   String $hostname = $datadog_agent::host,
   Array  $tags = $datadog_agent::tags,
+  String $tags_join = join($tags,','),
+  String $tags_quote_wrap = "\"${tags_join}\"",
   Enum['present', 'absent'] $ensure = 'present',
 ) inherits datadog_agent::params {
 
@@ -67,7 +69,7 @@ class datadog_agent::windows(
       ensure          => $ensure_version,
       provider        => 'windows',
       source          => $msi_full_path,
-      install_options => ['/norestart', {'APIKEY' => $api_key, 'HOSTNAME' => $hostname, 'TAGS' => $tags}]
+      install_options => ['/norestart', {'APIKEY' => $api_key, 'HOSTNAME' => $hostname, 'TAGS' => $tags_quote_wrap}]
     }
 
   } else {

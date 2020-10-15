@@ -11,8 +11,8 @@ class datadog_agent::windows(
   String $api_key = $datadog_agent::api_key,
   String $hostname = $datadog_agent::host,
   Array  $tags = $datadog_agent::tags,
-  String $tags_join = join($tags,","),
-  String $tags_quote_wrap = "\"$tags_join\"",
+  String $tags_join = join($tags,','),
+  String $tags_quote_wrap = "\"${tags_join}\"",
   Enum['present', 'absent'] $ensure = 'present',
 ) inherits datadog_agent::params {
 

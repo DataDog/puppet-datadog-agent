@@ -135,6 +135,9 @@ Puppet::Reports.register_report(:datadog_reports) do
     end
 
     facts = Puppet::Node::Facts.indirection.find(host).values
+    trusted_facts = Puppet.lookup(:trusted_information) { Hash.new }
+    trusted_facts_m = { "trusted" => trusted_facts.to_h }
+    facts.merge!(trusted_facts_m)
     dog_tags = REPORT_FACT_TAGS.map { |name| "#{name}:#{facts.dig(*name.split('.'))}" }
 
     Puppet.debug "Sending events for #{@msg_host} to Datadog"
@@ -147,5 +150,6 @@ Puppet::Reports.register_report(:datadog_reports) do
                                       source_type_name: 'puppet',
                                       tags: dog_tags),
                     host: @msg_host)
+    Puppet.info "Event sent for #{@msg_host} to Datadog"
   end
 end

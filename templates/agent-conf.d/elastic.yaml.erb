@@ -12,6 +12,7 @@ instances:
       password: <%= instance['password'] %>
 <%- end -%>
       cluster_stats: <%= instance['cluster_stats'] %>
+      index_stats: <%= instance['index_stats'] %>
       pshard_stats: <%= instance['pshard_stats'] %>
       pending_task_stats: <%= instance['pending_task_stats'] %>
 <%- if instance['url'].match(/^https/) -%>

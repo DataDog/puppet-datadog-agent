@@ -72,11 +72,13 @@ class datadog_agent::redhat(
       require  => Exec['install-gpg-key'],
     }
 
-    Package { require => Yumrepo['datadog6']}
+    package { $datadog_agent::params::package_name:
+      ensure  => $agent_version,
+      require => Yumrepo['datadog'],
+    }
+  } else {
+    package { $datadog_agent::params::package_name:
+      ensure  => $agent_version,
+    }
   }
-
-  package { $datadog_agent::params::package_name:
-    ensure  => $agent_version,
-  }
-
 }

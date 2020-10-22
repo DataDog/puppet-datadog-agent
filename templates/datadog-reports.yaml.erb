@@ -18,3 +18,9 @@
   - <%= tag %>
   <%- end -%>
 <% end -%>
+<% if @report_trusted_fact_tags -%>
+:report_trusted_fact_tags:
+<%- @report_trusted_fact_tags.each do |tag| -%>
+  - <%= tag %>
+  <%- end -%>
+<% end -%>

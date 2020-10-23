@@ -93,8 +93,6 @@ describe 'datadog_agent::integrations::elasticsearch' do
           }
         end
 
-
-
         it { is_expected.to contain_file(conf_file).with_content(%r{instances:}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{    - url: https://foo:4242}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      cluster_stats: true}) }

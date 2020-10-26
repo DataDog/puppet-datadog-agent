@@ -26,6 +26,7 @@ describe 'datadog_agent::integrations::elasticsearch' do
       context 'with default parameters' do
         it { is_expected.to contain_file(conf_file).with_content(%r{    - url: http://localhost:9200}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      cluster_stats: false}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{      index_stats: false}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      pending_task_stats: true}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      pshard_stats: false}) }
         it { is_expected.not_to contain_file(conf_file).with_content(%r{      username}) }
@@ -66,6 +67,7 @@ describe 'datadog_agent::integrations::elasticsearch' do
             instances: [
               {
                 'cluster_stats'      => true,
+                'index_stats'        => false,
                 'password'           => 'password',
                 'pending_task_stats' => false,
                 'pshard_stats'       => true,
@@ -78,6 +80,7 @@ describe 'datadog_agent::integrations::elasticsearch' do
               },
               {
                 'cluster_stats'      => false,
+                'index_stats'        => true,
                 'password'           => 'password_2',
                 'pending_task_stats' => true,
                 'pshard_stats'       => false,
@@ -93,6 +96,7 @@ describe 'datadog_agent::integrations::elasticsearch' do
         it { is_expected.to contain_file(conf_file).with_content(%r{instances:}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{    - url: https://foo:4242}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      cluster_stats: true}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{      index_stats: false}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      pending_task_stats: false}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      username: username}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      password: password}) }
@@ -103,6 +107,7 @@ describe 'datadog_agent::integrations::elasticsearch' do
         it { is_expected.to contain_file(conf_file).with_content(%r{      tags:\n        - tag1:key1}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{    - url: https://bar:2424}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      cluster_stats: false}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{      index_stats: true}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      pending_task_stats: true}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      username: username_2}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      password: password_2}) }

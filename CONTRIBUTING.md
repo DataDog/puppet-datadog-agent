@@ -9,7 +9,7 @@
 ### Clone the repo
 
 ```
-git clone git@github.com:DataDog/puppet-datadog-agent.git
+gh repo clone DataDog/puppet-datadog-agent
 cd puppet-datadog-agent
 ```
 

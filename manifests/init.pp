@@ -455,6 +455,15 @@ class datadog_agent(
     }
   }
 
+
+  if $::operatingsystem == 'Fedora' and $_agent_major_version == 5 {
+    package { 'chkconfig':
+      ensure => present,
+      before => 'datadog_agent::service',
+    }
+  }
+
+
   # Declare service
   class { 'datadog_agent::service' :
     service_ensure   => $service_ensure,

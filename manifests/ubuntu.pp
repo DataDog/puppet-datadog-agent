@@ -71,5 +71,4 @@ class datadog_agent::ubuntu(
     require => [Apt::Source['datadog'],
                 Class['apt::update']],
   }
-
 }

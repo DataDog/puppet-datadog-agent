@@ -455,14 +455,13 @@ class datadog_agent(
     }
   }
 
-
   if $::operatingsystem == 'Fedora' and $_agent_major_version == 5 {
+    # We need chkinfo to enable the A5 service on Fedora
     package { 'chkconfig':
       ensure => present,
       before => 'datadog_agent::service',
     }
   }
-
 
   # Declare service
   class { 'datadog_agent::service' :

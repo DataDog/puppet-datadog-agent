@@ -29,10 +29,12 @@
 #       Boolean to grab tags from hiera to allow merging
 #   $facts_to_tags
 #       Optional array of facts' names that you can use to define tags following the scheme: "fact_name:fact_value".
-#       See also trusted_facts_to_tags, report_fact_tags and report_trusted_fact_tags.
+#       See also trusted_facts_to_tags.
+#       Note: this is not for Puppet Report Tags.  See report_fact_tags
 #   $trusted_facts_to_tags
 #       Optional array of trusted facts' names that you can use to define tags following
 #       the scheme: "fact_name:fact_value".
+#       Note: this is not for Puppet Report Tags.  See report_trusted_fact_tags
 #   $puppet_run_reports
 #       Will send results from your puppet agent runs back to the datadog service.
 #   $manage_dogapi_gem

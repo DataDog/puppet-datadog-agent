@@ -142,7 +142,7 @@ Puppet::Reports.register_report(:datadog_reports) do
     trusted_fact_tags = REPORT_TRUSTED_FACT_TAGS.map { |name| "#{name}:#{trusted_facts.dig(*name.split('.'))}" }
     dog_tags = facts_tags + trusted_fact_tags
 
-    Puppet.debug "Sending events for #{@msg_host} to Datadog"
+    Puppet.debug "Sending events for #{@msg_host} to Datadog. Trusted facts #{@trusted_facts.to_s}. Trusted facts tags #{@trusted_fact_tags.to_s}."
     @dog.emit_event(Dogapi::Event.new(event_data,
                                       msg_title: event_title,
                                       event_type: 'config_management.run',

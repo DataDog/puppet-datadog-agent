@@ -5,12 +5,12 @@
 
 class datadog_agent::ubuntu(
   Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
-  String $apt_key = 'A2923DFF56EDA6E76E55E492D3A80E30382E94DE',
+  Array[String] $apt_keys = ['A2923DFF56EDA6E76E55E492D3A80E30382E94DE', 'D75CEA17048B9ACBF186794B32637D44F14F620E'],
   String $agent_version = $datadog_agent::params::agent_version,
   Optional[String] $agent_repo_uri = undef,
   String $release = $datadog_agent::params::apt_default_release,
   Boolean $skip_apt_key_trusting = false,
-  Optional[String] $apt_keyserver = undef,
+  String $apt_keyserver = $datadog_agent::params::apt_keyserver,
 ) inherits datadog_agent::params {
 
   if $agent_version =~ /^[0-9]+\.[0-9]+\.[0-9]+((?:~|-)[^0-9\s-]+[^-\s]*)?$/ {
@@ -28,12 +28,12 @@ class datadog_agent::ubuntu(
   }
 
   if !$skip_apt_key_trusting {
-    $key = {
-      'id' => $apt_key,
-      'server' => $apt_keyserver,
+    $apt_keys.each |String $apt_key| {
+      apt::key { $apt_key:
+        id     => $apt_key,
+        server => $apt_keyserver,
+      }
     }
-  } else {
-    $key = {}
   }
 
   if ($agent_repo_uri != undef) {
@@ -59,7 +59,6 @@ class datadog_agent::ubuntu(
     location => $location,
     release  => $release,
     repos    => $repos,
-    key      => $key,
   }
 
   package { 'datadog-agent-base':
@@ -72,5 +71,4 @@ class datadog_agent::ubuntu(
     require => [Apt::Source['datadog'],
                 Class['apt::update']],
   }
-
 }

@@ -27,10 +27,12 @@ describe 'datadog_agent::ubuntu' do
     end
 
     # it should install the mirror
-    it { is_expected.not_to contain_apt__key('Add key: 935F5A436A5A6E8788F0765B226AE980C7A7DA52 from Apt::Source datadog') }
+    it { is_expected.not_to contain_apt__key('935F5A436A5A6E8788F0765B226AE980C7A7DA52') }
     it do
-      is_expected.to contain_apt__key('Add key: A2923DFF56EDA6E76E55E492D3A80E30382E94DE from Apt::Source datadog')
+      is_expected.to contain_apt__key('A2923DFF56EDA6E76E55E492D3A80E30382E94DE')
+      is_expected.to contain_apt__key('D75CEA17048B9ACBF186794B32637D44F14F620E')
     end
+
     context 'overriding keyserver' do
       let(:params) do
         {
@@ -39,7 +41,9 @@ describe 'datadog_agent::ubuntu' do
       end
 
       it do
-        is_expected.to contain_apt__key('Add key: A2923DFF56EDA6E76E55E492D3A80E30382E94DE from Apt::Source datadog')\
+        is_expected.to contain_apt__key('A2923DFF56EDA6E76E55E492D3A80E30382E94DE')\
+          .with_server('hkp://pool.sks-keyservers.net:80')
+        is_expected.to contain_apt__key('D75CEA17048B9ACBF186794B32637D44F14F620E')\
           .with_server('hkp://pool.sks-keyservers.net:80')
       end
     end
@@ -87,8 +91,11 @@ describe 'datadog_agent::ubuntu' do
     end
 
     # it should install the mirror
-    it { is_expected.not_to contain_apt__key('Add key: 935F5A436A5A6E8788F0765B226AE980C7A7DA52 from Apt::Source datadog') }
-    it { is_expected.to contain_apt__key('Add key: A2923DFF56EDA6E76E55E492D3A80E30382E94DE from Apt::Source datadog') }
+    it { is_expected.not_to contain_apt__key('935F5A436A5A6E8788F0765B226AE980C7A7DA52') }
+    it do
+      is_expected.to contain_apt__key('A2923DFF56EDA6E76E55E492D3A80E30382E94DE')
+      is_expected.to contain_apt__key('D75CEA17048B9ACBF186794B32637D44F14F620E')
+    end
 
     it do
       is_expected.to contain_file('/etc/apt/sources.list.d/datadog6.list')\
@@ -133,8 +140,8 @@ describe 'datadog_agent::ubuntu' do
     end
 
     # it should install the mirror
-    it { is_expected.not_to contain_apt__key('Add key: 935F5A436A5A6E8788F0765B226AE980C7A7DA52 from Apt::Source datadog') }
-    it { is_expected.to contain_apt__key('Add key: A2923DFF56EDA6E76E55E492D3A80E30382E94DE from Apt::Source datadog') }
+    it { is_expected.not_to contain_apt__key('935F5A436A5A6E8788F0765B226AE980C7A7DA52') }
+    it { is_expected.to contain_apt__key('A2923DFF56EDA6E76E55E492D3A80E30382E94DE') }
 
     it do
       is_expected.to contain_file('/etc/apt/sources.list.d/datadog6.list')\

@@ -152,7 +152,7 @@ To enable reporting of Puppet runs to your Datadog timeline, enable the report p
 
 5. (Optional) Enable tagging of reports with facts:
 
-    You can add tags to reports that are sent to Datadog as events. These tags can be sourced from Puppet facts for the given node the report is regarding. These should be 1:1 and not involve structured facts (hashes, arrays, etc.) to ensure readability. To enable tagging, set the parameter `datadog_agent::reports::report_fact_tags` to the array value of facts—for example `["virtual","trusted.extensions.pp_role","operatingsystem"]` results in three separate tags per report event.
+    You can add tags to reports that are sent to Datadog as events. These tags can be sourced from Puppet facts for the given node the report is regarding. These should be 1:1 and not involve structured facts (hashes, arrays, etc.) to ensure readability. To enable regular fact tagging, set the parameter `datadog_agent::reports::report_fact_tags` to the array value of facts—for example `["virtual","operatingsystem"]`. To enable trusted fact tagging, set the parameter `datadog_agent::reports::report_trusted_fact_tags` to the array value of facts—for example `["certname","extensions.pp_role","hostname"]`.
 
     NOTE: Changing these settings requires a restart of pe-puppetserver (or puppetserver) to re-read the report processor. Ensure the changes are deployed prior to restarting the service(s).
 

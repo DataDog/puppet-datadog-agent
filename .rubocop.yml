@@ -135,3 +135,5 @@ Style/NumericPredicate:
   Enabled: false
 Layout/FirstHashElementLineBreak:
   Enabled: true
+Style/EmptyLiteral:
+  Enabled: false

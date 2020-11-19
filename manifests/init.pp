@@ -28,11 +28,13 @@
 #   $hiera_tags
 #       Boolean to grab tags from hiera to allow merging
 #   $facts_to_tags
-#       Optional array of facts' names that you can use to define tags following
-#       the scheme: "fact_name:fact_value".
+#       Optional array of facts' names that you can use to define tags following the scheme: "fact_name:fact_value".
+#       See also trusted_facts_to_tags.
+#       Note: this is not for Puppet Report Tags.  See report_fact_tags
 #   $trusted_facts_to_tags
 #       Optional array of trusted facts' names that you can use to define tags following
 #       the scheme: "fact_name:fact_value".
+#       Note: this is not for Puppet Report Tags.  See report_trusted_fact_tags
 #   $puppet_run_reports
 #       Will send results from your puppet agent runs back to the datadog service.
 #   $manage_dogapi_gem
@@ -67,6 +69,8 @@
 #       Set value of the 'dogstatsd_port' variable. Defaultis 8125.
 #   $report_fact_tags
 #       Sets tags for report events sent to Datadog from specified facts
+#   $report_trusted_fact_tags
+#       Sets tags for report events sent to Datadog from specified trusted facts
 #   $statsd_forward_host
 #       Set the value of the statsd_forward_host varable. Used to forward all
 #       statsd metrics to another host.
@@ -264,6 +268,7 @@ class datadog_agent(
   $dogstatsd_port = 8125,
   $dogstatsd_socket = '',
   Array $report_fact_tags = [],
+  Array $report_trusted_fact_tags = [],
   String $statsd_forward_host = '',
   $statsd_forward_port = '',
   String $statsd_histogram_percentiles = '0.95',
@@ -787,6 +792,7 @@ class datadog_agent(
       proxy_http                => $proxy_http,
       proxy_https               => $proxy_https,
       report_fact_tags          => $report_fact_tags,
+      report_trusted_fact_tags  => $report_trusted_fact_tags,
     }
   }
 

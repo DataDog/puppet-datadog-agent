@@ -14,6 +14,7 @@ Puppet::Reports.register_report(:datadog_reports) do
   API_KEY = config[:datadog_api_key]
   API_URL = config[:api_url]
   REPORT_FACT_TAGS = config[:report_fact_tags] || []
+  REPORT_TRUSTED_FACT_TAGS = config[:report_trusted_fact_tags] || []
 
   if ENV['DD_PROXY_HTTP'].nil?
     ENV['DD_PROXY_HTTP'] = config[:proxy_http]
@@ -135,9 +136,13 @@ Puppet::Reports.register_report(:datadog_reports) do
     end
 
     facts = Puppet::Node::Facts.indirection.find(host).values
-    dog_tags = REPORT_FACT_TAGS.map { |name| "#{name}:#{facts.dig(*name.split('.'))}" }
+    facts_tags = REPORT_FACT_TAGS.map { |name| "#{name}:#{facts.dig(*name.split('.'))}" }
+    trusted_facts = (Puppet.lookup(:trusted_information) { Hash.new }).to_h
+    trusted_fact_tags = REPORT_TRUSTED_FACT_TAGS.map { |name| "#{name}:#{trusted_facts.dig(*name.split('.'))}" }
+    dog_tags = facts_tags + trusted_fact_tags
 
-    Puppet.debug "Sending events for #{@msg_host} to Datadog"
+    # Uncomment below line for debug logging of tags
+    # Puppet.debug "Sending events for #{@msg_host} to Datadog with tags #{dog_tags.to_s}"
     @dog.emit_event(Dogapi::Event.new(event_data,
                                       msg_title: event_title,
                                       event_type: 'config_management.run',
@@ -147,5 +152,6 @@ Puppet::Reports.register_report(:datadog_reports) do
                                       source_type_name: 'puppet',
                                       tags: dog_tags),
                     host: @msg_host)
+    Puppet.info "Event sent for #{@msg_host} to Datadog"
   end
 end

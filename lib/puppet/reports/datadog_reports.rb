@@ -138,7 +138,6 @@ Puppet::Reports.register_report(:datadog_reports) do
     facts = Puppet::Node::Facts.indirection.find(host).values
     facts_tags = REPORT_FACT_TAGS.map { |name| "#{name}:#{facts.dig(*name.split('.'))}" }
     trusted_facts = (Puppet.lookup(:trusted_information) { Hash.new }).to_h
-    trusted_facts = { "trusted" => trusted_facts.to_h }
     trusted_fact_tags = REPORT_TRUSTED_FACT_TAGS.map { |name| "#{name}:#{trusted_facts.dig(*name.split('.'))}" }
     dog_tags = facts_tags + trusted_fact_tags
 

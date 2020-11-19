@@ -449,9 +449,11 @@ class datadog_agent(
       default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
     }
   } else {
-    package { $datadog_agent::params::package_name:
-      ensure => present,
-      source => 'Agent installation not managed by Puppet, make sure the Agent is installed beforehand.',
+    if ! defined(Package[$datadog_agent::params::package_name]) {
+      package { $datadog_agent::params::package_name:
+        ensure => present,
+        source => 'Agent installation not managed by Puppet, make sure the Agent is installed beforehand.',
+      }
     }
   }
 

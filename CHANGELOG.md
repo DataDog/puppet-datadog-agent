@@ -1,6 +1,15 @@
 Changes
 =======
 
+# 3.9.0 / 2020-11-20
+
+* [FEATURE] Add support for trusted fact tags in reports [#662][] (Thanks [@murdok5][])
+* [FEATURE] Add support for collecting elasticsearch index_stats [#666][] (Thanks [@charles-ferguson][])
+* [FEATURE] Trust new APT and RPM keys [#667][]
+* [BUGFIX] Fix passing tags to msiexec [#661][] (Thanks [@alexberry][])
+* [BUGFIX] Only declare the Agent package if not already declared [#672][]
+* [BUGFIX] Fix Package not depending on the right Yumrepo [#664][]
+
 # 3.8.0 / 2020-10-14
 
 * [FEATURE] Add trusted_facts_to_tags argument to add Agent tags from trusted facts [#658][]
@@ -791,7 +800,12 @@ Please read the [docs]() for more details.
 [#654]: https://github.com/DataDog/puppet-datadog-agent/issues/654
 [#656]: https://github.com/DataDog/puppet-datadog-agent/issues/656
 [#658]: https://github.com/DataDog/puppet-datadog-agent/issues/658
-
+[#661]: https://github.com/DataDog/puppet-datadog-agent/issues/661
+[#662]: https://github.com/DataDog/puppet-datadog-agent/issues/662
+[#664]: https://github.com/DataDog/puppet-datadog-agent/issues/664
+[#666]: https://github.com/DataDog/puppet-datadog-agent/issues/666
+[#667]: https://github.com/DataDog/puppet-datadog-agent/issues/667
+[#672]: https://github.com/DataDog/puppet-datadog-agent/issues/672
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
@@ -805,6 +819,7 @@ Please read the [docs]() for more details.
 [@aaron-miller]: https://github.com/aaron-miller
 [@aepod]: https://github.com/aepod
 [@ajvb]: https://github.com/ajvb
+[@alexberry]: https://github.com/alexberry
 [@alexfouche]: https://github.com/alexfouche
 [@alexharv074]: https://github.com/alexharv074
 [@alvin-huang]: https://github.com/alvin-huang
@@ -818,6 +833,7 @@ Please read the [docs]() for more details.
 [@bittner]: https://github.com/bittner
 [@butangero]: https://github.com/butangero
 [@cabrinha]: https://github.com/cabrinha
+[@charles-ferguson]: https://github.com/charles-ferguson
 [@ckolos]: https://github.com/ckolos
 [@com6056]: https://github.com/com6056
 [@craigwatson]: https://github.com/craigwatson

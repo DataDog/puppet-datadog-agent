@@ -5,7 +5,7 @@
 function datadog_agent::tag6(
   Variant[Array, String] $tag_names,
   Variant[String, Boolean] $lookup_fact = false,
-  Variant[Hash, Undef] $lookup_table = $facts,
+  Variant[Hash, Undef, Runtime] $lookup_table = $facts,
 ) {
   if $tag_names =~ Array {
     $tags = $tag_names.reduce([]) |$_tags , $tag| {

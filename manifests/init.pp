@@ -354,7 +354,7 @@ class datadog_agent(
   }
 
   if $_agent_major_version != 5 and $_agent_major_version != 6 and $_agent_major_version != 7 {
-    fail('agent_major_version must be either 5, 6 or 7')
+    fail("agent_major_version must be either 5, 6 or 7, not ${_agent_major_version}")
   }
 
   # Allow ports to be passed as integers or strings.

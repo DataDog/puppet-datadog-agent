@@ -13,7 +13,8 @@ describe 'datadog_agent::reports' do
         dogapi_version: 'installed',
       }
     end
-    let(:conf_file) { '/etc/datadog-agent/datadog-reports.yaml' }
+
+    conf_file = '/etc/datadog-agent/datadog-reports.yaml'
 
     ALL_OS.each do |operatingsystem|
       describe "datadog_agent class common actions on #{operatingsystem}" do
@@ -75,7 +76,8 @@ describe 'datadog_agent::reports' do
         dogapi_version: '1.2.2',
       }
     end
-    let(:conf_file) { '/etc/datadog-agent/datadog-reports.yaml' }
+
+    conf_file = '/etc/datadog-agent/datadog-reports.yaml'
 
     describe 'datadog_agent class dogapi version override' do
       let(:facts) do
@@ -120,7 +122,6 @@ describe 'datadog_agent::reports' do
 
       }
     end
-    let(:conf_file) { '/etc/datadog-agent/datadog-reports.yaml' }
 
     describe 'datadog_agent class puppet gem provider override' do
       let(:facts) do
@@ -158,7 +159,8 @@ describe 'datadog_agent::reports' do
         datadog_site: 'datadoghq.eu',
       }
     end
-    let(:conf_file) { '/etc/datadog-agent/datadog-reports.yaml' }
+
+    conf_file = '/etc/datadog-agent/datadog-reports.yaml'
 
     describe 'datadog_agent class dogapi version override' do
       let(:facts) do

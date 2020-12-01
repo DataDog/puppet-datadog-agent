@@ -5,12 +5,13 @@ describe 'datadog_agent::integration' do
     ALL_SUPPORTED_AGENTS.each do |agent_major_version|
       let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
       if agent_major_version == 5
-        let(:conf_file) { '/etc/dd-agent/conf.d/test.yaml' }
-
+        conf_file = '/etc/dd-agent/conf.d/test.yaml'
       else
-        let(:conf_dir) { "#{CONF_DIR}/test.d" }
-        let(:conf_file) { "#{conf_dir}/conf.yaml" }
+        conf_dir = "#{CONF_DIR}/test.d"
+        conf_file = "#{conf_dir}/conf.yaml"
       end
+
+      let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
 
       let(:title) { 'test' }
 

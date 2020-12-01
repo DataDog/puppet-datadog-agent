@@ -10,11 +10,11 @@ describe 'datadog_agent::integrations::docker_daemon' do
     ALL_SUPPORTED_AGENTS.each do |agent_major_version|
       let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
 
-      if agent_major_version == 5
-        let(:conf_file) { '/etc/dd-agent/conf.d/docker.yaml' }
-      else
-        let(:conf_file) { "#{CONF_DIR}/docker.d/conf.yaml" }
-      end
+      conf_file = if agent_major_version == 5
+                    '/etc/dd-agent/conf.d/docker.yaml'
+                  else
+                    "#{CONF_DIR}/docker.d/conf.yaml"
+                  end
 
       it { is_expected.to compile.with_all_deps }
       it {

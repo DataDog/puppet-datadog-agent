@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe 'datadog_agent::integrations::kong' do
-  context 'supported agents' do
-    ALL_SUPPORTED_AGENTS.each do |agent_major_version|
+  ALL_SUPPORTED_AGENTS.each do |agent_major_version|
+    context 'supported agents' do
       let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
 
       conf_file = if agent_major_version == 5

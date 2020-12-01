@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe 'datadog_agent::integration' do
-  context 'supported agents' do
-    ALL_SUPPORTED_AGENTS.each do |agent_major_version|
-      let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
+  ALL_SUPPORTED_AGENTS.each do |agent_major_version|
+    context 'supported agents' do
       if agent_major_version == 5
         conf_file = '/etc/dd-agent/conf.d/test.yaml'
       else

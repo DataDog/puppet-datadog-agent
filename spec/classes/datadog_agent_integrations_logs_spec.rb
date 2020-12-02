@@ -3,7 +3,8 @@ require 'spec_helper'
 describe 'datadog_agent::integrations::logs' do
   context 'supported agents - v6' do
     let(:pre_condition) { "class {'::datadog_agent': agent_major_version => 6}" }
-    let(:conf_file) { "#{CONF_DIR}/logs.yaml" }
+
+    conf_file = "#{CONF_DIR}/logs.yaml"
 
     context 'with default parameters' do
       it { is_expected.to compile }

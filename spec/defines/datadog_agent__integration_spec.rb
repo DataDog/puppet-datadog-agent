@@ -14,9 +14,7 @@ describe 'datadog_agent::integration' do
 
       let(:title) { 'test' }
 
-      gem_spec = Gem.loaded_specs['puppet']
-
-      if agent_major_version == 5
+      if agent_major_version > 5
         it { is_expected.to contain_file(conf_dir.to_s).that_comes_before("File[#{conf_file}]") }
       end
       it { is_expected.to contain_file(conf_file.to_s).that_notifies("Service[#{SERVICE_NAME}]") }
@@ -33,11 +31,7 @@ describe 'datadog_agent::integration' do
         end
 
         it { is_expected.to compile }
-        if gem_spec.version >= Gem::Version.new('4.0.0')
-          it { is_expected.to contain_file(conf_file.to_s).with_content(%r{---\ninit_config: \ninstances:\n- one: two\n}) }
-        else
-          it { is_expected.to contain_file(conf_file.to_s).with_content(%r{--- \n  init_config: \n  instances: \n    - one: two}) }
-        end
+        it { is_expected.to contain_file(conf_file.to_s).with_content(%r{---\s?\n\s*init_config:\s?\n\s*instances:\s?\n\s*- one: two}) }
         it { is_expected.to contain_file(conf_file).with_ensure('file') }
       end
 
@@ -54,11 +48,7 @@ describe 'datadog_agent::integration' do
         end
 
         it { is_expected.to compile }
-        if gem_spec.version >= Gem::Version.new('4.0.0')
-          it { is_expected.to contain_file(conf_file).with_content(%r{logs:\n- one\n- two}) }
-        else
-          it { is_expected.to contain_file(conf_file).with_content(%r{logs:\n  - one\n  - two}) }
-        end
+        it { is_expected.to contain_file(conf_file).with_content(%r{logs:\n\s*- one\n\s*- two}) }
         it { is_expected.to contain_file(conf_file).with_ensure('file') }
       end
 

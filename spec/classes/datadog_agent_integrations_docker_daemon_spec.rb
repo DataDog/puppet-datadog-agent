@@ -11,12 +11,13 @@ describe 'datadog_agent::integrations::docker_daemon' do
       let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
 
       conf_file = if agent_major_version == 5
-                    '/etc/dd-agent/conf.d/docker.yaml'
+                    '/etc/dd-agent/conf.d/docker_daemon.yaml'
                   else
                     "#{CONF_DIR}/docker.d/conf.yaml"
                   end
 
       it { is_expected.to compile.with_all_deps }
+
       it {
         is_expected.to contain_file(conf_file).with(
           owner: DD_USER,

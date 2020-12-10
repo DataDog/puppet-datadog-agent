@@ -15,27 +15,41 @@
 #       The (optional) tag_by_filesystem parameter will instruct the check to
 #       tag all disks with their filesystem (for ex: filesystem:nfs)
 #       (values: yes, no)
-#   $filesystem_blacklist
+#   $filesystem_exclude
 #       The (optional) filesystems you wish to exclude, example: tmpfs, run,
 #       dev (string or array)
-#   $device_blacklist
+#   $device_exclude
 #       The (optional) devices you wish to exclude, example: /dev/sda (string or array)
-#   $mountpoint_blacklist
+#   $mountpoint_exclude
 #       The (optional) mountpoints you wish to exclude, example: /tmp,
 #       /mnt/somebody-elses-problem (string or array)
-#   $filesystem_whitelist
+#   $filesystem_include
 #       Specify (optional) filesystems, to only collect from them (string or array)
-#   $device_whitelist
+#   $device_include
 #       Specify (optional) devices, to only collect from them (string or array)
-#   $mountpoint_whitelist
+#   $mountpoint_include
 #       Specify (optional) mountpoints, to only collect from them (string or array)
-#   $excluded_filesystems (DEPRECATED in agent version>6.9, use $filesystem_blacklist instead)
+#   $filesystem_blacklist (DEPRECATED in agent version>7.24, use $filesystem_exclude instead)
+#       The (optional) filesystems you wish to exclude, example: tmpfs, run,
+#       dev (string or array)
+#   $device_blacklist (DEPRECATED in agent version>7.24, use $device_exclude instead)
+#       The (optional) devices you wish to exclude, example: /dev/sda (string or array)
+#   $mountpoint_blacklist (DEPRECATED in agent version>7.24, use $mountpoint_exclude instead)
+#       The (optional) mountpoints you wish to exclude, example: /tmp,
+#       /mnt/somebody-elses-problem (string or array)
+#   $filesystem_whitelist  DEPRECATED in agent version>7.24, use $device_include instead)
+#       Specify (optional) filesystems, to only collect from them (string or array)
+#   $device_whitelist (DEPRECATED in agent version>7.24, use $device_include instead)
+#       Specify (optional) devices, to only collect from them (string or array)
+#   $mountpoint_whitelist (DEPRECATED in agent version>7.24, use $mountpoint_include instead)
+#       Specify (optional) mountpoints, to only collect from them (string or array)
+#   $excluded_filesystems (DEPRECATED in agent version>6.9, use $filesystem_exclude instead)
 #       The filesystems you wish to exclude, example: tmpfs, run (string or array)
-#   $excluded_disks (DEPRECATED in agent version>6.9, use $device_blacklist instead)
+#   $excluded_disks (DEPRECATED in agent version>6.9, use $device_exclude instead)
 #       The disks you (optional)
-#   $excluded_disk_re (DEPRECATED in agent version>6.9, use $device_blacklist instead)
+#   $excluded_disk_re (DEPRECATED in agent version>6.9, use $device_exclude instead)
 #       Regular expression (optional) to exclude disks, eg: /dev/sde.*
-#   $excluded_mountpoint_re (DEPRECATED in agent version>6.9, use $mountpoint_blacklist instead)
+#   $excluded_mountpoint_re (DEPRECATED in agent version>6.9, use $mountpoint_exclude instead)
 #       Regular expression (optional) to exclude , eg: /mnt/somebody-elses-problem.*
 
 #

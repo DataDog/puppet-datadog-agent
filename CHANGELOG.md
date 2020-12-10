@@ -1,6 +1,11 @@
 Changes
 =======
 
+# 3.10.0 / 2020-12-10
+
+* [FEATURE] Allow removing check config files [#675][]
+* [FEATURE] Allow creating more than one config file per integration [#677][]
+
 # 3.9.0 / 2020-11-20
 
 * [FEATURE] Add support for trusted fact tags in reports [#662][] (Thanks [@murdok5][])
@@ -806,6 +811,8 @@ Please read the [docs]() for more details.
 [#666]: https://github.com/DataDog/puppet-datadog-agent/issues/666
 [#667]: https://github.com/DataDog/puppet-datadog-agent/issues/667
 [#672]: https://github.com/DataDog/puppet-datadog-agent/issues/672
+[#675]: https://github.com/DataDog/puppet-datadog-agent/issues/675
+[#677]: https://github.com/DataDog/puppet-datadog-agent/issues/677
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

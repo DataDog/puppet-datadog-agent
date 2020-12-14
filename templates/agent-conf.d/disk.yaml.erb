@@ -52,7 +52,6 @@ instances:
       - <%= fs %>
 <%- end -%>
 <% end -%>
-
 <% if @device_whitelist -%>
     device_whitelist:
 <% (Array(@device_whitelist)).each do |disk| -%>
@@ -65,7 +64,6 @@ instances:
       - <%= disk %>
 <% end -%>
 <% end -%>
-
 <% if @mountpoint_whitelist -%>
     mount_point_whitelist:
 <% (Array(@mountpoint_whitelist)).each do |mount| -%>

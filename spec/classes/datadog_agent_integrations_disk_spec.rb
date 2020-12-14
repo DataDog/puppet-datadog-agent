@@ -166,7 +166,6 @@ instances:
 
         it { is_expected.to contain_file(conf_file).with_content(yaml_conf) }
       end
-
     end
   end
 end

@@ -236,7 +236,7 @@ These variables can be set in the `datadog_agent` class to control settings in t
 | `agent_version`                         | Lets you pin a specific minor version of the Agent to install, for example: `1:7.16.0-1`. Leave empty to install the latest version.                                                             |
 | `collect_ec2_tags`                      | Collect an instance's custom EC2 tags as Agent tags by using `true`.                                                                                                                             |
 | `collect_instance_metadata`             | Collect an instance's EC2 metadata as Agent tags by using `true`.                                                                                                                                |
-| `datadog_site`                          | The Datadog site to report to (Agent v6 and v7 only). Defaults to `datadoghq.com`, can be set to `datadoghq.eu` or `us3.datadoghq.com`.                                                         |
+| `datadog_site`                          | The Datadog site to report to (Agent v6 and v7 only). Defaults to `datadoghq.com`, can be set to `datadoghq.eu` or `us3.datadoghq.com`.                                                          |
 | `dd_url`                                | The Datadog intake server URL. You are unlikely to need to change this. Overrides `datadog_site`                                                                                                 |
 | `host`                                  | Overrides the node's host name.                                                                                                                                                                  |
 | `local_tags`                            | An array of `<KEY:VALUE>` strings that are set as tags for the node.                                                                                                                             |
@@ -251,7 +251,18 @@ These variables can be set in the `datadog_agent` class to control settings in t
 | `agent_extra_options`<sup>1</sup>       | A hash to provide additional configuration options (Agent v6 and v7 only).                                                                                                                       |
 | `hostname_extraction_regex`<sup>2</sup> | A regex used to extract the hostname captured group to report the run in Datadog instead of reporting the Puppet nodename, for example:<br>`'^(?<hostname>.*\.datadoghq\.com)(\.i-\w{8}\..*)?$'` |
 
-(1) `agent_extra_options` is used to provide a fine grain control of additional Agent v6/v7 config options. A deep merge is performed that may override options provided in the `datadog_agent` class parameters.
+(1) `agent_extra_options` is used to provide a fine grain control of additional Agent v6/v7 config options. A deep merge is performed that may override options provided in the `datadog_agent` class parameters. For example:
+
+```
+class { "datadog_agent":
+    < your other arguments to the class >,
+    agent_extra_options => {
+        use_http => true,
+        use_compression => true,
+        compression_level => 6,
+    },
+}
+```
 
 (2) `hostname_extraction_regex` is useful when the Puppet module and the Datadog Agent are reporting different host names for the same host in the infrastructure list.
 

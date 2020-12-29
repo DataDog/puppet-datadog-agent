@@ -118,6 +118,54 @@ instances:
 
         it { is_expected.to contain_file(conf_file).with_content(yaml_conf) }
       end
+
+      context 'agent_version >= 7.24.0 disk configuration option' do
+        let(:params) do
+          {
+            use_mount: 'yes',
+            filesystem_exclude: ['tmpfs', 'dev'],
+            device_exclude: ['/dev/sda1'],
+            mountpoint_exclude: ['/mnt/foo'],
+            filesystem_include: ['ext4', 'hdfs', 'reiserfs'],
+            device_include: ['/dev/sdc1', '/dev/sdc2', '/dev/sdd2'],
+            mountpoint_include: ['/mnt/logs', '/mnt/builds'],
+            all_partitions: 'yes',
+            tag_by_filesystem: 'no',
+          }
+        end
+        let(:yaml_conf) do
+          <<-HEREDOC
+### MANAGED BY PUPPET
+
+init_config:
+
+instances:
+  - use_mount: yes
+    file_system_exclude:
+      - tmpfs
+      - dev
+    device_exclude:
+      - /dev/sda1
+    mount_point_exclude:
+      - /mnt/foo
+    file_system_include:
+      - ext4
+      - hdfs
+      - reiserfs
+    device_include:
+      - /dev/sdc1
+      - /dev/sdc2
+      - /dev/sdd2
+    mount_point_include:
+      - /mnt/logs
+      - /mnt/builds
+    all_partitions: yes
+    tag_by_filesystem: no
+        HEREDOC
+        end
+
+        it { is_expected.to contain_file(conf_file).with_content(yaml_conf) }
+      end
     end
   end
 end

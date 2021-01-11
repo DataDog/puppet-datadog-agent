@@ -13,6 +13,7 @@ class datadog_agent::service(
       service { $datadog_agent::params::service_name:
         ensure  => $service_ensure,
         enable  => $service_enable,
+        restart => ['powershell', '-Command', 'Restart-Service -Force DatadogAgent'], # Force restarts dependent services
         require => Package[$datadog_agent::params::package_name]
       }
   } else {

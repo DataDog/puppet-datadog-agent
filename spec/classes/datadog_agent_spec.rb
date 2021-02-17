@@ -134,6 +134,65 @@ describe 'datadog_agent' do
     end
   end
 
+  context 'windows NPM' do
+    let(:facts) do
+      {
+        osfamily: 'windows',
+        operatingsystem: 'Windows',
+      }
+    end
+
+    describe "with NPM enabled" do
+      let(:params) do
+        {
+          agent_major_version: 7,
+          windows_npm_install: true,
+          api_key: 'notakey',
+          host: 'notahost',
+        }
+      end
+      it do
+        is_expected.to contain_package('Datadog Agent').with({
+          'ensure': 'installed',
+          'install_options': [ '/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'NPM' => 'true' } ]
+        })
+      end
+    end
+
+    describe "with NPM disabled" do
+      let(:params) do
+        {
+          agent_major_version: 7,
+          windows_npm_install: false,
+          api_key: 'notakey',
+          host: 'notahost',
+        }
+      end
+      it do
+        is_expected.to contain_package('Datadog Agent').with({
+          'ensure': 'installed',
+          'install_options': [ '/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'NPM' => 'false' } ]
+        })
+      end
+    end
+
+    describe "with NPM undef" do
+      let(:params) do
+        {
+          agent_major_version: 7,
+          api_key: 'notakey',
+          host: 'notahost',
+        }
+      end
+      it do
+        is_expected.to contain_package('Datadog Agent').with({
+          'ensure': 'installed',
+          'install_options': [ '/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""' } ]
+        })
+      end
+    end
+  end
+
   # Test all supported OSes
   context 'all supported operating systems' do
     ALL_OS.each do |operatingsystem|

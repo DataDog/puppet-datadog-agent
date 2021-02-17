@@ -14,6 +14,7 @@ class datadog_agent::windows(
   String $tags_join = join($tags,','),
   String $tags_quote_wrap = "\"${tags_join}\"",
   Enum['present', 'absent'] $ensure = 'present',
+  Optional[Boolean] $npm_install = undef,
 ) inherits datadog_agent::params {
 
   $msi_full_path = "${msi_location}/datadog-agent-${agent_major_version}-${agent_version}.amd64.msi"
@@ -65,11 +66,13 @@ class datadog_agent::windows(
       $ensure_version = $agent_version
     }
 
+    $npm_install_option = $npm_install ? { undef => {}, true => { 'NPM' => 'true' }, false => { 'NPM' => 'false' } }
+
     package { $datadog_agent::params::package_name:
       ensure          => $ensure_version,
       provider        => 'windows',
       source          => $msi_full_path,
-      install_options => ['/norestart', {'APIKEY' => $api_key, 'HOSTNAME' => $hostname, 'TAGS' => $tags_quote_wrap}]
+      install_options => ['/norestart', {'APIKEY' => $api_key, 'HOSTNAME' => $hostname, 'TAGS' => $tags_quote_wrap} + $npm_install_option]
     }
 
   } else {

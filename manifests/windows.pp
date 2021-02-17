@@ -66,13 +66,14 @@ class datadog_agent::windows(
       $ensure_version = $agent_version
     }
 
+    $hostname_option = $hostname ? { '' => {}, default => { 'HOSTNAME' => $hostname } }
     $npm_install_option = $npm_install ? { undef => {}, true => { 'NPM' => 'true' }, false => { 'NPM' => 'false' } }
 
     package { $datadog_agent::params::package_name:
       ensure          => $ensure_version,
       provider        => 'windows',
       source          => $msi_full_path,
-      install_options => ['/norestart', {'APIKEY' => $api_key, 'HOSTNAME' => $hostname, 'TAGS' => $tags_quote_wrap} + $npm_install_option]
+      install_options => ['/norestart', {'APIKEY' => $api_key, 'TAGS' => $tags_quote_wrap} + $npm_install_option + $hostname_option]
     }
 
   } else {

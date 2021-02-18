@@ -134,46 +134,48 @@ describe 'datadog_agent' do
     end
   end
 
-  context 'windows NPM' do
-    let(:facts) do
-      {
-        osfamily: 'windows',
-        operatingsystem: 'Windows',
-      }
-    end
-
-    describe 'with NPM enabled' do
-      let(:params) do
+  if Gem::Version.new(Puppet.version) >= Gem::Version.new('4.10') # We don't support Windows on Puppet older than 4.10
+    context 'windows NPM' do
+      let(:facts) do
         {
-          agent_major_version: 7,
-          windows_npm_install: true,
-          api_key: 'notakey',
-          host: 'notahost',
+          osfamily: 'windows',
+          operatingsystem: 'Windows',
         }
       end
 
-      it do
-        is_expected.to contain_package('Datadog Agent').with(
-          ensure: 'installed',
-          install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'NPM' => 'true' }],
-        )
-      end
-    end
+      describe 'with NPM enabled' do
+        let(:params) do
+          {
+            agent_major_version: 7,
+            windows_npm_install: true,
+            api_key: 'notakey',
+            host: 'notahost',
+          }
+        end
 
-    describe 'with NPM disabled' do
-      let(:params) do
-        {
-          agent_major_version: 7,
-          api_key: 'notakey',
-          host: 'notahost',
-        }
+        it do
+          is_expected.to contain_package('Datadog Agent').with(
+            ensure: 'installed',
+            install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'NPM' => 'true' }],
+          )
+        end
       end
 
-      it do
-        is_expected.to contain_package('Datadog Agent').with(
-          ensure: 'installed',
-          install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""' }],
-        )
+      describe 'with NPM disabled' do
+        let(:params) do
+          {
+            agent_major_version: 7,
+            api_key: 'notakey',
+            host: 'notahost',
+          }
+        end
+
+        it do
+          is_expected.to contain_package('Datadog Agent').with(
+            ensure: 'installed',
+            install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""' }],
+          )
+        end
       end
     end
   end

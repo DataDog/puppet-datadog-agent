@@ -164,24 +164,6 @@ describe 'datadog_agent' do
       let(:params) do
         {
           agent_major_version: 7,
-          windows_npm_install: false,
-          api_key: 'notakey',
-          host: 'notahost',
-        }
-      end
-
-      it do
-        is_expected.to contain_package('Datadog Agent').with(
-          ensure: 'installed',
-          install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'NPM' => 'false' }],
-        )
-      end
-    end
-
-    describe 'with NPM undef' do
-      let(:params) do
-        {
-          agent_major_version: 7,
           api_key: 'notakey',
           host: 'notahost',
         }

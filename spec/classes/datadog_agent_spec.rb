@@ -142,7 +142,7 @@ describe 'datadog_agent' do
       }
     end
 
-    describe "with NPM enabled" do
+    describe 'with NPM enabled' do
       let(:params) do
         {
           agent_major_version: 7,
@@ -151,15 +151,16 @@ describe 'datadog_agent' do
           host: 'notahost',
         }
       end
+
       it do
-        is_expected.to contain_package('Datadog Agent').with({
-          'ensure': 'installed',
-          'install_options': [ '/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'NPM' => 'true' } ]
-        })
+        is_expected.to contain_package('Datadog Agent').with(
+          ensure: 'installed',
+          install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'NPM' => 'true' }],
+        )
       end
     end
 
-    describe "with NPM disabled" do
+    describe 'with NPM disabled' do
       let(:params) do
         {
           agent_major_version: 7,
@@ -168,15 +169,16 @@ describe 'datadog_agent' do
           host: 'notahost',
         }
       end
+
       it do
-        is_expected.to contain_package('Datadog Agent').with({
-          'ensure': 'installed',
-          'install_options': [ '/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'NPM' => 'false' } ]
-        })
+        is_expected.to contain_package('Datadog Agent').with(
+          ensure: 'installed',
+          install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'NPM' => 'false' }],
+        )
       end
     end
 
-    describe "with NPM undef" do
+    describe 'with NPM undef' do
       let(:params) do
         {
           agent_major_version: 7,
@@ -184,11 +186,12 @@ describe 'datadog_agent' do
           host: 'notahost',
         }
       end
+
       it do
-        is_expected.to contain_package('Datadog Agent').with({
-          'ensure': 'installed',
-          'install_options': [ '/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""' } ]
-        })
+        is_expected.to contain_package('Datadog Agent').with(
+          ensure: 'installed',
+          install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""' }],
+        )
       end
     end
   end

@@ -339,6 +339,7 @@ class datadog_agent(
   Enum['present', 'absent'] $win_ensure = 'present', #TODO: Implement uninstall also for apt and rpm install methods
   Optional[String] $service_provider = undef,
   Optional[String] $agent_version = $datadog_agent::params::agent_version,
+  Boolean $windows_npm_install = false,
 ) inherits datadog_agent::params {
 
   #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'
@@ -445,7 +446,8 @@ class datadog_agent(
           api_key             => $api_key,
           hostname            => $host,
           tags                => $local_tags,
-          ensure              => $win_ensure
+          ensure              => $win_ensure,
+          npm_install         => $windows_npm_install,
         }
         if ($win_ensure == absent) {
           return() #Config files will remain unchanged on uninstall

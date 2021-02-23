@@ -12,6 +12,8 @@
 #       This option is only available with agent version >= 6.6.0.
 #   $host:
 #       Force the hostname to whatever you want. (default: auto-detected)
+#   $agent_flavor:
+#       Change the flavor of the Datadog agent to the IOT agent. (default: datadog-agent)
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value.
 #   $collect_ec2_tags
@@ -242,6 +244,7 @@ class datadog_agent(
   String $datadog_site = $datadog_agent::params::datadog_site,
   String $host = '',
   String $api_key = 'your_API_key',
+  String $agent_flavor = $datadog_agent::params::agent_flavor,
   Boolean $collect_ec2_tags = false,
   Boolean $collect_gce_tags = false,
   Boolean $collect_instance_metadata = true,

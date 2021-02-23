@@ -4,6 +4,7 @@
 #
 
 class datadog_agent::params {
+  $agent_flavor                   = 'datadog-agent'
   $datadog_site                   = 'datadoghq.com'
   $dd_groups                      = undef
   $default_agent_major_version    = 7

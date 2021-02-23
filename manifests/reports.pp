@@ -15,6 +15,7 @@
 #
 class datadog_agent::reports(
   $api_key,
+  $agent_flavor = 'datadog-agent',
   $puppetmaster_user,
   $dogapi_version,
   $manage_dogapi_gem = true,

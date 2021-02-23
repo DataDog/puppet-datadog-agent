@@ -8,6 +8,7 @@ describe 'datadog_agent::reports' do
   context 'all supported operating systems' do
     let(:params) do
       {
+        agent_flavor: 'datadog-agent',
         api_key: 'notanapikey',
         puppetmaster_user: 'puppet',
         dogapi_version: 'installed',
@@ -115,6 +116,7 @@ describe 'datadog_agent::reports' do
   context 'specific gem provider' do
     let(:params) do
       {
+        agent_flavor: 'datadog-agent',
         api_key: 'notanapikey',
         puppetmaster_user: 'puppet',
         dogapi_version: '1.2.2',
@@ -153,6 +155,7 @@ describe 'datadog_agent::reports' do
   context 'EU site in report' do
     let(:params) do
       {
+        agent_flavor: 'datadog-agent',
         api_key: 'notanapikey',
         puppetmaster_user: 'puppet',
         dogapi_version: 'installed',
@@ -194,6 +197,7 @@ describe 'datadog_agent::reports' do
   context 'disabled ruby-manage' do
     let(:params) do
       {
+        agent_flavor: 'datadog-agent',
         api_key: 'notanapikey',
         hostname_extraction_regex: nil,
         dogapi_version: 'installed',

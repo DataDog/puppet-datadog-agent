@@ -8,6 +8,7 @@ class datadog_agent::suse(
   String $agent_version = $datadog_agent::params::agent_version,
   String $release = $datadog_agent::params::apt_default_release,
   Optional[String] $agent_repo_uri = undef,
+  String $agent_flavor = $datadog_agent::params::package_name,
 ) inherits datadog_agent::params {
 
   $all_keys = [
@@ -31,7 +32,7 @@ class datadog_agent::suse(
 
   package { 'datadog-agent-base':
     ensure => absent,
-    before => Package[$datadog_agent::params::package_name],
+    before => Package[$agent_flavor],
   }
 
   # We need to install GPG keys manually since zypper will autoreject new keys
@@ -62,7 +63,7 @@ class datadog_agent::suse(
     keeppackages => 1,
   }
 
-  package { $datadog_agent::params::package_name:
+  package { $agent_flavor:
     ensure  => $agent_version,
   }
 

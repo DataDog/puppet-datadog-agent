@@ -8,6 +8,7 @@ class datadog_agent::redhat(
   Optional[String] $agent_repo_uri = undef,
   Boolean $manage_repo = true,
   String $agent_version = $datadog_agent::params::agent_version,
+  String $agent_flavor = $datadog_agent::params::package_name,
 ) inherits datadog_agent::params {
 
   if $manage_repo {
@@ -60,12 +61,12 @@ class datadog_agent::redhat(
       baseurl  => $baseurl,
     }
 
-    package { $datadog_agent::params::package_name:
+    package { $agent_flavor:
       ensure  => $agent_version,
       require => Yumrepo['datadog'],
     }
   } else {
-    package { $datadog_agent::params::package_name:
+    package { $agent_flavor:
       ensure  => $agent_version,
     }
   }

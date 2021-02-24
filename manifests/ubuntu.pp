@@ -11,6 +11,7 @@ class datadog_agent::ubuntu(
   String $release = $datadog_agent::params::apt_default_release,
   Boolean $skip_apt_key_trusting = false,
   String $apt_keyserver = $datadog_agent::params::apt_keyserver,
+  String $agent_flavor = $datadog_agent::params::package_name,
 ) inherits datadog_agent::params {
 
   if $agent_version =~ /^[0-9]+\.[0-9]+\.[0-9]+((?:~|-)[^0-9\s-]+[^-\s]*)?$/ {
@@ -63,10 +64,10 @@ class datadog_agent::ubuntu(
 
   package { 'datadog-agent-base':
     ensure => absent,
-    before => Package[$datadog_agent::params::package_name],
+    before => Package[$agent_flavor],
   }
 
-  package { $datadog_agent::params::package_name:
+  package { $agent_flavor:
     ensure  => $platform_agent_version,
     require => [Apt::Source['datadog'],
                 Class['apt::update']],

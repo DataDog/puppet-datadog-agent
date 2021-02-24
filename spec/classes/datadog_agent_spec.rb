@@ -191,7 +191,7 @@ describe 'datadog_agent' do
         it do
           is_expected.to contain_package('Datadog Agent').with(
             ensure: 'installed',
-            install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""' }],
+            install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'NPM' => 'true' }],
           )
           is_expected.to contain_class('datadog_agent::system_probe').with(
             enabled: true,

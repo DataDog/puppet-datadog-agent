@@ -157,7 +157,7 @@ describe 'datadog_agent' do
       let(:params) do
         {
           agent_version: '1:6.15.1-1',
-          agent_flavor: "datadog-iot-agent"
+          agent_flavor: 'datadog-iot-agent',
         }
       end
       let(:facts) do

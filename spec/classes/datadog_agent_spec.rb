@@ -177,27 +177,6 @@ describe 'datadog_agent' do
           )
         end
       end
-
-      describe 'with system_probe_enabled enabled' do
-        let(:params) do
-          {
-            agent_major_version: 7,
-            system_probe_enabled: true,
-            api_key: 'notakey',
-            host: 'notahost',
-          }
-        end
-
-        it do
-          is_expected.to contain_package('Datadog Agent').with(
-            ensure: 'installed',
-            install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'NPM' => 'true' }],
-          )
-          is_expected.to contain_class('datadog_agent::system_probe').with(
-            enabled: true,
-          )
-        end
-      end
     end
   end
 

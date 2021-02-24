@@ -222,6 +222,11 @@
 #   $apt_release
 #       The distribution channel to be used for the APT repo. Eg: 'stable' or 'beta'.
 #       String. Default: stable
+#   $system_probe_enable
+#       Whether to install the system-probe, eg: for Network Performance Monitoring.
+#       Setting this to true is equivalent to instantiating the class datadog_agent::system_probe 
+#       with $enabled => true and, on Windows, passing $windows_npm_install => true.
+#       Bool. Default: false
 #
 # Sample Usage:
 #
@@ -246,6 +251,7 @@ class datadog_agent(
   Boolean $collect_gce_tags = false,
   Boolean $collect_instance_metadata = true,
   Array $tags = [],
+  Boolean $system_probe_enable = false,
   $integrations = {},
   $hiera_integrations = false,
   Boolean $hiera_tags = false,
@@ -447,7 +453,7 @@ class datadog_agent(
           hostname            => $host,
           tags                => $local_tags,
           ensure              => $win_ensure,
-          npm_install         => $windows_npm_install,
+          npm_install         => ($windows_npm_install or $system_probe_enable),
         }
         if ($win_ensure == absent) {
           return() #Config files will remain unchanged on uninstall
@@ -476,6 +482,12 @@ class datadog_agent(
     service_ensure   => $service_ensure,
     service_enable   => $service_enable,
     service_provider => $service_provider,
+  }
+
+  if ($system_probe_enable) {
+    class { 'datadog_agent::system_probe' :
+      enabled => true
+    }
   }
 
   if ($::operatingsystem != 'Windows') {

@@ -1,5 +1,6 @@
 class datadog_agent::system_probe(
   Boolean $enabled = false,
+  Boolean $network_enabled = false,
   Optional[String] $log_file = undef,
   Optional[String] $sysprobe_socket = undef,
   Optional[Boolean] $enable_oom_kill = false,
@@ -39,6 +40,9 @@ class datadog_agent::system_probe(
       'sysprobe_socket' => $sysprobe_socket,
       'log_file' => $log_file,
       'enable_oom_kill' => $enable_oom_kill,
+    },
+    'network_config' => {
+      'enabled' => $network_enabled,
     }
   }
 

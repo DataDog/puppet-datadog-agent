@@ -169,7 +169,7 @@ describe 'datadog_agent' do
 
       it do
         is_expected.to contain_package('datadog-iot-agent').with(
-          ensure: 'installed',
+          ensure: "1:6.15.1-1",
         )
       end
     end

@@ -178,11 +178,11 @@ describe 'datadog_agent' do
         end
       end
 
-      describe 'with system_probe_enable enabled' do
+      describe 'with system_probe_enabled enabled' do
         let(:params) do
           {
             agent_major_version: 7,
-            system_probe_enable: true,
+            system_probe_enabled: true,
             api_key: 'notakey',
             host: 'notahost',
           }

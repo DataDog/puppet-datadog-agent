@@ -132,6 +132,47 @@ describe 'datadog_agent' do
           .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
       end
     end
+
+    context 'default agent_flavor' do
+      let(:params) do
+        {
+          agent_version: '1:6.15.1-1',
+        }
+      end
+      let(:facts) do
+        {
+          osfamily: 'debian',
+          operatingsystem: 'Ubuntu',
+        }
+      end
+
+      it do
+        is_expected.to contain_package('datadog-agent').with(
+          ensure: '1:6.15.1-1',
+        )
+      end
+    end
+
+    context 'specify agent_flavor' do
+      let(:params) do
+        {
+          agent_version: '1:6.15.1-1',
+          agent_flavor: 'datadog-iot-agent',
+        }
+      end
+      let(:facts) do
+        {
+          osfamily: 'debian',
+          operatingsystem: 'Ubuntu',
+        }
+      end
+
+      it do
+        is_expected.to contain_package('datadog-iot-agent').with(
+          ensure: '1:6.15.1-1',
+        )
+      end
+    end
   end
 
   if Gem::Version.new(Puppet.version) >= Gem::Version.new('4.10') # We don't support Windows on Puppet older than 4.10

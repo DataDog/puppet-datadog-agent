@@ -14,6 +14,8 @@
 #       Force the hostname to whatever you want. (default: auto-detected)
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value.
+#   $agent_flavor:
+#       Linux-only. The Agent flavor to install, eg: "datadog-agent" or "datadog-iot-agent".
 #   $collect_ec2_tags
 #       Collect AWS EC2 custom tags as agent tags.
 #       Boolean. Default: false
@@ -242,6 +244,7 @@ class datadog_agent(
   String $datadog_site = $datadog_agent::params::datadog_site,
   String $host = '',
   String $api_key = 'your_API_key',
+  Enum['datadog-agent', 'Datadog Agent', 'datadog-iot-agent'] $agent_flavor = $datadog_agent::params::package_name,
   Boolean $collect_ec2_tags = false,
   Boolean $collect_gce_tags = false,
   Boolean $collect_instance_metadata = true,
@@ -423,6 +426,7 @@ class datadog_agent(
         class { 'datadog_agent::ubuntu':
           agent_major_version   => $_agent_major_version,
           agent_version         => $agent_version,
+          agent_flavor          => $agent_flavor,
           agent_repo_uri        => $agent_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
@@ -432,6 +436,7 @@ class datadog_agent(
       'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux' : {
         class { 'datadog_agent::redhat':
           agent_major_version => $_agent_major_version,
+          agent_flavor        => $agent_flavor,
           agent_repo_uri      => $agent_repo_uri,
           manage_repo         => $manage_repo,
           agent_version       => $agent_version,
@@ -456,6 +461,7 @@ class datadog_agent(
       'OpenSuSE', 'SLES' : {
         class { 'datadog_agent::suse' :
           agent_major_version => $_agent_major_version,
+          agent_flavor        => $agent_flavor,
           agent_repo_uri      => $agent_repo_uri,
           agent_version       => $agent_version,
         }
@@ -463,8 +469,8 @@ class datadog_agent(
       default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
     }
   } else {
-    if ! defined(Package[$datadog_agent::params::package_name]) {
-      package { $datadog_agent::params::package_name:
+    if ! defined(Package[$agent_flavor]) {
+      package { $agent_flavor:
         ensure => present,
         source => 'Agent installation not managed by Puppet, make sure the Agent is installed beforehand.',
       }
@@ -473,6 +479,7 @@ class datadog_agent(
 
   # Declare service
   class { 'datadog_agent::service' :
+    agent_flavor     => $agent_flavor,
     service_ensure   => $service_ensure,
     service_enable   => $service_enable,
     service_provider => $service_provider,
@@ -492,7 +499,7 @@ class datadog_agent(
       owner   => $dd_user,
       group   => $dd_group,
       mode    => $datadog_agent::params::permissions_directory,
-      require => Package[$datadog_agent::params::package_name],
+      require => Package[$agent_flavor],
     }
   }
 
@@ -511,7 +518,7 @@ class datadog_agent(
       owner   => $dd_user,
       group   => $dd_group,
       mode    => $datadog_agent::params::permissions_directory,
-      require => Package[$datadog_agent::params::package_name],
+      require => Package[$agent_flavor],
     }
 
     file { $_conf_dir:

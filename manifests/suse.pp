@@ -62,7 +62,7 @@ class datadog_agent::suse(
     name         => 'datadog',
     gpgcheck     => 1,
     # zypper on SUSE < 15 only understands a single gpgkey value
-    gpgkey       => (Float($::operatingsystemmajrelease) >= 15.0) ? { true => join($gpgkeys, "	"), default => $current_key },
+    gpgkey       => (Float($::operatingsystemmajrelease) >= 15.0) ? { true => join($gpgkeys, "\n       "), default => $current_key },
     keeppackages => 1,
   }
 

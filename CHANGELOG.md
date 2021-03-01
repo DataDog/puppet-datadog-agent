@@ -4,7 +4,7 @@ Changes
 # 3.11.0 / 2021-03-01
 
 * [FEATURE] Add support for SUSE distros [#682][]
-* [FEATURE] Allow specifying an agent_flavor to install [#686][] (Thanks [@Aramack])
+* [FEATURE] Allow specifying an agent_flavor to install [#686][] (Thanks [@Aramack][])
 * [FEATURE] Expose new parameters for disk check [#679][]
 * [BUGFIX] Fix service restart on Windows [#681][]
 

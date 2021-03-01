@@ -1,6 +1,13 @@
 Changes
 =======
 
+# 3.11.0 / 2021-03-01
+
+* [FEATURE] Add support for SUSE distros [#682][]
+* [FEATURE] Allow specifying an agent_flavor to install [#686][] (Thanks [@Aramack])
+* [FEATURE] Expose new parameters for disk check [#679][]
+* [BUGFIX] Fix service restart on Windows [#681][]
+
 # 3.10.0 / 2020-12-10
 
 * [FEATURE] Allow removing check config files [#675][]
@@ -813,6 +820,10 @@ Please read the [docs]() for more details.
 [#672]: https://github.com/DataDog/puppet-datadog-agent/issues/672
 [#675]: https://github.com/DataDog/puppet-datadog-agent/issues/675
 [#677]: https://github.com/DataDog/puppet-datadog-agent/issues/677
+[#679]: https://github.com/DataDog/puppet-datadog-agent/issues/679
+[#681]: https://github.com/DataDog/puppet-datadog-agent/issues/681
+[#682]: https://github.com/DataDog/puppet-datadog-agent/issues/682
+[#686]: https://github.com/DataDog/puppet-datadog-agent/issues/686
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

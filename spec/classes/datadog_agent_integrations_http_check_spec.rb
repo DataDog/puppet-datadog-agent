@@ -64,7 +64,7 @@ describe 'datadog_agent::integrations::http_check' do
             collect_response_time: false,
             disable_ssl_validation: true,
             skip_event: true,
-            http_response_status_code: '503',
+            http_response_status_code: 503,
             no_proxy: true,
             check_certificate_expiration: true,
             days_warning: 14,
@@ -83,7 +83,7 @@ describe 'datadog_agent::integrations::http_check' do
         it { is_expected.to contain_file(conf_file).with_content(%r{data: key=value}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{threshold: 456}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{window: 789}) }
-        it { is_expected.to contain_file(conf_file).with_content(%r{content_match: 'foomatch'}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{content_match: foomatch}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{reverse_content_match: true}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{include_content: true}) }
         it { is_expected.to contain_file(conf_file).without_content(%r{collect_response_time: true}) }
@@ -95,7 +95,7 @@ describe 'datadog_agent::integrations::http_check' do
         it { is_expected.to contain_file(conf_file).with_content(%r{days_warning: 14}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{days_critical: 7}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{allow_redirects: true}) }
-        it { is_expected.to contain_file(conf_file).with_content(%r{ca_certs: /dev/null}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{ca_certs: "/dev/null"}) }
       end
 
       context 'with json post data' do
@@ -112,52 +112,6 @@ describe 'datadog_agent::integrations::http_check' do
         it { is_expected.to contain_file(conf_file).with_content(%r{method: post}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{data:\s+key:\s+value}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{headers:\s+Content-Type:\s+application/json}) }
-      end
-
-      context 'with headers parameter array' do
-        let(:params) do
-          {
-            sitename: 'foo.bar.baz',
-            url: 'http://foo.bar.baz:4096',
-            headers: ['foo', 'bar', 'baz'],
-          }
-        end
-
-        it { is_expected.to contain_file(conf_file).with_content(%r{headers:\s+foo\s+bar\s+baz\s*?[^-]}m) }
-      end
-
-      context 'with headers parameter empty values' do
-        context 'mixed in with other headers' do
-          let(:params) do
-            {
-              sitename: 'foo.bar.baz',
-              url: 'http://foo.bar.baz:4096',
-              headers: ['foo', '', 'baz'],
-            }
-          end
-
-          it { is_expected.to contain_file(conf_file).with_content(%r{headers:\s+foo\s+baz\s*?[^-]}m) }
-        end
-
-        context 'single element array of an empty string' do
-          let(:params) do
-            {
-              headers: [''],
-            }
-          end
-
-          skip('undefined behavior')
-        end
-
-        context 'single value empty string' do
-          let(:params) do
-            {
-              headers: '',
-            }
-          end
-
-          skip('doubly undefined behavior')
-        end
       end
 
       context 'with tags parameter array' do

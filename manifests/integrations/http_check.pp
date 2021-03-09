@@ -164,35 +164,37 @@
 
 
 class datadog_agent::integrations::http_check (
-  $sitename  = undef,
-  $url       = undef,
-  $username  = undef,
-  $password  = undef,
-  $timeout   = 1,
-  $method    = 'get',
-  $data      = undef,
-  $threshold = undef,
-  $window    = undef,
-  $content_match = undef,
-  $reverse_content_match = false,
-  $include_content = false,
-  $http_response_status_code = undef,
-  $collect_response_time = true,
-  $disable_ssl_validation = false,
-  $ignore_ssl_warning = false,
-  $skip_event = true,
-  $no_proxy  = false,
-  $check_certificate_expiration = true,
-  $days_warning = undef,
-  $days_critical = undef,
+  $sitename                         = undef,
+  $url                              = undef,
+  $username                         = undef,
+  $password                         = undef,
+  $timeout                          = 1,
+  $method                           = 'get',
+  $data                             = undef,
+  $threshold                        = undef,
+  $window                           = undef,
+  $content_match                    = undef,
+  $reverse_content_match            = false,
+  $include_content                  = false,
+  $http_response_status_code        = undef,
+  $collect_response_time            = true,
+  $disable_ssl_validation           = false,
+  $ignore_ssl_warning               = false,
+  $skip_event                       = true,
+  $no_proxy                         = false,
+  $check_certificate_expiration     = true,
+  $days_warning                     = undef,
+  $days_critical                    = undef,
   Optional[Boolean] $check_hostname = undef,
   Optional[String] $ssl_server_name = undef,
-  $headers   = [],
-  $allow_redirects = true,
-  $tags      = [],
-  $contact   = [],
-  Optional[Array] $instances  = undef,
-  $ca_certs  = undef,
+  $headers                          = [],
+  $allow_redirects                  = true,
+  $tags                             = [],
+  $contact                          = [],
+  Optional[Hash] $init_config       = undef,
+  Optional[Array] $instances        = undef,
+  Optional[Array] $logs             = undef,
+  $ca_certs                         = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -227,10 +229,52 @@ class datadog_agent::integrations::http_check (
       'contact'                      => $contact,
       'ca_certs'                     => $ca_certs,
     }]
-  } elsif !$instances{
+  } elsif !$instances {
     $_instances = []
   } else {
     $_instances = $instances
+  }
+
+  $instances_array = $_instances.map |$instance| {
+    Hash($instance.map |$key, $value| {
+      case $key {
+        'sitename': {
+          Tuple(['name', $value])
+        }
+
+        'days_warning', 'days_critical', 'check_hostname', 'ssl_server_name': {
+          if $instance['check_certificate_expiration'] == false {
+            Tuple([undef, undef]).next
+          }
+          Tuple([$key, $value])
+        }
+
+        'data', 'headers': {
+          $_value = datadog_agent::clean_empty($value)
+          if !$_value.is_a(Array) {
+            Tuple([$key, $_value]).next
+          }
+
+          $value_array = $_value.filter |$item| { $item =~ /:/ }
+          $value_hash = Hash($_value.map |$item| {
+            $_item = $item.split(':')
+            $i_key = $_item[0].rstrip
+            $i_value = $_item[1, - 1].join(':').lstrip
+
+            Tuple([$i_key, $i_value])
+          })
+
+          Tuple([$key, datadog_agent::clean_empty($value_hash)])
+        }
+
+        'tags': {
+          Tuple([$key, datadog_agent::clean_empty($value)])
+        }
+
+        default: {
+          Tuple([$key, $value]) }
+      }
+    })
   }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/http_check.yaml"

@@ -242,13 +242,6 @@ class datadog_agent::integrations::http_check (
           Tuple(['name', $value])
         }
 
-        'days_warning', 'days_critical', 'check_hostname', 'ssl_server_name': {
-          if $instance['check_certificate_expiration'] == false {
-            Tuple([undef, undef]).next
-          }
-          Tuple([$key, $value])
-        }
-
         'data', 'headers': {
           $_value = datadog_agent::clean_empty($value)
           if !$_value.is_a(Array) {

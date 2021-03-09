@@ -1,7 +1,3 @@
 ### MANAGED BY PUPPET
-
-<%
-require 'yaml'
-%>
-
+<% require 'yaml' -%>
 <%= {'init_config'=>@init_config, 'instances'=>@instances_array, 'logs'=>@logs}.to_yaml %>

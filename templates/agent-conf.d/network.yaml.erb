@@ -12,7 +12,7 @@ instances:
 <% end -%>
 <% if !@excluded_interface_re.empty? -%>
     excluded_interface_re:
-<%- (@excluded_interfaces_re.each do |interface| -%>
+<%- (@excluded_interface_re.each do |interface| -%>
       - <%= interface %>
 <% end ) -%>
 <% end -%>

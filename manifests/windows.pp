@@ -67,7 +67,7 @@ class datadog_agent::windows(
     }
 
     $hostname_option = $hostname ? { '' => {}, default => { 'HOSTNAME' => $hostname } }
-    $npm_install_option = $npm_install ? { false => {}, true => { 'NPM' => 'true' } }
+    $npm_install_option = $npm_install ? { false => {}, true => { 'ADDLOCAL' => 'MainApplication,NPM' } }
 
     package { $datadog_agent::params::package_name:
       ensure          => $ensure_version,

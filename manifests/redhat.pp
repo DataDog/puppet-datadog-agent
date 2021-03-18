@@ -14,10 +14,10 @@ class datadog_agent::redhat(
   if $manage_repo {
 
     $keys = [
-        'https://yum.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public',
-        'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
-        'https://yum.datadoghq.com/DATADOG_RPM_KEY_20200908.public',
-        'https://yum.datadoghq.com/DATADOG_RPM_KEY.public',
+        'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public',
+        'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
+        'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
+        'https://keys.datadoghq.com/DATADOG_RPM_KEY.public',
     ]
 
     case $agent_major_version {

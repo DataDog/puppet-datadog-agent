@@ -11,12 +11,12 @@ class datadog_agent::suse(
   String $agent_flavor = $datadog_agent::params::package_name,
 ) inherits datadog_agent::params {
 
-  $current_key = 'https://yum.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public'
+  $current_key = 'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public'
   $all_keys = [
     $current_key,
-    'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
-    'https://yum.datadoghq.com/DATADOG_RPM_KEY_20200908.public',
-    'https://yum.datadoghq.com/DATADOG_RPM_KEY.public',
+    'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
+    'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
+    'https://keys.datadoghq.com/DATADOG_RPM_KEY.public',
   ]
 
   case $agent_major_version {

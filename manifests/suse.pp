@@ -11,16 +11,18 @@ class datadog_agent::suse(
   String $agent_flavor = $datadog_agent::params::package_name,
 ) inherits datadog_agent::params {
 
+  $current_key = 'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public'
   $all_keys = [
-    'https://yum.datadoghq.com/DATADOG_RPM_KEY.public',
-    'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
-    'https://yum.datadoghq.com/DATADOG_RPM_KEY_20200908.public',
+    $current_key,
+    'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
+    'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
+    'https://keys.datadoghq.com/DATADOG_RPM_KEY.public',
   ]
 
   case $agent_major_version {
       5 : { fail('Agent v5 package not available in SUSE') }
       6 : { $gpgkeys = $all_keys }
-      7 : { $gpgkeys = $all_keys[1,2] }
+      7 : { $gpgkeys = $all_keys[0,-2] }
       default: { fail('invalid agent_major_version') }
   }
 
@@ -59,7 +61,8 @@ class datadog_agent::suse(
     autorefresh  => 1,
     name         => 'datadog',
     gpgcheck     => 1,
-    gpgkey       => join($gpgkeys, "	"),
+    # zypper on SUSE < 15 only understands a single gpgkey value
+    gpgkey       => (Float($::operatingsystemmajrelease) >= 15.0) ? { true => join($gpgkeys, "\n       "), default => $current_key },
     keeppackages => 1,
   }
 

@@ -1701,7 +1701,7 @@ describe 'datadog_agent' do
           it 'adds an install_info' do
             expect(install_info['install_method']).to match(
               'tool' => 'puppet',
-              'tool_version' => %r{^puppet-(\d+\.\d+\.\d+|unknown)$},
+              'tool_version' => %r{^puppet-unknown$}, # puppetversion is not set in tests, this field has to be tested manually
               'installer_version' => %r{^datadog_module-\d+\.\d+\.\d+$},
             )
           end

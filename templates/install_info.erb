@@ -1,5 +1,5 @@
 ---
 install_method:
   tool: puppet
-  tool_version: puppet-<%= @_puppetversion %>
+  tool_version: puppet-<%= @facts['puppetversion'] or 'unknown' %>
   installer_version: datadog_module-<%= @module_metadata['version'] %>

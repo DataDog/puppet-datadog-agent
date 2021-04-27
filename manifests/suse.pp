@@ -9,6 +9,7 @@ class datadog_agent::suse(
   String $release = $datadog_agent::params::apt_default_release,
   Optional[String] $agent_repo_uri = undef,
   String $agent_flavor = $datadog_agent::params::package_name,
+  Optional[Boolean] $rpm_repo_gpgcheck = undef,
 ) inherits datadog_agent::params {
 
   $current_key = 'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public'
@@ -18,6 +19,16 @@ class datadog_agent::suse(
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
     'https://keys.datadoghq.com/DATADOG_RPM_KEY.public',
   ]
+
+  if ($rpm_repo_gpgcheck != undef) {
+    $repo_gpgcheck = $rpm_repo_gpgcheck
+  } else {
+    if ($agent_repo_uri == undef) {
+      $repo_gpgcheck = true
+    } else {
+      $repo_gpgcheck = false
+    }
+  }
 
   case $agent_major_version {
       5 : { fail('Agent v5 package not available in SUSE') }
@@ -56,14 +67,15 @@ class datadog_agent::suse(
   }
 
   zypprepo { 'datadog':
-    baseurl      => $baseurl,
-    enabled      => 1,
-    autorefresh  => 1,
-    name         => 'datadog',
-    gpgcheck     => 1,
+    baseurl       => $baseurl,
+    enabled       => 1,
+    autorefresh   => 1,
+    name          => 'datadog',
+    gpgcheck      => 1,
     # zypper on SUSE < 15 only understands a single gpgkey value
-    gpgkey       => (Float($::operatingsystemmajrelease) >= 15.0) ? { true => join($gpgkeys, "\n       "), default => $current_key },
-    keeppackages => 1,
+    gpgkey        => (Float($::operatingsystemmajrelease) >= 15.0) ? { true => join($gpgkeys, "\n       "), default => $current_key },
+    repo_gpgcheck => $repo_gpgcheck,
+    keeppackages  => 1,
   }
 
   package { $agent_flavor:

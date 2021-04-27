@@ -67,20 +67,20 @@ class datadog_agent::suse(
   }
 
   zypprepo { 'datadog':
-    baseurl       => $baseurl,
-    enabled       => 1,
-    autorefresh   => 1,
-    name          => 'datadog',
-    gpgcheck      => 1,
+    baseurl      => $baseurl,
+    enabled      => 1,
+    autorefresh  => 1,
+    name         => 'datadog',
+    gpgcheck     => 1,
     # zypper on SUSE < 15 only understands a single gpgkey value
-    gpgkey        => (Float($::operatingsystemmajrelease) >= 15.0) ? { true => join($gpgkeys, "\n       "), default => $current_key },
+    gpgkey       => (Float($::operatingsystemmajrelease) >= 15.0) ? { true => join($gpgkeys, "\n       "), default => $current_key },
     # TODO: when updating zypprepo to 4.0.0, uncomment the repo_gpgcheck line
     # For now, we can leave this commented, as zypper by default does repodata
     # signature checks if the repomd.xml.asc is present, so repodata checks
     # are effective for most users anyway. We'll make this explicit when we
     # update zypprepo version.
     # repo_gpgcheck => $repo_gpgcheck,
-    keeppackages  => 1,
+    keeppackages => 1,
   }
 
   package { $agent_flavor:

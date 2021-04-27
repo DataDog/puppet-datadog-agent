@@ -24,10 +24,23 @@ class datadog_agent::redhat(
       $repo_gpgcheck = $rpm_repo_gpgcheck
     } else {
       if ($agent_repo_uri == undef) and ($agent_major_version > 5) {
-        $repo_gpgcheck = true
+        case $::operatingsystem {
+          'RedHat', 'CentOS', 'OracleLinux': {
+            # disable repo_gpgcheck on 8.1 because of https://bugzilla.redhat.com/show_bug.cgi?id=1792506
+            if $::operatingsystemrelease =~ /^8.1/ {
+              $repo_gpgcheck = false
+            } else {
+              $repo_gpgcheck = true
+            }
+          }
+          default: {
+            $repo_gpgcheck = true
+          }
+        }
       } else {
         $repo_gpgcheck = false
       }
+
     }
 
     case $agent_major_version {

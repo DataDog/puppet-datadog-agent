@@ -225,6 +225,8 @@
 #       Whether or not to perform repodata signature check for RPM repositories.
 #       Applies to Red Hat and SUSE platforms. When set to `undef`, this is activated
 #       for all Agent versions other than 5 when `agent_repo_uri` is also undefinded.
+#       The `undef` value also translates to `false` on RHEL/CentOS 8.1 because
+#       of a bug in libdnf: https://bugzilla.redhat.com/show_bug.cgi?id=1792506
 #       Boolean. Default: undef
 #   $apt_release
 #       The distribution channel to be used for the APT repo. Eg: 'stable' or 'beta'.

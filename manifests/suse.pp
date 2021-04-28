@@ -9,6 +9,7 @@ class datadog_agent::suse(
   String $release = $datadog_agent::params::apt_default_release,
   Optional[String] $agent_repo_uri = undef,
   String $agent_flavor = $datadog_agent::params::package_name,
+  Optional[Boolean] $rpm_repo_gpgcheck = undef,
 ) inherits datadog_agent::params {
 
   $current_key = 'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public'
@@ -18,6 +19,16 @@ class datadog_agent::suse(
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
     'https://keys.datadoghq.com/DATADOG_RPM_KEY.public',
   ]
+
+  if ($rpm_repo_gpgcheck != undef) {
+    $repo_gpgcheck = $rpm_repo_gpgcheck
+  } else {
+    if ($agent_repo_uri == undef) {
+      $repo_gpgcheck = true
+    } else {
+      $repo_gpgcheck = false
+    }
+  }
 
   case $agent_major_version {
       5 : { fail('Agent v5 package not available in SUSE') }
@@ -63,6 +74,12 @@ class datadog_agent::suse(
     gpgcheck     => 1,
     # zypper on SUSE < 15 only understands a single gpgkey value
     gpgkey       => (Float($::operatingsystemmajrelease) >= 15.0) ? { true => join($gpgkeys, "\n       "), default => $current_key },
+    # TODO: when updating zypprepo to 4.0.0, uncomment the repo_gpgcheck line
+    # For now, we can leave this commented, as zypper by default does repodata
+    # signature checks if the repomd.xml.asc is present, so repodata checks
+    # are effective for most users anyway. We'll make this explicit when we
+    # update zypprepo version.
+    # repo_gpgcheck => $repo_gpgcheck,
     keeppackages => 1,
   }
 

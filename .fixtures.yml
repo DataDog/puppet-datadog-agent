@@ -16,7 +16,9 @@ fixtures:
   forge_modules:
     yumrepo_core: "puppetlabs/yumrepo_core"
     powershell: "puppetlabs/powershell"
-    zypprepo: "puppet/zypprepo"
+    zypprepo:
+      repo: "puppet/zypprepo"
+      ref: "3.1.0"
   symlinks:
     custom_datadog: "#{source_dir}/spec/custom_fixtures/custom_datadog"
     datadog_agent: "#{source_dir}"

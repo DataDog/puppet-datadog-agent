@@ -1,7 +1,7 @@
 Changes
 =======
 
-# 3.12.0 / 2021-05-05
+# 3.12.0 / 2021-05-06
 
 * [FEATURE] Support for NPM on Windows [#688][]
 * [FEATURE] Enable repo_gpgcheck for RPM repositories by default [#693][]

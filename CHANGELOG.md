@@ -1,6 +1,14 @@
 Changes
 =======
 
+# 3.12.0 / 2021-05-06
+
+* [FEATURE] Support for NPM on Windows [#688][]
+* [FEATURE] Enable repo_gpgcheck for RPM repositories by default [#693][]
+* [FEATURE] Add the 'current' gpg key, only use 1 gpgkey on suse < 15 [#687][]
+* [BUGFIX] Fix typo in network.yaml.erb [#690][] (Thanks [@florusboth][])
+* [BUGFIX] Fix tool_version being unknown in install_info [#692][]
+
 # 3.11.0 / 2021-03-01
 
 * [FEATURE] Add support for SUSE distros [#682][]
@@ -824,6 +832,11 @@ Please read the [docs]() for more details.
 [#681]: https://github.com/DataDog/puppet-datadog-agent/issues/681
 [#682]: https://github.com/DataDog/puppet-datadog-agent/issues/682
 [#686]: https://github.com/DataDog/puppet-datadog-agent/issues/686
+[#687]: https://github.com/DataDog/puppet-datadog-agent/issues/687
+[#688]: https://github.com/DataDog/puppet-datadog-agent/issues/688
+[#690]: https://github.com/DataDog/puppet-datadog-agent/issues/690
+[#692]: https://github.com/DataDog/puppet-datadog-agent/issues/692
+[#693]: https://github.com/DataDog/puppet-datadog-agent/issues/693
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
@@ -875,6 +888,7 @@ Please read the [docs]() for more details.
 [@ewansteele]: https://github.com/ewansteele
 [@ffleming]: https://github.com/ffleming
 [@ffrants]: https://github.com/ffrants
+[@florusboth]: https://github.com/florusboth
 [@flyinbutrs]: https://github.com/flyinbutrs
 [@flyinprogrammer]: https://github.com/flyinprogrammer
 [@fr3nd]: https://github.com/fr3nd

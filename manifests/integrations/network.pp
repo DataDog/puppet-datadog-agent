@@ -24,7 +24,7 @@
 class datadog_agent::integrations::network(
   Boolean $collect_connection_state = false,
   Array[String] $excluded_interfaces = ['lo','lo0'],
-  Array $excluded_interface_re = [],
+  String $excluded_interface_re = '',
   Boolean $combine_connection_states = true,
 ) inherits datadog_agent::params {
   include ::datadog_agent

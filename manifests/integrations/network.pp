@@ -14,9 +14,7 @@
 #     'lo0',
 #     'lo',
 #    ],
-#    excluded_interface_re => [
-#    'eth1.*'
-#    ]
+#    excluded_interface_re = 'eth1.*',
 #    combine_connection_states => true
 #  }
 #

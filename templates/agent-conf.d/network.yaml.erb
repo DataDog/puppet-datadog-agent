@@ -11,9 +11,6 @@ instances:
 <% end ) -%>
 <% end -%>
 <% if !@excluded_interface_re.empty? -%>
-    excluded_interface_re:
-<%- (@excluded_interface_re.each do |interface| -%>
-      - <%= interface %>
-<% end ) -%>
+    excluded_interface_re: <%= @excluded_interface_re %>
 <% end -%>
     combine_connection_states: <%= @combine_connection_states %>

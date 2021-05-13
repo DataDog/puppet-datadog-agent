@@ -342,6 +342,11 @@ class datadog_agent(
   Hash[String[1], Data] $agent_extra_options = {},
   Optional[String] $agent_repo_uri = undef,
   Optional[Boolean] $rpm_repo_gpgcheck = undef,
+  # TODO: $use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver can be
+  # removed in the next major version; they're kept now for backwards compatibility
+  Optional[Boolean] $use_apt_backup_keyserver = undef,
+  Optional[String] $apt_backup_keyserver = undef,
+  Optional[String] $apt_keyserver = undef,
   String $apt_release = $datadog_agent::params::apt_default_release,
   String $win_msi_location = 'C:/Windows/temp', # Temporary directory where the msi file is downloaded, must exist
   Enum['present', 'absent'] $win_ensure = 'present', #TODO: Implement uninstall also for apt and rpm install methods
@@ -421,6 +426,12 @@ class datadog_agent(
   if $manage_install {
     case $::operatingsystem {
       'Ubuntu','Debian' : {
+        if $use_apt_backup_keyserver != undef or $apt_backup_keyserver != undef or $apt_keyserver != undef {
+          notify { 'apt keyserver arguments deprecation':
+            message  => '$use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver are deprecated since version 3.13.0',
+            loglevel => 'warning',
+          }
+        }
         class { 'datadog_agent::ubuntu':
           agent_major_version   => $_agent_major_version,
           agent_version         => $agent_version,

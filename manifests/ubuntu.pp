@@ -13,9 +13,9 @@ class datadog_agent::ubuntu(
   Optional[String] $apt_trusted_d_keyring = '/etc/apt/trusted.gpg.d/datadog-archive-keyring.gpg',
   Optional[String] $apt_usr_share_keyring = '/usr/share/keyrings/datadog-archive-keyring.gpg',
   Optional[Hash[String, String]] $apt_default_keys = {
-    "DATADOG_APT_KEY_CURRENT.public"           => "https://keys.datadoghq.com/DATADOG_APT_KEY_CURRENT.public",
-    "D75CEA17048B9ACBF186794B32637D44F14F620E" => "https://keys.datadoghq.com/DATADOG_APT_KEY_F14F620E.public",
-    "A2923DFF56EDA6E76E55E492D3A80E30382E94DE" => "https://keys.datadoghq.com/DATADOG_APT_KEY_382E94DE.public",
+    'DATADOG_APT_KEY_CURRENT.public'           => 'https://keys.datadoghq.com/DATADOG_APT_KEY_CURRENT.public',
+    'D75CEA17048B9ACBF186794B32637D44F14F620E' => 'https://keys.datadoghq.com/DATADOG_APT_KEY_F14F620E.public',
+    'A2923DFF56EDA6E76E55E492D3A80E30382E94DE' => 'https://keys.datadoghq.com/DATADOG_APT_KEY_382E94DE.public',
   },
 ) inherits datadog_agent::params {
 
@@ -55,8 +55,8 @@ class datadog_agent::ubuntu(
       }
     }
 
-    if ($::operatingsystem == "Ubuntu" and versioncmp($::operatingsystemrelease, '16') == -1) or
-       ($::operatingsystem == "Debian" and versioncmp($::operatingsystemrelease, '9') == -1) {
+    if ($::operatingsystem == 'Ubuntu' and versioncmp($::operatingsystemrelease, '16') == -1) or
+        ($::operatingsystem == 'Debian' and versioncmp($::operatingsystemrelease, '9') == -1) {
       file { $apt_trusted_d_keyring:
         mode   => '0644',
         source => "file://${apt_usr_share_keyring}",

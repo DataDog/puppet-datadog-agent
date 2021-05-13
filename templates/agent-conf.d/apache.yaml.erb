@@ -1,24 +1,3 @@
 ### MANAGED BY PUPPET
-
-init_config:
-
-instances:
-    -   apache_status_url: <%= @url %>
-<% if @disable_ssl_validation -%>
-        disable_ssl_validation: <%= @disable_ssl_validation %>
-<% end -%>
-<% if @username -%>
-        apache_user: <%= @username %>
-<% end -%>
-<% if @password -%>
-        apache_password: <%= @password %>
-<% end -%>
-<% if @tags and ! @tags.empty? -%>
-        tags:
-  <%- Array(@tags).each do |tag| -%>
-    <%- if tag != '' -%>
-            - <%= tag %>
-    <%- end -%>
-  <%- end -%>
-<% end -%>
-
+<% require 'yaml' -%>
+<%= {'init_config'=>@init_config, 'instances'=>@_instances, 'logs'=>@logs}.to_yaml %>

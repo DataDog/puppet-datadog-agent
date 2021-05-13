@@ -342,9 +342,11 @@ class datadog_agent(
   Hash[String[1], Data] $agent_extra_options = {},
   Optional[String] $agent_repo_uri = undef,
   Optional[Boolean] $rpm_repo_gpgcheck = undef,
-  Optional[Boolean] $use_apt_backup_keyserver = $datadog_agent::params::use_apt_backup_keyserver,
-  String $apt_backup_keyserver = $datadog_agent::params::apt_backup_keyserver,
-  String $apt_keyserver = $datadog_agent::params::apt_keyserver,
+  # TODO: $use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver can be
+  # removed in the next major version; they're kept now for backwards compatibility
+  Optional[Boolean] $use_apt_backup_keyserver = undef,
+  Optional[String] $apt_backup_keyserver = undef,
+  Optional[String] $apt_keyserver = undef,
   String $apt_release = $datadog_agent::params::apt_default_release,
   String $win_msi_location = 'C:/Windows/temp', # Temporary directory where the msi file is downloaded, must exist
   Enum['present', 'absent'] $win_ensure = 'present', #TODO: Implement uninstall also for apt and rpm install methods
@@ -424,10 +426,11 @@ class datadog_agent(
   if $manage_install {
     case $::operatingsystem {
       'Ubuntu','Debian' : {
-        if $use_apt_backup_keyserver {
-          $_apt_keyserver = $apt_backup_keyserver
-        } else {
-          $_apt_keyserver = $apt_keyserver
+        if $use_apt_backup_keyserver != undef or $apt_backup_keyserver != undef or $apt_keyserver != undef {
+          notify { 'apt keyserver arguments deprecation':
+            message  => '$use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver are deprecated since version 3.13.0',
+            loglevel => 'warning',
+          }
         }
         class { 'datadog_agent::ubuntu':
           agent_major_version   => $_agent_major_version,
@@ -436,7 +439,6 @@ class datadog_agent(
           agent_repo_uri        => $agent_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
-          apt_keyserver         => $_apt_keyserver,
         }
       }
       'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux' : {

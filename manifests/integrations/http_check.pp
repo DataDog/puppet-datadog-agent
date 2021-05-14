@@ -174,7 +174,7 @@ class datadog_agent::integrations::http_check (
   $password  = undef,
   $timeout   = 1,
   $method    = 'get',
-  $min_collection_interval = 15,
+  $min_collection_interval = undef,
   $data      = undef,
   $threshold = undef,
   $window    = undef,

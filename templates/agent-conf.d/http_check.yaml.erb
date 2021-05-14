@@ -12,6 +12,9 @@ instances:
 <% if instance['method'] -%>
     method: <%= instance['method'] %>
 <% end -%>
+<% if instance['min_collection_interval'] -%>
+    min_collection_interval: <%= instance['min_collection_interval'] %>
+<% end -%>
 <% if instance['data'].is_a?(String) -%>
     data: <%= instance['data'] %>
 <% elsif instance['data'].is_a?(Array) -%>

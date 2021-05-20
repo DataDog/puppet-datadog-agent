@@ -55,7 +55,11 @@ class datadog_agent::ubuntu(
 
       exec { "ensure key ${key_fingerprint} is imported in APT keyring":
         command => "/bin/cat /tmp/${key_fingerprint} | gpg --import --batch --no-default-keyring --keyring ${apt_usr_share_keyring}",
-        unless  => "/bin/cat /tmp/${key_fingerprint} | gpg --dry-run --import --batch --no-default-keyring --keyring ${apt_usr_share_keyring} 2>&1 | grep 'unchanged: 1'",
+        # the second part extracts the fingerprint of the key from output like "fpr::::A2923DFF56EDA6E76E55E492D3A80E30382E94DE:"
+        unless  => @("CMD"/L)
+          /usr/bin/gpg --no-default-keyring --keyring ${apt_usr_share_keyring} --list-keys --with-fingerprint --with-colons | grep \
+          $(cat /tmp/${key_fingerprint} | gpg --with-colons --with-fingerprint 2>/dev/null | grep 'fpr:' | sed 's|^fpr||' | tr -d ':')
+          | CMD
       }
     }
 

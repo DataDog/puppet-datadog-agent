@@ -74,7 +74,7 @@ class datadog_agent::integrations::process(
   }
 
   file { $dst:
-    ensure  => file,
+    ensure  => $local_processes.length ? { 0 => absent, default => file},
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
     mode    => $datadog_agent::params::permissions_protected_file,

@@ -226,6 +226,24 @@ Tips:
 1. For structured facts index into the specific fact value otherwise the entire array will come over as a string and ultimately be difficult to use.
 2. Dynamic facts such as CPU usage, Uptime, and others that are expected to change each run are not ideal for tagging.  Static facts that are expected to stay for the life of a node are best candidates for tagging.
 
+### Logs Setup
+
+To configure logs, first set `logs_enabled: true`, and it can then be configured with a class. An example is below:
+
+```
+  class { 'datadog_agent::integrations::logs' :
+    logs => [
+      {
+        'type' => 'file',
+        'path' => '/var/log/afile.log',
+      },
+      {
+        'type' => 'docker',
+      },
+    ],
+ }
+```
+
 ### Configuration variables
 
 These variables can be set in the `datadog_agent` class to control settings in the Agent. Refer to the [comments in code][8] for the full list of supported arguments.

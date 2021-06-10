@@ -228,7 +228,7 @@ Tips:
 
 ### Log collection
 
-To configure logs, first set `logs_enabled: true`, and it can then be configured with a class. An example is below:
+Collecting logs is disabled by default, enable it in your Puppet configuration file by setting `logs_enabled: true`. Additional file paths can also be configured.
 
 ```
   class { 'datadog_agent::integrations::logs' :

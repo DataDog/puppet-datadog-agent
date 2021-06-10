@@ -226,7 +226,7 @@ Tips:
 1. For structured facts index into the specific fact value otherwise the entire array will come over as a string and ultimately be difficult to use.
 2. Dynamic facts such as CPU usage, Uptime, and others that are expected to change each run are not ideal for tagging.  Static facts that are expected to stay for the life of a node are best candidates for tagging.
 
-### Logs Setup
+### Log collection
 
 To configure logs, first set `logs_enabled: true`, and it can then be configured with a class. An example is below:
 

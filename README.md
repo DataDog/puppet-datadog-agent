@@ -111,15 +111,25 @@ Note it's not possible to downgrade an integration to a version older than the o
 
 To enable reporting of Puppet runs to your Datadog timeline, enable the report processor on your Puppet master and reporting for your clients. The clients send a run report after each check-in back to the master.
 
-1. Install the [dogapi][3] gem on your system.
+1. Install the [dogapi][3] gem on your system. You'll need to restart puppetserver after the gem has been installed for it to be loaded. 
+
+If you're configuring the dogapi gem by code, you can do this with notify:
+
+```puppet
+package { 'dogapi':
+  ensure   => 'present',
+  provider => 'puppetserver_gem',
+  notify   => Service['puppetserver']
+}
+```
 
 2. Set the `puppet_run_reports` option to true in the node configuration manifest for your master:
 
     ```ruby
-    class { "datadog-agent":
-        api_key => "<YOUR_DD_API_KEY>",
-        puppet_run_reports => true
-        # ...
+    class { 'datadog-agent':
+      api_key            => '<YOUR_DD_API_KEY>',
+      puppet_run_reports => true
+      # ...
     }
     ```
 
@@ -142,6 +152,22 @@ To enable reporting of Puppet runs to your Datadog timeline, enable the report p
     report=true
     ```
 
+With the [`ini_setting` module](https://forge.puppet.com/modules/puppetlabs/inifile):
+
+```puppet
+  ini_setting { 'puppet_conf_master_report_datadog_puppetdb':
+    ensure  => present,
+    path    => '/etc/puppetlabs/puppet/puppet.conf',
+    section => 'master',
+    setting => 'reports',
+    value   => 'datadog_reports,puppetdb',
+    notify  => [
+      Service['puppet'],
+      Service['puppetserver'],
+    ],
+  }
+```
+
 4. On all of your Puppet client nodes, add the following in the same location:
 
     ```ini
@@ -149,6 +175,21 @@ To enable reporting of Puppet runs to your Datadog timeline, enable the report p
     # ...
     report=true
     ```
+
+With the [`ini_setting` module](https://forge.puppet.com/modules/puppetlabs/inifile):
+
+```puppet
+  ini_setting { 'puppet_conf_agent_report_true':
+    ensure  => present,
+    path    => '/etc/puppetlabs/puppet/puppet.conf',
+    section => 'agent',
+    setting => 'report',
+    value   => 'true',
+    notify  => [
+      Service['puppet'],
+    ],
+  }
+```
 
 5. (Optional) Enable tagging of reports with facts:
 
@@ -188,6 +229,8 @@ If you see the following error, ensure `reports=datadog_reports` is defined in `
     Error 400 on SERVER: Could not autoload datadog_reports:
     Class Datadog_reports is already defined in Puppet::Reports
     ```
+
+If you don't see any reports coming in, check your Puppet server logs.
 
 ### Masterless Puppet
 

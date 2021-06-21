@@ -113,7 +113,7 @@ To enable reporting of Puppet runs to your Datadog timeline, enable the report p
 
 1. Install the [dogapi][3] gem on your system. You'll need to restart puppetserver after the gem has been installed for it to be loaded. 
 
-If you're configuring the dogapi gem via code, you could do this via a notify:
+If you're configuring the dogapi gem by code, you can do this with notify:
 
 ```puppet
 package { 'dogapi':
@@ -230,7 +230,7 @@ If you see the following error, ensure `reports=datadog_reports` is defined in `
     Class Datadog_reports is already defined in Puppet::Reports
     ```
 
-If you don't see any reports coming in, check your puppet server logs.
+If you don't see any reports coming in, check your Puppet server logs.
 
 ### Masterless Puppet
 

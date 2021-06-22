@@ -20,6 +20,7 @@ class datadog_agent::params {
   $logs_open_files_limit          = undef
   $container_collect_all          = false
   $sysprobe_service_name          = 'datadog-agent-sysprobe'
+  $securityagent_service_name     = 'datadog-agent-security'
   $module_metadata                = load_module_metadata($module_name)
 
   case $::operatingsystem {

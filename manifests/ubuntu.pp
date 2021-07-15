@@ -107,4 +107,8 @@ class datadog_agent::ubuntu(
     require => [Apt::Source['datadog'],
                 Class['apt::update']],
   }
+
+  package { 'datadog-signing-keys':
+    ensure => 'latest',
+  }
 }

@@ -4,7 +4,7 @@ This module installs the Datadog Agent and sends Puppet reports to Datadog.
 
 ### Requirements
 
-The Datadog Puppet module supports Linux and Windows and is compatible with Puppet >= 4.6.x or Puppet Enterprise version >= 2016.4. For detailed information on compatibility, check the module page on [Puppet Forge][1].
+The Datadog Puppet module supports Linux and Windows and is compatible with Puppet >= 4.6.x or Puppet Enterprise version >= 2016.4. For detailed information on compatibility, check the [module page on Puppet Forge][1].
 
 ### Installation
 
@@ -111,7 +111,7 @@ Note it's not possible to downgrade an integration to a version older than the o
 
 To enable reporting of Puppet runs to your Datadog timeline, enable the report processor on your Puppet master and reporting for your clients. The clients send a run report after each check-in back to the master.
 
-1. Install the [dogapi][3] gem on your system. Restart puppetserver after the gem has been installed.
+1. Install the [dogapi][3] gem on your system. Restart puppetserver after the gem is installed.
 
 If you're configuring the dogapi gem by code, you can do this with notify:
 

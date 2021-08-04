@@ -18,11 +18,11 @@ puppet module install datadog-datadog_agent
 
 - By default Datadog Agent v7.x is installed. To use an earlier Agent version, change the setting `agent_major_version`.
 - `agent5_enable` is no longer used, as it has been replaced by `agent_major_version`.
-- `agent6_extra_options` has been renamed to `agent_extra_options` since it now applies to both Agent v6 and v7.
-- `agent6_log_file` has been renamed to `agent_log_file` since it now applies to both Agent v6 and v7.
+- `agent6_extra_options` has been renamed to `agent_extra_options` since it applies to both Agent v6 and v7.
+- `agent6_log_file` has been renamed to `agent_log_file` since it applies to both Agent v6 and v7.
 - `agent5_repo_uri` and `agent6_repo_uri` become `agent_repo_uri` for all Agent versions.
 - `conf_dir` and `conf6_dir` become `conf_dir` for all Agent versions.
-- The repository file created on Linux is now named `datadog` for all Agent versions instead of `datadog5`/`datadog6`.
+- The repository file created on Linux is named `datadog` for all Agent versions instead of `datadog5`/`datadog6`.
 
 ### Configuration
 
@@ -65,7 +65,7 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
     }
     ```
 
-    Refer to the [comments in code][6] for all arguments available for a given integration.
+    See the [comments in code][6] for all arguments available for a given integration.
 
     If an integration does not have a [manifest with a dedicated class][7], you can still add a configuration for it. Below is an example for the `ntp` check:
 
@@ -83,7 +83,7 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
     }
     ```
 
-5. (Optional) To collect metrics and events about Puppet itself, refer to the section about [Reporting](#reporting).
+5. (Optional) To collect metrics and events about Puppet itself, see the section about [Reporting](#reporting).
 
 ### Upgrading integrations
 
@@ -111,7 +111,7 @@ Note it's not possible to downgrade an integration to a version older than the o
 
 To enable reporting of Puppet runs to your Datadog timeline, enable the report processor on your Puppet master and reporting for your clients. The clients send a run report after each check-in back to the master.
 
-1. Install the [dogapi][3] gem on your system. You'll need to restart puppetserver after the gem has been installed for it to be loaded. 
+1. Install the [dogapi][3] gem on your system. Restart puppetserver after the gem is installed.
 
 If you're configuring the dogapi gem by code, you can do this with notify:
 
@@ -265,13 +265,15 @@ class { "datadog_agent":
   facts_to_tags      => ["osfamily","networking.domain","my_custom_fact"],
 }
 ```
-Tips: 
-1. For structured facts index into the specific fact value otherwise the entire array will come over as a string and ultimately be difficult to use.
-2. Dynamic facts such as CPU usage, Uptime, and others that are expected to change each run are not ideal for tagging.  Static facts that are expected to stay for the life of a node are best candidates for tagging.
+
+Tips:
+
+1. For structured facts index into the specific fact value otherwise the entire array comes over as a string and ultimately be difficult to use.
+2. Dynamic facts such as CPU usage, Uptime, and others that are expected to change each run are not ideal for tagging. Static facts that are expected to stay for the life of a node are best candidates for tagging.
 
 ### Configuration variables
 
-These variables can be set in the `datadog_agent` class to control settings in the Agent. Refer to the [comments in code][8] for the full list of supported arguments.
+These variables can be set in the `datadog_agent` class to control settings in the Agent. See the [comments in code][8] for the full list of supported arguments.
 
 | variable name                           | description                                                                                                                                                                                      |
 |-----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

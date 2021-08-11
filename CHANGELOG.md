@@ -7,7 +7,7 @@ Changes
 * [FEATURE] Install datadog-signing-keys on Debian based platforms ([#709][])
 * [BUGFIX] Do not add process integration configuration file if not configured ([#703][]) (Thanks [@yanjunding][])
 * [FEATURE] add support for `min_collection_interval` for HTTP check ([#699][]) (Thanks [@yanjunding][])
-* [FEATURE] Improvements for APT keys management ([#698][], [#700][] and [#701][])
+* [FEATURE] Improvements for APT keys management ([#698][], [#700][], [#701][] and [#714][])
 * [FEATURE] Include 'datadog_agent' class in the catalog when using the generic integration ([#697][]) (Thanks [@stantona][]) 
 * [BUGFIX] Update `excluded_interface_re` type to String ([#696][]) (Thanks [@florusboth][])
 
@@ -856,6 +856,7 @@ Please read the [docs]() for more details.
 [#703]: https://github.com/DataDog/puppet-datadog-agent/issues/703
 [#709]: https://github.com/DataDog/puppet-datadog-agent/issues/709
 [#712]: https://github.com/DataDog/puppet-datadog-agent/issues/712
+[#714]: https://github.com/DataDog/puppet-datadog-agent/issues/714
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

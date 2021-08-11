@@ -1,7 +1,7 @@
 Changes
 =======
 
-# 3.13.0 / 2021-08-10
+# 3.13.0 / 2021-08-11
 
 * [CHORE] Run `bundle update` on Ruby 2.5.1 ([#712][])
 * [FEATURE] Install datadog-signing-keys on Debian based platforms ([#709][])

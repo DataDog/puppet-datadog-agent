@@ -34,9 +34,7 @@ class datadog_agent::ubuntu(
   }
 
   if !$skip_apt_key_trusting {
-    package { 'gnupg':
-      ensure => installed
-    }
+    ensure_packages(['gnupg'])
 
     file { $apt_usr_share_keyring:
       ensure => file,

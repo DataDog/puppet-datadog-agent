@@ -1,6 +1,16 @@
 Changes
 =======
 
+# 3.13.0 / 2021-08-11
+
+* [CHORE] Run `bundle update` on Ruby 2.5.1 ([#712][])
+* [FEATURE] Install datadog-signing-keys on Debian based platforms ([#709][])
+* [BUGFIX] Do not add process integration configuration file if not configured ([#703][]) (Thanks [@yanjunding][])
+* [FEATURE] add support for `min_collection_interval` for HTTP check ([#699][]) (Thanks [@yanjunding][])
+* [FEATURE] Improvements for APT keys management ([#698][], [#700][] and [#701][])
+* [FEATURE] Include 'datadog_agent' class in the catalog when using the generic integration ([#697][]) (Thanks [@stantona][]) 
+* [BUGFIX] Update `excluded_interface_re` type to String ([#696][]) (Thanks [@florusboth][])
+
 # 3.12.0 / 2021-05-06
 
 * [FEATURE] Support for NPM on Windows [#688][]
@@ -837,6 +847,15 @@ Please read the [docs]() for more details.
 [#690]: https://github.com/DataDog/puppet-datadog-agent/issues/690
 [#692]: https://github.com/DataDog/puppet-datadog-agent/issues/692
 [#693]: https://github.com/DataDog/puppet-datadog-agent/issues/693
+[#696]: https://github.com/DataDog/puppet-datadog-agent/issues/696
+[#697]: https://github.com/DataDog/puppet-datadog-agent/issues/697
+[#698]: https://github.com/DataDog/puppet-datadog-agent/issues/698
+[#699]: https://github.com/DataDog/puppet-datadog-agent/issues/699
+[#700]: https://github.com/DataDog/puppet-datadog-agent/issues/700
+[#701]: https://github.com/DataDog/puppet-datadog-agent/issues/701
+[#703]: https://github.com/DataDog/puppet-datadog-agent/issues/703
+[#709]: https://github.com/DataDog/puppet-datadog-agent/issues/709
+[#712]: https://github.com/DataDog/puppet-datadog-agent/issues/712
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
@@ -947,6 +966,7 @@ Please read the [docs]() for more details.
 [@turnopil]: https://github.com/turnopil
 [@tuxinaut]: https://github.com/tuxinaut
 [@vaisingh]: https://github.com/vaisingh
+[@yanjunding]: https://github.com/yanjunding
 [@yrcjaya]: https://github.com/yrcjaya
 [@zabacad]: https://github.com/zabacad
 [@zickzackv]: https://github.com/zickzackv

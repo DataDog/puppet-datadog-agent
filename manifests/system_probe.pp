@@ -4,7 +4,7 @@ class datadog_agent::system_probe(
   Optional[String] $log_file = undef,
   Optional[String] $sysprobe_socket = undef,
   Optional[Boolean] $enable_oom_kill = false,
-  Optional[Boolean] $runtime_security_config = false,
+  Optional[Hash] $runtime_security_config = undef,
 
   Boolean $service_enable = true,
   String $service_ensure = 'running',
@@ -22,9 +22,7 @@ class datadog_agent::system_probe(
     'network_config' => {
       'enabled' => $network_enabled,
     },
-    'runtime_security_config' => {
-      'enabled' => $runtime_security_config,
-    },
+    'runtime_security_config' => $runtime_security_config,
   }
 
   if $::operatingsystem == 'Windows' {

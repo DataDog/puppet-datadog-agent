@@ -13,11 +13,7 @@ class datadog_agent::security_agent(
   $securityagent_config = {
     'runtime_security_config' => {
       'enabled' => $enabled,
-      'fim_enabled' => $fim_enabled,
       'socket' =>  $socket,
-    },
-    'syscall_monitor' => {
-      'enabled' => $syscall_monitor_enabled,
     },
   }
 

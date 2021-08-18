@@ -1,7 +1,5 @@
 class datadog_agent::security_agent(
   Boolean $enabled = false,
-  Optional[Boolean] $fim_enabled = false,
-  Optional[Boolean] $syscall_monitor_enabled = false,
   Optional[String] $socket = undef,
 
   Boolean $service_enable = true,

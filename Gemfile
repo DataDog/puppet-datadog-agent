@@ -1,23 +1,25 @@
 source "https://rubygems.org"
 
+ruby_version = Gem::Version.new(RUBY_VERSION.dup)
+
 # Each version of Puppet recommends a specific version of Ruby. Try to fetch the Puppet version that
 # matches our Ruby (unless PUPPET_VERSION is defined).
-matching_puppet_version = RUBY_VERSION > '2.5' ? (RUBY_VERSION > '2.7' ? '7.0.0' : '6.0.1') : '4.10.2'
+matching_puppet_version = ruby_version > Gem::Version.new('2.5') ? (ruby_version > Gem::Version.new('2.7') ? '7.0.0' : '6.0.1') : '4.10.2'
 gem "puppet", "~> #{ENV.fetch('PUPPET_VERSION', matching_puppet_version)}"
 
-ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
+ruby_version_segments = ruby_version.segments
 minor_version = ruby_version_segments[0..1].join('.')
 
 group :development do
-  gem "rake", "~> 12.3.3"                                          if RUBY_VERSION < '2.6.0' # last version for ruby < 2.6
-  gem "xmlrpc"                                                     if RUBY_VERSION >= '2.3'
+  gem "rake", "~> 12.3.3"                                          if ruby_version < Gem::Version.new('2.6.0') # last version for ruby < 2.6
+  gem "xmlrpc"                                                     if ruby_version >= Gem::Version.new('2.3')
   gem "ruby-pwsh", '~> 0.3.0',                                     platforms: [:mswin, :mingw, :x64_mingw]
-  gem "fast_gettext", '1.1.0',                                     require: false if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.1.0')
-  gem "fast_gettext",                                              require: false if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.1.0')
-  gem "json_pure", '<= 2.0.1',                                     require: false if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.0.0')
-  gem "json", '= 1.8.1',                                           require: false if Gem::Version.new(RUBY_VERSION.dup) == Gem::Version.new('2.1.9')
-  gem "json", '= 2.0.4',                                           require: false if Gem::Requirement.create('~> 2.4.2').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
-  gem "json", '= 2.1.0',                                           require: false if Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
+  gem "fast_gettext", '1.1.0',                                     require: false if ruby_version < Gem::Version.new('2.1.0')
+  gem "fast_gettext",                                              require: false if ruby_version >= Gem::Version.new('2.1.0')
+  gem "json_pure", '<= 2.0.1',                                     require: false if ruby_version < Gem::Version.new('2.0.0')
+  gem "json", '= 1.8.1',                                           require: false if ruby_version == Gem::Version.new('2.1.9')
+  gem "json", '= 2.0.4',                                           require: false if Gem::Requirement.create('~> 2.4.2').satisfied_by?(ruby_version)
+  gem "json", '= 2.1.0',                                           require: false if Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(ruby_version)
   gem "rb-readline", '= 0.5.5',                                    require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "librarian-puppet"
   gem "kitchen-puppet"
@@ -27,7 +29,7 @@ group :development do
   gem "rubocop-i18n", "~> 1.2.0"
   gem "rubocop-rspec", "~> 1.16.0"
 
-  if RUBY_VERSION >= '2.3'
+  if ruby_version >= Gem::Version.new('2.3')
     gem "test-kitchen", '~> 2.5.4'
     gem "puppet-module-posix-default-r#{minor_version}", require: false, platforms: [:ruby]
     gem "puppet-module-posix-dev-r#{minor_version}",     require: false, platforms: [:ruby]

@@ -3,7 +3,8 @@ orbs:
   win: circleci/windows@2.2.0
 jobs:
   specs-ruby21-puppet46: &specs
-    machine: true
+    machine:
+      image: ubuntu-2004:202107-02
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.1.9'

@@ -24,7 +24,7 @@ class datadog_agent::params {
   $module_metadata                = load_module_metadata($module_name)
 
   case $::operatingsystem {
-    'Ubuntu','Debian' : {
+    'Ubuntu','Debian','Raspbian' : {
       $rubydev_package            = 'ruby-dev'
       $legacy_conf_dir            = '/etc/dd-agent/conf.d'
       $conf_dir                   = '/etc/datadog-agent/conf.d'

@@ -4,7 +4,8 @@ Changes
 # 3.14.0 / 2021-09-29
 
 * [FEATURE] Support Raspbian as debian-based systems ([#719][]) (Thanks [@Mstrodl])
-* [BUGFIX] Add support for security-agent config ([#706][]) (Thanks [@florusboth])
+* [FEATURE] Add support for security-agent config ([#706][]) (Thanks [@florusboth])
+* [BUGFIX] Fix "Unable to locate package datadog-signing-keys" error on new installs ([#721][])
 
 # 3.13.0 / 2021-08-11
 
@@ -864,6 +865,7 @@ Please read the [docs]() for more details.
 [#712]: https://github.com/DataDog/puppet-datadog-agent/issues/712
 [#714]: https://github.com/DataDog/puppet-datadog-agent/issues/714
 [#719]: https://github.com/DataDog/puppet-datadog-agent/issues/719
+[#721]: https://github.com/DataDog/puppet-datadog-agent/issues/721
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

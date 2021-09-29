@@ -1,6 +1,11 @@
 Changes
 =======
 
+# 3.14.0 / 2021-09-29
+
+* [FEATURE] Support Raspbian as debian-based systems ([#719][]) (Thanks [@Mstrodl])
+* [BUGFIX] Add support for security-agent config ([#706][]) (Thanks [@florusboth])
+
 # 3.13.0 / 2021-08-11
 
 * [CHORE] Run `bundle update` on Ruby 2.5.1 ([#712][])
@@ -854,9 +859,11 @@ Please read the [docs]() for more details.
 [#700]: https://github.com/DataDog/puppet-datadog-agent/issues/700
 [#701]: https://github.com/DataDog/puppet-datadog-agent/issues/701
 [#703]: https://github.com/DataDog/puppet-datadog-agent/issues/703
+[#706]: https://github.com/DataDog/puppet-datadog-agent/issues/706
 [#709]: https://github.com/DataDog/puppet-datadog-agent/issues/709
 [#712]: https://github.com/DataDog/puppet-datadog-agent/issues/712
 [#714]: https://github.com/DataDog/puppet-datadog-agent/issues/714
+[#719]: https://github.com/DataDog/puppet-datadog-agent/issues/719
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
@@ -866,6 +873,7 @@ Please read the [docs]() for more details.
 [@IanCrouch]: https://github.com/IanCrouch
 [@LeoCavaille]: https://github.com/LeoCavaille
 [@MartinDelta]: https://github.com/MartinDelta
+[@Mstrodl]: https://github.com/Mstrodl
 [@NoodlesNZ]: https://github.com/NoodlesNZ
 [@aaron-miller]: https://github.com/aaron-miller
 [@aepod]: https://github.com/aepod

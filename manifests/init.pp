@@ -425,7 +425,7 @@ class datadog_agent(
   # Install agent
   if $manage_install {
     case $::operatingsystem {
-      'Ubuntu','Debian' : {
+      'Ubuntu','Debian','Raspbian' : {
         if $use_apt_backup_keyserver != undef or $apt_backup_keyserver != undef or $apt_keyserver != undef {
           notify { 'apt keyserver arguments deprecation':
             message  => '$use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver are deprecated since version 3.13.0',

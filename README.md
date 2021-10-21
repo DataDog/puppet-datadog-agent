@@ -311,7 +311,7 @@ class { "datadog_agent":
 (2) `hostname_extraction_regex` is useful when the Puppet module and the Datadog Agent are reporting different host names for the same host in the infrastructure list.
 
 [1]: https://forge.puppet.com/datadog/datadog_agent
-[2]: https://app.datadoghq.com/account/settings#api
+[2]: https://app.datadoghq.com/organization-settings/api-keys
 [3]: https://github.com/DataDog/dogapi-rb
 [4]: https://app.datadoghq.com/account/settings#integrations
 [5]: https://app.datadoghq.com/event/stream

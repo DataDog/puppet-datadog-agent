@@ -21,6 +21,7 @@ class datadog_agent::integrations::generic(
   Optional[String] $integration_name     = undef,
   Optional[String] $integration_contents = undef,
 ) inherits datadog_agent::params {
+  include datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/${integration_name}.yaml"
   if $::datadog_agent::_agent_major_version > 5 {

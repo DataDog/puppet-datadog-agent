@@ -15,6 +15,10 @@
 #   method
 #    	The (optional) HTTP method. This setting defaults to GET, though many
 #    	other HTTP methods are supported, including POST and PUT.
+#   min_collection_interval
+#    	The (optional) collection interval of the check.
+#    	default: 15
+#       https://docs.datadoghq.com/developers/write_agent_check/#collection-interval
 #   data
 #       The (optional) data option. Data should be a string or an array of
 #       'key: value' pairs and will be sent in the body of the request.
@@ -164,37 +168,38 @@
 
 
 class datadog_agent::integrations::http_check (
-  $sitename                         = undef,
-  $url                              = undef,
-  $username                         = undef,
-  $password                         = undef,
-  $timeout                          = 1,
-  $method                           = 'get',
-  $data                             = undef,
-  $threshold                        = undef,
-  $window                           = undef,
-  $content_match                    = undef,
-  $reverse_content_match            = false,
-  $include_content                  = false,
-  $http_response_status_code        = undef,
-  $collect_response_time            = true,
-  $disable_ssl_validation           = false,
-  $ignore_ssl_warning               = false,
-  $skip_event                       = true,
-  $no_proxy                         = false,
-  $check_certificate_expiration     = true,
-  $days_warning                     = undef,
-  $days_critical                    = undef,
+  $sitename  = undef,
+  $url       = undef,
+  $username  = undef,
+  $password  = undef,
+  $timeout   = 1,
+  $method    = 'get',
+  $min_collection_interval = undef,
+  $data      = undef,
+  $threshold = undef,
+  $window    = undef,
+  $content_match = undef,
+  $reverse_content_match = false,
+  $include_content = false,
+  $http_response_status_code = undef,
+  $collect_response_time = true,
+  $disable_ssl_validation = false,
+  $ignore_ssl_warning = false,
+  $skip_event = true,
+  $no_proxy  = false,
+  $check_certificate_expiration = true,
+  $days_warning = undef,
+  $days_critical = undef,
   Optional[Boolean] $check_hostname = undef,
   Optional[String] $ssl_server_name = undef,
-  $headers                          = [],
-  $allow_redirects                  = true,
-  $tags                             = [],
-  $contact                          = [],
+  $headers   = [],
+  $allow_redirects = true,
+  $tags      = [],
+  $contact   = [],
   Optional[Hash] $init_config       = undef,
   Optional[Array] $instances        = undef,
   Optional[Array] $logs             = undef,
-  $ca_certs                         = undef,
+  $ca_certs  = undef,
 ) inherits datadog_agent::params {
   include datadog_agent
 
@@ -206,6 +211,7 @@ class datadog_agent::integrations::http_check (
       'password'                     => $password,
       'timeout'                      => $timeout,
       'method'                       => $method,
+      'min_collection_interval'      => $min_collection_interval,
       'data'                         => $data,
       'threshold'                    => $threshold,
       'window'                       => $window,
@@ -229,7 +235,7 @@ class datadog_agent::integrations::http_check (
       'contact'                      => $contact,
       'ca_certs'                     => $ca_certs,
     }]
-  } elsif !$instances {
+  } elsif !$instances{
     $_instances = []
   } else {
     $_instances = $instances

@@ -1,5 +1,25 @@
 require 'spec_helper'
 
+shared_examples 'old debianoid' do
+  it do
+    is_expected.to contain_file('/usr/share/keyrings/datadog-archive-keyring.gpg')
+    is_expected.to contain_file('/etc/apt/trusted.gpg.d/datadog-archive-keyring.gpg')
+    is_expected.to contain_exec('ensure key DATADOG_APT_KEY_CURRENT.public is imported in APT keyring')
+    is_expected.to contain_exec('ensure key D75CEA17048B9ACBF186794B32637D44F14F620E is imported in APT keyring')
+    is_expected.to contain_exec('ensure key A2923DFF56EDA6E76E55E492D3A80E30382E94DE is imported in APT keyring')
+  end
+end
+
+shared_examples 'new debianoid' do
+  it do
+    is_expected.to contain_file('/usr/share/keyrings/datadog-archive-keyring.gpg')
+    is_expected.not_to contain_file('/etc/apt/trusted.gpg.d/datadog-archive-keyring.gpg')
+    is_expected.to contain_exec('ensure key DATADOG_APT_KEY_CURRENT.public is imported in APT keyring')
+    is_expected.to contain_exec('ensure key D75CEA17048B9ACBF186794B32637D44F14F620E is imported in APT keyring')
+    is_expected.to contain_exec('ensure key A2923DFF56EDA6E76E55E492D3A80E30382E94DE is imported in APT keyring')
+  end
+end
+
 describe 'datadog_agent::ubuntu' do
   context 'agent 5' do
     if RSpec::Support::OS.windows?
@@ -23,30 +43,11 @@ describe 'datadog_agent::ubuntu' do
       is_expected.to contain_file('/etc/apt/sources.list.d/datadog6.list')
         .with_ensure('absent')
       is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-        .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+main})
+        .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+main})
     end
 
     # it should install the mirror
     it { is_expected.not_to contain_apt__key('935F5A436A5A6E8788F0765B226AE980C7A7DA52') }
-    it do
-      is_expected.to contain_apt__key('A2923DFF56EDA6E76E55E492D3A80E30382E94DE')
-      is_expected.to contain_apt__key('D75CEA17048B9ACBF186794B32637D44F14F620E')
-    end
-
-    context 'overriding keyserver' do
-      let(:params) do
-        {
-          apt_keyserver: 'hkp://pool.sks-keyservers.net:80',
-        }
-      end
-
-      it do
-        is_expected.to contain_apt__key('A2923DFF56EDA6E76E55E492D3A80E30382E94DE')\
-          .with_server('hkp://pool.sks-keyservers.net:80')
-        is_expected.to contain_apt__key('D75CEA17048B9ACBF186794B32637D44F14F620E')\
-          .with_server('hkp://pool.sks-keyservers.net:80')
-      end
-    end
 
     it do
       is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
@@ -87,15 +88,11 @@ describe 'datadog_agent::ubuntu' do
       is_expected.to contain_file('/etc/apt/sources.list.d/datadog6.list')
         .with_ensure('absent')
       is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-        .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+        .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+6})
     end
 
     # it should install the mirror
     it { is_expected.not_to contain_apt__key('935F5A436A5A6E8788F0765B226AE980C7A7DA52') }
-    it do
-      is_expected.to contain_apt__key('A2923DFF56EDA6E76E55E492D3A80E30382E94DE')
-      is_expected.to contain_apt__key('D75CEA17048B9ACBF186794B32637D44F14F620E')
-    end
 
     it do
       is_expected.to contain_file('/etc/apt/sources.list.d/datadog6.list')\
@@ -136,12 +133,8 @@ describe 'datadog_agent::ubuntu' do
       is_expected.to contain_file('/etc/apt/sources.list.d/datadog6.list')
         .with_ensure('absent')
       is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-        .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+7})
+        .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+7})
     end
-
-    # it should install the mirror
-    it { is_expected.not_to contain_apt__key('935F5A436A5A6E8788F0765B226AE980C7A7DA52') }
-    it { is_expected.to contain_apt__key('A2923DFF56EDA6E76E55E492D3A80E30382E94DE') }
 
     it do
       is_expected.to contain_file('/etc/apt/sources.list.d/datadog6.list')\
@@ -160,5 +153,77 @@ describe 'datadog_agent::ubuntu' do
         .that_requires('file[/etc/apt/sources.list.d/datadog6.list]')\
         .that_requires('exec[apt_update]')
     end
+  end
+
+  context 'ubuntu < 16' do
+    let(:params) do
+      {
+        agent_major_version: 7,
+      }
+    end
+
+    let(:facts) do
+      {
+        osfamily: 'debian',
+        operatingsystem: 'Ubuntu',
+        operatingsystemrelease: '14.04',
+      }
+    end
+
+    include_examples 'old debianoid'
+  end
+
+  context 'ubuntu >= 16' do
+    let(:params) do
+      {
+        agent_major_version: 7,
+      }
+    end
+
+    let(:facts) do
+      {
+        osfamily: 'debian',
+        operatingsystem: 'Ubuntu',
+        operatingsystemrelease: '16.04',
+      }
+    end
+
+    include_examples 'new debianoid'
+  end
+
+  context 'debian < 9' do
+    let(:params) do
+      {
+        agent_major_version: 7,
+      }
+    end
+
+    let(:facts) do
+      {
+        osfamily: 'debian',
+        operatingsystem: 'Debian',
+        operatingsystemrelease: '8.0',
+      }
+    end
+
+    include_examples 'old debianoid'
+  end
+
+  context 'debian >= 9' do
+    let(:params) do
+      {
+        agent_major_version: 7,
+      }
+    end
+
+    let(:facts) do
+      {
+        osfamily: 'debian',
+        operatingsystem: 'Debian',
+        operatingsystemrelease: '9.0',
+      }
+    end
+
+    include_examples 'new debianoid'
   end
 end

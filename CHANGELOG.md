@@ -1,6 +1,30 @@
 Changes
 =======
 
+# 3.14.0 / 2021-09-29
+
+* [FEATURE] Support Raspbian as debian-based systems ([#719][]) (Thanks [@Mstrodl])
+* [FEATURE] Add support for security-agent config ([#706][]) (Thanks [@florusboth])
+* [BUGFIX] Fix "Unable to locate package datadog-signing-keys" error on new installs ([#721][])
+
+# 3.13.0 / 2021-08-11
+
+* [CHORE] Run `bundle update` on Ruby 2.5.1 ([#712][])
+* [FEATURE] Install datadog-signing-keys on Debian based platforms ([#709][])
+* [BUGFIX] Do not add process integration configuration file if not configured ([#703][]) (Thanks [@yanjunding][])
+* [FEATURE] add support for `min_collection_interval` for HTTP check ([#699][]) (Thanks [@yanjunding][])
+* [FEATURE] Improvements for APT keys management ([#698][], [#700][], [#701][] and [#714][])
+* [FEATURE] Include 'datadog_agent' class in the catalog when using the generic integration ([#697][]) (Thanks [@stantona][]) 
+* [BUGFIX] Update `excluded_interface_re` type to String ([#696][]) (Thanks [@florusboth][])
+
+# 3.12.0 / 2021-05-06
+
+* [FEATURE] Support for NPM on Windows [#688][]
+* [FEATURE] Enable repo_gpgcheck for RPM repositories by default [#693][]
+* [FEATURE] Add the 'current' gpg key, only use 1 gpgkey on suse < 15 [#687][]
+* [BUGFIX] Fix typo in network.yaml.erb [#690][] (Thanks [@florusboth][])
+* [BUGFIX] Fix tool_version being unknown in install_info [#692][]
+
 # 3.11.0 / 2021-03-01
 
 * [FEATURE] Add support for SUSE distros [#682][]
@@ -824,6 +848,24 @@ Please read the [docs]() for more details.
 [#681]: https://github.com/DataDog/puppet-datadog-agent/issues/681
 [#682]: https://github.com/DataDog/puppet-datadog-agent/issues/682
 [#686]: https://github.com/DataDog/puppet-datadog-agent/issues/686
+[#687]: https://github.com/DataDog/puppet-datadog-agent/issues/687
+[#688]: https://github.com/DataDog/puppet-datadog-agent/issues/688
+[#690]: https://github.com/DataDog/puppet-datadog-agent/issues/690
+[#692]: https://github.com/DataDog/puppet-datadog-agent/issues/692
+[#693]: https://github.com/DataDog/puppet-datadog-agent/issues/693
+[#696]: https://github.com/DataDog/puppet-datadog-agent/issues/696
+[#697]: https://github.com/DataDog/puppet-datadog-agent/issues/697
+[#698]: https://github.com/DataDog/puppet-datadog-agent/issues/698
+[#699]: https://github.com/DataDog/puppet-datadog-agent/issues/699
+[#700]: https://github.com/DataDog/puppet-datadog-agent/issues/700
+[#701]: https://github.com/DataDog/puppet-datadog-agent/issues/701
+[#703]: https://github.com/DataDog/puppet-datadog-agent/issues/703
+[#706]: https://github.com/DataDog/puppet-datadog-agent/issues/706
+[#709]: https://github.com/DataDog/puppet-datadog-agent/issues/709
+[#712]: https://github.com/DataDog/puppet-datadog-agent/issues/712
+[#714]: https://github.com/DataDog/puppet-datadog-agent/issues/714
+[#719]: https://github.com/DataDog/puppet-datadog-agent/issues/719
+[#721]: https://github.com/DataDog/puppet-datadog-agent/issues/721
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
@@ -833,6 +875,7 @@ Please read the [docs]() for more details.
 [@IanCrouch]: https://github.com/IanCrouch
 [@LeoCavaille]: https://github.com/LeoCavaille
 [@MartinDelta]: https://github.com/MartinDelta
+[@Mstrodl]: https://github.com/Mstrodl
 [@NoodlesNZ]: https://github.com/NoodlesNZ
 [@aaron-miller]: https://github.com/aaron-miller
 [@aepod]: https://github.com/aepod
@@ -875,6 +918,7 @@ Please read the [docs]() for more details.
 [@ewansteele]: https://github.com/ewansteele
 [@ffleming]: https://github.com/ffleming
 [@ffrants]: https://github.com/ffrants
+[@florusboth]: https://github.com/florusboth
 [@flyinbutrs]: https://github.com/flyinbutrs
 [@flyinprogrammer]: https://github.com/flyinprogrammer
 [@fr3nd]: https://github.com/fr3nd
@@ -933,6 +977,7 @@ Please read the [docs]() for more details.
 [@turnopil]: https://github.com/turnopil
 [@tuxinaut]: https://github.com/tuxinaut
 [@vaisingh]: https://github.com/vaisingh
+[@yanjunding]: https://github.com/yanjunding
 [@yrcjaya]: https://github.com/yrcjaya
 [@zabacad]: https://github.com/zabacad
 [@zickzackv]: https://github.com/zickzackv

@@ -34,7 +34,7 @@ describe 'datadog_agent' do
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-          .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+main})
+          .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+main})
       end
     end
 
@@ -53,7 +53,7 @@ describe 'datadog_agent' do
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-          .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+          .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+6})
       end
     end
 
@@ -72,7 +72,7 @@ describe 'datadog_agent' do
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-          .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+7})
+          .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+7})
       end
     end
 
@@ -91,7 +91,7 @@ describe 'datadog_agent' do
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-          .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+          .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+6})
       end
     end
 
@@ -110,7 +110,7 @@ describe 'datadog_agent' do
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-          .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+          .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+6})
       end
     end
 
@@ -129,7 +129,7 @@ describe 'datadog_agent' do
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-          .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+          .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+6})
       end
     end
 
@@ -197,7 +197,7 @@ describe 'datadog_agent' do
         it do
           is_expected.to contain_package('Datadog Agent').with(
             ensure: 'installed',
-            install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'NPM' => 'true' }],
+            install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'ADDLOCAL' => 'MainApplication,NPM' }],
           )
         end
       end
@@ -1606,25 +1606,7 @@ describe 'datadog_agent' do
             end
           end
 
-          if DEBIAN_OS.include?(operatingsystem)
-            it do
-              is_expected.to contain_class('datadog_agent::ubuntu')\
-                .with_apt_keyserver('hkp://keyserver.ubuntu.com:80')
-            end
-            context 'use backup keyserver' do
-              let(:params) do
-                {
-                  use_apt_backup_keyserver: true,
-                  agent_major_version: 5,
-                }
-              end
-
-              it do
-                is_expected.to contain_class('datadog_agent::ubuntu')\
-                  .with_apt_keyserver('hkp://pool.sks-keyservers.net:80')
-              end
-            end
-          elsif REDHAT_OS.include?(operatingsystem)
+          if REDHAT_OS.include?(operatingsystem)
             it { is_expected.to contain_class('datadog_agent::redhat') }
           end
         end
@@ -1701,7 +1683,7 @@ describe 'datadog_agent' do
           it 'adds an install_info' do
             expect(install_info['install_method']).to match(
               'tool' => 'puppet',
-              'tool_version' => %r{^puppet-(\d+\.\d+\.\d+|unknown)$},
+              'tool_version' => %r{^puppet-unknown$}, # puppetversion is not set in tests, this field has to be tested manually
               'installer_version' => %r{^datadog_module-\d+\.\d+\.\d+$},
             )
           end

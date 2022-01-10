@@ -19,14 +19,12 @@ class datadog_agent::params {
   $logs_enabled                   = false
   $logs_open_files_limit          = undef
   $container_collect_all          = false
-  $use_apt_backup_keyserver       = false
-  $apt_backup_keyserver           = 'hkp://pool.sks-keyservers.net:80'
-  $apt_keyserver                  = 'hkp://keyserver.ubuntu.com:80'
   $sysprobe_service_name          = 'datadog-agent-sysprobe'
+  $securityagent_service_name     = 'datadog-agent-security'
   $module_metadata                = load_module_metadata($module_name)
 
   case $::operatingsystem {
-    'Ubuntu','Debian' : {
+    'Ubuntu','Debian','Raspbian' : {
       $rubydev_package            = 'ruby-dev'
       $legacy_conf_dir            = '/etc/dd-agent/conf.d'
       $conf_dir                   = '/etc/datadog-agent/conf.d'

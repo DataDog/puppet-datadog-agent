@@ -55,6 +55,7 @@ describe 'datadog_agent::integrations::http_check' do
             password: 'barpassword',
             timeout: 123,
             method: 'post',
+            min_collection_interval: 30,
             data: 'key=value',
             threshold: 456,
             window: 789,
@@ -80,6 +81,7 @@ describe 'datadog_agent::integrations::http_check' do
         it { is_expected.to contain_file(conf_file).with_content(%r{password: barpassword}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{timeout: 123}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{method: post}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{min_collection_interval: 30}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{data: key=value}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{threshold: 456}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{window: 789}) }

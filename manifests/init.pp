@@ -221,6 +221,13 @@
 #       RPM: https://yum.datadoghq.com/stable/7/x86_64/ (with matching agent version and architecture)
 #       Windows: https://https://s3.amazonaws.com/ddagent-windows-stable/
 #       String. Default: undef
+#   $rpm_repo_gpgcheck
+#       Whether or not to perform repodata signature check for RPM repositories.
+#       Applies to Red Hat and SUSE platforms. When set to `undef`, this is activated
+#       for all Agent versions other than 5 when `agent_repo_uri` is also undefinded.
+#       The `undef` value also translates to `false` on RHEL/CentOS 8.1 because
+#       of a bug in libdnf: https://bugzilla.redhat.com/show_bug.cgi?id=1792506
+#       Boolean. Default: undef
 #   $apt_release
 #       The distribution channel to be used for the APT repo. Eg: 'stable' or 'beta'.
 #       String. Default: stable
@@ -334,9 +341,12 @@ class datadog_agent(
   Boolean $container_collect_all = $datadog_agent::params::container_collect_all,
   Hash[String[1], Data] $agent_extra_options = {},
   Optional[String] $agent_repo_uri = undef,
-  Optional[Boolean] $use_apt_backup_keyserver = $datadog_agent::params::use_apt_backup_keyserver,
-  String $apt_backup_keyserver = $datadog_agent::params::apt_backup_keyserver,
-  String $apt_keyserver = $datadog_agent::params::apt_keyserver,
+  Optional[Boolean] $rpm_repo_gpgcheck = undef,
+  # TODO: $use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver can be
+  # removed in the next major version; they're kept now for backwards compatibility
+  Optional[Boolean] $use_apt_backup_keyserver = undef,
+  Optional[String] $apt_backup_keyserver = undef,
+  Optional[String] $apt_keyserver = undef,
   String $apt_release = $datadog_agent::params::apt_default_release,
   String $win_msi_location = 'C:/Windows/temp', # Temporary directory where the msi file is downloaded, must exist
   Enum['present', 'absent'] $win_ensure = 'present', #TODO: Implement uninstall also for apt and rpm install methods
@@ -400,8 +410,6 @@ class datadog_agent(
     $local_integrations = $integrations
   }
 
-  $_puppetversion = lookup({ 'name' => '::puppetversion', 'default_value' => 'unknown'})
-
   include datadog_agent::params
   case upcase($log_level) {
     'CRITICAL': { $_loglevel = 'CRITICAL' }
@@ -417,11 +425,12 @@ class datadog_agent(
   # Install agent
   if $manage_install {
     case $::operatingsystem {
-      'Ubuntu','Debian' : {
-        if $use_apt_backup_keyserver {
-          $_apt_keyserver = $apt_backup_keyserver
-        } else {
-          $_apt_keyserver = $apt_keyserver
+      'Ubuntu','Debian','Raspbian' : {
+        if $use_apt_backup_keyserver != undef or $apt_backup_keyserver != undef or $apt_keyserver != undef {
+          notify { 'apt keyserver arguments deprecation':
+            message  => '$use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver are deprecated since version 3.13.0',
+            loglevel => 'warning',
+          }
         }
         class { 'datadog_agent::ubuntu':
           agent_major_version   => $_agent_major_version,
@@ -430,7 +439,6 @@ class datadog_agent(
           agent_repo_uri        => $agent_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
-          apt_keyserver         => $_apt_keyserver,
         }
       }
       'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux' : {
@@ -440,6 +448,7 @@ class datadog_agent(
           agent_repo_uri      => $agent_repo_uri,
           manage_repo         => $manage_repo,
           agent_version       => $agent_version,
+          rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
         }
       }
       'Windows' : {
@@ -464,6 +473,7 @@ class datadog_agent(
           agent_flavor        => $agent_flavor,
           agent_repo_uri      => $agent_repo_uri,
           agent_version       => $agent_version,
+          rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
         }
       }
       default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }

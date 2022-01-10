@@ -68,6 +68,10 @@ platforms:
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
         
   - name: opensuse/leap-15
+    # Workaround for flakes on initializing opensuse/leap-15:
+    # => SCP did not finish successfully (255):  (Net::SCP::Error)
+    transport:
+      max_ssh_sessions: 1
     driver_config:
       # we use a custom image that runs systemd
       image: 'datadog/docker-library:chef_kitchen_systemd_opensuse_leap_15'

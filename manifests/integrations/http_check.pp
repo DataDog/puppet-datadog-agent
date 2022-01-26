@@ -199,7 +199,7 @@ class datadog_agent::integrations::http_check (
   Optional[Array] $instances  = undef,
   $ca_certs  = undef,
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   if !$instances and $url {
     $_instances = [{

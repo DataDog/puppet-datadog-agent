@@ -37,7 +37,7 @@ class datadog_agent::integrations::elasticsearch(
   Optional[String] $username           = undef,
   Optional[Array] $instances           = undef
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   # $ssl_verify can be a bool or a string
   # https://github.com/DataDog/dd-agent/blob/master/checks.d/elastic.py#L454-L455

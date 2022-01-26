@@ -33,7 +33,7 @@ class datadog_agent::reports(
 
   } else {
 
-    include datadog_agent
+    require ::datadog_agent
 
     if $manage_dogapi_gem {
       $rubydev_package = $datadog_agent::params::rubydev_package

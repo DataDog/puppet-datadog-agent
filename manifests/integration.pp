@@ -7,7 +7,9 @@ define datadog_agent::integration (
   Enum['present', 'absent'] $ensure = 'present',
 ){
 
-  include datadog_agent
+  # We can't `require ::datadog_agent` from here since this class is used by the
+  # datadog_agent class, causing a dependency cycle. If using this class
+  # directly, you should define datadog_agent before datadog_agent::integration.
 
   if $::datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/${integration}.d"

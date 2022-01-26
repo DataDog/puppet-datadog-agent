@@ -65,7 +65,7 @@ class datadog_agent::integrations::kafka(
   Optional[Hash[String[1], String[1]]] $tags = undef,
   Optional[Array[Hash[String[1], Data]]] $instances = undef,
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   if !$instances and $host and $port {
     $servers = [{

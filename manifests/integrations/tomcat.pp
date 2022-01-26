@@ -39,7 +39,7 @@ class datadog_agent::integrations::tomcat(
   $trust_store_password = undef,
   $tags                 = {},
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/tomcat.yaml"

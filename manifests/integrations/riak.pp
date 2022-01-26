@@ -22,7 +22,7 @@ class datadog_agent::integrations::riak(
   String $url  = 'http://localhost:8098/stats',
   Array $tags  = [],
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/riak.yaml"
   if $::datadog_agent::_agent_major_version > 5 {

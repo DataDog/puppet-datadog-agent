@@ -45,7 +45,7 @@ class datadog_agent::integrations::process(
   $init_config = {},
   Array $processes = [],
   ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   if $hiera_processes {
     $local_processes = lookup({ 'name' => 'datadog_agent::integrations::process::processes', 'merge' => 'unique', 'default_value' => $processes })

@@ -16,7 +16,7 @@ class datadog_agent::integrations::mesos_master(
   $mesos_timeout = 10,
   $url = 'http://localhost:5050'
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   if $::datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/mesos.d"

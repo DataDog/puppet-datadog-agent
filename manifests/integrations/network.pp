@@ -25,7 +25,7 @@ class datadog_agent::integrations::network(
   String $excluded_interface_re = '',
   Boolean $combine_connection_states = true,
 ) inherits datadog_agent::params {
-  include ::datadog_agent
+  require ::datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/network.yaml"
   if $::datadog_agent::_agent_major_version > 5 {

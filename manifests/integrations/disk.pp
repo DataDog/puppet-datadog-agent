@@ -81,7 +81,7 @@ class datadog_agent::integrations::disk (
   Optional[String] $excluded_disk_re       = undef,  # deprecated in agent versions >6.9
   Optional[String] $excluded_mountpoint_re = undef,  # deprecated in agent versions >6.9
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   validate_legacy('Optional[String]', 'validate_re', $all_partitions, '^(no|yes)$')
 

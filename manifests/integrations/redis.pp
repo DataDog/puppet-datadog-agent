@@ -53,7 +53,7 @@ class datadog_agent::integrations::redis(
   Optional[Array] $instances                = undef,
 
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   if $ports == undef {
     $_ports = [ $port ]

@@ -7,7 +7,7 @@ define datadog_agent::integration (
   Enum['present', 'absent'] $ensure = 'present',
 ){
 
-  include datadog_agent
+  require ::datadog_agent
 
   if $::datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/${integration}.d"

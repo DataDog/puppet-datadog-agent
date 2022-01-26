@@ -81,7 +81,7 @@ class datadog_agent::integrations::mysql(
   Optional[Array] $instances               = undef,
   Optional[Array] $logs                    = [],
   ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   if ($host == undef and $sock == undef) or
     ($host != undef and $port == undef and $sock == undef) {

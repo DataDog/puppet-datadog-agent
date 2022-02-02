@@ -12,6 +12,9 @@ describe 'datadog_agent::integrations::zk' do
                   end
 
       it { is_expected.to compile.with_all_deps }
+
+      it { is_expected.to contain_class('datadog_agent::params') }
+
       it {
         is_expected.to contain_file(conf_file).with(
           owner: DD_USER,

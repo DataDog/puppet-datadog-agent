@@ -35,7 +35,7 @@ class datadog_agent::integrations::php_fpm(
   $instances        = undef,
   $use_fastcgi      = 'false'
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   if !$instances {
     $_instances = [{

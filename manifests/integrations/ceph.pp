@@ -17,7 +17,7 @@ class datadog_agent::integrations::ceph(
   Array $tags = [ 'name:ceph_cluster' ],
   String $ceph_cmd = '/usr/bin/ceph',
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   file { '/etc/sudoers.d/datadog_ceph':
     content => "# This file is required for dd ceph \ndd-agent ALL=(ALL) NOPASSWD:/usr/bin/ceph\n"

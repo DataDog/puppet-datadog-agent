@@ -5,7 +5,7 @@ define datadog_agent::install_integration (
   Boolean                   $third_party      = false,
 ){
 
-  include datadog_agent
+  require ::datadog_agent
 
   if $ensure == 'present' {
 

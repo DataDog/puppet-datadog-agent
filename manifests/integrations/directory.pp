@@ -65,7 +65,7 @@ class datadog_agent::integrations::directory (
   String $pattern            = '',
   Optional[Array] $instances = undef,
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   if !$instances and $directory == '' {
     fail('bad directory argument and no instances hash provided')

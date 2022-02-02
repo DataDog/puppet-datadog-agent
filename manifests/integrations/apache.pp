@@ -36,7 +36,7 @@ class datadog_agent::integrations::apache (
   Optional[Array] $instances                = undef,
   Optional[Array] $logs                     = undef,
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   if !$instances {
     $_instances = datadog_agent::clean_empty([{

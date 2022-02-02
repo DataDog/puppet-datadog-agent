@@ -22,7 +22,7 @@
 class datadog_agent::integrations::oom_kill(
   Array $instances = [],
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   $dst_dir = "${datadog_agent::params::conf_dir}/oom_kill.d"
   file { $dst_dir:

@@ -60,7 +60,7 @@ class datadog_agent::integrations::snmp (
   $snmp_v2_instances        = [],
   $snmp_v3_instances        = [],
 ) inherits datadog_agent::params {
-  include ::datadog_agent
+  require ::datadog_agent
 
   $versioned_instances = {
     1 => $snmp_v1_instances,

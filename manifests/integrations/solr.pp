@@ -36,7 +36,7 @@ class datadog_agent::integrations::solr(
   $trust_store_password = undef,
   $tags                 = {},
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/solr.yaml"
   if $::datadog_agent::_agent_major_version > 5 {

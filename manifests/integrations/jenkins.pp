@@ -16,7 +16,7 @@
 class datadog_agent::integrations::jenkins(
   $path = '/var/lib/jenkins'
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/jenkins.yaml"
   if $::datadog_agent::_agent_major_version > 5 {

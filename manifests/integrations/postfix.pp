@@ -34,7 +34,7 @@ class datadog_agent::integrations::postfix (
   Optional[Array] $tags      = [],
   Optional[Array] $instances = undef,
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   if !$instances and $directory {
     $_instances = [{

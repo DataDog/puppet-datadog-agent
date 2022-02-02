@@ -59,7 +59,7 @@
 class datadog_agent::integrations::mongo(
   Array $servers = [{'host' => 'localhost', 'port' => '27017'}]
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/mongo.yaml"
   if $::datadog_agent::_agent_major_version > 5 {

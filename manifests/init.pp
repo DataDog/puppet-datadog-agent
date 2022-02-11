@@ -441,7 +441,7 @@ class datadog_agent(
           skip_apt_key_trusting => $skip_apt_key_trusting,
         }
       }
-      'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux' : {
+      'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky' : {
         class { 'datadog_agent::redhat':
           agent_major_version => $_agent_major_version,
           agent_flavor        => $agent_flavor,

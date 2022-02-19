@@ -235,7 +235,7 @@ class datadog_agent::integrations::http_check (
       'contact'                      => $contact,
       'ca_certs'                     => $ca_certs,
     }]
-  } elsif !$instances{
+  } elsif !$instances {
     $_instances = []
   } else {
     $_instances = $instances
@@ -254,7 +254,6 @@ class datadog_agent::integrations::http_check (
             Tuple([$key, $_value]).next
           }
 
-          $value_array = $_value.filter |$item| { $item =~ /:/ }
           $value_hash = Hash($_value.map |$item| {
             $_item = $item.split(':')
             $i_key = $_item[0].rstrip
@@ -271,7 +270,8 @@ class datadog_agent::integrations::http_check (
         }
 
         default: {
-          Tuple([$key, $value]) }
+          Tuple([$key, $value])
+        }
       }
     })
   }

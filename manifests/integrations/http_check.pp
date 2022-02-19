@@ -249,17 +249,16 @@ class datadog_agent::integrations::http_check (
         }
 
         'data', 'headers': {
-          $_value = datadog_agent::clean_empty($value)
-          if !$_value.is_a(Array) {
-            Tuple([$key, $_value]).next
+          if !$value.is_a(Array) {
+            Tuple([$key, $value]).next
           }
 
-          $value_hash = Hash($_value.map |$item| {
-            $_item = $item.split(':')
-            $i_key = $_item[0].rstrip
-            $i_value = $_item[1, - 1].join(':').lstrip
+          $value_hash = Hash($value.map |$item| {
+            $sub_item_array = $item.split(':')
+            $sub_item_key = $sub_item_array[0].rstrip
+            $sub_item_value = $sub_item_array[1, - 1].join(':').lstrip
 
-            Tuple([$i_key, $i_value])
+            Tuple([$sub_item_key, $sub_item_value])
           })
 
           Tuple([$key, datadog_agent::clean_empty($value_hash)])

@@ -32,14 +32,15 @@ platforms:
         - gem install r10k -v 2.6.7
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
-  - name: centos-8-puppet-5
+  - name: rocky-8-puppet-5
     driver_config:
       # we use a custom image that runs systemd
-      image: 'datadog/docker-library:chef_kitchen_systemd_centos_8'
+      image: 'datadog/docker-library:chef_kitchen_systemd_rocky_8'
+      platform: rhel # kitchen-docker doesn't recognize rocky otherwise
       run_command: /root/start.sh
     driver:
       provision_command:
-        - dnf install -y https://yum.puppetlabs.com/puppet5-release-el-8.noarch.rpm #installs the puppet-agent repo
+        - dnf install -y https://yum.puppetlabs.com/puppet7-release-el-8.noarch.rpm #installs the puppet-agent repo
         - dnf install -y puppet-agent rubygems
         - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 

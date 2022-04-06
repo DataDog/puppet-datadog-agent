@@ -9,6 +9,10 @@ jobs:
       RUBY_VERSION: '2.1.9'
       PUPPET_VERSION: '4.6.2'
     steps:
+      # See https://github.blog/2021-09-01-improving-git-protocol-security-github/
+      - run:
+          name: Fix git clones
+          command: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
       - checkout
       - run:
           name: Install Ruby version
@@ -239,6 +243,10 @@ jobs:
       name: win/default # Comes with ruby 2.6, which is not supported on Windows as of puppet 6.10.1
       shell: bash.exe
     steps:
+      # See https://github.blog/2021-09-01-improving-git-protocol-security-github/
+      - run:
+          name: Fix git clones
+          command: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
       - checkout
       - run:
           name: Run tests
@@ -263,6 +271,10 @@ jobs:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.5.3'
     steps:
+      # See https://github.blog/2021-09-01-improving-git-protocol-security-github/
+      - run:
+          name: Fix git clones
+          command: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
       - checkout
       - run:
           name: Install Ruby versions
@@ -283,6 +295,10 @@ jobs:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.5.3'
     steps:
+      # See https://github.blog/2021-09-01-improving-git-protocol-security-github/
+      - run:
+          name: Fix git clones
+          command: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
       - checkout
       - run:
           name: Install Ruby versions

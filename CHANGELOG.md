@@ -1,6 +1,12 @@
 Changes
 =======
 
+# 3.15.0 / 2022-05-05
+
+* [FEATURE] Support AlmaLinux and Rocky Linux with Puppet >= 7.12.0 ([#726][])
+* [BUGFIX] Integration recipes now `require datadog_agent` instead of `include datadog_agent` ([#725][])
+* [BUGFIX] Allow latest versions of: stdlib, concat, apt ([#728][]) (Thanks [@damonmaria][])
+
 # 3.14.0 / 2021-09-29
 
 * [FEATURE] Support Raspbian as debian-based systems ([#719][]) (Thanks [@Mstrodl])
@@ -866,6 +872,9 @@ Please read the [docs]() for more details.
 [#714]: https://github.com/DataDog/puppet-datadog-agent/issues/714
 [#719]: https://github.com/DataDog/puppet-datadog-agent/issues/719
 [#721]: https://github.com/DataDog/puppet-datadog-agent/issues/721
+[#725]: https://github.com/DataDog/puppet-datadog-agent/issues/725
+[#726]: https://github.com/DataDog/puppet-datadog-agent/issues/726
+[#728]: https://github.com/DataDog/puppet-datadog-agent/issues/728
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
@@ -900,6 +909,7 @@ Please read the [docs]() for more details.
 [@craigwatson]: https://github.com/craigwatson
 [@cristianjuve]: https://github.com/cristianjuve
 [@cwood]: https://github.com/cwood
+[@damonmaria]: https://github.com/damonmaria
 [@dan70402]: https://github.com/dan70402
 [@davejrt]: https://github.com/davejrt
 [@davidgibbons]: https://github.com/davidgibbons

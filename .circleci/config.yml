@@ -3,7 +3,8 @@ orbs:
   win: circleci/windows@2.2.0
 jobs:
   specs-ruby21-puppet46: &specs
-    machine: true
+    machine:
+      image: ubuntu-2004:202201-02
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.1.9'
@@ -14,6 +15,17 @@ jobs:
           name: Fix git clones
           command: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
       - checkout
+      - run:
+          name: Install old libssl1.0-dev
+          command: |
+            ruby_major=$(echo $RUBY_VERSION | awk -F. '{ print $1 }')
+            ruby_minor=$(echo $RUBY_VERSION | awk -F. '{ print $2 }')
+            # We need libssl1.0-dev to even compile Ruby <= 2.3 with RVM;
+            if [ $ruby_major -eq "2" ] && [ $ruby_minor -le "3" ]; then
+              sudo bash -c "echo deb http://security.ubuntu.com/ubuntu bionic-security main >> /etc/apt/sources.list"
+              sudo apt update && apt-cache policy libssl1.0-dev
+              sudo apt install -y libssl1.0-dev
+            fi
       - run:
           name: Install Ruby version
           command: rvm install $RUBY_VERSION
@@ -126,12 +138,17 @@ jobs:
       RUBY_VERSION: '2.3.6'
       PUPPET_VERSION: '6.5.0'
 
-  specs-ruby24-puppet46:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.4.3'
-      PUPPET_VERSION: '4.6.2'
+  # Puppet < 5 doesn't work with Ruby when it's compiled with libssl > 1.0 - see
+  # https://bugzilla.redhat.com/show_bug.cgi?id=1440710 for details - but RVM
+  # refuses to compile with older libssl. We could use --autolibs=0 RVM option,
+  # but then we'd have to manually install all deps ourselves and maintain that
+  # solution... So we just disable specs-ruby24-puppet46 and specs-ruby25-puppet46.
+  # specs-ruby24-puppet46:
+  #   <<: *specs
+  #   environment:
+  #     STRICT_VARIABLES: 'yes'
+  #     RUBY_VERSION: '2.4.3'
+  #     PUPPET_VERSION: '4.6.2'
 
   specs-ruby24-puppet410:
     <<: *specs
@@ -168,12 +185,12 @@ jobs:
       RUBY_VERSION: '2.4.3'
       PUPPET_VERSION: '6.5.0'
 
-  specs-ruby25-puppet46:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.5.3'
-      PUPPET_VERSION: '4.6.2'
+  # specs-ruby25-puppet46:
+  #   <<: *specs
+  #   environment:
+  #     STRICT_VARIABLES: 'yes'
+  #     RUBY_VERSION: '2.5.3'
+  #     PUPPET_VERSION: '4.6.2'
 
   specs-ruby25-puppet410:
     <<: *specs
@@ -266,7 +283,8 @@ jobs:
       PUPPET_VERSION: '6.5.0'
 
   verify-gemfile-lock-dependencies:
-    machine: true
+    machine:
+      image: ubuntu-2004:202201-02
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.5.3'
@@ -290,7 +308,8 @@ jobs:
           command: rvm $RUBY_VERSION --verbose do bundle exec rake test
 
   kitchen-tests:
-    machine: true
+    machine:
+      image: ubuntu-2004:202201-02
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.5.3'
@@ -332,13 +351,11 @@ workflows:
       - specs-ruby23-puppet53
       - specs-ruby23-puppet60
       - specs-ruby23-puppet65
-      - specs-ruby24-puppet46
       - specs-ruby24-puppet410
       - specs-ruby24-puppet50
       - specs-ruby24-puppet53
       - specs-ruby24-puppet60
       - specs-ruby24-puppet65
-      - specs-ruby25-puppet46
       - specs-ruby25-puppet410
       - specs-ruby25-puppet50
       - specs-ruby25-puppet53

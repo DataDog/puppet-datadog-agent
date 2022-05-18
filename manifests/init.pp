@@ -39,6 +39,8 @@
 #       Note: this is not for Puppet Report Tags.  See report_trusted_fact_tags
 #   $puppet_run_reports
 #       Will send results from your puppet agent runs back to the datadog service.
+#   $reports_url
+#       The URL to use when sending puppet run reports. Default: https://api.${datadog_site}
 #   $manage_dogapi_gem
 #       When reports are enabled, ensure the dogapi gem (required) is installed.
 #   $puppetmaster_user
@@ -262,6 +264,7 @@ class datadog_agent(
   Array $facts_to_tags = [],
   Array $trusted_facts_to_tags = [],
   Boolean $puppet_run_reports = false,
+  String $reports_url = "https://api.${datadog_site}",
   String $puppetmaster_user = $settings::user,
   String $puppet_gem_provider = $datadog_agent::params::gem_provider,
   Boolean $non_local_traffic = false,
@@ -809,7 +812,7 @@ class datadog_agent(
 
     class { 'datadog_agent::reports':
       api_key                   => $api_key,
-      datadog_site              => $datadog_site,
+      datadog_site              => $reports_url,
       manage_dogapi_gem         => $manage_dogapi_gem,
       puppet_gem_provider       => $puppet_gem_provider,
       dogapi_version            => $datadog_agent::params::dogapi_version,

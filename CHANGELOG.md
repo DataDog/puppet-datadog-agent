@@ -1,7 +1,7 @@
 Changes
 =======
 
-# 3.16.0 / 2022-05-24
+# 3.16.0 / 2022-05-25
 
 * [FEATURE] Allow configuring the Puppet reports endpoint ([#733][]) (Thanks [@ardichoke][])
 

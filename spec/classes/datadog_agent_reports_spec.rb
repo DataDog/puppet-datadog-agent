@@ -156,7 +156,7 @@ describe 'datadog_agent::reports' do
         api_key: 'notanapikey',
         puppetmaster_user: 'puppet',
         dogapi_version: 'installed',
-        datadog_site: 'datadoghq.eu',
+        datadog_site: 'https://api.datadoghq.eu',
       }
     end
 

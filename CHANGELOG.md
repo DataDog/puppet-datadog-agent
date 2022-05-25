@@ -1,6 +1,10 @@
 Changes
 =======
 
+# 3.16.0 / 2022-05-25
+
+* [FEATURE] Allow configuring the Puppet reports endpoint ([#733][]) (Thanks [@ardichoke][])
+
 # 3.15.0 / 2022-05-05
 
 * [FEATURE] Support AlmaLinux and Rocky Linux with Puppet >= 7.12.0 ([#726][])
@@ -875,6 +879,7 @@ Please read the [docs]() for more details.
 [#725]: https://github.com/DataDog/puppet-datadog-agent/issues/725
 [#726]: https://github.com/DataDog/puppet-datadog-agent/issues/726
 [#728]: https://github.com/DataDog/puppet-datadog-agent/issues/728
+[#733]: https://github.com/DataDog/puppet-datadog-agent/issues/733
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
@@ -893,6 +898,7 @@ Please read the [docs]() for more details.
 [@alexfouche]: https://github.com/alexfouche
 [@alexharv074]: https://github.com/alexharv074
 [@alvin-huang]: https://github.com/alvin-huang
+[@ardichoke]: https://github.com/ardichoke
 [@arkpoah]: https://github.com/arkpoah
 [@asenci]: https://github.com/asenci
 [@atayts]: https://github.com/atayts

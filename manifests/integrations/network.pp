@@ -27,7 +27,7 @@ class datadog_agent::integrations::network(
   Boolean $combine_connection_states         = true,
   Boolean $collect_rate_metrics              = true,
   Boolean $collect_count_metrics             = false,
-  String $conntrack_path                     = undef,
+  String $conntrack_path                     = '',
   Boolean $use_sudo_conntrack                = true,
   Array[String] $whitelist_conntrack_metrics = [],
   Array[String] $blacklist_conntrack_metrics = [],

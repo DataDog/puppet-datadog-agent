@@ -17,7 +17,9 @@ instances:
     combine_connection_states: <%= @combine_connection_states %>
     collect_rate_metrics: <%= @collect_rate_metrics %>
     collect_count_metrics: <%= @collect_count_metrics %>
+<% if !@conntrack_path.empty? -%>
     conntrack_path: <%= @conntrack_path %>
+<% end -%>
     use_sudo_conntrack: <%= @use_sudo_conntrack %>
 <% if !@whitelist_conntrack_metrics.empty? -%>
     whitelist_conntrack_metrics:

@@ -111,19 +111,7 @@ Note it's not possible to downgrade an integration to a version older than the o
 
 To enable reporting of Puppet runs to your Datadog timeline, enable the report processor on your Puppet master and reporting for your clients. The clients send a run report after each check-in back to the master.
 
-1. Install the [dogapi][3] gem on your system. Restart puppetserver after the gem is installed.
-
-If you're configuring the dogapi gem by code, you can do this with notify:
-
-```puppet
-package { 'dogapi':
-  ensure   => 'present',
-  provider => 'puppetserver_gem',
-  notify   => Service['puppetserver']
-}
-```
-
-2. Set the `puppet_run_reports` option to true in the node configuration manifest for your master:
+1. Set the `puppet_run_reports` option to true in the node configuration manifest for your master:
 
     ```ruby
     class { 'datadog-agent':
@@ -133,7 +121,9 @@ package { 'dogapi':
     }
     ```
 
-3. Add these configuration options to the Puppet master config (eg: `/etc/puppetlabs/puppet/puppet.conf`):
+    The dogapi gem is automatically installed. Set `manage_dogapi_gem` to false if you want to customize the installation.
+
+2. Add these configuration options to the Puppet master config (eg: `/etc/puppetlabs/puppet/puppet.conf`):
 
     ```ini
     [main]
@@ -168,7 +158,7 @@ With the [`ini_setting` module](https://forge.puppet.com/modules/puppetlabs/inif
   }
 ```
 
-4. On all of your Puppet client nodes, add the following in the same location:
+3. On all of your Puppet client nodes, add the following in the same location:
 
     ```ini
     [agent]
@@ -191,7 +181,7 @@ With the [`ini_setting` module](https://forge.puppet.com/modules/puppetlabs/inif
   }
 ```
 
-5. (Optional) Enable tagging of reports with facts:
+4. (Optional) Enable tagging of reports with facts:
 
     You can add tags to reports that are sent to Datadog as events. These tags can be sourced from Puppet facts for the given node the report is regarding. These should be 1:1 and not involve structured facts (hashes, arrays, etc.) to ensure readability. To enable regular fact tagging, set the parameter `datadog_agent::reports::report_fact_tags` to the array value of facts—for example `["virtual","operatingsystem"]`. To enable trusted fact tagging, set the parameter `datadog_agent::reports::report_trusted_fact_tags` to the array value of facts—for example `["certname","extensions.pp_role","hostname"]`.
 
@@ -202,7 +192,7 @@ With the [`ini_setting` module](https://forge.puppet.com/modules/puppetlabs/inif
     - Do not duplicate common data from monitoring like hostname, uptime, memory, etc.
     - Coordinate core facts like role, owner, template, datacenter, etc., that help you build meaningful correlations to the same tags from metrics
 
-6. Verify your Puppet data is in Datadog by searching for `sources:puppet` in the [Event Stream][5].
+5. Verify your Puppet data is in Datadog by searching for `sources:puppet` in the [Event Stream][5].
 
 ### Troubleshooting
 

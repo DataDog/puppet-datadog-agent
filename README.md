@@ -121,7 +121,7 @@ To enable reporting of Puppet runs to your Datadog timeline, enable the report p
     }
     ```
 
-    The dogapi gem will be automatically installed. Set `manage_dogapi_gem` to false if you want to customize the installation.
+    The dogapi gem is automatically installed. Set `manage_dogapi_gem` to false if you want to customize the installation.
 
 2. Add these configuration options to the Puppet master config (eg: `/etc/puppetlabs/puppet/puppet.conf`):
 

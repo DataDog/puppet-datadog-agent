@@ -6,6 +6,8 @@
 # Parameters:
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value
+#   $datadog_site:
+#       URL to use to talk to the Datadog API
 #
 # Actions:
 #
@@ -23,7 +25,7 @@ class datadog_agent::reports(
   $proxy_https = undef,
   $report_fact_tags = [],
   $report_trusted_fact_tags = [],
-  $datadog_site = 'datadoghq.com',
+  $datadog_site = 'https://api.datadoghq.com',
   $puppet_gem_provider = $datadog_agent::params::gem_provider,
 ) inherits datadog_agent::params {
 

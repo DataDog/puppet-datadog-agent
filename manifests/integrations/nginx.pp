@@ -20,6 +20,8 @@
 #             'nginx_status_url'  => 'http://example2.com:1234/nginx_status/',
 #             'tags' => ['instance:foo'],
 #         },
+#     ],
+#     logs => [
 #         {
 #             'type' => 'file',
 #             'path' => '/var/log/nginx/access.log',

@@ -29,7 +29,8 @@ platforms:
         - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
 
         - gem install bundler -v '= 1.17.3'
-        - gem install r10k -v 2.6.7
+        # multipart-post 2.2.0 breaks r10k 2.6.7, so lock it at 2.1.1 (we can't upgrade r10k because of old Ruby)
+        - gem install multipart-post:2.1.1 r10k:2.6.7
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
   - name: rocky-8-puppet-5
@@ -48,7 +49,7 @@ platforms:
         - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
 
         - gem install bundler -v '= 1.17.3'
-        - gem install r10k -v 2.6.7
+        - gem install multipart-post:2.1.1 r10k:2.6.7
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
   - name: ubuntu-1604-puppet-6
@@ -68,7 +69,7 @@ platforms:
         - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
 
         - gem install bundler -v '= 1.17.3'
-        - gem install r10k -v 2.6.7
+        - gem install multipart-post:2.1.1 r10k:2.6.7
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
         
   - name: opensuse/leap-15
@@ -92,7 +93,7 @@ platforms:
         - mkdir /home/kitchen/puppet
         - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
 
-        - /opt/puppetlabs/puppet/bin/gem install r10k -v 2.6.7
+        - /opt/puppetlabs/puppet/bin/gem install multipart-post:2.1.1 r10k:2.6.7
         - cd /home/kitchen/puppet && /opt/puppetlabs/puppet/bin/r10k puppetfile install --moduledir=/tmp/modules
 
 verifier:

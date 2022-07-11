@@ -63,7 +63,8 @@ class datadog_agent::windows(
     if $agent_version == 'latest' {
       $ensure_version = 'installed'
     } else {
-      $ensure_version = $agent_version
+      # While artifacts contain X.Y.Z in their name, their installed Windows versions are actually X.Y.Z.1
+      $ensure_version = "${agent_version}.1"
     }
 
     $hostname_option = $hostname ? { '' => {}, default => { 'HOSTNAME' => $hostname } }

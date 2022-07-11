@@ -63,13 +63,13 @@
 #  }
 #
 #
-class datadog_agent::integrations::mysql(
+class datadog_agent::integrations::mysql (
   String $host                             = 'localhost',
   Optional[String] $user                   = 'datadog',
   Optional[Variant[String, Integer]] $port = 3306,
   Optional[String] $password               = undef,
   Optional[String] $sock                   = undef,
-  Array $tags                              = [],
+  Optional[Array] $tags                    = undef,
   $replication                             = '0',
   $galera_cluster                          = '0',
   Boolean $extra_status_metrics            = false,
@@ -77,10 +77,11 @@ class datadog_agent::integrations::mysql(
   Boolean $extra_performance_metrics       = false,
   Boolean $schema_size_metrics             = false,
   Boolean $disable_innodb_metrics          = false,
-  Optional[Array] $queries                 = [],
+  Optional[Array] $queries                 = undef,
+  Optional[Hash] $init_config              = undef,
   Optional[Array] $instances               = undef,
-  Optional[Array] $logs                    = [],
-  ) inherits datadog_agent::params {
+  Optional[Array] $logs                    = undef,
+) inherits datadog_agent::params {
   require ::datadog_agent
 
   if ($host == undef and $sock == undef) or
@@ -89,26 +90,51 @@ class datadog_agent::integrations::mysql(
   }
 
   if !$instances and $host {
-    $_instances = [{
-      'host'                      => $host,
-      'password'                  => $password,
-      'user'                      => $user,
-      'port'                      => $port,
-      'sock'                      => $sock,
-      'tags'                      => $tags,
-      'replication'               => $replication,
-      'galera_cluster'            => $galera_cluster,
-      'extra_status_metrics'      => $extra_status_metrics,
-      'extra_innodb_metrics'      => $extra_innodb_metrics,
-      'extra_performance_metrics' => $extra_performance_metrics,
-      'schema_size_metrics'       => $schema_size_metrics,
-      'disable_innodb_metrics'    => $disable_innodb_metrics,
-      'queries'                   => $queries,
-    }]
-  } elsif !$instances{
+    $_instances = datadog_agent::clean_empty([{
+      'server'  => $host,
+      'pass'    => $password,
+      'user'    => $user,
+      'port'    => $port,
+      'sock'    => $sock,
+      'tags'    => $tags,
+      'options' => {
+        'replication'               => $replication,
+        'galera_cluster'            => $galera_cluster,
+        'extra_status_metrics'      => $extra_status_metrics,
+        'extra_innodb_metrics'      => $extra_innodb_metrics,
+        'extra_performance_metrics' => $extra_performance_metrics,
+        'schema_size_metrics'       => $schema_size_metrics,
+        'disable_innodb_metrics'    => $disable_innodb_metrics,
+      },
+      'queries' => $queries,
+    }])
+  } elsif !$instances {
     $_instances = []
   } else {
-    $_instances = $instances
+    $_instances = datadog_agent::clean_empty($instances.map |$instance| {
+      if $instance['host'] {
+        {
+          'server'  => $instance['host'],
+          'pass'    => $instance['password'],
+          'user'    => $instance['user'],
+          'port'    => $instance['port'],
+          'sock'    => $instance['sock'],
+          'tags'    => $instance['tags'],
+          'options' => {
+            'replication'               => $instance['replication'],
+            'galera_cluster'            => $instance['galera_cluster'],
+            'extra_status_metrics'      => $instance['extra_status_metrics'],
+            'extra_innodb_metrics'      => $instance['extra_innodb_metrics'],
+            'extra_performance_metrics' => $instance['extra_performance_metrics'],
+            'schema_size_metrics'       => $instance['schema_size_metrics'],
+            'disable_innodb_metrics'    => $instance['disable_innodb_metrics'],
+          },
+          'queries' => $queries,
+        }
+      } else {
+        $instance
+      }
+    })
   }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/mysql.yaml"

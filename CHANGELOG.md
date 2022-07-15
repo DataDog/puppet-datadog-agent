@@ -1,6 +1,11 @@
 Changes
 =======
 
+# 3.17.0 / 2022-07-15
+
+* [FEATURE] Add support for multiple network configuration options ([#732][]) (Thanks [@ryan-dyer-sp][])
+* [BUGFIX] Use proper version string for package.ensure on Windows ([#741][])
+
 # 3.16.0 / 2022-05-25
 
 * [FEATURE] Allow configuring the Puppet reports endpoint ([#733][]) (Thanks [@ardichoke][])
@@ -879,7 +884,9 @@ Please read the [docs]() for more details.
 [#725]: https://github.com/DataDog/puppet-datadog-agent/issues/725
 [#726]: https://github.com/DataDog/puppet-datadog-agent/issues/726
 [#728]: https://github.com/DataDog/puppet-datadog-agent/issues/728
+[#732]: https://github.com/DataDog/puppet-datadog-agent/issues/732
 [#733]: https://github.com/DataDog/puppet-datadog-agent/issues/733
+[#741]: https://github.com/DataDog/puppet-datadog-agent/issues/741
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
@@ -976,6 +983,7 @@ Please read the [docs]() for more details.
 [@rooprob]: https://github.com/rooprob
 [@rothgar]: https://github.com/rothgar
 [@rtyler]: https://github.com/rtyler
+[@ryan-dyer-sp]: https://github.com/ryan-dyer-sp
 [@sambanks]: https://github.com/sambanks
 [@samueljamesmarshall]: https://github.com/samueljamesmarshall
 [@scottgeary]: https://github.com/scottgeary

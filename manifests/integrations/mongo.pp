@@ -13,16 +13,14 @@
 #       Optionally specify password for connection
 #   $port
 #       The port mongo is running on. Defaults to 27017
-#   $ssl
-#       Optionally enable SSL for connection
-#   $ssl_ca_certs
-#       Optionally specify path to SSL Certificate Authority certificates
-#   $ssl_cert_reqs
-#       Optionally require SSL client certificate for connection
-#   $ssl_certfile
-#       Optionally specify path to SSL certificate for connection
-#   $ssl_keyfile
-#       Optionally specify path to SSL private key for connection
+#   $tls
+#       Optionally enable TLS for connection
+#   $tls_ca_file
+#       Optionally specify path to SSL/TLS Certificate Authority certificates
+#   $tls_allow_invalid_certificates
+#       Optionally require SSL/TLS client certificate for connection
+#   $tls_certificate_key_file
+#       Optionally specify path to combined SSL/TLS key and certificate for connection
 #   $tags
 #       Optional array of tags
 #   $username
@@ -38,11 +36,10 @@
 #        'host'               => 'localhost',
 #        'password'           => 'mongo_password',
 #        'port'               => '27017',
-#        'ssl'                => true,
-#        'ssl_ca_certs'       => '/path/to/ca.pem',
-#        'ssl_cert_reqs'      => 'CERT_REQUIRED',
-#        'ssl_certfile'       => '/path/to/client.pem',
-#        'ssl_keyfile'        => '/path/to/key.pem',
+#        'tls'                => true,
+#        'tls_ca_file'       => '/path/to/ca.pem',
+#        'tls_allow_invalid_certificates'      => false,
+#        'tls_certificate_key_file'       => '/path/to/combined.pem',
 #        'tags'               => ['optional_tag1', 'optional_tag2'],
 #        'username'           => 'mongo_username',
 #      },

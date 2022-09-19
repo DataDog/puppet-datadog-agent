@@ -14,6 +14,8 @@
 #       The password for the datadog user
 #   $tags
 #       Optional array of tags
+#   $max_returned_metrics
+#       Optional number of maximum returned metrics, default 350
 #
 # Sample Usage:
 #
@@ -26,11 +28,12 @@
 #
 #
 class datadog_agent::integrations::cassandra(
-  String $host               = 'localhost',
-  Integer $port              = 7199,
-  Optional[String] $user     = undef,
-  Optional[String] $password = undef,
-  Optional[Hash] $tags       = {},
+  String $host                            = 'localhost',
+  Integer $port                           = 7199,
+  Optional[String] $user                  = undef,
+  Optional[String] $password              = undef,
+  Optional[Hash] $tags                    = {},
+  Optional[Integer] $max_returned_metrics = undef,
 ) inherits datadog_agent::params {
   require ::datadog_agent
 

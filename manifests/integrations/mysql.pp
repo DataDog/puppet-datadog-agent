@@ -80,7 +80,7 @@ class datadog_agent::integrations::mysql(
   Boolean $extra_performance_metrics       = false,
   Boolean $schema_size_metrics             = false,
   Boolean $disable_innodb_metrics          = false,
-  Boolean $dbm                             = false,
+  Optional[Boolean] $dbm                   = undef,
   Optional[Array] $queries                 = [],
   Optional[Array] $instances               = undef,
   Optional[Array] $logs                    = [],

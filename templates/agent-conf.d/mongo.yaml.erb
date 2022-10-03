@@ -11,6 +11,21 @@ instances:
       - <%= tag %>
     <%- end -%>
   <%- end -%>
+  <%- if !server['ssl'].nil? -%>
+    ssl: <%= server['ssl'] %>
+    <%- if !server['ssl_keyfile'].nil? -%>
+    ssl_keyfile: <%= server['ssl_keyfile'] %>
+    <%- end -%>
+    <%- if !server['ssl_certfile'].nil? -%>
+    ssl_certfile: <%= server['ssl_certfile'] %>
+    <%- end -%>
+    <%- if !server['ssl_cert_reqs'].nil? -%>
+    ssl_cert_reqs: <%= server['ssl_cert_reqs'] %>
+    <%- end -%>
+    <%- if !server['ssl_ca_certs'].nil? -%>
+    ssl_ca_certs: <%= server['ssl_ca_certs'] %>
+    <%- end -%>
+  <%- end -%>
   <%- if !server['tls'].nil? -%>
     tls: <%= server['tls'] %>
     <%- if !server['tls_certificate_key_file'].nil? -%>

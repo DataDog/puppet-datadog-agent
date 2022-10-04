@@ -26,6 +26,18 @@ instances:
     ssl_ca_certs: <%= server['ssl_ca_certs'] %>
     <%- end -%>
   <%- end -%>
+  <%- if !server['tls'].nil? -%>
+    tls: <%= server['tls'] %>
+    <%- if !server['tls_certificate_key_file'].nil? -%>
+    tls_certificate_key_file: <%= server['tls_certificate_key_file'] %>
+    <%- end -%>
+    <%- if !server['tls_allow_invalid_certificates'].nil? -%>
+    tls_allow_invalid_certificates: <%= server['tls_allow_invalid_certificates'] %>
+    <%- end -%>
+    <%- if !server['tls_ca_file'].nil? -%>
+    tls_ca_file: <%= server['tls_ca_file'] %>
+    <%- end -%>
+  <%- end -%>
   <%- if !server['additional_metrics'].nil? && server['additional_metrics'].any? -%>
     additional_metrics:
     <%- server['additional_metrics'].each do |additional_metric| -%>

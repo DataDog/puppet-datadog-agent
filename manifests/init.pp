@@ -761,12 +761,13 @@ class datadog_agent(
       }
 
       file { 'C:/ProgramData/Datadog/datadog.yaml':
-        owner   => $dd_user,
-        group   => $dd_group,
-        mode    => '0660',
-        content => template('datadog_agent/datadog.yaml.erb'),
-        notify  => Service[$datadog_agent::params::service_name],
-        require => File['C:/ProgramData/Datadog'],
+        owner     => $dd_user,
+        group     => $dd_group,
+        mode      => '0660',
+        content   => template('datadog_agent/datadog.yaml.erb'),
+        show_diff => false,
+        notify    => Service[$datadog_agent::params::service_name],
+        require   => File['C:/ProgramData/Datadog'],
       }
 
       file { 'C:/ProgramData/Datadog/install_info':
@@ -780,12 +781,13 @@ class datadog_agent(
     } else {
 
       file { '/etc/datadog-agent/datadog.yaml':
-        owner   => $dd_user,
-        group   => $dd_group,
-        mode    => '0640',
-        content => template('datadog_agent/datadog.yaml.erb'),
-        notify  => Service[$datadog_agent::params::service_name],
-        require => File['/etc/datadog-agent'],
+        owner     => $dd_user,
+        group     => $dd_group,
+        mode      => '0640',
+        content   => template('datadog_agent/datadog.yaml.erb'),
+        show_diff => false,
+        notify    => Service[$datadog_agent::params::service_name],
+        require   => File['/etc/datadog-agent'],
       }
 
       file { '/etc/datadog-agent/install_info':

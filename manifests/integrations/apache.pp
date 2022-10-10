@@ -27,13 +27,28 @@
 # }
 #
 class datadog_agent::integrations::apache (
-  String $url                     = 'http://localhost/server-status?auto',
-  Optional[String] $username      = undef,
-  Optional[String] $password      = undef,
-  Array $tags                     = [],
-  Boolean $disable_ssl_validation = false
+  String $url                               = 'http://localhost/server-status?auto',
+  Optional[String] $username                = undef,
+  Optional[String] $password                = undef,
+  Array $tags                               = [],
+  Optional[Boolean] $disable_ssl_validation = undef,
+  Optional[Hash] $init_config               = undef,
+  Optional[Array] $instances                = undef,
+  Optional[Array] $logs                     = undef,
 ) inherits datadog_agent::params {
   require ::datadog_agent
+
+  if !$instances {
+    $_instances = datadog_agent::clean_empty([{
+      'apache_status_url'      => $url,
+      'apache_user'            => $username,
+      'apache_password'        => $password,
+      'tags'                   => $tags,
+      'disable_ssl_validation' => $disable_ssl_validation,
+    }])
+  } else {
+    $_instances = $instances
+  }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/apache.yaml"
   if $::datadog_agent::_agent_major_version > 5 {

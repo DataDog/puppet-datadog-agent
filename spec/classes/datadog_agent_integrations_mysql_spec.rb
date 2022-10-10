@@ -40,8 +40,8 @@ describe 'datadog_agent::integrations::mysql' do
           it { is_expected.to contain_file(conf_file).with_content(%r{server: localhost}) }
           it { is_expected.to contain_file(conf_file).with_content(%r{user: datadog}) }
           it { is_expected.to contain_file(conf_file).without_content(%r{sock: }) }
-          it { is_expected.to contain_file(conf_file).with_content(%r{replication: 0}) }
-          it { is_expected.to contain_file(conf_file).with_content(%r{galera_cluster: 0}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{replication: '0'}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{galera_cluster: '0'}) }
         end
       end
 
@@ -60,9 +60,9 @@ describe 'datadog_agent::integrations::mysql' do
         it { is_expected.to contain_file(conf_file).with_content(%r{pass: foobar}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{server: mysql1}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{user: baz}) }
-        it { is_expected.to contain_file(conf_file).with_content(%r{sock: /tmp/mysql.foo.sock}) }
-        it { is_expected.to contain_file(conf_file).with_content(%r{replication: 1}) }
-        it { is_expected.to contain_file(conf_file).with_content(%r{galera_cluster: 1}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{sock: "/tmp/mysql.foo.sock"}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{replication: '1'}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{galera_cluster: '1'}) }
       end
 
       context 'with tags parameter array' do
@@ -103,7 +103,49 @@ describe 'datadog_agent::integrations::mysql' do
         end
 
         it { is_expected.to contain_file(conf_file).with_content(%r{- query}) }
-        it { is_expected.to contain_file(conf_file).with_content(%r{query: SELECT TIMESTAMPDIFF\(second,MAX\(create_time\),NOW\(\)\) as last_accessed FROM requests}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{query: SELECT TIMESTAMPDIFF\(second,MAX\(create_time\),NOW\(\)\) as last_accessed FROM}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{metric: app.seconds_since_last_request}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{type: gauge}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{field: last_accessed}) }
+      end
+
+      context 'with instances hash' do
+        let(:params) do
+          {
+            instances: [
+              {
+                'server' => 'mysql1',
+                'pass' => 'foobar',
+                'user' => 'baz',
+                'sock' => '/tmp/mysql.foo.sock',
+                'tags' => ['foo', 'bar', 'baz'],
+                'options' => {
+                  'replication' => 1,
+                  'galera_cluster' => 1,
+                },
+                'queries' => [
+                  {
+                    'query' => 'SELECT TIMESTAMPDIFF(second,MAX(create_time),NOW()) as last_accessed FROM requests',
+                    'metric' => 'app.seconds_since_last_request',
+                    'type' => 'gauge',
+                    'field' => 'last_accessed',
+                  },
+                ],
+              },
+            ],
+          }
+        end
+
+        it { is_expected.to contain_file(conf_file).with_content(%r{server: mysql1}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{pass: foobar}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{user: baz}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{sock: "/tmp/mysql.foo.sock"}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{tags:[^-]+- foo\s+- bar\s+- baz\s*?[^-]}m) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{options:}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{replication: 1}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{galera_cluster: 1}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{- query}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{query: SELECT TIMESTAMPDIFF\(second,MAX\(create_time\),NOW\(\)\) as last_accessed FROM}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{metric: app.seconds_since_last_request}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{type: gauge}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{field: last_accessed}) }

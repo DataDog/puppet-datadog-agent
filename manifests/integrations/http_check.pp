@@ -196,7 +196,9 @@ class datadog_agent::integrations::http_check (
   $allow_redirects = true,
   $tags      = [],
   $contact   = [],
-  Optional[Array] $instances  = undef,
+  Optional[Hash] $init_config       = undef,
+  Optional[Array] $instances        = undef,
+  Optional[Array] $logs             = undef,
   $ca_certs  = undef,
 ) inherits datadog_agent::params {
   require ::datadog_agent
@@ -233,10 +235,44 @@ class datadog_agent::integrations::http_check (
       'contact'                      => $contact,
       'ca_certs'                     => $ca_certs,
     }]
-  } elsif !$instances{
+  } elsif !$instances {
     $_instances = []
   } else {
     $_instances = $instances
+  }
+
+  $instances_array = $_instances.map |$instance| {
+    Hash($instance.map |$key, $value| {
+      case $key {
+        'sitename': {
+          Tuple(['name', $value])
+        }
+
+        'data', 'headers': {
+          if !$value.is_a(Array) {
+            Tuple([$key, $value]).next
+          }
+
+          $value_hash = Hash($value.map |$item| {
+            $sub_item_array = $item.split(':')
+            $sub_item_key = $sub_item_array[0].rstrip
+            $sub_item_value = $sub_item_array[1, - 1].join(':').lstrip
+
+            Tuple([$sub_item_key, $sub_item_value])
+          })
+
+          Tuple([$key, datadog_agent::clean_empty($value_hash)])
+        }
+
+        'tags': {
+          Tuple([$key, datadog_agent::clean_empty($value)])
+        }
+
+        default: {
+          Tuple([$key, $value])
+        }
+      }
+    })
   }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/http_check.yaml"

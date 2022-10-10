@@ -100,6 +100,25 @@ describe 'datadog_agent::integrations::apache' do
 
           skip('doubly undefined behavior')
         end
+
+        context 'with instances hash' do
+          let(:params) do
+            {
+              instances: [
+                {
+                  'apache_status_url' => 'http://foobar',
+                  'apache_user' => 'userfoo',
+                  'apache_password' => 'passfoo',
+                  'tags' => ['foo', 'bar', 'baz'],
+                },
+              ],
+            }
+          end
+
+          it { is_expected.to contain_file(conf_file).with_content(%r{apache_status_url: http://foobar}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{apache_user: userfoo}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{apache_password: passfoo}) }
+        end
       end
     end
   end

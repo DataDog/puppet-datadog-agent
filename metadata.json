@@ -1,6 +1,6 @@
 {
   "name": "datadog-datadog_agent",
-  "version": "3.17.0",
+  "version": "3.18.0",
   "author": "James Turnbull <james@lovedthanlost.net>, Rob Terhaar <rob@atlanticdynamic>, Jaime Fullaondo <jaime.fullaondo@datadoghq.com>, Albert Vaca <albert.vaca@datadoghq.com>",
   "summary": "Install the Datadog monitoring agent and report Puppet runs to Datadog",
   "license": "Apache-2.0",

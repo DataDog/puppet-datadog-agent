@@ -5,7 +5,7 @@
 
 class datadog_agent::service(
   $service_ensure = 'running',
-  Boolean $service_enable = true,
+  Variant[Boolean, Enum['manual', 'mask', 'delayed']] $service_enable = true,
   Optional[String] $service_provider = undef,
   String $agent_flavor = $datadog_agent::params::package_name,
 ) inherits datadog_agent::params {

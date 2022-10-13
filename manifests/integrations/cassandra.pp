@@ -1,7 +1,10 @@
 # Class: datadog_agent::integrations::cassandra
 #
 # This class will install the necessary configuration for the Cassandra
-# integration
+# integration.
+#
+# This check has a limit of 350 metrics per instance. If you require 
+# additional metrics, contact Datadog Support at https://docs.datadoghq.com/help/
 #
 # Parameters:
 #   $host:
@@ -14,8 +17,6 @@
 #       The password for the datadog user
 #   $tags
 #       Optional array of tags
-#   $max_returned_metrics
-#       Optional number of maximum returned metrics, default 350
 #
 # Sample Usage:
 #

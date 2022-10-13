@@ -65,7 +65,7 @@ describe 'datadog_agent::integrations::cassandra' do
             }
           end
 
-          it { is_expected.to contain_file(conf_file).with_content(%r{tags:\s+foo: bar\s+baz: ama\s*?[^-]}m) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{tags:\s+-\s+foo:bar\s+-\s+baz:ama\s*?[^-]}m) }
         end
 
         context 'tags not hash' do

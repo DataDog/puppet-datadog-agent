@@ -21,6 +21,9 @@ instances:
 <% if instance['sock'] and instance['sock'] != :undef -%>
     sock: <%= instance['sock'] %>
 <% end -%>
+<% if instance['dbm'] and instance['dbm'] != :undef -%>
+    dbm: <%= instance['dbm'] %>
+<% end -%>
 
 <% if instance['tags'] and ! instance['tags'].empty? -%>
     tags:

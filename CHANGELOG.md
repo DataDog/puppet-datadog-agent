@@ -1,6 +1,15 @@
 Changes
 =======
 
+# 3.18.0 / 2022-10-13
+
+* [BUGFIX] Make `datadog_agent::service::enable` type more general ([#756][])
+* [BUGFIX] Hide diff for datadog.yaml file  ([#755][])
+* [FEATURE] Solr: rely on built-in default metrics ([#748][]) (Thanks [@rud][])
+* [FEATURE] Mongo: Replace Deprecated Parameters ([#752][]) (Thanks [@jabbate19][])
+* [FEATURE] Cassandra, MySQL: Add support for max_returned_metrics and dbm options ([#751][]) (Thanks [@rgergo][])
+* [BUGFIX] Bump tzinfo from 1.2.9 to 2.0.5 ([#746][])
+
 # 3.17.0 / 2022-07-15
 
 * [FEATURE] Add support for multiple network configuration options ([#732][]) (Thanks [@ryan-dyer-sp][])
@@ -887,6 +896,12 @@ Please read the [docs]() for more details.
 [#732]: https://github.com/DataDog/puppet-datadog-agent/issues/732
 [#733]: https://github.com/DataDog/puppet-datadog-agent/issues/733
 [#741]: https://github.com/DataDog/puppet-datadog-agent/issues/741
+[#746]: https://github.com/DataDog/puppet-datadog-agent/issues/746
+[#748]: https://github.com/DataDog/puppet-datadog-agent/issues/748
+[#751]: https://github.com/DataDog/puppet-datadog-agent/issues/751
+[#752]: https://github.com/DataDog/puppet-datadog-agent/issues/752
+[#755]: https://github.com/DataDog/puppet-datadog-agent/issues/755
+[#756]: https://github.com/DataDog/puppet-datadog-agent/issues/756
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
@@ -950,6 +965,7 @@ Please read the [docs]() for more details.
 [@generica]: https://github.com/generica
 [@gotyaio]: https://github.com/gotyaio
 [@grubernaut]: https://github.com/grubernaut
+[@jabbate19]: https://github.com/jabbate19
 [@jacobbednarz]: https://github.com/jacobbednarz
 [@jadams-av]: https://github.com/jadams-av
 [@jameynelson]: https://github.com/jameynelson
@@ -979,10 +995,12 @@ Please read the [docs]() for more details.
 [@paulhamby]: https://github.com/paulhamby
 [@pid1]: https://github.com/pid1
 [@pulkitsethi]: https://github.com/pulkitsethi
+[@rgergo]: https://github.com/rgergo
 [@rmrf-run]: https://github.com/rmrf-run
 [@rooprob]: https://github.com/rooprob
 [@rothgar]: https://github.com/rothgar
 [@rtyler]: https://github.com/rtyler
+[@rud]: https://github.com/rud
 [@ryan-dyer-sp]: https://github.com/ryan-dyer-sp
 [@sambanks]: https://github.com/sambanks
 [@samueljamesmarshall]: https://github.com/samueljamesmarshall

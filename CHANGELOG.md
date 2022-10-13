@@ -7,6 +7,7 @@ Changes
 * [BUGFIX] Hide diff for datadog.yaml file  ([#755][])
 * [FEATURE] Solr: rely on built-in default metrics ([#748][]) (Thanks [@rud][])
 * [FEATURE] Mongo: Replace Deprecated Parameters ([#752][]) (Thanks [@jabbate19][])
+* [FEATURE] Cassandra, MySQL: Add support for max_returned_metrics and dbm options ([#751][]) (Thanks [@rgergo][])
 * [BUGFIX] Bump tzinfo from 1.2.9 to 2.0.5 ([#746][])
 
 # 3.17.0 / 2022-07-15
@@ -897,6 +898,7 @@ Please read the [docs]() for more details.
 [#741]: https://github.com/DataDog/puppet-datadog-agent/issues/741
 [#746]: https://github.com/DataDog/puppet-datadog-agent/issues/746
 [#748]: https://github.com/DataDog/puppet-datadog-agent/issues/748
+[#751]: https://github.com/DataDog/puppet-datadog-agent/issues/751
 [#752]: https://github.com/DataDog/puppet-datadog-agent/issues/752
 [#755]: https://github.com/DataDog/puppet-datadog-agent/issues/755
 [#756]: https://github.com/DataDog/puppet-datadog-agent/issues/756
@@ -993,6 +995,7 @@ Please read the [docs]() for more details.
 [@paulhamby]: https://github.com/paulhamby
 [@pid1]: https://github.com/pid1
 [@pulkitsethi]: https://github.com/pulkitsethi
+[@rgergo]: https://github.com/rgergo
 [@rmrf-run]: https://github.com/rmrf-run
 [@rooprob]: https://github.com/rooprob
 [@rothgar]: https://github.com/rothgar

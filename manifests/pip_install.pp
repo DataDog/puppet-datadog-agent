@@ -16,7 +16,7 @@ define datadog_agent::pip_install (
   }
 
   if $version == undef {
-    $package_and_version = "${package_name}"
+    $package_and_version = $package_name
   } else {
     $package_and_version = "${package_name}==${version}"
   }
@@ -26,19 +26,19 @@ define datadog_agent::pip_install (
 
   if $ensure == 'present' {
     exec {"install ${package_name}":
-      command  => $install_command,
-      user     => $::datadog_agent::dd_user,
-      unless   => $freeze_command,
-      require  => Package[$::datadog_agent::params::package_name],
-      notify   => Service[$::datadog_agent::params::service_name],
+      command => $install_command,
+      user    => $::datadog_agent::dd_user,
+      unless  => $freeze_command,
+      require => Package[$::datadog_agent::params::package_name],
+      notify  => Service[$::datadog_agent::params::service_name],
     }
   } else {
     exec {"remove ${package_name}":
-      command  => $uninstall_command,
-      user     => $::datadog_agent::dd_user,
-      onlyif   => $freeze_command,
-      require  => Package[$::datadog_agent::params::package_name],
-      notify   => Service[$::datadog_agent::params::service_name],
+      command => $uninstall_command,
+      user    => $::datadog_agent::dd_user,
+      onlyif  => $freeze_command,
+      require => Package[$::datadog_agent::params::package_name],
+      notify  => Service[$::datadog_agent::params::service_name],
     }
   }
 }

@@ -27,10 +27,12 @@ describe 'datadog_agent::redhat' do
         is_expected.to contain_yumrepo('datadog')
           .with_enabled(1)\
           .with_gpgcheck(1)\
-          .with_gpgkey('https://yum.datadoghq.com/DATADOG_RPM_KEY.public
-       https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
-       https://yum.datadoghq.com/DATADOG_RPM_KEY_20200908.public')\
-          .with_baseurl('https://yum.datadoghq.com/rpm/x86_64/')
+          .with_gpgkey('https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY.public')\
+          .with_baseurl('https://yum.datadoghq.com/rpm/x86_64/')\
+          .with_repo_gpgcheck(false)
       end
     end
     context 'with manage_repo => false' do
@@ -74,10 +76,12 @@ describe 'datadog_agent::redhat' do
         is_expected.to contain_yumrepo('datadog')
           .with_enabled(1)\
           .with_gpgcheck(1)\
-          .with_gpgkey('https://yum.datadoghq.com/DATADOG_RPM_KEY.public
-       https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
-       https://yum.datadoghq.com/DATADOG_RPM_KEY_20200908.public')\
-          .with_baseurl('https://yum.datadoghq.com/stable/6/x86_64/')
+          .with_gpgkey('https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY.public')\
+          .with_baseurl('https://yum.datadoghq.com/stable/6/x86_64/')\
+          .with_repo_gpgcheck(true)
       end
     end
     context 'with manage_repo => false' do
@@ -122,9 +126,11 @@ describe 'datadog_agent::redhat' do
         is_expected.to contain_yumrepo('datadog')
           .with_enabled(1)\
           .with_gpgcheck(1)\
-          .with_gpgkey('https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
-       https://yum.datadoghq.com/DATADOG_RPM_KEY_20200908.public')\
-          .with_baseurl('https://yum.datadoghq.com/stable/7/x86_64/')
+          .with_gpgkey('https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public')\
+          .with_baseurl('https://yum.datadoghq.com/stable/7/x86_64/')\
+          .with_repo_gpgcheck(true)
       end
     end
     context 'with manage_repo => false' do
@@ -146,6 +152,133 @@ describe 'datadog_agent::redhat' do
     it do
       is_expected.to contain_package('datadog-agent')\
         .with_ensure('latest')
+    end
+  end
+
+  context 'rhel 8.1' do
+    # we expect repo_gpgcheck to be false on 8.1
+    let(:facts) do
+      {
+        osfamily: 'redhat',
+        operatingsystem: 'RedHat',
+        operatingsystemrelease: '8.1',
+        architecture: 'x86_64',
+      }
+    end
+
+    # it should install the mirror
+    context 'with manage_repo => true' do
+      let(:params) do
+        {
+          manage_repo: true, agent_major_version: 7
+        }
+      end
+
+      it do
+        is_expected.to contain_yumrepo('datadog')
+          .with_enabled(1)\
+          .with_gpgcheck(1)\
+          .with_gpgkey('https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public')\
+          .with_baseurl('https://yum.datadoghq.com/stable/7/x86_64/')\
+          .with_repo_gpgcheck(false)
+      end
+    end
+  end
+
+  context 'rhel 8.2' do
+    # we expect repo_gpgcheck to be true on 8.2 (and later)
+    let(:facts) do
+      {
+        osfamily: 'redhat',
+        operatingsystem: 'RedHat',
+        operatingsystemrelease: '8.2',
+        architecture: 'x86_64',
+      }
+    end
+
+    # it should install the mirror
+    context 'with manage_repo => true' do
+      let(:params) do
+        {
+          manage_repo: true, agent_major_version: 7
+        }
+      end
+
+      it do
+        # we expect repo_gpgcheck to be false on 8.1
+        is_expected.to contain_yumrepo('datadog')
+          .with_enabled(1)\
+          .with_gpgcheck(1)\
+          .with_gpgkey('https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public')\
+          .with_baseurl('https://yum.datadoghq.com/stable/7/x86_64/')\
+          .with_repo_gpgcheck(true)
+      end
+    end
+  end
+
+  context 'almalinux 8', if: min_puppet_version('7.12.0') do
+    let(:facts) do
+      {
+        osfamily: 'redhat',
+        operatingsystem: 'AlmaLinux',
+        operatingsystemrelease: '8.5',
+        architecture: 'x86_64',
+      }
+    end
+
+    # it should install the repo
+    context 'with manage_repo => true' do
+      let(:params) do
+        {
+          manage_repo: true, agent_major_version: 7
+        }
+      end
+
+      it do
+        is_expected.to contain_yumrepo('datadog')
+          .with_enabled(1)\
+          .with_gpgcheck(1)\
+          .with_gpgkey('https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public')\
+          .with_baseurl('https://yum.datadoghq.com/stable/7/x86_64/')\
+          .with_repo_gpgcheck(true)
+      end
+    end
+  end
+
+  context 'rocky 8', if: min_puppet_version('7.12.0') do
+    let(:facts) do
+      {
+        osfamily: 'redhat',
+        operatingsystem: 'Rocky',
+        operatingsystemrelease: '8.5',
+        architecture: 'x86_64',
+      }
+    end
+
+    # it should install the repo
+    context 'with manage_repo => true' do
+      let(:params) do
+        {
+          manage_repo: true, agent_major_version: 7
+        }
+      end
+
+      it do
+        is_expected.to contain_yumrepo('datadog')
+          .with_enabled(1)\
+          .with_gpgcheck(1)\
+          .with_gpgkey('https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public')\
+          .with_baseurl('https://yum.datadoghq.com/stable/7/x86_64/')\
+          .with_repo_gpgcheck(true)
+      end
     end
   end
 end

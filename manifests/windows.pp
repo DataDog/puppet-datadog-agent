@@ -14,6 +14,7 @@ class datadog_agent::windows(
   String $tags_join = join($tags,','),
   String $tags_quote_wrap = "\"${tags_join}\"",
   Enum['present', 'absent'] $ensure = 'present',
+  Boolean $npm_install = false,
 ) inherits datadog_agent::params {
 
   $msi_full_path = "${msi_location}/datadog-agent-${agent_major_version}-${agent_version}.amd64.msi"
@@ -62,14 +63,18 @@ class datadog_agent::windows(
     if $agent_version == 'latest' {
       $ensure_version = 'installed'
     } else {
-      $ensure_version = $agent_version
+      # While artifacts contain X.Y.Z in their name, their installed Windows versions are actually X.Y.Z.1
+      $ensure_version = "${agent_version}.1"
     }
+
+    $hostname_option = $hostname ? { '' => {}, default => { 'HOSTNAME' => $hostname } }
+    $npm_install_option = $npm_install ? { false => {}, true => { 'ADDLOCAL' => 'MainApplication,NPM' } }
 
     package { $datadog_agent::params::package_name:
       ensure          => $ensure_version,
       provider        => 'windows',
       source          => $msi_full_path,
-      install_options => ['/norestart', {'APIKEY' => $api_key, 'HOSTNAME' => $hostname, 'TAGS' => $tags_quote_wrap}]
+      install_options => ['/norestart', {'APIKEY' => $api_key, 'TAGS' => $tags_quote_wrap} + $npm_install_option + $hostname_option]
     }
 
   } else {

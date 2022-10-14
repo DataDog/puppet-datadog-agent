@@ -10,9 +10,21 @@ instances:
       - <%= fs %>
 <%- end -%>
 <% end -%>
+<% if @filesystem_exclude -%>
+    file_system_exclude:
+<% (Array(@filesystem_exclude)).each do |fs| -%>
+      - <%= fs %>
+<%- end -%>
+<% end -%>
 <% if @device_blacklist -%>
     device_blacklist:
 <% (Array(@device_blacklist)).each do |disk| -%>
+      - <%= disk %>
+<% end -%>
+<% end -%>
+<% if @device_exclude -%>
+    device_exclude:
+<% (Array(@device_exclude)).each do |disk| -%>
       - <%= disk %>
 <% end -%>
 <% end -%>
@@ -22,9 +34,21 @@ instances:
       - <%= mount %>
 <% end -%>
 <% end -%>
+<% if @mountpoint_exclude -%>
+    mount_point_exclude:
+<% (Array(@mountpoint_exclude)).each do |mount| -%>
+      - <%= mount %>
+<% end -%>
+<% end -%>
 <% if @filesystem_whitelist -%>
     file_system_whitelist:
 <% (Array(@filesystem_whitelist)).each do |fs| -%>
+      - <%= fs %>
+<%- end -%>
+<% end -%>
+<% if @filesystem_include -%>
+    file_system_include:
+<% (Array(@filesystem_include)).each do |fs| -%>
       - <%= fs %>
 <%- end -%>
 <% end -%>
@@ -34,9 +58,21 @@ instances:
       - <%= disk %>
 <% end -%>
 <% end -%>
+<% if @device_include -%>
+    device_include:
+<% (Array(@device_include)).each do |disk| -%>
+      - <%= disk %>
+<% end -%>
+<% end -%>
 <% if @mountpoint_whitelist -%>
     mount_point_whitelist:
 <% (Array(@mountpoint_whitelist)).each do |mount| -%>
+      - <%= mount %>
+<% end -%>
+<% end -%>
+<% if @mountpoint_include -%>
+    mount_point_include:
+<% (Array(@mountpoint_include)).each do |mount| -%>
       - <%= mount %>
 <% end -%>
 <% end -%>

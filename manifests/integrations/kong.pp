@@ -32,7 +32,7 @@ class datadog_agent::integrations::kong (
     }
   ]
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/kong.yaml"
   if $::datadog_agent::_agent_major_version > 5 {

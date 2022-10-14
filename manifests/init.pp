@@ -14,6 +14,8 @@
 #       Force the hostname to whatever you want. (default: auto-detected)
 #   $api_key:
 #       Your DataDog API Key. Please replace with your key value.
+#   $agent_flavor:
+#       Linux-only. The Agent flavor to install, eg: "datadog-agent" or "datadog-iot-agent".
 #   $collect_ec2_tags
 #       Collect AWS EC2 custom tags as agent tags.
 #       Boolean. Default: false
@@ -37,6 +39,8 @@
 #       Note: this is not for Puppet Report Tags.  See report_trusted_fact_tags
 #   $puppet_run_reports
 #       Will send results from your puppet agent runs back to the datadog service.
+#   $reports_url
+#       The URL to use when sending puppet run reports. Default: https://api.${datadog_site}
 #   $manage_dogapi_gem
 #       When reports are enabled, ensure the dogapi gem (required) is installed.
 #   $puppetmaster_user
@@ -219,6 +223,13 @@
 #       RPM: https://yum.datadoghq.com/stable/7/x86_64/ (with matching agent version and architecture)
 #       Windows: https://https://s3.amazonaws.com/ddagent-windows-stable/
 #       String. Default: undef
+#   $rpm_repo_gpgcheck
+#       Whether or not to perform repodata signature check for RPM repositories.
+#       Applies to Red Hat and SUSE platforms. When set to `undef`, this is activated
+#       for all Agent versions other than 5 when `agent_repo_uri` is also undefinded.
+#       The `undef` value also translates to `false` on RHEL/CentOS 8.1 because
+#       of a bug in libdnf: https://bugzilla.redhat.com/show_bug.cgi?id=1792506
+#       Boolean. Default: undef
 #   $apt_release
 #       The distribution channel to be used for the APT repo. Eg: 'stable' or 'beta'.
 #       String. Default: stable
@@ -242,6 +253,7 @@ class datadog_agent(
   String $datadog_site = $datadog_agent::params::datadog_site,
   String $host = '',
   String $api_key = 'your_API_key',
+  Enum['datadog-agent', 'Datadog Agent', 'datadog-iot-agent'] $agent_flavor = $datadog_agent::params::package_name,
   Boolean $collect_ec2_tags = false,
   Boolean $collect_gce_tags = false,
   Boolean $collect_instance_metadata = true,
@@ -252,6 +264,7 @@ class datadog_agent(
   Array $facts_to_tags = [],
   Array $trusted_facts_to_tags = [],
   Boolean $puppet_run_reports = false,
+  String $reports_url = "https://api.${datadog_site}",
   String $puppetmaster_user = $settings::user,
   String $puppet_gem_provider = $datadog_agent::params::gem_provider,
   Boolean $non_local_traffic = false,
@@ -331,14 +344,18 @@ class datadog_agent(
   Boolean $container_collect_all = $datadog_agent::params::container_collect_all,
   Hash[String[1], Data] $agent_extra_options = {},
   Optional[String] $agent_repo_uri = undef,
-  Optional[Boolean] $use_apt_backup_keyserver = $datadog_agent::params::use_apt_backup_keyserver,
-  String $apt_backup_keyserver = $datadog_agent::params::apt_backup_keyserver,
-  String $apt_keyserver = $datadog_agent::params::apt_keyserver,
+  Optional[Boolean] $rpm_repo_gpgcheck = undef,
+  # TODO: $use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver can be
+  # removed in the next major version; they're kept now for backwards compatibility
+  Optional[Boolean] $use_apt_backup_keyserver = undef,
+  Optional[String] $apt_backup_keyserver = undef,
+  Optional[String] $apt_keyserver = undef,
   String $apt_release = $datadog_agent::params::apt_default_release,
   String $win_msi_location = 'C:/Windows/temp', # Temporary directory where the msi file is downloaded, must exist
   Enum['present', 'absent'] $win_ensure = 'present', #TODO: Implement uninstall also for apt and rpm install methods
   Optional[String] $service_provider = undef,
   Optional[String] $agent_version = $datadog_agent::params::agent_version,
+  Boolean $windows_npm_install = false,
 ) inherits datadog_agent::params {
 
   #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'
@@ -396,8 +413,6 @@ class datadog_agent(
     $local_integrations = $integrations
   }
 
-  $_puppetversion = lookup({ 'name' => '::puppetversion', 'default_value' => 'unknown'})
-
   include datadog_agent::params
   case upcase($log_level) {
     'CRITICAL': { $_loglevel = 'CRITICAL' }
@@ -413,27 +428,30 @@ class datadog_agent(
   # Install agent
   if $manage_install {
     case $::operatingsystem {
-      'Ubuntu','Debian' : {
-        if $use_apt_backup_keyserver {
-          $_apt_keyserver = $apt_backup_keyserver
-        } else {
-          $_apt_keyserver = $apt_keyserver
+      'Ubuntu','Debian','Raspbian' : {
+        if $use_apt_backup_keyserver != undef or $apt_backup_keyserver != undef or $apt_keyserver != undef {
+          notify { 'apt keyserver arguments deprecation':
+            message  => '$use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver are deprecated since version 3.13.0',
+            loglevel => 'warning',
+          }
         }
         class { 'datadog_agent::ubuntu':
           agent_major_version   => $_agent_major_version,
           agent_version         => $agent_version,
+          agent_flavor          => $agent_flavor,
           agent_repo_uri        => $agent_repo_uri,
           release               => $apt_release,
           skip_apt_key_trusting => $skip_apt_key_trusting,
-          apt_keyserver         => $_apt_keyserver,
         }
       }
-      'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux' : {
+      'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky' : {
         class { 'datadog_agent::redhat':
           agent_major_version => $_agent_major_version,
+          agent_flavor        => $agent_flavor,
           agent_repo_uri      => $agent_repo_uri,
           manage_repo         => $manage_repo,
           agent_version       => $agent_version,
+          rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
         }
       }
       'Windows' : {
@@ -445,17 +463,27 @@ class datadog_agent(
           api_key             => $api_key,
           hostname            => $host,
           tags                => $local_tags,
-          ensure              => $win_ensure
+          ensure              => $win_ensure,
+          npm_install         => $windows_npm_install,
         }
         if ($win_ensure == absent) {
           return() #Config files will remain unchanged on uninstall
         }
       }
+      'OpenSuSE', 'SLES' : {
+        class { 'datadog_agent::suse' :
+          agent_major_version => $_agent_major_version,
+          agent_flavor        => $agent_flavor,
+          agent_repo_uri      => $agent_repo_uri,
+          agent_version       => $agent_version,
+          rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
+        }
+      }
       default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
     }
   } else {
-    if ! defined(Package[$datadog_agent::params::package_name]) {
-      package { $datadog_agent::params::package_name:
+    if ! defined(Package[$agent_flavor]) {
+      package { $agent_flavor:
         ensure => present,
         source => 'Agent installation not managed by Puppet, make sure the Agent is installed beforehand.',
       }
@@ -464,6 +492,7 @@ class datadog_agent(
 
   # Declare service
   class { 'datadog_agent::service' :
+    agent_flavor     => $agent_flavor,
     service_ensure   => $service_ensure,
     service_enable   => $service_enable,
     service_provider => $service_provider,
@@ -483,7 +512,7 @@ class datadog_agent(
       owner   => $dd_user,
       group   => $dd_group,
       mode    => $datadog_agent::params::permissions_directory,
-      require => Package[$datadog_agent::params::package_name],
+      require => Package[$agent_flavor],
     }
   }
 
@@ -502,7 +531,7 @@ class datadog_agent(
       owner   => $dd_user,
       group   => $dd_group,
       mode    => $datadog_agent::params::permissions_directory,
-      require => Package[$datadog_agent::params::package_name],
+      require => Package[$agent_flavor],
     }
 
     file { $_conf_dir:
@@ -732,12 +761,13 @@ class datadog_agent(
       }
 
       file { 'C:/ProgramData/Datadog/datadog.yaml':
-        owner   => $dd_user,
-        group   => $dd_group,
-        mode    => '0660',
-        content => template('datadog_agent/datadog.yaml.erb'),
-        notify  => Service[$datadog_agent::params::service_name],
-        require => File['C:/ProgramData/Datadog'],
+        owner     => $dd_user,
+        group     => $dd_group,
+        mode      => '0660',
+        content   => template('datadog_agent/datadog.yaml.erb'),
+        show_diff => false,
+        notify    => Service[$datadog_agent::params::service_name],
+        require   => File['C:/ProgramData/Datadog'],
       }
 
       file { 'C:/ProgramData/Datadog/install_info':
@@ -751,12 +781,13 @@ class datadog_agent(
     } else {
 
       file { '/etc/datadog-agent/datadog.yaml':
-        owner   => $dd_user,
-        group   => $dd_group,
-        mode    => '0640',
-        content => template('datadog_agent/datadog.yaml.erb'),
-        notify  => Service[$datadog_agent::params::service_name],
-        require => File['/etc/datadog-agent'],
+        owner     => $dd_user,
+        group     => $dd_group,
+        mode      => '0640',
+        content   => template('datadog_agent/datadog.yaml.erb'),
+        show_diff => false,
+        notify    => Service[$datadog_agent::params::service_name],
+        require   => File['/etc/datadog-agent'],
       }
 
       file { '/etc/datadog-agent/install_info':
@@ -783,7 +814,7 @@ class datadog_agent(
 
     class { 'datadog_agent::reports':
       api_key                   => $api_key,
-      datadog_site              => $datadog_site,
+      datadog_site              => $reports_url,
       manage_dogapi_gem         => $manage_dogapi_gem,
       puppet_gem_provider       => $puppet_gem_provider,
       dogapi_version            => $datadog_agent::params::dogapi_version,

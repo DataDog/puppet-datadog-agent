@@ -18,11 +18,11 @@ puppet module install datadog-datadog_agent
 
 - By default Datadog Agent v7.x is installed. To use an earlier Agent version, change the setting `agent_major_version`.
 - `agent5_enable` is no longer used, as it has been replaced by `agent_major_version`.
-- `agent6_extra_options` has been renamed to `agent_extra_options` since it now applies to both Agent v6 and v7.
-- `agent6_log_file` has been renamed to `agent_log_file` since it now applies to both Agent v6 and v7.
+- `agent6_extra_options` has been renamed to `agent_extra_options` since it applies to both Agent v6 and v7.
+- `agent6_log_file` has been renamed to `agent_log_file` since it applies to both Agent v6 and v7.
 - `agent5_repo_uri` and `agent6_repo_uri` become `agent_repo_uri` for all Agent versions.
 - `conf_dir` and `conf6_dir` become `conf_dir` for all Agent versions.
-- The repository file created on Linux is now named `datadog` for all Agent versions instead of `datadog5`/`datadog6`.
+- The repository file created on Linux is named `datadog` for all Agent versions instead of `datadog5`/`datadog6`.
 
 ### Configuration
 
@@ -65,7 +65,7 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
     }
     ```
 
-    Refer to the [comments in code][6] for all arguments available for a given integration.
+    See the [comments in code][6] for all arguments available for a given integration.
 
     If an integration does not have a [manifest with a dedicated class][7], you can still add a configuration for it. Below is an example for the `ntp` check:
 
@@ -83,7 +83,7 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
     }
     ```
 
-5. (Optional) To collect metrics and events about Puppet itself, refer to the section about [Reporting](#reporting).
+5. (Optional) To collect metrics and events about Puppet itself, see the section about [Reporting](#reporting).
 
 ### Upgrading integrations
 
@@ -111,19 +111,19 @@ Note it's not possible to downgrade an integration to a version older than the o
 
 To enable reporting of Puppet runs to your Datadog timeline, enable the report processor on your Puppet master and reporting for your clients. The clients send a run report after each check-in back to the master.
 
-1. Install the [dogapi][3] gem on your system.
-
-2. Set the `puppet_run_reports` option to true in the node configuration manifest for your master:
+1. Set the `puppet_run_reports` option to true in the node configuration manifest for your master:
 
     ```ruby
-    class { "datadog-agent":
-        api_key => "<YOUR_DD_API_KEY>",
-        puppet_run_reports => true
-        # ...
+    class { 'datadog-agent':
+      api_key            => '<YOUR_DD_API_KEY>',
+      puppet_run_reports => true
+      # ...
     }
     ```
 
-3. Add these configuration options to the Puppet master config (eg: `/etc/puppetlabs/puppet/puppet.conf`):
+    The dogapi gem is automatically installed. Set `manage_dogapi_gem` to false if you want to customize the installation.
+
+2. Add these configuration options to the Puppet master config (eg: `/etc/puppetlabs/puppet/puppet.conf`):
 
     ```ini
     [main]
@@ -142,7 +142,23 @@ To enable reporting of Puppet runs to your Datadog timeline, enable the report p
     report=true
     ```
 
-4. On all of your Puppet client nodes, add the following in the same location:
+With the [`ini_setting` module](https://forge.puppet.com/modules/puppetlabs/inifile):
+
+```puppet
+  ini_setting { 'puppet_conf_master_report_datadog_puppetdb':
+    ensure  => present,
+    path    => '/etc/puppetlabs/puppet/puppet.conf',
+    section => 'master',
+    setting => 'reports',
+    value   => 'datadog_reports,puppetdb',
+    notify  => [
+      Service['puppet'],
+      Service['puppetserver'],
+    ],
+  }
+```
+
+3. On all of your Puppet client nodes, add the following in the same location:
 
     ```ini
     [agent]
@@ -150,7 +166,22 @@ To enable reporting of Puppet runs to your Datadog timeline, enable the report p
     report=true
     ```
 
-5. (Optional) Enable tagging of reports with facts:
+With the [`ini_setting` module](https://forge.puppet.com/modules/puppetlabs/inifile):
+
+```puppet
+  ini_setting { 'puppet_conf_agent_report_true':
+    ensure  => present,
+    path    => '/etc/puppetlabs/puppet/puppet.conf',
+    section => 'agent',
+    setting => 'report',
+    value   => 'true',
+    notify  => [
+      Service['puppet'],
+    ],
+  }
+```
+
+4. (Optional) Enable tagging of reports with facts:
 
     You can add tags to reports that are sent to Datadog as events. These tags can be sourced from Puppet facts for the given node the report is regarding. These should be 1:1 and not involve structured facts (hashes, arrays, etc.) to ensure readability. To enable regular fact tagging, set the parameter `datadog_agent::reports::report_fact_tags` to the array value of facts—for example `["virtual","operatingsystem"]`. To enable trusted fact tagging, set the parameter `datadog_agent::reports::report_trusted_fact_tags` to the array value of facts—for example `["certname","extensions.pp_role","hostname"]`.
 
@@ -161,7 +192,7 @@ To enable reporting of Puppet runs to your Datadog timeline, enable the report p
     - Do not duplicate common data from monitoring like hostname, uptime, memory, etc.
     - Coordinate core facts like role, owner, template, datacenter, etc., that help you build meaningful correlations to the same tags from metrics
 
-6. Verify your Puppet data is in Datadog by searching for `sources:puppet` in the [Event Stream][5].
+5. Verify your Puppet data is in Datadog by searching for `sources:puppet` in the [Event Stream][5].
 
 ### Troubleshooting
 
@@ -188,6 +219,8 @@ If you see the following error, ensure `reports=datadog_reports` is defined in `
     Error 400 on SERVER: Could not autoload datadog_reports:
     Class Datadog_reports is already defined in Puppet::Reports
     ```
+
+If you don't see any reports coming in, check your Puppet server logs.
 
 ### Masterless Puppet
 
@@ -222,13 +255,15 @@ class { "datadog_agent":
   facts_to_tags      => ["osfamily","networking.domain","my_custom_fact"],
 }
 ```
-Tips: 
-1. For structured facts index into the specific fact value otherwise the entire array will come over as a string and ultimately be difficult to use.
-2. Dynamic facts such as CPU usage, Uptime, and others that are expected to change each run are not ideal for tagging.  Static facts that are expected to stay for the life of a node are best candidates for tagging.
+
+Tips:
+
+1. For structured facts index into the specific fact value otherwise the entire array comes over as a string and ultimately be difficult to use.
+2. Dynamic facts such as CPU usage, Uptime, and others that are expected to change each run are not ideal for tagging. Static facts that are expected to stay for the life of a node are best candidates for tagging.
 
 ### Configuration variables
 
-These variables can be set in the `datadog_agent` class to control settings in the Agent. Refer to the [comments in code][8] for the full list of supported arguments.
+These variables can be set in the `datadog_agent` class to control settings in the Agent. See the [comments in code][8] for the full list of supported arguments.
 
 | variable name                           | description                                                                                                                                                                                      |
 |-----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -236,13 +271,12 @@ These variables can be set in the `datadog_agent` class to control settings in t
 | `agent_version`                         | Lets you pin a specific minor version of the Agent to install, for example: `1:7.16.0-1`. Leave empty to install the latest version.                                                             |
 | `collect_ec2_tags`                      | Collect an instance's custom EC2 tags as Agent tags by using `true`.                                                                                                                             |
 | `collect_instance_metadata`             | Collect an instance's EC2 metadata as Agent tags by using `true`.                                                                                                                                |
-| `datadog_site`                          | The Datadog site to report to (Agent v6 and v7 only). Defaults to `datadoghq.com`, can be set to `datadoghq.eu` or `us3.datadoghq.com`.                                                         |
+| `datadog_site`                          | The Datadog site to report to (Agent v6 and v7 only). Defaults to `datadoghq.com`, eg: `datadoghq.eu` or `us3.datadoghq.com`.                                                          |
 | `dd_url`                                | The Datadog intake server URL. You are unlikely to need to change this. Overrides `datadog_site`                                                                                                 |
 | `host`                                  | Overrides the node's host name.                                                                                                                                                                  |
 | `local_tags`                            | An array of `<KEY:VALUE>` strings that are set as tags for the node.                                                                                                                             |
 | `non_local_traffic`                     | Allow other nodes to relay their traffic through this node.                                                                                                                                      |
 | `apm_enabled`                           | A boolean to enable the APM Agent (defaults to false).                                                                                                                                           |
-| `apm_analyzed_spans`                    | A hash to add APM events for trace search & analytics (defaults to undef), for example:<br>`{ 'app\|rails.request' => 1, 'service-name\|operation-name' => 0.8 }`                                |
 | `process_enabled`                       | A boolean to enable the process Agent (defaults to false).                                                                                                                                       |
 | `scrub_args`                            | A boolean to enable the process cmdline scrubbing (defaults to true).                                                                                                                            |
 | `custom_sensitive_words`                | An array to add more words beyond the default ones used by the scrubbing feature (defaults to `[]`).                                                                                             |
@@ -251,12 +285,23 @@ These variables can be set in the `datadog_agent` class to control settings in t
 | `agent_extra_options`<sup>1</sup>       | A hash to provide additional configuration options (Agent v6 and v7 only).                                                                                                                       |
 | `hostname_extraction_regex`<sup>2</sup> | A regex used to extract the hostname captured group to report the run in Datadog instead of reporting the Puppet nodename, for example:<br>`'^(?<hostname>.*\.datadoghq\.com)(\.i-\w{8}\..*)?$'` |
 
-(1) `agent_extra_options` is used to provide a fine grain control of additional Agent v6/v7 config options. A deep merge is performed that may override options provided in the `datadog_agent` class parameters.
+(1) `agent_extra_options` is used to provide a fine grain control of additional Agent v6/v7 config options. A deep merge is performed that may override options provided in the `datadog_agent` class parameters. For example:
+
+```
+class { "datadog_agent":
+    < your other arguments to the class >,
+    agent_extra_options => {
+        use_http => true,
+        use_compression => true,
+        compression_level => 6,
+    },
+}
+```
 
 (2) `hostname_extraction_regex` is useful when the Puppet module and the Datadog Agent are reporting different host names for the same host in the infrastructure list.
 
 [1]: https://forge.puppet.com/datadog/datadog_agent
-[2]: https://app.datadoghq.com/account/settings#api
+[2]: https://app.datadoghq.com/organization-settings/api-keys
 [3]: https://github.com/DataDog/dogapi-rb
 [4]: https://app.datadoghq.com/account/settings#integrations
 [5]: https://app.datadoghq.com/event/stream

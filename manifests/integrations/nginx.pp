@@ -20,6 +20,8 @@
 #             'nginx_status_url'  => 'http://example2.com:1234/nginx_status/',
 #             'tags' => ['instance:foo'],
 #         },
+#     ],
+#     logs => [
 #         {
 #             'type' => 'file',
 #             'path' => '/var/log/nginx/access.log',
@@ -61,7 +63,7 @@ class datadog_agent::integrations::nginx(
   Array $instances = [],
   Optional[Array] $logs = undef,
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/nginx.yaml"
   if $::datadog_agent::_agent_major_version > 5 {

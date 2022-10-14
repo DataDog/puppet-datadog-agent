@@ -1,6 +1,61 @@
 Changes
 =======
 
+# 3.18.0 / 2022-10-13
+
+* [BUGFIX] Make `datadog_agent::service::enable` type more general ([#756][])
+* [BUGFIX] Hide diff for datadog.yaml file  ([#755][])
+* [FEATURE] Solr: rely on built-in default metrics ([#748][]) (Thanks [@rud][])
+* [FEATURE] Mongo: Replace Deprecated Parameters ([#752][]) (Thanks [@jabbate19][])
+* [FEATURE] Cassandra, MySQL: Add support for max_returned_metrics and dbm options ([#751][]) (Thanks [@rgergo][])
+* [BUGFIX] Bump tzinfo from 1.2.9 to 2.0.5 ([#746][])
+
+# 3.17.0 / 2022-07-15
+
+* [FEATURE] Add support for multiple network configuration options ([#732][]) (Thanks [@ryan-dyer-sp][])
+* [BUGFIX] Use proper version string for package.ensure on Windows ([#741][])
+
+# 3.16.0 / 2022-05-25
+
+* [FEATURE] Allow configuring the Puppet reports endpoint ([#733][]) (Thanks [@ardichoke][])
+
+# 3.15.0 / 2022-05-05
+
+* [FEATURE] Support AlmaLinux and Rocky Linux with Puppet >= 7.12.0 ([#726][])
+* [BUGFIX] Integration recipes now `require datadog_agent` instead of `include datadog_agent` ([#725][])
+* [BUGFIX] Allow latest versions of: stdlib, concat, apt ([#728][]) (Thanks [@damonmaria][])
+
+# 3.14.0 / 2021-09-29
+
+* [FEATURE] Support Raspbian as debian-based systems ([#719][]) (Thanks [@Mstrodl])
+* [FEATURE] Add support for security-agent config ([#706][]) (Thanks [@florusboth])
+* [BUGFIX] Fix "Unable to locate package datadog-signing-keys" error on new installs ([#721][])
+
+# 3.13.0 / 2021-08-11
+
+* [CHORE] Run `bundle update` on Ruby 2.5.1 ([#712][])
+* [FEATURE] Install datadog-signing-keys on Debian based platforms ([#709][])
+* [BUGFIX] Do not add process integration configuration file if not configured ([#703][]) (Thanks [@yanjunding][])
+* [FEATURE] add support for `min_collection_interval` for HTTP check ([#699][]) (Thanks [@yanjunding][])
+* [FEATURE] Improvements for APT keys management ([#698][], [#700][], [#701][] and [#714][])
+* [FEATURE] Include 'datadog_agent' class in the catalog when using the generic integration ([#697][]) (Thanks [@stantona][]) 
+* [BUGFIX] Update `excluded_interface_re` type to String ([#696][]) (Thanks [@florusboth][])
+
+# 3.12.0 / 2021-05-06
+
+* [FEATURE] Support for NPM on Windows [#688][]
+* [FEATURE] Enable repo_gpgcheck for RPM repositories by default [#693][]
+* [FEATURE] Add the 'current' gpg key, only use 1 gpgkey on suse < 15 [#687][]
+* [BUGFIX] Fix typo in network.yaml.erb [#690][] (Thanks [@florusboth][])
+* [BUGFIX] Fix tool_version being unknown in install_info [#692][]
+
+# 3.11.0 / 2021-03-01
+
+* [FEATURE] Add support for SUSE distros [#682][]
+* [FEATURE] Allow specifying an agent_flavor to install [#686][] (Thanks [@Aramack][])
+* [FEATURE] Expose new parameters for disk check [#679][]
+* [BUGFIX] Fix service restart on Windows [#681][]
+
 # 3.10.0 / 2020-12-10
 
 * [FEATURE] Allow removing check config files [#675][]
@@ -813,6 +868,40 @@ Please read the [docs]() for more details.
 [#672]: https://github.com/DataDog/puppet-datadog-agent/issues/672
 [#675]: https://github.com/DataDog/puppet-datadog-agent/issues/675
 [#677]: https://github.com/DataDog/puppet-datadog-agent/issues/677
+[#679]: https://github.com/DataDog/puppet-datadog-agent/issues/679
+[#681]: https://github.com/DataDog/puppet-datadog-agent/issues/681
+[#682]: https://github.com/DataDog/puppet-datadog-agent/issues/682
+[#686]: https://github.com/DataDog/puppet-datadog-agent/issues/686
+[#687]: https://github.com/DataDog/puppet-datadog-agent/issues/687
+[#688]: https://github.com/DataDog/puppet-datadog-agent/issues/688
+[#690]: https://github.com/DataDog/puppet-datadog-agent/issues/690
+[#692]: https://github.com/DataDog/puppet-datadog-agent/issues/692
+[#693]: https://github.com/DataDog/puppet-datadog-agent/issues/693
+[#696]: https://github.com/DataDog/puppet-datadog-agent/issues/696
+[#697]: https://github.com/DataDog/puppet-datadog-agent/issues/697
+[#698]: https://github.com/DataDog/puppet-datadog-agent/issues/698
+[#699]: https://github.com/DataDog/puppet-datadog-agent/issues/699
+[#700]: https://github.com/DataDog/puppet-datadog-agent/issues/700
+[#701]: https://github.com/DataDog/puppet-datadog-agent/issues/701
+[#703]: https://github.com/DataDog/puppet-datadog-agent/issues/703
+[#706]: https://github.com/DataDog/puppet-datadog-agent/issues/706
+[#709]: https://github.com/DataDog/puppet-datadog-agent/issues/709
+[#712]: https://github.com/DataDog/puppet-datadog-agent/issues/712
+[#714]: https://github.com/DataDog/puppet-datadog-agent/issues/714
+[#719]: https://github.com/DataDog/puppet-datadog-agent/issues/719
+[#721]: https://github.com/DataDog/puppet-datadog-agent/issues/721
+[#725]: https://github.com/DataDog/puppet-datadog-agent/issues/725
+[#726]: https://github.com/DataDog/puppet-datadog-agent/issues/726
+[#728]: https://github.com/DataDog/puppet-datadog-agent/issues/728
+[#732]: https://github.com/DataDog/puppet-datadog-agent/issues/732
+[#733]: https://github.com/DataDog/puppet-datadog-agent/issues/733
+[#741]: https://github.com/DataDog/puppet-datadog-agent/issues/741
+[#746]: https://github.com/DataDog/puppet-datadog-agent/issues/746
+[#748]: https://github.com/DataDog/puppet-datadog-agent/issues/748
+[#751]: https://github.com/DataDog/puppet-datadog-agent/issues/751
+[#752]: https://github.com/DataDog/puppet-datadog-agent/issues/752
+[#755]: https://github.com/DataDog/puppet-datadog-agent/issues/755
+[#756]: https://github.com/DataDog/puppet-datadog-agent/issues/756
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
@@ -822,6 +911,7 @@ Please read the [docs]() for more details.
 [@IanCrouch]: https://github.com/IanCrouch
 [@LeoCavaille]: https://github.com/LeoCavaille
 [@MartinDelta]: https://github.com/MartinDelta
+[@Mstrodl]: https://github.com/Mstrodl
 [@NoodlesNZ]: https://github.com/NoodlesNZ
 [@aaron-miller]: https://github.com/aaron-miller
 [@aepod]: https://github.com/aepod
@@ -830,6 +920,7 @@ Please read the [docs]() for more details.
 [@alexfouche]: https://github.com/alexfouche
 [@alexharv074]: https://github.com/alexharv074
 [@alvin-huang]: https://github.com/alvin-huang
+[@ardichoke]: https://github.com/ardichoke
 [@arkpoah]: https://github.com/arkpoah
 [@asenci]: https://github.com/asenci
 [@atayts]: https://github.com/atayts
@@ -846,6 +937,7 @@ Please read the [docs]() for more details.
 [@craigwatson]: https://github.com/craigwatson
 [@cristianjuve]: https://github.com/cristianjuve
 [@cwood]: https://github.com/cwood
+[@damonmaria]: https://github.com/damonmaria
 [@dan70402]: https://github.com/dan70402
 [@davejrt]: https://github.com/davejrt
 [@davidgibbons]: https://github.com/davidgibbons
@@ -864,6 +956,7 @@ Please read the [docs]() for more details.
 [@ewansteele]: https://github.com/ewansteele
 [@ffleming]: https://github.com/ffleming
 [@ffrants]: https://github.com/ffrants
+[@florusboth]: https://github.com/florusboth
 [@flyinbutrs]: https://github.com/flyinbutrs
 [@flyinprogrammer]: https://github.com/flyinprogrammer
 [@fr3nd]: https://github.com/fr3nd
@@ -872,6 +965,7 @@ Please read the [docs]() for more details.
 [@generica]: https://github.com/generica
 [@gotyaio]: https://github.com/gotyaio
 [@grubernaut]: https://github.com/grubernaut
+[@jabbate19]: https://github.com/jabbate19
 [@jacobbednarz]: https://github.com/jacobbednarz
 [@jadams-av]: https://github.com/jadams-av
 [@jameynelson]: https://github.com/jameynelson
@@ -901,10 +995,13 @@ Please read the [docs]() for more details.
 [@paulhamby]: https://github.com/paulhamby
 [@pid1]: https://github.com/pid1
 [@pulkitsethi]: https://github.com/pulkitsethi
+[@rgergo]: https://github.com/rgergo
 [@rmrf-run]: https://github.com/rmrf-run
 [@rooprob]: https://github.com/rooprob
 [@rothgar]: https://github.com/rothgar
 [@rtyler]: https://github.com/rtyler
+[@rud]: https://github.com/rud
+[@ryan-dyer-sp]: https://github.com/ryan-dyer-sp
 [@sambanks]: https://github.com/sambanks
 [@samueljamesmarshall]: https://github.com/samueljamesmarshall
 [@scottgeary]: https://github.com/scottgeary
@@ -922,6 +1019,7 @@ Please read the [docs]() for more details.
 [@turnopil]: https://github.com/turnopil
 [@tuxinaut]: https://github.com/tuxinaut
 [@vaisingh]: https://github.com/vaisingh
+[@yanjunding]: https://github.com/yanjunding
 [@yrcjaya]: https://github.com/yrcjaya
 [@zabacad]: https://github.com/zabacad
 [@zickzackv]: https://github.com/zickzackv

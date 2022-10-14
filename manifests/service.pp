@@ -5,14 +5,16 @@
 
 class datadog_agent::service(
   $service_ensure = 'running',
-  Boolean $service_enable = true,
+  Variant[Boolean, Enum['manual', 'mask', 'delayed']] $service_enable = true,
   Optional[String] $service_provider = undef,
+  String $agent_flavor = $datadog_agent::params::package_name,
 ) inherits datadog_agent::params {
 
   if ($::operatingsystem == 'Windows') {
       service { $datadog_agent::params::service_name:
         ensure  => $service_ensure,
         enable  => $service_enable,
+        restart => ['powershell', '-Command', 'Restart-Service -Force DatadogAgent'], # Force restarts dependent services
         require => Package[$datadog_agent::params::package_name]
       }
   } else {
@@ -23,7 +25,7 @@ class datadog_agent::service(
         provider  => $service_provider,
         hasstatus => false,
         pattern   => 'dd-agent',
-        require   => Package[$datadog_agent::params::package_name],
+        require   => Package[$agent_flavor],
       }
     } else {
       service { $datadog_agent::params::service_name:
@@ -31,7 +33,7 @@ class datadog_agent::service(
         enable    => $service_enable,
         hasstatus => false,
         pattern   => 'dd-agent',
-        require   => Package[$datadog_agent::params::package_name],
+        require   => Package[$agent_flavor],
       }
     }
   }

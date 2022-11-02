@@ -233,6 +233,11 @@
 #   $apt_release
 #       The distribution channel to be used for the APT repo. Eg: 'stable' or 'beta'.
 #       String. Default: stable
+#   $windows_npm_install
+#       (Windows only) Boolean to install the Windows NPM driver.
+#       To use NPM features it is necessary to enable install through this flag, as well as
+#       configuring NPM through the datadog::system_probe class.
+#       Boolean. Default: false
 #
 # Sample Usage:
 #

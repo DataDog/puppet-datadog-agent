@@ -21,6 +21,7 @@ class datadog_agent::params {
   $container_collect_all          = false
   $sysprobe_service_name          = 'datadog-agent-sysprobe'
   $securityagent_service_name     = 'datadog-agent-security'
+  $win_npm_service_name           = 'ddnpm'
   $module_metadata                = load_module_metadata($module_name)
 
   case $::operatingsystem {
@@ -64,6 +65,7 @@ class datadog_agent::params {
       $permissions_file           = '0664' # otherwise puppet itself won't be able to access the file. Reported
       $permissions_protected_file = '0660' # as bug in: https://tickets.puppetlabs.com/browse/PA-2877
       $agent_binary               = 'C:/Program Files/Datadog/Datadog Agent/embedded/agent.exe'
+      $sysprobe_service_name      = 'datadog-system-probe'
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }

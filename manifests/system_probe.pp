@@ -2,7 +2,7 @@
 #
 # This class contains the Datadog agent system probe (NPM) configuration.
 # On Windows, install the NPM driver by setting 'windows_npm_install' 
-# to 'true on the datadog_agent class.
+# to 'true on both the datadog_agent class and the system_probe class.
 #
 
 class datadog_agent::system_probe(
@@ -14,6 +14,7 @@ class datadog_agent::system_probe(
   Optional[Hash] $runtime_security_config = undef,
 
   Boolean $service_enable = true,
+  Boolean $windows_npm_install = false,
   String $service_ensure = 'running',
   Optional[String] $service_provider = undef,
 ) inherits datadog_agent::params {
@@ -33,6 +34,12 @@ class datadog_agent::system_probe(
   }
 
   if $::operatingsystem == 'Windows' {
+    service { $datadog_agent::params::sysprobe_service_name:
+      ensure    => $service_ensure,
+      enable    => $service_enable,
+      hasstatus => false,
+      require   => Package[$datadog_agent::params::package_name],
+    }
 
     file { 'C:/ProgramData/Datadog/system-probe.yaml':
       owner   => $datadog_agent::params::dd_user,
@@ -40,8 +47,8 @@ class datadog_agent::system_probe(
       mode    => '0640',
       content => template('datadog_agent/system_probe.yaml.erb'),
       require => File['C:/ProgramData/Datadog'],
+      notify  => Service[$datadog_agent::params::sysprobe_service_name],
     }
-
   } else {
 
     if $service_provider {

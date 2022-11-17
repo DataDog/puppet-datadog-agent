@@ -1,6 +1,10 @@
 Changes
 =======
 
+# 3.19.0 / 2022-11-17
+
+* [FEATURE] Restart Agent service on Windows on system probe configuration changes ([#761][])
+
 # 3.18.0 / 2022-10-13
 
 * [BUGFIX] Make `datadog_agent::service::enable` type more general ([#756][])
@@ -902,6 +906,7 @@ Please read the [docs]() for more details.
 [#752]: https://github.com/DataDog/puppet-datadog-agent/issues/752
 [#755]: https://github.com/DataDog/puppet-datadog-agent/issues/755
 [#756]: https://github.com/DataDog/puppet-datadog-agent/issues/756
+[#761]: https://github.com/DataDog/puppet-datadog-agent/issues/761
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

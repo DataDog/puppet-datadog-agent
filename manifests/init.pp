@@ -470,6 +470,8 @@ class datadog_agent(
           tags                => $local_tags,
           ensure              => $win_ensure,
           npm_install         => $windows_npm_install,
+          npm_service_ensure  => $service_ensure,
+          npm_service_enable  => $service_enable,
         }
         if ($win_ensure == absent) {
           return() #Config files will remain unchanged on uninstall

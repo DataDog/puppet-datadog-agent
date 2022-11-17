@@ -194,6 +194,20 @@ With the [`ini_setting` module](https://forge.puppet.com/modules/puppetlabs/inif
 
 5. Verify your Puppet data is in Datadog by searching for `sources:puppet` in the [Event Stream][5].
 
+### NPM setup
+
+To enable the Datadog Agent Network Performance Monitoring (NPM) features follow these steps:
+
+1. (Windows only) If the Agent is already installed, uninstall it by passing `win_ensure => absent` to the main class and removing other classes' definitions.
+2. (Windows only) Pass the `windows_npm_install` option with value `true` to the `datadog::datadog_agent` class. Remove `win_ensure` if added on previous step.
+3. Use the `datadog_agent::system_probe` class to properly create the configuration file:
+
+```conf
+class { 'datadog_agent::system_probe':
+    network_enabled => true, 
+}
+```
+
 ### Troubleshooting
 
 You can run the Puppet Agent manually to check for errors in the output:
@@ -281,6 +295,8 @@ These variables can be set in the `datadog_agent` class to control settings in t
 | `scrub_args`                            | A boolean to enable the process cmdline scrubbing (defaults to true).                                                                                                                            |
 | `custom_sensitive_words`                | An array to add more words beyond the default ones used by the scrubbing feature (defaults to `[]`).                                                                                             |
 | `logs_enabled`                          | A boolean to enable the logs Agent (defaults to false).                                                                                                                                          |
+| `windows_npm_install`                   | A boolean to enable the Windows NPM driver installation (defaults to false).                                                                                                                     |
+| `win_ensure`                            | An enum (present/absent) to ensure the presence/absence of the Datadog Agent on Windows (defaults to present)                                                                                    |
 | `container_collect_all`                 | A boolean to enable logs collection for all containers.                                                                                                                                          |
 | `agent_extra_options`<sup>1</sup>       | A hash to provide additional configuration options (Agent v6 and v7 only).                                                                                                                       |
 | `hostname_extraction_regex`<sup>2</sup> | A regex used to extract the hostname captured group to report the run in Datadog instead of reporting the Puppet nodename, for example:<br>`'^(?<hostname>.*\.datadoghq\.com)(\.i-\w{8}\..*)?$'` |

@@ -198,13 +198,13 @@ With the [`ini_setting` module](https://forge.puppet.com/modules/puppetlabs/inif
 
 To enable the Datadog Agent Network Performance Monitoring (NPM) features follow these steps:
 
-1. (Windows only) If the Agent is already installed, uninstall it by passing `win_ensure => absent` to the main class.
+1. (Windows only) If the Agent is already installed, uninstall it by passing `win_ensure => absent` to the main class and removing other classes' definitions.
 2. (Windows only) Pass the `windows_npm_install` option with value `true` to the `datadog::datadog_agent` class. Remove `win_ensure` if added on previous step.
 3. Use the `datadog_agent::system_probe` class to properly create the configuration file:
 
 ```conf
 class { 'datadog_agent::system_probe':
-    enabled => true, 
+    network_enabled => true, 
 }
 ```
 

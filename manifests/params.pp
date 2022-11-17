@@ -19,8 +19,8 @@ class datadog_agent::params {
   $logs_enabled                   = false
   $logs_open_files_limit          = undef
   $container_collect_all          = false
+  $sysprobe_service_name          = 'datadog-agent-sysprobe'
   $securityagent_service_name     = 'datadog-agent-security'
-  $win_npm_service_name           = 'ddnpm'
   $module_metadata                = load_module_metadata($module_name)
 
   case $::operatingsystem {
@@ -37,7 +37,6 @@ class datadog_agent::params {
       $permissions_file           = '0644'
       $permissions_protected_file = '0600'
       $agent_binary               = '/opt/datadog-agent/bin/agent/agent'
-      $sysprobe_service_name      = 'datadog-agent-sysprobe'
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux', 'AlmaLinux', 'Rocky', 'OpenSuSE', 'SLES' : {
       $rubydev_package            = 'ruby-devel'
@@ -52,7 +51,6 @@ class datadog_agent::params {
       $permissions_file           = '0644'
       $permissions_protected_file = '0600'
       $agent_binary               = '/opt/datadog-agent/bin/agent/agent'
-      $sysprobe_service_name      = 'datadog-agent-sysprobe'
     }
     'Windows': {
       $legacy_conf_dir            = 'C:/ProgramData/Datadog/agent5' # Not a real path, but integrations use it to ensure => absent so it needs to be a valid path
@@ -66,7 +64,6 @@ class datadog_agent::params {
       $permissions_file           = '0664' # otherwise puppet itself won't be able to access the file. Reported
       $permissions_protected_file = '0660' # as bug in: https://tickets.puppetlabs.com/browse/PA-2877
       $agent_binary               = 'C:/Program Files/Datadog/Datadog Agent/embedded/agent.exe'
-      $sysprobe_service_name      = 'datadog-system-probe'
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }

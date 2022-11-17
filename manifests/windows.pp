@@ -15,8 +15,6 @@ class datadog_agent::windows(
   String $tags_quote_wrap = "\"${tags_join}\"",
   Enum['present', 'absent'] $ensure = 'present',
   Boolean $npm_install = false,
-  String  $npm_service_ensure = 'running',
-  Boolean $npm_service_enable = true,
 ) inherits datadog_agent::params {
 
   $msi_full_path = "${msi_location}/datadog-agent-${agent_major_version}-${agent_version}.amd64.msi"
@@ -77,16 +75,6 @@ class datadog_agent::windows(
       provider        => 'windows',
       source          => $msi_full_path,
       install_options => ['/norestart', {'APIKEY' => $api_key, 'TAGS' => $tags_quote_wrap} + $npm_install_option + $hostname_option]
-    }
-
-    if $npm_install {
-      service { $datadog_agent::params::win_npm_service_name:
-        ensure    => $npm_service_ensure,
-        enable    => $npm_service_enable,
-        hasstatus => false,
-        require   => Package[$datadog_agent::params::package_name],
-        subscribe => File['C:/ProgramData/Datadog/system-probe.yaml'],
-      }
     }
 
   } else {

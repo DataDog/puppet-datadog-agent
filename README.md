@@ -208,6 +208,16 @@ class { 'datadog_agent::system_probe':
 }
 ```
 
+### USM setup
+
+To enable the Datadog Agent Universal Service Monitoring (USM) use the `datadog_agent::system_probe` class to properly create the configuration file:
+
+```conf
+class { 'datadog_agent::system_probe':
+    service_monitoring_enabled => true, 
+}
+```
+
 ### Troubleshooting
 
 You can run the Puppet Agent manually to check for errors in the output:

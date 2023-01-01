@@ -31,7 +31,7 @@ class datadog_agent::system_probe(
       'enabled' => $network_enabled,
     },
     'service_monitoring_config' => {
-      'enabled' => $service_monitoring_config,
+      'enabled' => $service_monitoring_enabled,
     },
     'runtime_security_config' => $runtime_security_config,
   }

@@ -34,7 +34,7 @@ describe 'datadog_agent' do
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-          .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+main})
+          .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+main})
       end
     end
 
@@ -53,7 +53,7 @@ describe 'datadog_agent' do
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-          .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+          .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+6})
       end
     end
 
@@ -72,7 +72,7 @@ describe 'datadog_agent' do
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-          .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+7})
+          .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+7})
       end
     end
 
@@ -91,7 +91,7 @@ describe 'datadog_agent' do
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-          .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+          .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+6})
       end
     end
 
@@ -110,7 +110,7 @@ describe 'datadog_agent' do
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-          .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+          .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+6})
       end
     end
 
@@ -129,7 +129,94 @@ describe 'datadog_agent' do
 
       it do
         is_expected.to contain_file('/etc/apt/sources.list.d/datadog.list')\
-          .with_content(%r{deb\s+https://apt.datadoghq.com/\s+stable\s+6})
+          .with_content(%r{deb\s+\[signed-by=/usr/share/keyrings/datadog-archive-keyring.gpg\]\s+https://apt.datadoghq.com/\s+stable\s+6})
+      end
+    end
+
+    context 'default agent_flavor' do
+      let(:params) do
+        {
+          agent_version: '1:6.15.1-1',
+        }
+      end
+      let(:facts) do
+        {
+          osfamily: 'debian',
+          operatingsystem: 'Ubuntu',
+        }
+      end
+
+      it do
+        is_expected.to contain_package('datadog-agent').with(
+          ensure: '1:6.15.1-1',
+        )
+      end
+    end
+
+    context 'specify agent_flavor' do
+      let(:params) do
+        {
+          agent_version: '1:6.15.1-1',
+          agent_flavor: 'datadog-iot-agent',
+        }
+      end
+      let(:facts) do
+        {
+          osfamily: 'debian',
+          operatingsystem: 'Ubuntu',
+        }
+      end
+
+      it do
+        is_expected.to contain_package('datadog-iot-agent').with(
+          ensure: '1:6.15.1-1',
+        )
+      end
+    end
+  end
+
+  if Gem::Version.new(Puppet.version) >= Gem::Version.new('4.10') # We don't support Windows on Puppet older than 4.10
+    context 'windows NPM' do
+      let(:facts) do
+        {
+          osfamily: 'windows',
+          operatingsystem: 'Windows',
+        }
+      end
+
+      describe 'with NPM enabled' do
+        let(:params) do
+          {
+            agent_major_version: 7,
+            windows_npm_install: true,
+            api_key: 'notakey',
+            host: 'notahost',
+          }
+        end
+
+        it do
+          is_expected.to contain_package('Datadog Agent').with(
+            ensure: 'installed',
+            install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'ADDLOCAL' => 'MainApplication,NPM' }],
+          )
+        end
+      end
+
+      describe 'with NPM disabled' do
+        let(:params) do
+          {
+            agent_major_version: 7,
+            api_key: 'notakey',
+            host: 'notahost',
+          }
+        end
+
+        it do
+          is_expected.to contain_package('Datadog Agent').with(
+            ensure: 'installed',
+            install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""' }],
+          )
+        end
       end
     end
   end
@@ -1519,25 +1606,7 @@ describe 'datadog_agent' do
             end
           end
 
-          if DEBIAN_OS.include?(operatingsystem)
-            it do
-              is_expected.to contain_class('datadog_agent::ubuntu')\
-                .with_apt_keyserver('hkp://keyserver.ubuntu.com:80')
-            end
-            context 'use backup keyserver' do
-              let(:params) do
-                {
-                  use_apt_backup_keyserver: true,
-                  agent_major_version: 5,
-                }
-              end
-
-              it do
-                is_expected.to contain_class('datadog_agent::ubuntu')\
-                  .with_apt_keyserver('hkp://pool.sks-keyservers.net:80')
-              end
-            end
-          elsif REDHAT_OS.include?(operatingsystem)
+          if REDHAT_OS.include?(operatingsystem)
             it { is_expected.to contain_class('datadog_agent::redhat') }
           end
         end
@@ -1614,7 +1683,7 @@ describe 'datadog_agent' do
           it 'adds an install_info' do
             expect(install_info['install_method']).to match(
               'tool' => 'puppet',
-              'tool_version' => %r{^puppet-(\d+\.\d+\.\d+|unknown)$},
+              'tool_version' => %r{^puppet-unknown$}, # puppetversion is not set in tests, this field has to be tested manually
               'installer_version' => %r{^datadog_module-\d+\.\d+\.\d+$},
             )
           end
@@ -2171,24 +2240,73 @@ describe 'datadog_agent' do
     end
   end
 
+  context 'with trusted_facts to tags set' do
+    Puppet::Util::Log.level = :debug
+    Puppet::Util::Log.newdestination(:console)
+
+    describe 'a6 ensure facts_array outputs a list of tags' do
+      let(:params) do
+        {
+          agent_major_version: 6,
+          puppet_run_reports: true,
+          facts_to_tags: ['osfamily'],
+          trusted_facts_to_tags: ['extensions.trusted_fact', 'extensions.facts_array', 'extensions.facts_hash.actor.first_name'],
+        }
+      end
+      let(:facts) do
+        {
+          'operatingsystem' => 'CentOS',
+          'osfamily' => 'redhat',
+        }
+      end
+      let(:trusted_facts) do
+        {
+          'trusted_fact' => 'test',
+          'facts_array' => ['one', 'two'],
+          'facts_hash' => {
+            'actor' => {
+              'first_name' => 'Macaulay',
+              'last_name' => 'Culkin',
+            },
+          },
+        }
+      end
+
+      it do
+        is_expected.to contain_file('/etc/datadog-agent/datadog.yaml')
+          .with_content(%r{tags:\n- osfamily:redhat\n- extensions.trusted_fact:test\n- extensions.facts_array:one\n- extensions.facts_array:two\n- extensions.facts_hash.actor.first_name:Macaulay})
+      end
+    end
+  end
+
   context 'with facts to tags set' do
     describe 'a6 ensure facts_array outputs a list of tags' do
       let(:params) do
         {
           agent_major_version: 6,
           puppet_run_reports: true,
-          facts_to_tags: ['osfamily', 'facts_array'],
+          facts_to_tags: ['osfamily', 'facts_array', 'facts_hash.actor.first_name', 'looks.like.a.path'],
         }
       end
       let(:facts) do
         {
-          operatingsystem: 'CentOS',
-          osfamily: 'redhat',
-          facts_array: ['one', 'two'],
+          'operatingsystem' => 'CentOS',
+          'osfamily' => 'redhat',
+          'facts_array' => ['one', 'two'],
+          'facts_hash' => {
+            'actor' => {
+              'first_name' => 'Macaulay',
+              'last_name' => 'Culkin',
+            },
+          },
+          'looks.like.a.path' => 'but_its_not',
         }
       end
 
-      it { is_expected.to contain_file('/etc/datadog-agent/datadog.yaml').with_content(%r{tags:\n- osfamily:redhat\n- facts_array:one\n- facts_array:two}) }
+      it do
+        is_expected.to contain_file('/etc/datadog-agent/datadog.yaml')
+          .with_content(%r{tags:\n- osfamily:redhat\n- facts_array:one\n- facts_array:two\n- facts_hash.actor.first_name:Macaulay\n- looks.like.a.path:but_its_not})
+      end
     end
 
     describe 'a5 ensure facts_array outputs a list of tags' do

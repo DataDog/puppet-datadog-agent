@@ -13,6 +13,8 @@ Puppet::Reports.register_report(:datadog_reports) do
   config = YAML.load_file(configfile)
   API_KEY = config[:datadog_api_key]
   API_URL = config[:api_url]
+  REPORT_FACT_TAGS = config[:report_fact_tags] || []
+  REPORT_TRUSTED_FACT_TAGS = config[:report_trusted_fact_tags] || []
 
   if ENV['DD_PROXY_HTTP'].nil?
     ENV['DD_PROXY_HTTP'] = config[:proxy_http]
@@ -54,6 +56,8 @@ Puppet::Reports.register_report(:datadog_reports) do
   end
 
   def process
+    # Here we have access to methods in Puppet::Transaction::Report
+    # https://puppet.com/docs/puppet/latest/format_report.html#puppet::transaction::report
     @summary = summary
     @msg_host = host
     unless HOSTNAME_EXTRACTION_REGEX.nil?
@@ -62,6 +66,7 @@ Puppet::Reports.register_report(:datadog_reports) do
         @msg_host = m[:hostname]
       end
     end
+    Puppet.info "Processing reports for #{@msg_host}"
 
     event_title = ''
     alert_type = ''
@@ -116,8 +121,10 @@ Puppet::Reports.register_report(:datadog_reports) do
       event_data << "\n@@@\n"
     end
 
+    # instantiate DogAPI client
+    @dog = Dogapi::Client.new(API_KEY, nil, @msg_host, nil, nil, nil, API_URL)
+
     Puppet.debug "Sending metrics for #{@msg_host} to Datadog"
-    @dog = Dogapi::Client.new(API_KEY, nil, nil, nil, nil, nil, API_URL)
     @dog.batch_metrics do
       metrics.each do |metric, data|
         data.values.each do |val|
@@ -128,13 +135,23 @@ Puppet::Reports.register_report(:datadog_reports) do
       end
     end
 
-    Puppet.debug "Sending events for #{@msg_host} to Datadog"
+    facts = Puppet::Node::Facts.indirection.find(host).values
+    facts_tags = REPORT_FACT_TAGS.map { |name| "#{name}:#{facts.dig(*name.split('.'))}" }
+    trusted_facts = (Puppet.lookup(:trusted_information) { Hash.new }).to_h
+    trusted_fact_tags = REPORT_TRUSTED_FACT_TAGS.map { |name| "#{name}:#{trusted_facts.dig(*name.split('.'))}" }
+    dog_tags = facts_tags + trusted_fact_tags
+
+    # Uncomment below line for debug logging of tags
+    # Puppet.debug "Sending events for #{@msg_host} to Datadog with tags #{dog_tags.to_s}"
     @dog.emit_event(Dogapi::Event.new(event_data,
                                       msg_title: event_title,
                                       event_type: 'config_management.run',
                                       event_object: @msg_host,
                                       alert_type: alert_type,
                                       priority: event_priority,
-                                      source_type_name: 'puppet'), host: @msg_host)
+                                      source_type_name: 'puppet',
+                                      tags: dog_tags),
+                    host: @msg_host)
+    Puppet.info "Event sent for #{@msg_host} to Datadog"
   end
 end

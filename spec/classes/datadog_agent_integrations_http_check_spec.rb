@@ -1,15 +1,15 @@
 require 'spec_helper'
 
 describe 'datadog_agent::integrations::http_check' do
-  context 'supported agents' do
-    ALL_SUPPORTED_AGENTS.each do |agent_major_version|
+  ALL_SUPPORTED_AGENTS.each do |agent_major_version|
+    context 'supported agents' do
       let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
 
-      if agent_major_version == 5
-        let(:conf_file) { '/etc/dd-agent/conf.d/http_check.yaml' }
-      else
-        let(:conf_file) { "#{CONF_DIR}/http_check.d/conf.yaml" }
-      end
+      conf_file = if agent_major_version == 5
+                    '/etc/dd-agent/conf.d/http_check.yaml'
+                  else
+                    "#{CONF_DIR}/http_check.d/conf.yaml"
+                  end
 
       it { is_expected.to compile.with_all_deps }
       it {
@@ -55,6 +55,7 @@ describe 'datadog_agent::integrations::http_check' do
             password: 'barpassword',
             timeout: 123,
             method: 'post',
+            min_collection_interval: 30,
             data: 'key=value',
             threshold: 456,
             window: 789,
@@ -80,6 +81,7 @@ describe 'datadog_agent::integrations::http_check' do
         it { is_expected.to contain_file(conf_file).with_content(%r{password: barpassword}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{timeout: 123}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{method: post}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{min_collection_interval: 30}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{data: key=value}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{threshold: 456}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{window: 789}) }

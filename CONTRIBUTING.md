@@ -68,7 +68,7 @@ bundle exec kitchen test <target>
 So for example, if you want to test the Agent installation, you can run:
 
 ```bash
-bundle exec kitchen test dd-agent-ubuntu1604
+bundle exec kitchen test dd-agent-ubuntu-1604
 ```
 
 More information about kitchen on its [Getting Started](https://github.com/test-kitchen/test-kitchen/wiki/Getting-Started).

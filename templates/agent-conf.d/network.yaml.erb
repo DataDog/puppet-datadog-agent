@@ -4,6 +4,7 @@ init_config:
 
 instances:
   - collect_connection_state: <%= @collect_connection_state %>
+    collect_connection_queues: <%= @collect_connection_queues %>
 <% if !@excluded_interfaces.empty? -%>
     excluded_interfaces:
 <%- (@excluded_interfaces.each do |interface| -%>
@@ -11,9 +12,51 @@ instances:
 <% end ) -%>
 <% end -%>
 <% if !@excluded_interface_re.empty? -%>
-    excluded_interface_re:
-<%- (@excluded_interfaces_re.each do |interface| -%>
-      - <%= interface %>
-<% end ) -%>
+    excluded_interface_re: <%= @excluded_interface_re %>
 <% end -%>
     combine_connection_states: <%= @combine_connection_states %>
+    collect_rate_metrics: <%= @collect_rate_metrics %>
+    collect_count_metrics: <%= @collect_count_metrics %>
+<% if !@conntrack_path.empty? -%>
+    conntrack_path: <%= @conntrack_path %>
+<% end -%>
+    use_sudo_conntrack: <%= @use_sudo_conntrack %>
+<% if !@whitelist_conntrack_metrics.empty? -%>
+    whitelist_conntrack_metrics:
+<%- (@whitelist_conntrack_metrics.each do |metric| -%>
+      - <%= metric %>
+<% end ) -%>
+<% end -%>
+<% if !@blacklist_conntrack_metrics.empty? -%>
+    blacklist_conntrack_metrics:
+<%- (@blacklist_conntrack_metrics.each do |metric| -%>
+      - <%= metric %>
+<% end ) -%>
+<% end -%>
+    collect_aws_ena_metrics: <%= @collect_aws_ena_metrics %>
+<% if !@tags.empty? -%>
+    tags:
+<%- (@tags.each do |tag| -%>
+      - <%= tag %>
+<% end ) -%>
+<% end -%>
+<% if !@service.empty? -%>
+    service: <%= @service %>
+<% end -%>
+    min_collection_interval: <%= @min_collection_interval %>
+    empty_default_hostname: <%= @empty_default_hostname %>
+<% if !@metric_patterns_include.empty? or !@metric_patterns_exclude.empty? -%>
+    metric_patterns:
+<% if !@metric_patterns_include.empty? -%>
+      include:
+<%- (@metric_patterns_include.each do |include_pattern| -%>
+        - <%= include_pattern %>
+<% end ) -%>
+<% end -%>
+<% if !@metric_patterns_exclude.empty? -%>
+      exclude:
+<%- (@metric_patterns_exclude.each do |exclude_pattern| -%>
+        - <%= exclude_pattern %>
+<% end ) -%>
+<% end -%>
+<% end -%>

@@ -11,8 +11,11 @@ instances:
 <% if @tags.length > 0 -%>
     tags:
 <%- @tags.each do |tag_name, tag_value| -%>
-      <%= tag_name %>: <%= tag_value %>
+      - <%= tag_name %>:<%= tag_value %>
 <% end -%>
+<% end -%>
+<% if @max_returned_metrics -%>
+    max_returned_metrics: <%= @max_returned_metrics %>
 <% end -%>
 
 init_config:

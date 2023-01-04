@@ -25,6 +25,7 @@
 #
 class datadog_agent::integrations::elasticsearch(
   Boolean $cluster_stats               = false,
+  Boolean $index_stats                 = false,
   Optional[String] $password           = undef,
   Boolean$pending_task_stats           = true,
   Boolean $pshard_stats                = false,
@@ -36,7 +37,7 @@ class datadog_agent::integrations::elasticsearch(
   Optional[String] $username           = undef,
   Optional[Array] $instances           = undef
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   # $ssl_verify can be a bool or a string
   # https://github.com/DataDog/dd-agent/blob/master/checks.d/elastic.py#L454-L455
@@ -47,6 +48,7 @@ class datadog_agent::integrations::elasticsearch(
   if !$instances and $url {
     $_instances = [{
       'cluster_stats'      => $cluster_stats,
+      'index_stats'        => $index_stats,
       'password'           => $password,
       'pending_task_stats' => $pending_task_stats,
       'pshard_stats'       => $pshard_stats,

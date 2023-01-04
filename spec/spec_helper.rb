@@ -1,7 +1,7 @@
 require 'puppetlabs_spec_helper/module_spec_helper'
 
 DEBIAN_OS = ['Ubuntu', 'Debian'].freeze
-REDHAT_OS = ['RedHat', 'CentOS', 'Fedora', 'Amazon', 'Scientific', 'OracleLinux'].freeze
+REDHAT_OS = ['RedHat', 'CentOS', 'Fedora', 'Amazon', 'Scientific', 'OracleLinux', 'AlmaLinux', 'Rocky'].freeze
 WINDOWS_OS = ['Windows'].freeze
 
 if RSpec::Support::OS.windows?
@@ -24,6 +24,10 @@ else
   PACKAGE_NAME               = 'datadog-agent'.freeze
   PERMISSIONS_FILE           = '0644'.freeze
   PERMISSIONS_PROTECTED_FILE = '0600'.freeze
+end
+
+def min_puppet_version(version)
+  Gem.loaded_specs['puppet'].version > Gem::Version.new(version)
 end
 
 def getosfamily(operatingsystem)

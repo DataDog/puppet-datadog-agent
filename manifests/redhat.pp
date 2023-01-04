@@ -8,22 +8,53 @@ class datadog_agent::redhat(
   Optional[String] $agent_repo_uri = undef,
   Boolean $manage_repo = true,
   String $agent_version = $datadog_agent::params::agent_version,
+  String $agent_flavor = $datadog_agent::params::package_name,
+  Optional[Boolean] $rpm_repo_gpgcheck = undef,
 ) inherits datadog_agent::params {
 
   if $manage_repo {
 
+    $keys = [
+        'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public',
+        'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
+        'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
+        'https://keys.datadoghq.com/DATADOG_RPM_KEY.public',
+    ]
+    if ($rpm_repo_gpgcheck != undef) {
+      $repo_gpgcheck = $rpm_repo_gpgcheck
+    } else {
+      if ($agent_repo_uri == undef) and ($agent_major_version > 5) {
+        case $::operatingsystem {
+          'RedHat', 'CentOS', 'OracleLinux': {
+            # disable repo_gpgcheck on 8.1 because of https://bugzilla.redhat.com/show_bug.cgi?id=1792506
+            if $::operatingsystemrelease =~ /^8.1/ {
+              $repo_gpgcheck = false
+            } else {
+              $repo_gpgcheck = true
+            }
+          }
+          default: {
+            $repo_gpgcheck = true
+          }
+        }
+      } else {
+        $repo_gpgcheck = false
+      }
+
+    }
+
     case $agent_major_version {
       5 : {
         $defaulturl = "https://yum.datadoghq.com/rpm/${::architecture}/"
-        $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY.public'
+        $gpgkeys = $keys
       }
       6 : {
         $defaulturl = "https://yum.datadoghq.com/stable/6/${::architecture}/"
-        $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY.public'
+        $gpgkeys = $keys
       }
       7 : {
         $defaulturl = "https://yum.datadoghq.com/stable/7/${::architecture}/"
-        $gpgkey = 'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public'
+        $gpgkeys = $keys[0,-2]
       }
       default: { fail('invalid agent_major_version') }
     }
@@ -32,23 +63,6 @@ class datadog_agent::redhat(
       $baseurl = $agent_repo_uri
     } else {
       $baseurl = $defaulturl
-    }
-
-    $public_key_local = '/etc/pki/rpm-gpg/DATADOG_RPM_KEY.public'
-
-    file { 'DATADOG_RPM_KEY_E09422B3.public':
-        owner  => root,
-        group  => root,
-        mode   => '0600',
-        path   => $public_key_local,
-        source => 'https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public'
-    }
-
-    exec { 'install-gpg-key':
-        command => "/bin/rpm --import ${public_key_local}",
-        onlyif  => "/usr/bin/gpg --dry-run --quiet --with-fingerprint -n ${public_key_local} | grep 'A4C0 B90D 7443 CF6E 4E8A  A341 F106 8E14 E094 22B3' || gpg --dry-run --import --import-options import-show ${public_key_local} | grep 'A4C0B90D7443CF6E4E8AA341F1068E14E09422B3'",
-        unless  => '/bin/rpm -q gpg-pubkey-e09422b3',
-        require => File['DATADOG_RPM_KEY_E09422B3.public'],
     }
 
     yumrepo { 'datadog-beta':
@@ -64,19 +78,21 @@ class datadog_agent::redhat(
     }
 
     yumrepo {'datadog':
-      enabled  => 1,
-      gpgcheck => 1,
-      gpgkey   => $gpgkey,
-      descr    => 'Datadog, Inc.',
-      baseurl  => $baseurl,
-      require  => Exec['install-gpg-key'],
+      enabled       => 1,
+      gpgcheck      => 1,
+      gpgkey        => join($gpgkeys, "\n       "),
+      repo_gpgcheck => $repo_gpgcheck,
+      descr         => 'Datadog, Inc.',
+      baseurl       => $baseurl,
     }
 
-    Package { require => Yumrepo['datadog6']}
+    package { $agent_flavor:
+      ensure  => $agent_version,
+      require => Yumrepo['datadog'],
+    }
+  } else {
+    package { $agent_flavor:
+      ensure  => $agent_version,
+    }
   }
-
-  package { $datadog_agent::params::package_name:
-    ensure  => $agent_version,
-  }
-
 }

@@ -51,7 +51,7 @@ class datadog_agent::integrations::pgbouncer(
   Array $tags = [],
   Array $pgbouncers = [],
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/pgbouncer.yaml"
   if $::datadog_agent::_agent_major_version > 5 {

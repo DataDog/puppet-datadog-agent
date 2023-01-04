@@ -6,15 +6,17 @@ describe 'datadog_agent::integrations::ceph' do
     return
   end
 
-  context 'supported agents' do
-    ALL_SUPPORTED_AGENTS.each do |agent_major_version|
+  ALL_SUPPORTED_AGENTS.each do |agent_major_version|
+    context 'supported agents' do
       let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
-      if agent_major_version == 5
-        let(:conf_file) { '/etc/dd-agent/conf.d/ceph.yaml' }
-      else
-        let(:conf_file) { "#{CONF_DIR}/ceph.d/conf.yaml" }
-      end
-      let(:sudo_conf_file) { '/etc/sudoers.d/datadog_ceph' }
+
+      conf_file = if agent_major_version == 5
+                    '/etc/dd-agent/conf.d/ceph.yaml'
+                  else
+                    "#{CONF_DIR}/ceph.d/conf.yaml"
+                  end
+
+      sudo_conf_file = '/etc/sudoers.d/datadog_ceph'
 
       it { is_expected.to compile.with_all_deps }
       it {

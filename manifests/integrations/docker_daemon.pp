@@ -55,7 +55,7 @@ class datadog_agent::integrations::docker_daemon(
   $collect_labels_as_tags = [],
   $event_attributes_as_tags = [],
 ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   exec { 'dd-agent-should-be-in-docker-group':
     command => "/usr/sbin/usermod -aG ${group} ${datadog_agent::params::dd_user}",

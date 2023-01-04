@@ -45,7 +45,7 @@ class datadog_agent::integrations::process(
   $init_config = {},
   Array $processes = [],
   ) inherits datadog_agent::params {
-  include datadog_agent
+  require ::datadog_agent
 
   if $hiera_processes {
     $local_processes = lookup({ 'name' => 'datadog_agent::integrations::process::processes', 'merge' => 'unique', 'default_value' => $processes })
@@ -74,7 +74,7 @@ class datadog_agent::integrations::process(
   }
 
   file { $dst:
-    ensure  => file,
+    ensure  => $local_processes.length ? { 0 => absent, default => file},
     owner   => $datadog_agent::params::dd_user,
     group   => $datadog_agent::params::dd_group,
     mode    => $datadog_agent::params::permissions_protected_file,

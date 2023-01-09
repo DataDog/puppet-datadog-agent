@@ -9,4 +9,14 @@ describe 'datadog_agent' do
     it { is_expected.to be_enabled }
     it { is_expected.to be_running }
   end
+
+  describe command('rpm -q gpg-pubkey-4172a230-55dd14f6'), :if => os[:family] == 'redhat' do
+    its(:stdout) { should match "package gpg-pubkey-4172a230-55dd14f6 is not installed" }
+    its(:exit_status) { should eq 1 }
+  end
+
+  describe command('rpm -q gpg-pubkey-4172a230-55dd14f6'), :if => os[:family] == 'opensuse' do
+    its(:stdout) { should match "package gpg-pubkey-4172a230-55dd14f6 is not installed" }
+    its(:exit_status) { should eq 1 }
+  end
 end

@@ -11,7 +11,7 @@ provisioner:
   require_chef_for_busser: false
   puppet_debug: true
   puppet_verbose: true
-  custom_pre_apply_command: 'cp -r /tmp/modules/* /tmp/kitchen/modules/'
+  custom_pre_apply_command: 'cp -r /tmp/modules/* /tmp/kitchen/modules/ && sed -i "s|\$datadog_agent::params::agent_version|\"7.39.0\"|" /tmp/kitchen/modules/datadog_agent/manifests/init.pp'
 
 platforms:
   - name: centos-7-puppet-5
@@ -87,6 +87,7 @@ platforms:
         - zypper ar -G https://yum.puppet.com/puppet/sles/15/x86_64/ puppet-repo
         - zypper install -y puppet-agent ruby=2.5
         - gem install bundler -v '= 1.17.3'
+        - gem install net-ssh -v '= 6.1.0'
         - gem install serverspec rspec
         - ln -s /usr/bin/rspec.ruby2.5 /usr/bin/rspec
         - ln -s /opt/puppetlabs/puppet/bin/puppet /usr/bin/puppet

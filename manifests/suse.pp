@@ -65,9 +65,9 @@ class datadog_agent::suse(
     }
   }
 
-  exec { "ensure key 4172A230 is removed from the RPM database":
-    command => "/bin/rpm --erase gpg-pubkey-4172a230-55dd14f6",
-    onlyif  => "/bin/rpm -q gpg-pubkey-4172a230-55dd14f6",
+  exec { 'ensure key 4172A230 is removed from the RPM database':
+    command => '/bin/rpm --erase gpg-pubkey-4172a230-55dd14f6',
+    onlyif  => '/bin/rpm -q gpg-pubkey-4172a230-55dd14f6',
   }
 
   zypprepo { 'datadog':

@@ -17,7 +17,6 @@ class datadog_agent::suse(
     $current_key,
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
-    'https://keys.datadoghq.com/DATADOG_RPM_KEY.public',
   ]
 
   if ($rpm_repo_gpgcheck != undef) {
@@ -33,7 +32,7 @@ class datadog_agent::suse(
   case $agent_major_version {
       5 : { fail('Agent v5 package not available in SUSE') }
       6 : { $gpgkeys = $all_keys }
-      7 : { $gpgkeys = $all_keys[0,-2] }
+      7 : { $gpgkeys = $all_keys }
       default: { fail('invalid agent_major_version') }
   }
 
@@ -64,6 +63,11 @@ class datadog_agent::suse(
     exec { "install-${key_name}":
       command => "/bin/rpm --import ${key_path}",
     }
+  }
+
+  exec { 'ensure key 4172A230 is removed from the RPM database':
+    command => '/bin/rpm --erase gpg-pubkey-4172a230-55dd14f6',
+    onlyif  => '/bin/rpm -q gpg-pubkey-4172a230-55dd14f6',
   }
 
   zypprepo { 'datadog':

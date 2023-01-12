@@ -18,8 +18,8 @@ class datadog_agent::redhat(
         'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public',
         'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
         'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
-        'https://keys.datadoghq.com/DATADOG_RPM_KEY.public',
     ]
+
     if ($rpm_repo_gpgcheck != undef) {
       $repo_gpgcheck = $rpm_repo_gpgcheck
     } else {
@@ -54,7 +54,7 @@ class datadog_agent::redhat(
       }
       7 : {
         $defaulturl = "https://yum.datadoghq.com/stable/7/${::architecture}/"
-        $gpgkeys = $keys[0,-2]
+        $gpgkeys = $keys
       }
       default: { fail('invalid agent_major_version') }
     }
@@ -63,6 +63,11 @@ class datadog_agent::redhat(
       $baseurl = $agent_repo_uri
     } else {
       $baseurl = $defaulturl
+    }
+
+    exec { 'ensure key 4172A230 is removed from the RPM database':
+      command => '/bin/rpm --erase gpg-pubkey-4172a230-55dd14f6',
+      onlyif  => '/bin/rpm -q gpg-pubkey-4172a230-55dd14f6',
     }
 
     yumrepo { 'datadog-beta':

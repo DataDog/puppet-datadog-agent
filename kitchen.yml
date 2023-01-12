@@ -11,7 +11,7 @@ provisioner:
   require_chef_for_busser: false
   puppet_debug: true
   puppet_verbose: true
-  custom_pre_apply_command: 'cp -r /tmp/modules/* /tmp/kitchen/modules/'
+  custom_pre_apply_command: 'cp -r /tmp/modules/* /tmp/kitchen/modules/ && sed -i "s|\$datadog_agent::params::agent_version|\"7.39.0\"|" /tmp/kitchen/modules/datadog_agent/manifests/init.pp'
 
 platforms:
   - name: centos-7-puppet-5

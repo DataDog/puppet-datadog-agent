@@ -1,6 +1,10 @@
 Changes
 =======
 
+# 3.20.0 / 2023-01-12
+
+* [DEPRECATE] Remove the old RPM GPG key 4172A230 from hosts that still trust it, and stop trusting it. ([#770][])
+
 # 3.19.0 / 2022-11-17
 
 * [FEATURE] Restart Agent service on Windows on system probe configuration changes ([#761][])

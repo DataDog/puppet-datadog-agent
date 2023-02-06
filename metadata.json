@@ -152,7 +152,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">=4.6.0 <7.0.0"
+      "version_requirement": ">=4.6.0 <8.0.0"
     }
   ],
   "description": "This will install the Datadog monitoring agent. Sign up and get your API key at: http://www.datadoghq.com",

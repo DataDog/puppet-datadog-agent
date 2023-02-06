@@ -87,6 +87,7 @@ platforms:
         - zypper ar -G https://yum.puppet.com/puppet/sles/15/x86_64/ puppet-repo
         - zypper install -y puppet-agent ruby=2.5
         - gem install bundler -v '= 1.17.3'
+        - gem install net-ssh -v '= 6.1.0'
         - gem install serverspec rspec
         - ln -s /usr/bin/rspec.ruby2.5 /usr/bin/rspec
         - ln -s /opt/puppetlabs/puppet/bin/puppet /usr/bin/puppet

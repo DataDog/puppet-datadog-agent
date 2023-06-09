@@ -16,6 +16,7 @@ class datadog_agent::suse(
   $all_keys = [
     $current_key,
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
+    'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_B01082D3.public',
   ]
 

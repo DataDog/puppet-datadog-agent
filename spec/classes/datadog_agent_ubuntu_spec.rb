@@ -5,6 +5,7 @@ shared_examples 'old debianoid' do
     is_expected.to contain_file('/usr/share/keyrings/datadog-archive-keyring.gpg')
     is_expected.to contain_file('/etc/apt/trusted.gpg.d/datadog-archive-keyring.gpg')
     is_expected.to contain_exec('ensure key DATADOG_APT_KEY_CURRENT.public is imported in APT keyring')
+    is_expected.to contain_exec('ensure key 5F1E256061D813B125E156E8E6266D4AC0962C7D is imported in APT keyring')
     is_expected.to contain_exec('ensure key D75CEA17048B9ACBF186794B32637D44F14F620E is imported in APT keyring')
     is_expected.to contain_exec('ensure key A2923DFF56EDA6E76E55E492D3A80E30382E94DE is imported in APT keyring')
   end
@@ -15,6 +16,7 @@ shared_examples 'new debianoid' do
     is_expected.to contain_file('/usr/share/keyrings/datadog-archive-keyring.gpg')
     is_expected.not_to contain_file('/etc/apt/trusted.gpg.d/datadog-archive-keyring.gpg')
     is_expected.to contain_exec('ensure key DATADOG_APT_KEY_CURRENT.public is imported in APT keyring')
+    is_expected.to contain_exec('ensure key 5F1E256061D813B125E156E8E6266D4AC0962C7D is imported in APT keyring')
     is_expected.to contain_exec('ensure key D75CEA17048B9ACBF186794B32637D44F14F620E is imported in APT keyring')
     is_expected.to contain_exec('ensure key A2923DFF56EDA6E76E55E492D3A80E30382E94DE is imported in APT keyring')
   end

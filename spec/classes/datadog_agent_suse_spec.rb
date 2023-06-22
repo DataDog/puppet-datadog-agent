@@ -32,7 +32,8 @@ describe 'datadog_agent::suse' do
           .with_gpgcheck(1)\
           .with_gpgkey('https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public
        https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
-       https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public')\
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_B01082D3.public')\
           .with_baseurl('https://yum.datadoghq.com/suse/stable/6/x86_64')
         # .with_repo_gpgcheck(true)
       end
@@ -51,7 +52,8 @@ describe 'datadog_agent::suse' do
           .with_gpgcheck(1)\
           .with_gpgkey('https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public
        https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
-       https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public')\
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public
+       https://keys.datadoghq.com/DATADOG_RPM_KEY_B01082D3.public')\
           .with_baseurl('https://yum.datadoghq.com/suse/stable/7/x86_64')
         # .with_repo_gpgcheck(true)
       end

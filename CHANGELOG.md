@@ -1,6 +1,9 @@
 Changes
 =======
 
+# 3.21.0 / 2023-07-03
+
+* [FEATURE] Trust new APT and RPM keys. ([#782][])
 # 3.20.0 / 2023-01-12
 
 * [DEPRECATE] Remove the old RPM GPG key 4172A230 from hosts that still trust it, and stop trusting it. ([#770][])

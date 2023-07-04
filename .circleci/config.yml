@@ -240,6 +240,19 @@ jobs:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.6.3'
       PUPPET_VERSION: '6.5.0'
+  specs-ruby26-puppet79:
+    <<: *specs
+    environment:
+      STRICT_VARIABLES: 'yes'
+      RUBY_VERSION: '2.6.3'
+      PUPPET_VERSION: '7.9.0'
+
+  specs-ruby26-puppet714:
+    <<: *specs
+    environment:
+      STRICT_VARIABLES: 'yes'
+      RUBY_VERSION: '2.6.3'
+      PUPPET_VERSION: '7.14.0'
 
   specs-ruby26-puppet725:
     <<: *specs
@@ -357,6 +370,8 @@ workflows:
       - specs-ruby25-puppet65-windows
       - specs-ruby26-puppet60
       - specs-ruby26-puppet65
+      - specs-ruby26-puppet79
+      - specs-ruby26-puppet714
       - specs-ruby26-puppet725
       - verify-gemfile-lock-dependencies
       - kitchen-tests

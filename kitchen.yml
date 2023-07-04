@@ -30,7 +30,7 @@ platforms:
 
         - gem install bundler -v '= 1.17.3'
         # multipart-post 2.2.0 breaks r10k 2.6.7, so lock it at 2.1.1 (we can't upgrade r10k because of old Ruby)
-        # semantic_puppet 1.1.0 does not work with Ruby < 2.7, so we lock it at 1.0.4
+        # semantic_puppet 1.1.0 does not work with Ruby < 2.7, we lock it at 1.0.4
         - gem install semantic_puppet:1.0.4 multipart-post:2.1.1 r10k:2.6.7
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 

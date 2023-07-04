@@ -52,7 +52,9 @@ platforms:
 
         - bundle env
         - gem install bundler -v '= 1.17.3'
-        - gem install semantic_puppet:1.0.4 multipart-post:2.1.1 r10k:2.6.7
+        - bundle env
+        - gem install semantic_puppet:1.0.4
+        - gem install multipart-post:2.1.1 r10k:2.6.7
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
   - name: ubuntu-1604-puppet-6

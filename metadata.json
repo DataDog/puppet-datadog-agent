@@ -156,7 +156,7 @@
     }
   ],
   "description": "This will install the Datadog monitoring agent. Sign up and get your API key at: http://www.datadoghq.com",
-  "pdk-version": "1.15.0",
-  "template-url": "https://github.com/puppetlabs/pdk-templates#1.15.0",
-  "template-ref": "tags/1.15.0-0-g0bc522e"
+  "pdk-version": "3.0.0",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#3.0.0",
+  "template-ref": "tags/3.0.0-0-g056e50d"
 }

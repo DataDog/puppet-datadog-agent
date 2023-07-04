@@ -31,7 +31,7 @@ platforms:
 
         - gem install bundler -v '= 1.17.3'
         # we use bundle to install gems and to lock dependencies versions of semantic_puppet and multipart-post
-        - bundle install
+        - cd /home && bundle install
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
   - name: rocky-8-puppet-5

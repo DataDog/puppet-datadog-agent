@@ -14,8 +14,12 @@ fixtures:
       ref: "1.0.0"
     ruby: "git://github.com/puppetlabs/puppetlabs-ruby.git"
   forge_modules:
-    yumrepo_core: "puppetlabs/yumrepo_core"
-    powershell: "puppetlabs/powershell"
+    yumrepo_core:
+      repo: "puppetlabs/yumrepo_core"
+      ref: "1.2.0"
+    powershell:
+      repo: "puppetlabs/powershell"
+      ref: "4.1.0"
     zypprepo:
       repo: "puppet/zypprepo"
       ref: "3.1.0"

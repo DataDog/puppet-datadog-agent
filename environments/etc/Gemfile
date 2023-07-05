@@ -1,0 +1,4 @@
+source 'https://rubygems.org'
+gem 'semantic_puppet', '1.0.4' 
+gem 'multipart-post', '2.1.1'
+gem 'r10k', '2.6.7'

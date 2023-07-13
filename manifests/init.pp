@@ -361,6 +361,8 @@ class datadog_agent(
   Optional[String] $service_provider = undef,
   Optional[String] $agent_version = $datadog_agent::params::agent_version,
   Boolean $windows_npm_install = false,
+  Optional[String] $windows_ddagentuser_name = undef,
+  Optional[String] $windows_ddagentuser_password = undef,
 ) inherits datadog_agent::params {
 
   #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'
@@ -377,6 +379,10 @@ class datadog_agent(
 
   if $_agent_major_version != 5 and $_agent_major_version != 6 and $_agent_major_version != 7 {
     fail("agent_major_version must be either 5, 6 or 7, not ${_agent_major_version}")
+  }
+
+  if ($::operatingsystem == 'Windows' and $windows_ddagentuser_name != undef) {
+    $dd_user = $windows_ddagentuser_name
   }
 
   # Allow ports to be passed as integers or strings.
@@ -461,15 +467,17 @@ class datadog_agent(
       }
       'Windows' : {
         class { 'datadog_agent::windows' :
-          agent_major_version => $_agent_major_version,
-          agent_repo_uri      => $agent_repo_uri,
-          agent_version       => $agent_version,
-          msi_location        => $win_msi_location,
-          api_key             => $api_key,
-          hostname            => $host,
-          tags                => $local_tags,
-          ensure              => $win_ensure,
-          npm_install         => $windows_npm_install,
+          agent_major_version  => $_agent_major_version,
+          agent_repo_uri       => $agent_repo_uri,
+          agent_version        => $agent_version,
+          msi_location         => $win_msi_location,
+          api_key              => $api_key,
+          hostname             => $host,
+          tags                 => $local_tags,
+          ensure               => $win_ensure,
+          npm_install          => $windows_npm_install,
+          ddagentuser_name     => $windows_ddagentuser_name,
+          ddagentuser_password => $windows_ddagentuser_password,
         }
         if ($win_ensure == absent) {
           return() #Config files will remain unchanged on uninstall
@@ -760,6 +768,7 @@ class datadog_agent(
 
 
     if ($::operatingsystem == 'Windows') {
+
 
       file { 'C:/ProgramData/Datadog':
         ensure   => directory

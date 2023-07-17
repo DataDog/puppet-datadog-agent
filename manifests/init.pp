@@ -238,6 +238,11 @@
 #       To use NPM features it is necessary to enable install through this flag, as well as
 #       configuring NPM through the datadog::system_probe class.
 #       Boolean. Default: false
+#   $windows_ddagentuser_name
+#       (Windows only) The name of Windows user to use, in the format `<domain>\<user>`.
+#
+#   $windows_ddagentuser_password
+#       (Windows only) The password used to register the service`.
 #
 # Sample Usage:
 #

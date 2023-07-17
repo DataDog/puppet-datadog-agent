@@ -333,7 +333,6 @@ class datadog_agent(
   Optional[Integer] $agent_major_version = undef,
   Optional[String] $conf_dir = undef,
   Boolean $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
-  $dd_user = $datadog_agent::params::dd_user,
   $dd_group = $datadog_agent::params::dd_group,
   $dd_groups = $datadog_agent::params::dd_groups,
   Boolean $apm_enabled = $datadog_agent::params::apm_default_enabled,
@@ -383,6 +382,8 @@ class datadog_agent(
 
   if ($::operatingsystem == 'Windows' and $windows_ddagentuser_name != undef) {
     $dd_user = $windows_ddagentuser_name
+  } else {
+    $dd_user = $datadog_agent::params::dd_user
   }
 
   # Allow ports to be passed as integers or strings.

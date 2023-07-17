@@ -72,7 +72,7 @@ class datadog_agent::windows(
     $hostname_option = $hostname ? { '' => {}, default => { 'HOSTNAME' => $hostname } }
     $npm_install_option = $npm_install ? { false => {}, true => { 'ADDLOCAL' => 'MainApplication,NPM' } }
     $ddagentuser_name_option = $ddagentuser_name ? { undef => {}, default => { 'DDAGENTUSER_NAME' => $ddagentuser_name}}
-    $ddagentuser_password_option = $ddagentuser_name != undef and $ddagentuser_password != undef ? { true => {'DDAGENTUSER_PASSWORD' => $ddagentuser_password}, false => {}}
+    $ddagentuser_password_option = ($ddagentuser_name != undef and $ddagentuser_password != undef) ? { true => {'DDAGENTUSER_PASSWORD' => $ddagentuser_password}, false => {}}
 
     package { $datadog_agent::params::package_name:
       ensure          => $ensure_version,

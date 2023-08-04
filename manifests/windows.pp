@@ -22,7 +22,7 @@ class datadog_agent::windows(
   if ($agent_repo_uri != undef) {
     $baseurl = $agent_repo_uri
   } else {
-    $baseurl = 'https://s3.amazonaws.com/ddagent-windows-stable/'
+    $baseurl = 'https://windows-agent.datadoghq.com/'
   }
 
   if $agent_version == 'latest' {
@@ -79,7 +79,7 @@ class datadog_agent::windows(
 
   } else {
     exec { 'datadog_6_14_fix':
-      command  => "((New-Object System.Net.WebClient).DownloadFile('https://s3.amazonaws.com/ddagent-windows-stable/scripts/fix_6_14.ps1', \$env:temp + '\\fix_6_14.ps1')); &\$env:temp\\fix_6_14.ps1",
+      command  => "((New-Object System.Net.WebClient).DownloadFile('https://windows-agent.datadoghq.com/scripts/fix_6_14.ps1', \$env:temp + '\\fix_6_14.ps1')); &\$env:temp\\fix_6_14.ps1",
       provider => 'powershell',
     }
 

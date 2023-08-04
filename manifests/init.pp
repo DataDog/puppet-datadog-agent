@@ -221,7 +221,7 @@
 #       Where to download the agent from. When undef, it uses the following defaults:
 #       APT: https://apt.datadoghq.com/
 #       RPM: https://yum.datadoghq.com/stable/7/x86_64/ (with matching agent version and architecture)
-#       Windows: https://https://s3.amazonaws.com/ddagent-windows-stable/
+#       Windows: https://https://windows-agent.datadoghq.com/
 #       String. Default: undef
 #   $rpm_repo_gpgcheck
 #       Whether or not to perform repodata signature check for RPM repositories.

@@ -58,8 +58,8 @@ class datadog_agent::integrations::docker_daemon(
   require ::datadog_agent
 
   exec { 'dd-agent-should-be-in-docker-group':
-    command => "/usr/sbin/usermod -aG ${group} ${datadog_agent::params::dd_user}",
-    unless  => "/bin/cat /etc/group | grep '^${group}:' | grep -qw ${datadog_agent::params::dd_user}",
+    command => "/usr/sbin/usermod -aG ${group} ${datadog_agent::dd_user}",
+    unless  => "/bin/cat /etc/group | grep '^${group}:' | grep -qw ${datadog_agent::dd_user}",
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]
   }
@@ -69,7 +69,7 @@ class datadog_agent::integrations::docker_daemon(
 
     file { $legacy_dir:
       ensure  => directory,
-      owner   => $datadog_agent::params::dd_user,
+      owner   => $datadog_agent::dd_user,
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
@@ -89,7 +89,7 @@ class datadog_agent::integrations::docker_daemon(
 
     file { $dst_dir:
       ensure  => directory,
-      owner   => $datadog_agent::params::dd_user,
+      owner   => $datadog_agent::dd_user,
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
@@ -102,7 +102,7 @@ class datadog_agent::integrations::docker_daemon(
 
   file { $dst:
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
+    owner   => $datadog_agent::dd_user,
     group   => $datadog_agent::params::dd_group,
     mode    => $datadog_agent::params::permissions_file,
     content => template('datadog_agent/agent-conf.d/docker_daemon.yaml.erb'),

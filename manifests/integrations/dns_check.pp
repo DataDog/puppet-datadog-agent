@@ -44,7 +44,7 @@ class datadog_agent::integrations::dns_check (
 
     file { $dst_dir:
       ensure  => directory,
-      owner   => $datadog_agent::params::dd_user,
+      owner   => $datadog_agent::dd_user,
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
@@ -57,7 +57,7 @@ class datadog_agent::integrations::dns_check (
 
   file { $dst:
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
+    owner   => $datadog_agent::dd_user,
     group   => $datadog_agent::params::dd_group,
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/dns_check.yaml.erb'),

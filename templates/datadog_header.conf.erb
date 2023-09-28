@@ -11,7 +11,7 @@ dd_url: <%= @_dd_url %>
 <% else -%>
 proxy_host: <%= @proxy_host %>
 <% end -%>
-<% if !defined?(@proxy_port) || "#{@proxy_port}".empty? -%>
+<% if !defined?(@proxy_port) || @proxy_port.to_s.empty? -%>
 # proxy_port:
 <% else -%>
 proxy_port: <%= @proxy_port %>

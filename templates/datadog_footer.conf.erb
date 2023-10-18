@@ -21,17 +21,17 @@ recent_point_threshold: <%= @recent_point_threshold %>
 <% end -%>
 
 # Change port the Agent is listening to
-<% if @_listen_port.empty? -%>
+<% if @listen_port.to_s.empty? -%>
 # listen_port: 17123
 <% else -%>
-listen_port: <%= @_listen_port %>
+listen_port: <%= @listen_port %>
 <% end -%>
 
 # Start a graphite listener on this port
-<% if @_graphite_listen_port.empty? -%>
+<% if @graphite_listen_port.to_s.empty? -%>
 # graphite_listen_port: 17124
 <% else -%>
-graphite_listen_port: <%= @_graphite_listen_port %>
+graphite_listen_port: <%= @graphite_listen_port %>
 <% end -%>
 
 # Additional directory to look for Datadog checks
@@ -71,10 +71,10 @@ bind_host: <%= @bind_host %>
 
 use_pup: <%= @use_pup ? "yes" : "no" %>
 
-<% if @_pup_port.empty? -%>
+<% if @pup_port.to_s.empty? -%>
 # pup_port: 17125
 <% else -%>
-pup_port: <%= @_pup_port %>
+pup_port: <%= @pup_port %>
 <% end -%>
 
 <% if @pup_interface.empty? -%>
@@ -100,10 +100,10 @@ use_dogstatsd: <%= @use_dogstatsd ? "yes" : "no" %>
 # usage information, check out http://api.datadoghq.com
 
 #  Make sure your client is sending to the same port.
-<% if @_dogstatsd_port.empty? -%>
+<% if @dogstatsd_port.to_s.empty? -%>
 # dogstatsd_port: 8125
 <% else -%>
-dogstatsd_port: <%= @_dogstatsd_port %>
+dogstatsd_port: <%= @dogstatsd_port %>
 <% end -%>
 
 # By default dogstatsd will post aggregate metrics to the Agent (which handles
@@ -137,10 +137,10 @@ histogram_percentiles: <%= @statsd_histogram_percentiles %>
 <% else -%>
 statsd_forward_host: <%= @statsd_forward_host %>
 <% end -%>
-<% if @_statsd_forward_port.empty? -%>
+<% if @statsd_forward_port.to_s.empty? -%>
 # statsd_forward_port: 8125
 <% else -%>
-statsd_forward_port: <%= @_statsd_forward_port %>
+statsd_forward_port: <%= @statsd_forward_port %>
 <% end -%>
 
 # ========================================================================== #
@@ -277,10 +277,10 @@ log_to_syslog: <%= @log_to_syslog ? "yes" : "no" %>
 syslog_host: <%= @syslog_host  %>
 <% end -%>
 
-<% if @_syslog_port.empty? -%>
+<% if @syslog_port.to_s.empty? -%>
 # syslog_port:
 <% else -%>
-syslog_port: <%= @_syslog_port  %>
+syslog_port: <%= @syslog_port  %>
 <% end -%>
 
 

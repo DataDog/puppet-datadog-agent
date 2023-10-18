@@ -69,17 +69,12 @@
 #   $log_to_syslog
 #       Set value of 'log_to_syslog' variable. Default is true -> yes as in dd-agent.
 #       Valid values here are: true or false.
-#   $dogstatsd_port
-#       Set value of the 'dogstatsd_port' variable. Defaultis 8125.
 #   $report_fact_tags
 #       Sets tags for report events sent to Datadog from specified facts
 #   $report_trusted_fact_tags
 #       Sets tags for report events sent to Datadog from specified trusted facts
 #   $statsd_forward_host
 #       Set the value of the statsd_forward_host varable. Used to forward all
-#       statsd metrics to another host.
-#   $statsd_forward_port
-#       Set the value of the statsd_forward_port varable. Used to forward all
 #       statsd metrics to another host.
 #   $manage_repo
 #       Deprecated. Only works for RPM. Install datadog-agent manually and then set
@@ -131,7 +126,7 @@
 #       String. Default: empty
 #   $dogstatsd_port
 #       Specifies the port to be used by dogstatsd. Must have use_dogstatsd set
-#       String. Default: empty
+#       String. Default: 8125
 #   $dogstatsd_target
 #       Change the target to be used by dogstatsd. Must have use_dogstatsd set
 #       set
@@ -146,8 +141,9 @@
 #       Enables forwarding of statsd packetsto host. Must have use_dogstatsd set
 #       String. Default: empty
 #   $statsd_forward_port
-#       Specifis port for $statsd_forward_host. Must have use_dogstatsd set
-#       String. Default: empty
+#       Specifies port for $statsd_forward_host. Must have use_dogstatsd set String.
+#       Used to forward all statsd metrics to another host.
+#       Default: empty
 #   $device_blacklist_re
 #       Specifies pattern for device blacklisting.
 #       String. Default: empty
@@ -288,18 +284,18 @@ class datadog_agent(
   Boolean $manage_install = true,
   $hostname_extraction_regex = undef,
   Boolean $hostname_fqdn = false,
-  $dogstatsd_port = 8125,
+  Variant[Stdlib::Port, Pattern[/^\d*$/]] $dogstatsd_port = 8125,
   $dogstatsd_socket = '',
   Array $report_fact_tags = [],
   Array $report_trusted_fact_tags = [],
   String $statsd_forward_host = '',
-  $statsd_forward_port = '',
+  Variant[Stdlib::Port, Pattern[/^\d*$/]] $statsd_forward_port = '',
   String $statsd_histogram_percentiles = '0.95',
   Optional[String] $proxy_host = undef,
   Optional[Variant[Integer, Pattern[/^\d*$/]]] $proxy_port = undef,
   Optional[String] $proxy_user = undef,
   Optional[String] $proxy_password = undef,
-  $graphite_listen_port = '',
+  Variant[Stdlib::Port, Pattern[/^\d*$/]] $graphite_listen_port = '',
   String $extra_template = '',
   String $ganglia_host = '',
   $ganglia_port = 8651,
@@ -307,11 +303,11 @@ class datadog_agent(
   Boolean $skip_apt_key_trusting = false,
   Boolean $use_curl_http_client = false,
   String $recent_point_threshold = '',
-  $listen_port = '',
+  Variant[Stdlib::Port, Pattern[/^\d*$/]] $listen_port = '',
   Optional[String] $additional_checksd = undef,
   String $bind_host = '',
   Boolean $use_pup = false,
-  $pup_port = '',
+  Variant[Stdlib::Port, Pattern[/^\d*$/]] $pup_port = '',
   String $pup_interface = '',
   String $pup_url = '',
   Boolean $use_dogstatsd = true,
@@ -326,7 +322,7 @@ class datadog_agent(
   String $dogstatsd_log_file = '',
   String $pup_log_file = '',
   String $syslog_host  = '',
-  $syslog_port  = '',
+  Variant[Stdlib::Port, Pattern[/^\d*$/]] $syslog_port  = '',
   String $service_discovery_backend = '',
   String $sd_config_backend = '',
   String $sd_backend_host = '',
@@ -390,23 +386,6 @@ class datadog_agent(
   } else {
     $dd_user = $datadog_agent::params::dd_user
   }
-
-  # Allow ports to be passed as integers or strings.
-  # lint:ignore:only_variable_string
-  $_dogstatsd_port = "${dogstatsd_port}"
-  $_statsd_forward_port = "${statsd_forward_port}"
-  $_graphite_listen_port = "${graphite_listen_port}"
-  $_listen_port = "${listen_port}"
-  $_pup_port = "${pup_port}"
-  $_syslog_port = "${syslog_port}"
-  # lint:endignore
-
-  validate_legacy(String, 'validate_re', $_dogstatsd_port, '^\d*$')
-  validate_legacy(String, 'validate_re', $_statsd_forward_port, '^\d*$')
-  validate_legacy(String, 'validate_re', $_graphite_listen_port, '^\d*$')
-  validate_legacy(String, 'validate_re', $_listen_port, '^\d*$')
-  validate_legacy(String, 'validate_re', $_pup_port, '^\d*$')
-  validate_legacy(String, 'validate_re', $_syslog_port, '^\d*$')
 
   if $conf_dir == undef {
     if $_agent_major_version == 5 {
@@ -571,7 +550,7 @@ class datadog_agent(
       require => File['/etc/dd-agent'],
     }
 
-    if ($dd_url == '') {
+    if $dd_url.empty {
       $_dd_url = 'https://app.datadoghq.com'
     } else {
       $_dd_url = $dd_url
@@ -599,7 +578,7 @@ class datadog_agent(
       order   => '05',
     }
 
-    if ($extra_template != '') {
+    unless $extra_template.empty {
       concat::fragment{ 'datadog extra_template footer':
         target  => '/etc/dd-agent/datadog.conf',
         content => template($extra_template),
@@ -677,12 +656,12 @@ class datadog_agent(
         },
       }
     }
-    if $host != '' {
+    if $host.empty {
+        $host_config = {}
+    } else {
         $host_config = {
           'hostname' => $host,
         }
-    } else {
-        $host_config = {}
     }
 
     if $apm_analyzed_spans {
@@ -705,19 +684,19 @@ class datadog_agent(
         $apm_obfuscation_config = {}
     }
 
-    if $statsd_forward_host != '' {
-        if $_statsd_forward_port != '' {
+    if $statsd_forward_host.empty {
+        $statsd_forward_config = {}
+    } else {
+        if String($statsd_forward_port).empty {
             $statsd_forward_config = {
               'statsd_forward_host' => $statsd_forward_host,
-              'statsd_forward_port' => $statsd_forward_port,
             }
         } else {
             $statsd_forward_config = {
               'statsd_forward_host' => $statsd_forward_host,
+              'statsd_forward_port' => $statsd_forward_port,
             }
         }
-    } else {
-        $statsd_forward_config = {}
     }
 
     if $additional_checksd {

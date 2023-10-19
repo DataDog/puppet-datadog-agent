@@ -1,27 +1,25 @@
-# Class: datadog_agent::integrations::mesos_slave
+# @summary Install the necessary configuration for the mesos slave integration
 #
-# This class will install the necessary configuration for the mesos slave integration
 #
-# Parameters:
-#   $url:
-#     The URL for Mesos slave
+# @param mesos_timeout
+# @param url
+#   The URL for Mesos slave
 #
-# Sample Usage:
 #
+# @example
 #   class { 'datadog_agent::integrations::mesos' :
 #     url  => "http://localhost:5051"
 #   }
 #
-class datadog_agent::integrations::mesos_slave(
-  $mesos_timeout = 10,
-  $url = 'http://localhost:5051'
+class datadog_agent::integrations::mesos_slave (
+  Integer $mesos_timeout = 10,
+  Stdlib::HTTPUrl $url = 'http://localhost:5051'
 ) inherits datadog_agent::params {
-
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/mesos_slave.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if $datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/mesos_slave.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -30,7 +28,7 @@ class datadog_agent::integrations::mesos_slave(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -44,6 +42,6 @@ class datadog_agent::integrations::mesos_slave(
     mode    => $datadog_agent::params::permissions_file,
     content => template('datadog_agent/agent-conf.d/mesos_slave.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

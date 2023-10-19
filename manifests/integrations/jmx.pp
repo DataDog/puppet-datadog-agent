@@ -1,16 +1,14 @@
-# Class: datadog_agent::integrations::jmx
+# @summary Install the necessary configuration for the jmx integration
 #
-# This class will install the necessary configuration for the jmx integration
 #
-# Parameters:
-#   $init_config:
-#       Hash of inital configuration, consisting of the following keys:
+# @param init_config
+#   Hash of inital configuration, consisting of the following keys:
 #
 #     custom_jar_paths:
 #       Array of paths to jars. Optional.
 #
-#   $instances:
-#       Array of instance hashes, consisting of the following keys:
+# @param instances
+#    Array of instance hashes, consisting of the following keys:
 #
 #     name:
 #       Used in conjunction with jmx_url. Optional.
@@ -46,7 +44,7 @@
 #       Array of include/exclude hash pairs. Optional.
 #       Read http://docs.datadoghq.com/integrations/java/ to learn how to customize it.
 #
-# Sample Usage:
+# @example
 #
 #  class { 'datadog_agent::integrations::jmx':
 #    init_config        => {
@@ -61,17 +59,17 @@
 #    }],
 #  }
 #
-class datadog_agent::integrations::jmx(
-  $init_config = {},
-  $instances   = [],
+class datadog_agent::integrations::jmx (
+  Hash  $init_config = {},
+  Array $instances   = [],
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/jmx.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if $datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/jmx.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -80,7 +78,7 @@ class datadog_agent::integrations::jmx(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -94,7 +92,6 @@ class datadog_agent::integrations::jmx(
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/jmx.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
-
 }

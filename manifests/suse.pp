@@ -1,9 +1,14 @@
-# Class: datadog_agent::suse
+# @summary Contains the DataDog agent installation mechanism for SUSE distributions
 #
-# This class contains the DataDog agent installation mechanism for SUSE distributions
 #
-
-class datadog_agent::suse(
+# @param agent_major_version
+# @param agent_version
+# @param release
+# @param agent_repo_uri
+# @param agent_flavor
+# @param rpm_repo_gpgcheck
+#
+class datadog_agent::suse (
   Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
   String $agent_version = $datadog_agent::params::agent_version,
   String $release = $datadog_agent::params::apt_default_release,
@@ -11,7 +16,6 @@ class datadog_agent::suse(
   String $agent_flavor = $datadog_agent::params::package_name,
   Optional[Boolean] $rpm_repo_gpgcheck = undef,
 ) inherits datadog_agent::params {
-
   $current_key = 'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public'
   $all_keys = [
     $current_key,
@@ -41,10 +45,10 @@ class datadog_agent::suse(
   }
 
   case $agent_major_version {
-      5 : { fail('Agent v5 package not available in SUSE') }
-      6 : { $gpgkeys = $keys_to_use }
-      7 : { $gpgkeys = $keys_to_use }
-      default: { fail('invalid agent_major_version') }
+    5 : { fail('Agent v5 package not available in SUSE') }
+    6 : { $gpgkeys = $keys_to_use }
+    7 : { $gpgkeys = $keys_to_use }
+    default: { fail('invalid agent_major_version') }
   }
 
   if ($agent_repo_uri != undef) {
@@ -101,5 +105,4 @@ class datadog_agent::suse(
   package { $agent_flavor:
     ensure  => $agent_version,
   }
-
 }

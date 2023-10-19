@@ -1,47 +1,38 @@
-# Class: datadog_agent::integrations::ssh
+# @summary Enable ssh check
 #
-# This class will enable ssh check
 #
-# Parameters:
-#   $host:
-#        ssh server to use for ssh check
+# @param host
+#   ssh server to use for ssh check
+# @param port
+# @param username
+# @param password
+# @param sftp_check
+# @param private_key_file
+# @param add_missing_keys
 #
-#   $port
 #
-#   $username
+# @example
+#   class { 'datadog_agent::integrations::ssh' :
+#     host             => 'localhost',
+#     private_key_file => '/opt/super_secret_key',
+#   }
 #
-#   $password
-#
-#   $sftp_check
-#
-#   $private_key_file
-#
-#   $add_missing_keys
-#
-# Sample Usage:
-#
-#  class { 'datadog_agent::integrations::ssh' :
-#    host             => 'localhost',
-#    private_key_file => '/opt/super_secret_key',
-#  }
-#
-
-class datadog_agent::integrations::ssh(
-  $host              = $trusted['certname'],
-  $port              = 22,
-  $username          = $datadog_agent::dd_user,
-  $password          = undef,
-  $sftp_check        = true,
-  $private_key_file  = undef,
-  $add_missing_keys  = true,
+class datadog_agent::integrations::ssh (
+  Stdlib::Host                   $host             = $trusted['certname'],
+  Stdlib::Port                   $port             = 22,
+  String                         $username         = $datadog_agent::dd_user,
+  Optional[String]               $password         = undef,
+  Boolean                        $sftp_check       = true,
+  Optional[Stdlib::Absolutepath] $private_key_file = undef,
+  Boolean                        $add_missing_keys = true,
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/ssh.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if $datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/ssh_check.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -50,7 +41,7 @@ class datadog_agent::integrations::ssh(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -64,6 +55,6 @@ class datadog_agent::integrations::ssh(
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/ssh.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

@@ -8,6 +8,11 @@ describe 'datadog_agent::install_integration' do
           operatingsystem: operatingsystem,
           osfamily: getosfamily(operatingsystem),
           operatingsystemrelease: getosrelease(operatingsystem),
+          os: {
+            'family' => getosfamily(operatingsystem),
+            'name' => operatingsystem,
+            'release' => { 'full' => getosrelease(operatingsystem) },
+          },
         }
       end
 

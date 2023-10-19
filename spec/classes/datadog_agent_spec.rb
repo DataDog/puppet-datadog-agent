@@ -8,6 +8,10 @@ describe 'datadog_agent' do
           {
             osfamily:         'Solaris',
             operatingsystem:  'Nexenta',
+            os: {
+              'family' => 'Solaris',
+              'name' => 'Nexenta',
+            },
           }
         end
 
@@ -29,6 +33,10 @@ describe 'datadog_agent' do
         {
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
+          os: {
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+          },
         }
       end
 
@@ -48,6 +56,10 @@ describe 'datadog_agent' do
         {
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
+          os: {
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+          },
         }
       end
 
@@ -67,6 +79,10 @@ describe 'datadog_agent' do
         {
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
+          os: {
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+          },
         }
       end
 
@@ -86,6 +102,10 @@ describe 'datadog_agent' do
         {
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
+          os: {
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+          },
         }
       end
 
@@ -105,6 +125,10 @@ describe 'datadog_agent' do
         {
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
+          os: {
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+          },
         }
       end
 
@@ -124,6 +148,10 @@ describe 'datadog_agent' do
         {
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
+          os: {
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+          },
         }
       end
 
@@ -143,6 +171,10 @@ describe 'datadog_agent' do
         {
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
+          os: {
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+          },
         }
       end
 
@@ -164,6 +196,10 @@ describe 'datadog_agent' do
         {
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
+          os: {
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+          },
         }
       end
 
@@ -181,6 +217,10 @@ describe 'datadog_agent' do
         {
           osfamily: 'windows',
           operatingsystem: 'Windows',
+          os: {
+            'family' => 'windows',
+            'name' => 'Windows',
+          },
         }
       end
 
@@ -228,6 +268,10 @@ describe 'datadog_agent' do
         {
           operatingsystem: operatingsystem,
           osfamily: getosfamily(operatingsystem),
+          os: {
+            'family' => getosfamily(operatingsystem),
+            'name' => operatingsystem,
+          },
         }
       end
 
@@ -270,6 +314,10 @@ describe 'datadog_agent' do
           {
             operatingsystem: operatingsystem,
             osfamily: getosfamily(operatingsystem),
+            os: {
+              'family' => getosfamily(operatingsystem),
+              'name' => operatingsystem,
+            },
           }
         end
 
@@ -1622,6 +1670,10 @@ describe 'datadog_agent' do
           {
             operatingsystem: operatingsystem,
             osfamily: getosfamily(operatingsystem),
+            os: {
+              'family' => getosfamily(operatingsystem),
+              'name' => operatingsystem,
+            },
           }
         end
 
@@ -1648,6 +1700,10 @@ describe 'datadog_agent' do
           {
             operatingsystem: operatingsystem,
             osfamily: getosfamily(operatingsystem),
+            os: {
+              'family' => getosfamily(operatingsystem),
+              'name' => operatingsystem,
+            },
           }
         end
 
@@ -2257,6 +2313,10 @@ describe 'datadog_agent' do
         {
           'operatingsystem' => 'CentOS',
           'osfamily' => 'redhat',
+          os => {
+            'family' => 'redhat',
+            'name' => 'CentOS',
+          },
         }
       end
       let(:trusted_facts) do
@@ -2300,6 +2360,10 @@ describe 'datadog_agent' do
             },
           },
           'looks.like.a.path' => 'but_its_not',
+          os => {
+            'family' => 'redhat',
+            'name' => 'CentOS',
+          },
         }
       end
 
@@ -2322,6 +2386,10 @@ describe 'datadog_agent' do
           operatingsystem: 'CentOS',
           osfamily: 'redhat',
           facts_array: ['one', 'two'],
+          os: {
+            'family' => 'redhat',
+            'name' => 'CentOS',
+          },
         }
       end
 

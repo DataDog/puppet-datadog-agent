@@ -11,6 +11,11 @@ describe 'datadog_agent::redhat' do
         osfamily: 'redhat',
         operatingsystem: 'Fedora',
         architecture: 'x86_64',
+        os: {
+          'architecture' => 'x86_64',
+          'family' => 'redhat',
+          'name' => 'Fedora',
+        },
       }
     end
 
@@ -61,6 +66,11 @@ describe 'datadog_agent::redhat' do
         osfamily: 'redhat',
         operatingsystem: 'Fedora',
         architecture: 'x86_64',
+        os: {
+          'architecture' => 'x86_64',
+          'family' => 'redhat',
+          'name' => 'Fedora',
+        },
       }
     end
 
@@ -111,6 +121,11 @@ describe 'datadog_agent::redhat' do
         osfamily: 'redhat',
         operatingsystem: 'Fedora',
         architecture: 'x86_64',
+        os: {
+          'architecture' => 'x86_64',
+          'family' => 'redhat',
+          'name' => 'Fedora',
+        },
       }
     end
 
@@ -164,6 +179,12 @@ describe 'datadog_agent::redhat' do
         operatingsystem: 'RedHat',
         operatingsystemrelease: '8.1',
         architecture: 'x86_64',
+        os: {
+          'architecture' => 'x86_64',
+          'family' => 'redhat',
+          'name' => 'RedHat',
+          'release' => { 'full' => '8.1' },
+        },
       }
     end
 
@@ -197,6 +218,12 @@ describe 'datadog_agent::redhat' do
         operatingsystem: 'RedHat',
         operatingsystemrelease: '8.2',
         architecture: 'x86_64',
+        os: {
+          'architecture' => 'x86_64',
+          'family' => 'redhat',
+          'name' => 'RedHat',
+          'release' => { 'full' => '8.2' },
+        },
       }
     end
 
@@ -230,6 +257,12 @@ describe 'datadog_agent::redhat' do
         operatingsystem: 'AlmaLinux',
         operatingsystemrelease: '8.5',
         architecture: 'x86_64',
+        os: {
+          'architecture' => 'x86_64',
+          'family' => 'redhat',
+          'name' => 'AlmaLinux',
+          'release' => { 'full' => '8.5' },
+        },
       }
     end
 
@@ -262,6 +295,12 @@ describe 'datadog_agent::redhat' do
         operatingsystem: 'Rocky',
         operatingsystemrelease: '8.5',
         architecture: 'x86_64',
+        os: {
+          'architecture' => 'x86_64',
+          'family' => 'redhat',
+          'name' => 'Rocky',
+          'release' => { 'full' => '8.5' },
+        },
       }
     end
 

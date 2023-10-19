@@ -7,6 +7,7 @@ describe 'datadog_agent::integrations::haproxy' do
       let(:facts) do
         {
           ipaddress: '1.2.3.4',
+          networking: { 'ip' => '1.2.3.4' },
         }
       end
 

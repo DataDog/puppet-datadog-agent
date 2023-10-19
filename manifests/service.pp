@@ -10,7 +10,7 @@ class datadog_agent::service(
   String $agent_flavor = $datadog_agent::params::package_name,
 ) inherits datadog_agent::params {
 
-  if ($::operatingsystem == 'Windows') {
+  if ($facts['os']['name'] == 'Windows') {
       service { $datadog_agent::params::service_name:
         ensure  => $service_ensure,
         enable  => $service_enable,

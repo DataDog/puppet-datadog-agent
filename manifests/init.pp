@@ -381,7 +381,7 @@ class datadog_agent(
     fail("agent_major_version must be either 5, 6 or 7, not ${_agent_major_version}")
   }
 
-  if ($::operatingsystem == 'Windows' and $windows_ddagentuser_name != undef) {
+  if ($facts['os']['name'] == 'Windows' and $windows_ddagentuser_name != undef) {
     $dd_user = $windows_ddagentuser_name
   } else {
     $dd_user = $datadog_agent::params::dd_user
@@ -423,7 +423,7 @@ class datadog_agent(
 
   # Install agent
   if $manage_install {
-    case $::operatingsystem {
+    case $facts['os']['name'] {
       'Ubuntu','Debian','Raspbian' : {
         if $use_apt_backup_keyserver != undef or $apt_backup_keyserver != undef or $apt_keyserver != undef {
           notify { 'apt keyserver arguments deprecation':
@@ -477,7 +477,7 @@ class datadog_agent(
           rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
         }
       }
-      default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
+      default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${facts['os']['name']}") }
     }
   } else {
     if ! defined(Package[$agent_flavor]) {
@@ -496,7 +496,7 @@ class datadog_agent(
     service_provider => $service_provider,
   }
 
-  if ($::operatingsystem != 'Windows') {
+  if ($facts['os']['name'] != 'Windows') {
     if ($dd_groups) {
       user { $dd_user:
         groups => $dd_groups,
@@ -516,7 +516,7 @@ class datadog_agent(
 
   if $_agent_major_version == 5 {
 
-    if ($::operatingsystem == 'Windows') {
+    if ($facts['os']['name'] == 'Windows') {
       fail('Installation of agent 5 with puppet is not supported on Windows')
     }
 
@@ -752,7 +752,7 @@ class datadog_agent(
     $agent_config = deep_merge($_agent_config, $extra_config)
 
 
-    if ($::operatingsystem == 'Windows') {
+    if ($facts['os']['name'] == 'Windows') {
 
 
       file { 'C:/ProgramData/Datadog':

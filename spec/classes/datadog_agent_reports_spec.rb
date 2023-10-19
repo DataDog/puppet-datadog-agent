@@ -23,6 +23,11 @@ describe 'datadog_agent::reports' do
             operatingsystem: operatingsystem,
             osfamily: getosfamily(operatingsystem),
             operatingsystemrelease: getosrelease(operatingsystem),
+            os: {
+              'family' => getosfamily(operatingsystem),
+              'name' => operatingsystem,
+              'release' => { 'full' => getosrelease(operatingsystem) },
+            },
           }
         end
 
@@ -83,6 +88,10 @@ describe 'datadog_agent::reports' do
         {
           operatingsystem: 'Debian',
           osfamily: 'debian',
+          os: {
+            'family' => 'debian',
+            'name' => 'Debian',
+          },
         }
       end
 
@@ -125,6 +134,10 @@ describe 'datadog_agent::reports' do
         {
           operatingsystem: 'Debian',
           osfamily: 'debian',
+          os: {
+            'family' => 'debian',
+            'name' => 'Debian',
+          },
         }
       end
 
@@ -162,6 +175,10 @@ describe 'datadog_agent::reports' do
         {
           operatingsystem: 'Debian',
           osfamily: 'debian',
+          os: {
+            'family' => 'debian',
+            'name' => 'Debian',
+          },
         }
       end
 
@@ -201,6 +218,10 @@ describe 'datadog_agent::reports' do
         {
           operatingsystem: 'Debian',
           osfamily: 'debian',
+          os: {
+            'family' => 'debian',
+            'name' => 'Debian',
+          },
         }
       end
 

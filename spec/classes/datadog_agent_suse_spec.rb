@@ -9,6 +9,10 @@ describe 'datadog_agent::suse' do
     {
       operatingsystem: 'OpenSuSE',
       architecture: 'x86_64',
+      os: {
+        'architecture' => 'x86_64',
+        'name' => 'OpenSuSE',
+      },
     }
   end
 
@@ -16,6 +20,9 @@ describe 'datadog_agent::suse' do
     let(:facts) do
       {
         operatingsystemmajrelease: '15',
+        os: {
+          'release' => { 'major' => '15' },
+        },
       }
     end
 
@@ -64,6 +71,9 @@ describe 'datadog_agent::suse' do
     let(:facts) do
       {
         operatingsystemmajrelease: '14',
+        os: {
+          'release' => { 'major' => '14' },
+        },
       }
     end
 

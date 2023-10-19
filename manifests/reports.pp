@@ -29,7 +29,7 @@ class datadog_agent::reports(
   $puppet_gem_provider = $datadog_agent::params::gem_provider,
 ) inherits datadog_agent::params {
 
-  if ($::operatingsystem == 'Windows') {
+  if ($facts['os']['name'] == 'Windows') {
 
     fail('Reporting is not yet supported from a Windows host')
 

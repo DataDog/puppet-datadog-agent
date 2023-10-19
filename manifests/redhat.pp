@@ -25,10 +25,10 @@ class datadog_agent::redhat(
       $repo_gpgcheck = $rpm_repo_gpgcheck
     } else {
       if ($agent_repo_uri == undef) and ($agent_major_version > 5) {
-        case $::operatingsystem {
+        case $facts['os']['name'] {
           'RedHat', 'CentOS', 'OracleLinux': {
             # disable repo_gpgcheck on 8.1 because of https://bugzilla.redhat.com/show_bug.cgi?id=1792506
-            if $::operatingsystemrelease =~ /^8.1/ {
+            if $facts['os']['release']['full'] =~ /^8.1/ {
               $repo_gpgcheck = false
             } else {
               $repo_gpgcheck = true
@@ -46,15 +46,15 @@ class datadog_agent::redhat(
 
     case $agent_major_version {
       5 : {
-        $defaulturl = "https://yum.datadoghq.com/rpm/${::architecture}/"
+        $defaulturl = "https://yum.datadoghq.com/rpm/${facts['os']['architecture']}/"
         $gpgkeys = $keys
       }
       6 : {
-        $defaulturl = "https://yum.datadoghq.com/stable/6/${::architecture}/"
+        $defaulturl = "https://yum.datadoghq.com/stable/6/${facts['os']['architecture']}/"
         $gpgkeys = $keys
       }
       7 : {
-        $defaulturl = "https://yum.datadoghq.com/stable/7/${::architecture}/"
+        $defaulturl = "https://yum.datadoghq.com/stable/7/${facts['os']['architecture']}/"
         $gpgkeys = $keys
       }
       default: { fail('invalid agent_major_version') }

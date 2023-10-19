@@ -23,7 +23,7 @@ class datadog_agent::params {
   $securityagent_service_name     = 'datadog-agent-security'
   $module_metadata                = load_module_metadata($module_name)
 
-  case $::operatingsystem {
+  case $facts['os']['name'] {
     'Ubuntu','Debian','Raspbian' : {
       $rubydev_package            = 'ruby-dev'
       case $::operatingsystemrelease{
@@ -83,7 +83,7 @@ class datadog_agent::params {
       $permissions_protected_file = '0660' # as bug in: https://tickets.puppetlabs.com/browse/PA-2877
       $agent_binary               = 'C:/Program Files/Datadog/Datadog Agent/embedded/agent.exe'
     }
-    default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
+    default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${facts['os']['name']}") }
   }
 
 }

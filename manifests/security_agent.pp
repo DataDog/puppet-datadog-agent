@@ -15,7 +15,7 @@ class datadog_agent::security_agent(
     },
   }
 
-  if $::operatingsystem == 'Windows' {
+  if $facts['os']['name'] == 'Windows' {
 
     file { 'C:/ProgramData/Datadog/security-agent.yaml':
       owner   => $datadog_agent::params::dd_user,

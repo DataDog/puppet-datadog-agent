@@ -15,6 +15,8 @@ class datadog_agent::windows(
   String $tags_quote_wrap = "\"${tags_join}\"",
   Enum['present', 'absent'] $ensure = 'present',
   Boolean $npm_install = false,
+  Optional[String] $ddagentuser_name = undef,
+  Optional[String] $ddagentuser_password = undef,
 ) inherits datadog_agent::params {
 
   $msi_full_path = "${msi_location}/datadog-agent-${agent_major_version}-${agent_version}.amd64.msi"
@@ -69,12 +71,14 @@ class datadog_agent::windows(
 
     $hostname_option = $hostname ? { '' => {}, default => { 'HOSTNAME' => $hostname } }
     $npm_install_option = $npm_install ? { false => {}, true => { 'ADDLOCAL' => 'MainApplication,NPM' } }
+    $ddagentuser_name_option = $ddagentuser_name ? { undef => {}, default => { 'DDAGENTUSER_NAME' => $ddagentuser_name}}
+    $ddagentuser_password_option = ($ddagentuser_name != undef and $ddagentuser_password != undef) ? { true => {'DDAGENTUSER_PASSWORD' => $ddagentuser_password}, false => {}}
 
     package { $datadog_agent::params::package_name:
       ensure          => $ensure_version,
       provider        => 'windows',
       source          => $msi_full_path,
-      install_options => ['/norestart', {'APIKEY' => $api_key, 'TAGS' => $tags_quote_wrap} + $npm_install_option + $hostname_option]
+      install_options => ['/norestart', {'APIKEY' => $api_key, 'TAGS' => $tags_quote_wrap} + $npm_install_option + $hostname_option + $ddagentuser_name_option + $ddagentuser_password_option]
     }
 
   } else {

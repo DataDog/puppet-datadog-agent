@@ -29,7 +29,7 @@
 class datadog_agent::integrations::ssh(
   $host              = $::fqdn,
   $port              = 22,
-  $username          = $datadog_agent::params::dd_user,
+  $username          = $datadog_agent::dd_user,
   $password          = undef,
   $sftp_check        = true,
   $private_key_file  = undef,
@@ -46,7 +46,7 @@ class datadog_agent::integrations::ssh(
 
     file { $dst_dir:
       ensure  => directory,
-      owner   => $datadog_agent::params::dd_user,
+      owner   => $datadog_agent::dd_user,
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
@@ -59,7 +59,7 @@ class datadog_agent::integrations::ssh(
 
   file { $dst:
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
+    owner   => $datadog_agent::dd_user,
     group   => $datadog_agent::params::dd_group,
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/ssh.yaml.erb'),

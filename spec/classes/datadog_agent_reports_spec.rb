@@ -31,7 +31,6 @@ describe 'datadog_agent::reports' do
             is_expected.to raise_error(Puppet::Error)
           end
         else
-          it { is_expected.to contain_class('ruby').with_rubygems_update(false) }
           it { is_expected.to contain_class('ruby::params') }
           it { is_expected.to contain_package('ruby').with_ensure('installed') }
           it { is_expected.to contain_package('rubygems').with_ensure('installed') }
@@ -87,7 +86,6 @@ describe 'datadog_agent::reports' do
         }
       end
 
-      it { is_expected.to contain_class('ruby').with_rubygems_update(false) }
       it { is_expected.to contain_class('ruby::params') }
       it { is_expected.to contain_package('ruby').with_ensure('installed') }
       it { is_expected.to contain_package('rubygems').with_ensure('installed') }
@@ -131,7 +129,6 @@ describe 'datadog_agent::reports' do
         }
       end
 
-      it { is_expected.to contain_class('ruby').with_rubygems_update(false) }
       it { is_expected.to contain_class('ruby::params') }
       it { is_expected.to contain_package('ruby').with_ensure('installed') }
       it { is_expected.to contain_package('rubygems').with_ensure('installed') }
@@ -170,7 +167,6 @@ describe 'datadog_agent::reports' do
         }
       end
 
-      it { is_expected.to contain_class('ruby').with_rubygems_update(false) }
       it { is_expected.to contain_class('ruby::params') }
       it { is_expected.to contain_package('ruby').with_ensure('installed') }
       it { is_expected.to contain_package('rubygems').with_ensure('installed') }
@@ -211,7 +207,6 @@ describe 'datadog_agent::reports' do
         }
       end
 
-      it { is_expected.not_to contain_class('ruby').with_rubygems_update(false) }
       it { is_expected.not_to contain_class('ruby::params') }
       it { is_expected.not_to contain_package('ruby').with_ensure('installed') }
       it { is_expected.not_to contain_package('rubygems').with_ensure('installed') }

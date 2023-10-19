@@ -48,6 +48,19 @@ class datadog_agent::reports(
         }
       }
 
+      if (! defined(Package['rubygems'])) {
+        package { 'ruby': 
+          ensure => 'installed',
+          name   => $ruby_package
+        }
+
+        package { 'rubygems':
+          ensure => 'installed',
+          name   => $rubygems_package,
+          require => Package['ruby']
+        }
+      }
+
       package{ 'dogapi':
         ensure   => $dogapi_version,
         provider => $puppet_gem_provider,

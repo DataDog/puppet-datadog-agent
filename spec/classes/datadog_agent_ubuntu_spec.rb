@@ -36,6 +36,10 @@ describe 'datadog_agent::ubuntu' do
       {
         osfamily: 'debian',
         operatingsystem: 'Ubuntu',
+        os: {
+          'family' => 'debian',
+          'name' => 'Ubuntu',
+        },
       }
     end
 
@@ -81,6 +85,10 @@ describe 'datadog_agent::ubuntu' do
       {
         osfamily: 'debian',
         operatingsystem: 'Ubuntu',
+        os: {
+          'family' => 'debian',
+          'name' => 'Ubuntu',
+        },
       }
     end
 
@@ -126,6 +134,10 @@ describe 'datadog_agent::ubuntu' do
       {
         osfamily: 'debian',
         operatingsystem: 'Ubuntu',
+        os: {
+          'family' => 'debian',
+          'name' => 'Ubuntu',
+        },
       }
     end
 
@@ -169,6 +181,11 @@ describe 'datadog_agent::ubuntu' do
         osfamily: 'debian',
         operatingsystem: 'Ubuntu',
         operatingsystemrelease: '14.04',
+        os: {
+          'family' => 'debian',
+          'name' => 'Ubuntu',
+          'release' => { 'full' => '14.04' },
+        },
       }
     end
 
@@ -187,6 +204,11 @@ describe 'datadog_agent::ubuntu' do
         osfamily: 'debian',
         operatingsystem: 'Ubuntu',
         operatingsystemrelease: '16.04',
+        os: {
+          'family' => 'debian',
+          'name' => 'Ubuntu',
+          'release' => { 'full' => '16.04' },
+        },
       }
     end
 
@@ -205,6 +227,11 @@ describe 'datadog_agent::ubuntu' do
         osfamily: 'debian',
         operatingsystem: 'Debian',
         operatingsystemrelease: '8.0',
+        os: {
+          'family' => 'debian',
+          'name' => 'Debian',
+          'release' => { 'full' => '8.0' },
+        },
       }
     end
 
@@ -223,6 +250,11 @@ describe 'datadog_agent::ubuntu' do
         osfamily: 'debian',
         operatingsystem: 'Debian',
         operatingsystemrelease: '9.0',
+        os: {
+          'family' => 'debian',
+          'name' => 'Debian',
+          'release' => { 'full' => '9.0' },
+        },
       }
     end
 

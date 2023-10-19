@@ -62,8 +62,8 @@ class datadog_agent::ubuntu(
       }
     }
 
-    if ($::operatingsystem == 'Ubuntu' and versioncmp($::operatingsystemrelease, '16') == -1) or
-        ($::operatingsystem == 'Debian' and versioncmp($::operatingsystemrelease, '9') == -1) {
+    if ($facts['os']['name'] == 'Ubuntu' and versioncmp($facts['os']['release']['full'], '16') == -1) or
+        ($facts['os']['name'] == 'Debian' and versioncmp($facts['os']['release']['full'], '9') == -1) {
       file { $apt_trusted_d_keyring:
         mode   => '0644',
         source => "file://${apt_usr_share_keyring}",

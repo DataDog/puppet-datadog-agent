@@ -27,7 +27,7 @@
 #
 
 class datadog_agent::integrations::ssh(
-  $host              = $::fqdn,
+  $host              = $trusted['certname'],
   $port              = 22,
   $username          = $datadog_agent::dd_user,
   $password          = undef,

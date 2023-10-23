@@ -26,6 +26,22 @@ class datadog_agent::params {
   case $::operatingsystem {
     'Ubuntu','Debian','Raspbian' : {
       $rubydev_package            = 'ruby-dev'
+      case $::operatingsystemrelease{
+        '14.04': {
+          # Specific ruby/rubygems package name for Ubuntu 14.04
+          $ruby_package           = 'ruby'
+          $rubygems_package       = 'ruby1.9.1-full'
+        }
+        '18.04': {
+          # Specific ruby/rubygems package name for Ubuntu 18.04
+          $ruby_package           = 'ruby-full'
+          $rubygems_package       = 'rubygems'
+        }
+        default: {
+          $ruby_package           = 'ruby'
+          $rubygems_package       = 'rubygems'
+        }
+      }
       $legacy_conf_dir            = '/etc/dd-agent/conf.d'
       $conf_dir                   = '/etc/datadog-agent/conf.d'
       $dd_user                    = 'dd-agent'
@@ -40,6 +56,8 @@ class datadog_agent::params {
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux', 'AlmaLinux', 'Rocky', 'OpenSuSE', 'SLES' : {
       $rubydev_package            = 'ruby-devel'
+      $ruby_package               = 'ruby'
+      $rubygems_package           = 'rubygems'
       $legacy_conf_dir            = '/etc/dd-agent/conf.d'
       $conf_dir                   = '/etc/datadog-agent/conf.d'
       $dd_user                    = 'dd-agent'

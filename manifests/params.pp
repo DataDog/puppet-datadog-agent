@@ -56,7 +56,7 @@ class datadog_agent::params {
     }
     'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux', 'AlmaLinux', 'Rocky', 'OpenSuSE', 'SLES' : {
       $rubydev_package            = 'ruby-devel'
-      $ruby_package                = 'ruby'
+      $ruby_package               = 'ruby'
       $rubygems_package           = 'rubygems'
       $legacy_conf_dir            = '/etc/dd-agent/conf.d'
       $conf_dir                   = '/etc/datadog-agent/conf.d'

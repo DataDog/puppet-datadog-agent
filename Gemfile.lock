@@ -66,7 +66,7 @@ GEM
       parallel
       puppet_forge (~> 2.2)
       rake (~> 12.3)
-      semantic_puppet (~> 1.0)
+      semantic_puppet (1.0.4)
     diff-lcs (1.5.0)
     docile (1.4.0)
     docker-api (2.2.0)
@@ -227,7 +227,7 @@ GEM
       locale (~> 2.1)
       multi_json (~> 1.10)
       puppet-resource_api (~> 1.5)
-      semantic_puppet (~> 1.0)
+      semantic_puppet (1.0.4)
     puppet-blacksmith (6.1.1)
       puppet-modulebuilder (~> 0.2)
       rest-client (~> 2.0)
@@ -291,7 +291,7 @@ GEM
       faraday_middleware (>= 0.9.0, < 0.15.0)
       gettext-setup (~> 0.11)
       minitar
-      semantic_puppet (~> 1.0)
+      semantic_puppet (1.0.4)
     puppet_litmus (0.34.0)
       bolt (>= 2.0.1, < 4.0.0)
       docker-api (>= 1.34, < 3.0.0)
@@ -306,7 +306,7 @@ GEM
       puppet
     puppetfile-resolver (0.6.2)
       molinillo (~> 0.6)
-      semantic_puppet (~> 1.0)
+      semantic_puppet (1.0.4)
     puppetlabs_spec_helper (2.16.0)
       mocha (~> 1.0)
       pathspec (>= 0.2.1, < 1.1.0)

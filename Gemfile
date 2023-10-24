@@ -13,7 +13,8 @@ minor_version = ruby_version_segments[0..1].join('.')
 
 group :development do
   gem "rake", "~> 12.3.3"                                          if ruby_version < Gem::Version.new('2.6.0') # last version for ruby < 2.6
-  gem "xmlrpc"                                                     if ruby_version >= Gem::Version.new('2.3')
+  gem "semantic_puppet", '= 1.0.4'
+  gem "xmlrpc"                                                      if ruby_version >= Gem::Version.new('2.3')
   gem "concurrent-ruby", '= 1.1.10'                                if Gem::Requirement.create([' >= 6.9.0', '<7.25.0']).satisfied_by?(Gem::Version.new(puppet_version)) # Add this beucause until Puppet 7.25 concurrent-ruby 1.22 break puppet
   gem "ruby-pwsh", '~> 0.3.0',                                     platforms: [:mswin, :mingw, :x64_mingw]
   gem "fast_gettext", '1.1.0',                                     require: false if ruby_version < Gem::Version.new('2.1.0')
@@ -23,7 +24,7 @@ group :development do
   gem "json", '= 2.0.4',                                           require: false if Gem::Requirement.create('~> 2.4.2').satisfied_by?(ruby_version)
   gem "json", '= 2.1.0',                                           require: false if Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(ruby_version)
   gem "rb-readline", '= 0.5.5',                                    require: false, platforms: [:mswin, :mingw, :x64_mingw]
-  gem "librarian-puppet"
+  gem "librarian-puppet", '<= 4.0.1'
   gem "kitchen-puppet"
   gem "kitchen-docker"
   gem "kitchen-verifier-serverspec"

@@ -12,7 +12,6 @@ fixtures:
     puppetserver_gem:
       repo: "git://github.com/puppetlabs/puppetlabs-puppetserver_gem.git"
       ref: "1.0.0"
-    ruby: "git://github.com/puppetlabs/puppetlabs-ruby.git"
   forge_modules:
     yumrepo_core:
       repo: "puppetlabs/yumrepo_core"

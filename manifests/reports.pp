@@ -49,9 +49,15 @@ class datadog_agent::reports(
       }
 
       if (! defined(Package['rubygems'])) {
-        # Ensure rubygems is installed
-        class { 'ruby':
-          rubygems_update => false
+        package { 'ruby':
+          ensure => 'installed',
+          name   => $datadog_agent::params::ruby_package
+        }
+
+        package { 'rubygems':
+          ensure  => 'installed',
+          name    => $datadog_agent::params::rubygems_package,
+          require => Package['ruby']
         }
       }
 

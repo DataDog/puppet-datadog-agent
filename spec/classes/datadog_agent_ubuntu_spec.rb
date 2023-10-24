@@ -37,8 +37,13 @@ describe 'datadog_agent::ubuntu' do
         osfamily: 'debian',
         operatingsystem: 'Ubuntu',
         os: {
+          'architecture' => 'x86_64',
           'family' => 'debian',
           'name' => 'Ubuntu',
+          'release' => {
+            'major' => '14',
+            'full' => '14.04',
+          },
         },
       }
     end
@@ -86,8 +91,13 @@ describe 'datadog_agent::ubuntu' do
         osfamily: 'debian',
         operatingsystem: 'Ubuntu',
         os: {
+          'architecture' => 'x86_64',
           'family' => 'debian',
           'name' => 'Ubuntu',
+          'release' => {
+            'major' => '14',
+            'full' => '14.04',
+          },
         },
       }
     end
@@ -135,8 +145,13 @@ describe 'datadog_agent::ubuntu' do
         osfamily: 'debian',
         operatingsystem: 'Ubuntu',
         os: {
+          'architecture' => 'x86_64',
           'family' => 'debian',
           'name' => 'Ubuntu',
+          'release' => {
+            'major' => '14',
+            'full' => '14.04',
+          },
         },
       }
     end
@@ -182,9 +197,13 @@ describe 'datadog_agent::ubuntu' do
         operatingsystem: 'Ubuntu',
         operatingsystemrelease: '14.04',
         os: {
+          'architecture' => 'x86_64',
           'family' => 'debian',
           'name' => 'Ubuntu',
-          'release' => { 'full' => '14.04' },
+          'release' => {
+            'major' => '14',
+            'full' => '14.04',
+          },
         },
       }
     end
@@ -205,9 +224,13 @@ describe 'datadog_agent::ubuntu' do
         operatingsystem: 'Ubuntu',
         operatingsystemrelease: '16.04',
         os: {
+          'architecture' => 'x86_64',
           'family' => 'debian',
           'name' => 'Ubuntu',
-          'release' => { 'full' => '16.04' },
+          'release' => {
+            'major' => '16',
+            'full' => '16.04',
+          },
         },
       }
     end
@@ -228,9 +251,13 @@ describe 'datadog_agent::ubuntu' do
         operatingsystem: 'Debian',
         operatingsystemrelease: '8.0',
         os: {
+          'architecture' => 'x86_64',
           'family' => 'debian',
           'name' => 'Debian',
-          'release' => { 'full' => '8.0' },
+          'release' => {
+            'major' => '8',
+            'full' => '8.0',
+          },
         },
       }
     end
@@ -251,9 +278,13 @@ describe 'datadog_agent::ubuntu' do
         operatingsystem: 'Debian',
         operatingsystemrelease: '9.0',
         os: {
+          'architecture' => 'x86_64',
           'family' => 'debian',
           'name' => 'Debian',
-          'release' => { 'full' => '9.0' },
+          'release' => {
+            'major' => '9',
+            'full' => '9.0',
+          },
         },
       }
     end

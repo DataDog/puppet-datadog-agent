@@ -24,9 +24,13 @@ describe 'datadog_agent::reports' do
             osfamily: getosfamily(operatingsystem),
             operatingsystemrelease: getosrelease(operatingsystem),
             os: {
+              'architecture' => 'x86_64',
               'family' => getosfamily(operatingsystem),
               'name' => operatingsystem,
-              'release' => { 'full' => getosrelease(operatingsystem) },
+              'release' => {
+                'major' => getosmajor(operatingsystem),
+                'full' => getosrelease(operatingsystem),
+              },
             },
           }
         end
@@ -90,8 +94,13 @@ describe 'datadog_agent::reports' do
           operatingsystem: 'Debian',
           osfamily: 'debian',
           os: {
+            'architecture' => 'x86_64',
             'family' => 'debian',
             'name' => 'Debian',
+            'release' => {
+              'major' => '8',
+              'full' => '8.1',
+            },
           },
         }
       end
@@ -138,8 +147,13 @@ describe 'datadog_agent::reports' do
           operatingsystem: 'Debian',
           osfamily: 'debian',
           os: {
+            'architecture' => 'x86_64',
             'family' => 'debian',
             'name' => 'Debian',
+            'release' => {
+              'major' => '8',
+              'full' => '8.1',
+            },
           },
         }
       end
@@ -181,8 +195,13 @@ describe 'datadog_agent::reports' do
           operatingsystem: 'Debian',
           osfamily: 'debian',
           os: {
+            'architecture' => 'x86_64',
             'family' => 'debian',
             'name' => 'Debian',
+            'release' => {
+              'major' => '8',
+              'full' => '8.1',
+            },
           },
         }
       end
@@ -226,8 +245,13 @@ describe 'datadog_agent::reports' do
           operatingsystem: 'Debian',
           osfamily: 'debian',
           os: {
+            'architecture' => 'x86_64',
             'family' => 'debian',
             'name' => 'Debian',
+            'release' => {
+              'major' => '8',
+              'full' => '8.1',
+            },
           },
         }
       end

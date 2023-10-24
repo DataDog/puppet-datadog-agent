@@ -9,8 +9,13 @@ describe 'datadog_agent' do
             osfamily:         'Solaris',
             operatingsystem:  'Nexenta',
             os: {
+              'architecture' => 'x86_64',
               'family' => 'Solaris',
               'name' => 'Nexenta',
+              'release' => {
+                'major' => '3',
+                'full' => '3.0',
+              },
             },
           }
         end
@@ -34,8 +39,13 @@ describe 'datadog_agent' do
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
           os: {
+            'architecture' => 'x86_64',
             'family' => 'debian',
             'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
           },
         }
       end
@@ -57,8 +67,13 @@ describe 'datadog_agent' do
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
           os: {
+            'architecture' => 'x86_64',
             'family' => 'debian',
             'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
           },
         }
       end
@@ -80,8 +95,13 @@ describe 'datadog_agent' do
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
           os: {
+            'architecture' => 'x86_64',
             'family' => 'debian',
             'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
           },
         }
       end
@@ -103,8 +123,13 @@ describe 'datadog_agent' do
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
           os: {
+            'architecture' => 'x86_64',
             'family' => 'debian',
             'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
           },
         }
       end
@@ -126,8 +151,13 @@ describe 'datadog_agent' do
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
           os: {
+            'architecture' => 'x86_64',
             'family' => 'debian',
             'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
           },
         }
       end
@@ -149,8 +179,13 @@ describe 'datadog_agent' do
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
           os: {
+            'architecture' => 'x86_64',
             'family' => 'debian',
             'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
           },
         }
       end
@@ -172,8 +207,13 @@ describe 'datadog_agent' do
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
           os: {
+            'architecture' => 'x86_64',
             'family' => 'debian',
             'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
           },
         }
       end
@@ -197,8 +237,13 @@ describe 'datadog_agent' do
           osfamily: 'debian',
           operatingsystem: 'Ubuntu',
           os: {
+            'architecture' => 'x86_64',
             'family' => 'debian',
             'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
           },
         }
       end
@@ -218,8 +263,13 @@ describe 'datadog_agent' do
           osfamily: 'windows',
           operatingsystem: 'Windows',
           os: {
+            'architecture' => 'x86_64',
             'family' => 'windows',
             'name' => 'Windows',
+            'release' => {
+              'major' => '2019',
+              'full' => '2019 SP1',
+            },
           },
         }
       end
@@ -269,8 +319,13 @@ describe 'datadog_agent' do
           operatingsystem: operatingsystem,
           osfamily: getosfamily(operatingsystem),
           os: {
+            'architecture' => 'x86_64',
             'family' => getosfamily(operatingsystem),
             'name' => operatingsystem,
+            'release' => {
+              'major' => getosmajor(operatingsystem),
+              'full' => getosrelease(operatingsystem),
+            },
           },
         }
       end
@@ -315,8 +370,13 @@ describe 'datadog_agent' do
             operatingsystem: operatingsystem,
             osfamily: getosfamily(operatingsystem),
             os: {
+              'architecture' => 'x86_64',
               'family' => getosfamily(operatingsystem),
               'name' => operatingsystem,
+              'release' => {
+                'major' => getosmajor(operatingsystem),
+                'full' => getosrelease(operatingsystem),
+              },
             },
           }
         end
@@ -1671,8 +1731,13 @@ describe 'datadog_agent' do
             operatingsystem: operatingsystem,
             osfamily: getosfamily(operatingsystem),
             os: {
+              'architecture' => 'x86_64',
               'family' => getosfamily(operatingsystem),
               'name' => operatingsystem,
+              'release' => {
+                'major' => getosmajor(operatingsystem),
+                'full' => getosrelease(operatingsystem),
+              },
             },
           }
         end
@@ -1701,8 +1766,13 @@ describe 'datadog_agent' do
             operatingsystem: operatingsystem,
             osfamily: getosfamily(operatingsystem),
             os: {
+              'architecture' => 'x86_64',
               'family' => getosfamily(operatingsystem),
               'name' => operatingsystem,
+              'release' => {
+                'major' => getosmajor(operatingsystem),
+                'full' => getosrelease(operatingsystem),
+              },
             },
           }
         end
@@ -2313,9 +2383,14 @@ describe 'datadog_agent' do
         {
           'operatingsystem' => 'CentOS',
           'osfamily' => 'redhat',
-          os => {
+          'os' => {
+            'architecture' => 'x86_64',
             'family' => 'redhat',
             'name' => 'CentOS',
+            'release' => {
+              'major' => '6',
+              'full' => '6.3',
+            },
           },
         }
       end
@@ -2360,9 +2435,14 @@ describe 'datadog_agent' do
             },
           },
           'looks.like.a.path' => 'but_its_not',
-          os => {
+          'os' => {
+            'architecture' => 'x86_64',
             'family' => 'redhat',
             'name' => 'CentOS',
+            'release' => {
+              'major' => '6',
+              'full' => '6.3',
+            },
           },
         }
       end
@@ -2387,8 +2467,13 @@ describe 'datadog_agent' do
           osfamily: 'redhat',
           facts_array: ['one', 'two'],
           os: {
+            'architecture' => 'x86_64',
             'family' => 'redhat',
             'name' => 'CentOS',
+            'release' => {
+              'major' => '6',
+              'full' => '6.3',
+            },
           },
         }
       end

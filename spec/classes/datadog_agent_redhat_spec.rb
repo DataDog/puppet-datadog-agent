@@ -8,9 +8,6 @@ describe 'datadog_agent::redhat' do
 
     let(:facts) do
       {
-        osfamily: 'redhat',
-        operatingsystem: 'Fedora',
-        architecture: 'x86_64',
         os: {
           'architecture' => 'x86_64',
           'family' => 'redhat',
@@ -67,9 +64,6 @@ describe 'datadog_agent::redhat' do
   context 'agent 6' do
     let(:facts) do
       {
-        osfamily: 'redhat',
-        operatingsystem: 'Fedora',
-        architecture: 'x86_64',
         os: {
           'architecture' => 'x86_64',
           'family' => 'redhat',
@@ -126,9 +120,6 @@ describe 'datadog_agent::redhat' do
   context 'agent 7' do
     let(:facts) do
       {
-        osfamily: 'redhat',
-        operatingsystem: 'Fedora',
-        architecture: 'x86_64',
         os: {
           'architecture' => 'x86_64',
           'family' => 'redhat',
@@ -187,10 +178,6 @@ describe 'datadog_agent::redhat' do
     # we expect repo_gpgcheck to be false on 8.1
     let(:facts) do
       {
-        osfamily: 'redhat',
-        operatingsystem: 'RedHat',
-        operatingsystemrelease: '8.1',
-        architecture: 'x86_64',
         os: {
           'architecture' => 'x86_64',
           'family' => 'redhat',
@@ -229,10 +216,6 @@ describe 'datadog_agent::redhat' do
     # we expect repo_gpgcheck to be true on 8.2 (and later)
     let(:facts) do
       {
-        osfamily: 'redhat',
-        operatingsystem: 'RedHat',
-        operatingsystemrelease: '8.2',
-        architecture: 'x86_64',
         os: {
           'architecture' => 'x86_64',
           'family' => 'redhat',
@@ -271,10 +254,6 @@ describe 'datadog_agent::redhat' do
   context 'almalinux 8', if: min_puppet_version('7.12.0') do
     let(:facts) do
       {
-        osfamily: 'redhat',
-        operatingsystem: 'AlmaLinux',
-        operatingsystemrelease: '8.5',
-        architecture: 'x86_64',
         os: {
           'architecture' => 'x86_64',
           'family' => 'redhat',
@@ -312,10 +291,6 @@ describe 'datadog_agent::redhat' do
   context 'rocky 8', if: min_puppet_version('7.12.0') do
     let(:facts) do
       {
-        osfamily: 'redhat',
-        operatingsystem: 'Rocky',
-        operatingsystemrelease: '8.5',
-        architecture: 'x86_64',
         os: {
           'architecture' => 'x86_64',
           'family' => 'redhat',

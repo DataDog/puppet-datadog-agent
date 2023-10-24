@@ -20,9 +20,6 @@ describe 'datadog_agent::reports' do
       describe "datadog_agent class common actions on #{operatingsystem}" do
         let(:facts) do
           {
-            operatingsystem: operatingsystem,
-            osfamily: getosfamily(operatingsystem),
-            operatingsystemrelease: getosrelease(operatingsystem),
             os: {
               'architecture' => 'x86_64',
               'family' => getosfamily(operatingsystem),
@@ -90,8 +87,6 @@ describe 'datadog_agent::reports' do
     describe 'datadog_agent class dogapi version override' do
       let(:facts) do
         {
-          operatingsystem: 'Debian',
-          osfamily: 'debian',
           os: {
             'architecture' => 'x86_64',
             'family' => 'debian',
@@ -141,8 +136,6 @@ describe 'datadog_agent::reports' do
     describe 'datadog_agent class puppet gem provider override' do
       let(:facts) do
         {
-          operatingsystem: 'Debian',
-          osfamily: 'debian',
           os: {
             'architecture' => 'x86_64',
             'family' => 'debian',
@@ -187,8 +180,6 @@ describe 'datadog_agent::reports' do
     describe 'datadog_agent class dogapi version override' do
       let(:facts) do
         {
-          operatingsystem: 'Debian',
-          osfamily: 'debian',
           os: {
             'architecture' => 'x86_64',
             'family' => 'debian',
@@ -235,8 +226,6 @@ describe 'datadog_agent::reports' do
     describe 'datadog_agent class dogapi version override' do
       let(:facts) do
         {
-          operatingsystem: 'Debian',
-          osfamily: 'debian',
           os: {
             'architecture' => 'x86_64',
             'family' => 'debian',

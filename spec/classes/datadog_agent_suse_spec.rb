@@ -7,8 +7,6 @@ describe 'datadog_agent::suse' do
 
   let(:facts) do
     {
-      operatingsystem: 'OpenSuSE',
-      architecture: 'x86_64',
       os: {
         'architecture' => 'x86_64',
         'family' => 'redhat',
@@ -24,7 +22,6 @@ describe 'datadog_agent::suse' do
   context 'suse >= 15' do
     let(:facts) do
       {
-        operatingsystemmajrelease: '15',
         os: {
           'architecture' => 'x86_64',
           'family' => 'redhat',
@@ -81,7 +78,6 @@ describe 'datadog_agent::suse' do
   context 'suse < 15' do
     let(:facts) do
       {
-        operatingsystemmajrelease: '14',
         os: {
           'architecture' => 'x86_64',
           'family' => 'redhat',

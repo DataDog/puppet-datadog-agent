@@ -11,7 +11,12 @@ describe 'datadog_agent::suse' do
       architecture: 'x86_64',
       os: {
         'architecture' => 'x86_64',
+        'family' => 'redhat',
         'name' => 'OpenSuSE',
+        'release' => {
+          'major' => '14',
+          'full' => '14.3',
+        },
       },
     }
   end
@@ -21,7 +26,13 @@ describe 'datadog_agent::suse' do
       {
         operatingsystemmajrelease: '15',
         os: {
-          'release' => { 'major' => '15' },
+          'architecture' => 'x86_64',
+          'family' => 'redhat',
+          'name' => 'OpenSuSE',
+          'release' => {
+            'major' => '15',
+            'full' => '15.3',
+          },
         },
       }
     end
@@ -72,7 +83,13 @@ describe 'datadog_agent::suse' do
       {
         operatingsystemmajrelease: '14',
         os: {
-          'release' => { 'major' => '14' },
+          'architecture' => 'x86_64',
+          'family' => 'redhat',
+          'name' => 'OpenSuSE',
+          'release' => {
+            'major' => '14',
+            'full' => '14.3',
+          },
         },
       }
     end

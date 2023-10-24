@@ -15,6 +15,10 @@ describe 'datadog_agent::redhat' do
           'architecture' => 'x86_64',
           'family' => 'redhat',
           'name' => 'Fedora',
+          'release' => {
+            'major' => '36',
+            'full' => '36',
+          },
         },
       }
     end
@@ -70,6 +74,10 @@ describe 'datadog_agent::redhat' do
           'architecture' => 'x86_64',
           'family' => 'redhat',
           'name' => 'Fedora',
+          'release' => {
+            'major' => '36',
+            'full' => '36',
+          },
         },
       }
     end
@@ -125,6 +133,10 @@ describe 'datadog_agent::redhat' do
           'architecture' => 'x86_64',
           'family' => 'redhat',
           'name' => 'Fedora',
+          'release' => {
+            'major' => '36',
+            'full' => '36',
+          },
         },
       }
     end
@@ -183,7 +195,10 @@ describe 'datadog_agent::redhat' do
           'architecture' => 'x86_64',
           'family' => 'redhat',
           'name' => 'RedHat',
-          'release' => { 'full' => '8.1' },
+          'release' => {
+            'major' => '8',
+            'full' => '8.1',
+          },
         },
       }
     end
@@ -222,7 +237,10 @@ describe 'datadog_agent::redhat' do
           'architecture' => 'x86_64',
           'family' => 'redhat',
           'name' => 'RedHat',
-          'release' => { 'full' => '8.2' },
+          'release' => {
+            'major' => '8',
+            'full' => '8.2',
+          },
         },
       }
     end
@@ -261,7 +279,10 @@ describe 'datadog_agent::redhat' do
           'architecture' => 'x86_64',
           'family' => 'redhat',
           'name' => 'AlmaLinux',
-          'release' => { 'full' => '8.5' },
+          'release' => {
+            'major' => '8',
+            'full' => '8.5',
+          },
         },
       }
     end
@@ -299,7 +320,10 @@ describe 'datadog_agent::redhat' do
           'architecture' => 'x86_64',
           'family' => 'redhat',
           'name' => 'Rocky',
-          'release' => { 'full' => '8.5' },
+          'release' => {
+            'major' => '8',
+            'full' => '8.5',
+          },
         },
       }
     end

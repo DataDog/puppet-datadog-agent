@@ -6,8 +6,15 @@ describe 'datadog_agent' do
       describe 'datadog_agent class without any parameters on Solaris/Nexenta' do
         let(:facts) do
           {
-            osfamily:         'Solaris',
-            operatingsystem:  'Nexenta',
+            os: {
+              'architecture' => 'x86_64',
+              'family' => 'Solaris',
+              'name' => 'Nexenta',
+              'release' => {
+                'major' => '3',
+                'full' => '3.0',
+              },
+            },
           }
         end
 
@@ -27,8 +34,15 @@ describe 'datadog_agent' do
       end
       let(:facts) do
         {
-          osfamily: 'debian',
-          operatingsystem: 'Ubuntu',
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
+          },
         }
       end
 
@@ -46,8 +60,15 @@ describe 'datadog_agent' do
       end
       let(:facts) do
         {
-          osfamily: 'debian',
-          operatingsystem: 'Ubuntu',
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
+          },
         }
       end
 
@@ -65,8 +86,15 @@ describe 'datadog_agent' do
       end
       let(:facts) do
         {
-          osfamily: 'debian',
-          operatingsystem: 'Ubuntu',
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
+          },
         }
       end
 
@@ -84,8 +112,15 @@ describe 'datadog_agent' do
       end
       let(:facts) do
         {
-          osfamily: 'debian',
-          operatingsystem: 'Ubuntu',
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
+          },
         }
       end
 
@@ -103,8 +138,15 @@ describe 'datadog_agent' do
       end
       let(:facts) do
         {
-          osfamily: 'debian',
-          operatingsystem: 'Ubuntu',
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
+          },
         }
       end
 
@@ -122,8 +164,15 @@ describe 'datadog_agent' do
       end
       let(:facts) do
         {
-          osfamily: 'debian',
-          operatingsystem: 'Ubuntu',
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
+          },
         }
       end
 
@@ -141,8 +190,15 @@ describe 'datadog_agent' do
       end
       let(:facts) do
         {
-          osfamily: 'debian',
-          operatingsystem: 'Ubuntu',
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
+          },
         }
       end
 
@@ -162,8 +218,15 @@ describe 'datadog_agent' do
       end
       let(:facts) do
         {
-          osfamily: 'debian',
-          operatingsystem: 'Ubuntu',
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
+          },
         }
       end
 
@@ -179,8 +242,15 @@ describe 'datadog_agent' do
     context 'windows NPM' do
       let(:facts) do
         {
-          osfamily: 'windows',
-          operatingsystem: 'Windows',
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'windows',
+            'name' => 'Windows',
+            'release' => {
+              'major' => '2019',
+              'full' => '2019 SP1',
+            },
+          },
         }
       end
 
@@ -226,8 +296,15 @@ describe 'datadog_agent' do
     ALL_OS.each do |operatingsystem|
       let(:facts) do
         {
-          operatingsystem: operatingsystem,
-          osfamily: getosfamily(operatingsystem),
+          os: {
+            'architecture' => 'x86_64',
+            'family' => getosfamily(operatingsystem),
+            'name' => operatingsystem,
+            'release' => {
+              'major' => getosmajor(operatingsystem),
+              'full' => getosrelease(operatingsystem),
+            },
+          },
         }
       end
 
@@ -268,8 +345,15 @@ describe 'datadog_agent' do
         end
         let(:facts) do
           {
-            operatingsystem: operatingsystem,
-            osfamily: getosfamily(operatingsystem),
+            os: {
+              'architecture' => 'x86_64',
+              'family' => getosfamily(operatingsystem),
+              'name' => operatingsystem,
+              'release' => {
+                'major' => getosmajor(operatingsystem),
+                'full' => getosrelease(operatingsystem),
+              },
+            },
           }
         end
 
@@ -1620,8 +1704,15 @@ describe 'datadog_agent' do
         end
         let(:facts) do
           {
-            operatingsystem: operatingsystem,
-            osfamily: getosfamily(operatingsystem),
+            os: {
+              'architecture' => 'x86_64',
+              'family' => getosfamily(operatingsystem),
+              'name' => operatingsystem,
+              'release' => {
+                'major' => getosmajor(operatingsystem),
+                'full' => getosrelease(operatingsystem),
+              },
+            },
           }
         end
 
@@ -1646,8 +1737,15 @@ describe 'datadog_agent' do
         end
         let(:facts) do
           {
-            operatingsystem: operatingsystem,
-            osfamily: getosfamily(operatingsystem),
+            os: {
+              'architecture' => 'x86_64',
+              'family' => getosfamily(operatingsystem),
+              'name' => operatingsystem,
+              'release' => {
+                'major' => getosmajor(operatingsystem),
+                'full' => getosrelease(operatingsystem),
+              },
+            },
           }
         end
 
@@ -2249,14 +2347,21 @@ describe 'datadog_agent' do
         {
           agent_major_version: 6,
           puppet_run_reports: true,
-          facts_to_tags: ['osfamily'],
+          facts_to_tags: ['os.family'],
           trusted_facts_to_tags: ['extensions.trusted_fact', 'extensions.facts_array', 'extensions.facts_hash.actor.first_name'],
         }
       end
       let(:facts) do
         {
-          'operatingsystem' => 'CentOS',
-          'osfamily' => 'redhat',
+          'os' => {
+            'architecture' => 'x86_64',
+            'family' => 'redhat',
+            'name' => 'CentOS',
+            'release' => {
+              'major' => '6',
+              'full' => '6.3',
+            },
+          },
         }
       end
       let(:trusted_facts) do
@@ -2274,7 +2379,7 @@ describe 'datadog_agent' do
 
       it do
         is_expected.to contain_file('/etc/datadog-agent/datadog.yaml')
-          .with_content(%r{tags:\n- osfamily:redhat\n- extensions.trusted_fact:test\n- extensions.facts_array:one\n- extensions.facts_array:two\n- extensions.facts_hash.actor.first_name:Macaulay})
+          .with_content(%r{tags:\n- os.family:redhat\n- extensions.trusted_fact:test\n- extensions.facts_array:one\n- extensions.facts_array:two\n- extensions.facts_hash.actor.first_name:Macaulay})
       end
     end
   end
@@ -2285,13 +2390,11 @@ describe 'datadog_agent' do
         {
           agent_major_version: 6,
           puppet_run_reports: true,
-          facts_to_tags: ['osfamily', 'facts_array', 'facts_hash.actor.first_name', 'looks.like.a.path'],
+          facts_to_tags: ['os.family', 'facts_array', 'facts_hash.actor.first_name', 'looks.like.a.path'],
         }
       end
       let(:facts) do
         {
-          'operatingsystem' => 'CentOS',
-          'osfamily' => 'redhat',
           'facts_array' => ['one', 'two'],
           'facts_hash' => {
             'actor' => {
@@ -2300,12 +2403,21 @@ describe 'datadog_agent' do
             },
           },
           'looks.like.a.path' => 'but_its_not',
+          'os' => {
+            'architecture' => 'x86_64',
+            'family' => 'redhat',
+            'name' => 'CentOS',
+            'release' => {
+              'major' => '6',
+              'full' => '6.3',
+            },
+          },
         }
       end
 
       it do
         is_expected.to contain_file('/etc/datadog-agent/datadog.yaml')
-          .with_content(%r{tags:\n- osfamily:redhat\n- facts_array:one\n- facts_array:two\n- facts_hash.actor.first_name:Macaulay\n- looks.like.a.path:but_its_not})
+          .with_content(%r{tags:\n- os.family:redhat\n- facts_array:one\n- facts_array:two\n- facts_hash.actor.first_name:Macaulay\n- looks.like.a.path:but_its_not})
       end
     end
 
@@ -2319,9 +2431,17 @@ describe 'datadog_agent' do
       end
       let(:facts) do
         {
-          operatingsystem: 'CentOS',
-          osfamily: 'redhat',
           facts_array: ['one', 'two'],
+          osfamily: 'redhat',
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'redhat',
+            'name' => 'CentOS',
+            'release' => {
+              'major' => '6',
+              'full' => '6.3',
+            },
+          },
         }
       end
 

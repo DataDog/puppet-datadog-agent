@@ -20,9 +20,15 @@ describe 'datadog_agent::reports' do
       describe "datadog_agent class common actions on #{operatingsystem}" do
         let(:facts) do
           {
-            operatingsystem: operatingsystem,
-            osfamily: getosfamily(operatingsystem),
-            operatingsystemrelease: getosrelease(operatingsystem),
+            os: {
+              'architecture' => 'x86_64',
+              'family' => getosfamily(operatingsystem),
+              'name' => operatingsystem,
+              'release' => {
+                'major' => getosmajor(operatingsystem),
+                'full' => getosrelease(operatingsystem),
+              },
+            },
           }
         end
 
@@ -81,8 +87,15 @@ describe 'datadog_agent::reports' do
     describe 'datadog_agent class dogapi version override' do
       let(:facts) do
         {
-          operatingsystem: 'Debian',
-          osfamily: 'debian',
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'debian',
+            'name' => 'Debian',
+            'release' => {
+              'major' => '8',
+              'full' => '8.1',
+            },
+          },
         }
       end
 
@@ -123,8 +136,15 @@ describe 'datadog_agent::reports' do
     describe 'datadog_agent class puppet gem provider override' do
       let(:facts) do
         {
-          operatingsystem: 'Debian',
-          osfamily: 'debian',
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'debian',
+            'name' => 'Debian',
+            'release' => {
+              'major' => '8',
+              'full' => '8.1',
+            },
+          },
         }
       end
 
@@ -160,8 +180,15 @@ describe 'datadog_agent::reports' do
     describe 'datadog_agent class dogapi version override' do
       let(:facts) do
         {
-          operatingsystem: 'Debian',
-          osfamily: 'debian',
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'debian',
+            'name' => 'Debian',
+            'release' => {
+              'major' => '8',
+              'full' => '8.1',
+            },
+          },
         }
       end
 
@@ -199,8 +226,15 @@ describe 'datadog_agent::reports' do
     describe 'datadog_agent class dogapi version override' do
       let(:facts) do
         {
-          operatingsystem: 'Debian',
-          osfamily: 'debian',
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'debian',
+            'name' => 'Debian',
+            'release' => {
+              'major' => '8',
+              'full' => '8.1',
+            },
+          },
         }
       end
 

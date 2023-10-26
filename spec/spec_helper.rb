@@ -40,6 +40,16 @@ def getosfamily(operatingsystem)
   end
 end
 
+def getosmajor(operatingsystem)
+  if DEBIAN_OS.include?(operatingsystem)
+    '14'
+  elsif REDHAT_OS.include?(operatingsystem)
+    '7'
+  else
+    '2019'
+  end
+end
+
 def getosrelease(operatingsystem)
   if DEBIAN_OS.include?(operatingsystem)
     '14.04'
@@ -61,12 +71,13 @@ RSpec.configure do |c|
     'lsbdistrelease'             => (RSpec::Support::OS.windows? ? '2019 SP1' : '14.04'),
     'lsbdistcodename'            => (RSpec::Support::OS.windows? ? '2019' : '14.04'),
     'os'                         => {
-      'name'    => (RSpec::Support::OS.windows? ? 'Windows' : 'Ubuntu'),
-      'family'  => (RSpec::Support::OS.windows? ? 'windows' : 'Debian'),
-      'release' => {
-        'major' => (RSpec::Support::OS.windows? ? '2019' : '14'),
-        'minor' => (RSpec::Support::OS.windows? ? 'SP1' : '04'),
-        'full'  => (RSpec::Support::OS.windows? ? '2019 SP1' : '14.04'),
+      'architecture' => 'x86_64',
+      'name'         => (RSpec::Support::OS.windows? ? 'Windows' : 'Ubuntu'),
+      'family'       => (RSpec::Support::OS.windows? ? 'windows' : 'Debian'),
+      'release'      => {
+        'major'      => (RSpec::Support::OS.windows? ? '2019' : '14'),
+        'minor'      => (RSpec::Support::OS.windows? ? 'SP1' : '04'),
+        'full'       => (RSpec::Support::OS.windows? ? '2019 SP1' : '14.04'),
       },
     },
   }

@@ -6,7 +6,7 @@ describe 'datadog_agent::integrations::haproxy' do
       let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
       let(:facts) do
         {
-          ipaddress: '1.2.3.4',
+          networking: { 'ip' => '1.2.3.4' },
         }
       end
 

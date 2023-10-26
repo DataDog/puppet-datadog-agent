@@ -204,7 +204,7 @@ To enable the Datadog Agent Network Performance Monitoring (NPM) features follow
 
 ```conf
 class { 'datadog_agent::system_probe':
-    network_enabled => true, 
+    network_enabled => true,
 }
 ```
 
@@ -214,7 +214,7 @@ To enable the Datadog Agent Universal Service Monitoring (USM) use the `datadog_
 
 ```conf
 class { 'datadog_agent::system_probe':
-    service_monitoring_enabled => true, 
+    service_monitoring_enabled => true,
 }
 ```
 
@@ -276,7 +276,7 @@ To generate tags from custom facts classify your nodes with Puppet facts as an a
 ```conf
 class { "datadog_agent":
   api_key            => "<YOUR_DD_API_KEY>",
-  facts_to_tags      => ["osfamily","networking.domain","my_custom_fact"],
+  facts_to_tags      => ["os.family","networking.domain","my_custom_fact"],
 }
 ```
 

@@ -40,7 +40,7 @@ class datadog_agent::suse(
   if ($agent_repo_uri != undef) {
     $baseurl = $agent_repo_uri
   } else {
-    $baseurl = "https://yum.datadoghq.com/suse/${release}/${agent_major_version}/${::architecture}"
+    $baseurl = "https://yum.datadoghq.com/suse/${release}/${agent_major_version}/${facts['os']['architecture']}"
   }
 
   package { 'datadog-agent-base':
@@ -78,7 +78,7 @@ class datadog_agent::suse(
     name         => 'datadog',
     gpgcheck     => 1,
     # zypper on SUSE < 15 only understands a single gpgkey value
-    gpgkey       => (Float($::operatingsystemmajrelease) >= 15.0) ? { true => join($gpgkeys, "\n       "), default => $current_key },
+    gpgkey       => (Float($facts['os']['release']['full']) >= 15.0) ? { true => join($gpgkeys, "\n       "), default => $current_key },
     # TODO: when updating zypprepo to 4.0.0, uncomment the repo_gpgcheck line
     # For now, we can leave this commented, as zypper by default does repodata
     # signature checks if the repomd.xml.asc is present, so repodata checks

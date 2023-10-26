@@ -5,9 +5,15 @@ describe 'datadog_agent::install_integration' do
     ALL_OS.each do |operatingsystem|
       let(:facts) do
         {
-          operatingsystem: operatingsystem,
-          osfamily: getosfamily(operatingsystem),
-          operatingsystemrelease: getosrelease(operatingsystem),
+          os: {
+            'architecture' => 'x86_64',
+            'family' => getosfamily(operatingsystem),
+            'name' => operatingsystem,
+            'release' => {
+              'major' => getosmajor(operatingsystem),
+              'full' => getosrelease(operatingsystem),
+            },
+          },
         }
       end
 

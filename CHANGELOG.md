@@ -1,5 +1,10 @@
 Changes
 =======
+# 3.22.0 / 2023-11-15
+
+* [FEATURE] Add support to run agent as domain user on Windows installation ([#785])
+* [SANITY] Remove usage of Puppet legacy Facts ([#790])(Thanks [@cocker-cc])
+* [SANITY] Remove usage of puppetlabs-ruby deprecated module ([#789])
 
 # 3.21.0 / 2023-07-03
 
@@ -915,6 +920,9 @@ Please read the [docs]() for more details.
 [#756]: https://github.com/DataDog/puppet-datadog-agent/issues/756
 [#761]: https://github.com/DataDog/puppet-datadog-agent/issues/761
 [#782]: https://github.com/DataDog/puppet-datadog-agent/pull/782
+[#785]: https://github.com/DataDog/puppet-datadog-agent/pull/785
+[#789]: https://github.com/DataDog/puppet-datadog-agent/pull/789
+[#790]: https://github.com/DataDog/puppet-datadog-agent/pull/790
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
@@ -946,6 +954,7 @@ Please read the [docs]() for more details.
 [@cabrinha]: https://github.com/cabrinha
 [@charles-ferguson]: https://github.com/charles-ferguson
 [@ckolos]: https://github.com/ckolos
+[@cocker-cc]: https://github.com/cocker-cc
 [@com6056]: https://github.com/com6056
 [@craigwatson]: https://github.com/craigwatson
 [@cristianjuve]: https://github.com/cristianjuve

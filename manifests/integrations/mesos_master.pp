@@ -3,7 +3,8 @@
 # This class will install the necessary configuration for the mesos integration
 #
 # Parameters:
-#   $url:
+#   @param mesos_timeout
+#   @param url
 #     The URL for Mesos master
 #
 # Sample Usage:
@@ -12,13 +13,13 @@
 #     url  => "http://localhost:5050"
 #   }
 #
-class datadog_agent::integrations::mesos_master(
-  $mesos_timeout = 10,
-  $url = 'http://localhost:5050'
+class datadog_agent::integrations::mesos_master (
+  Integer $mesos_timeout = 10,
+  String $url            = 'http://localhost:5050',
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_dir = "${datadog_agent::params::conf_dir}/mesos.d"
 
     file { $dst_dir:
@@ -27,7 +28,7 @@ class datadog_agent::integrations::mesos_master(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -35,14 +36,14 @@ class datadog_agent::integrations::mesos_master(
   }
 
   file { $dst:
-    ensure => 'absent'
+    ensure => 'absent',
   }
 
   $legacy_dst_master = "${datadog_agent::params::legacy_conf_dir}/mesos_master.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_master_dir = "${datadog_agent::params::conf_dir}/mesos_master.d"
     file { $legacy_dst_master:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_master_dir:
@@ -51,7 +52,7 @@ class datadog_agent::integrations::mesos_master(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst_master = "${dst_master_dir}/conf.yaml"
   } else {
@@ -65,6 +66,6 @@ class datadog_agent::integrations::mesos_master(
     mode    => $datadog_agent::params::permissions_file,
     content => template('datadog_agent/agent-conf.d/mesos_master.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

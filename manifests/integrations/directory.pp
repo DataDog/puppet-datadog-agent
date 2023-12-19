@@ -3,30 +3,31 @@
 # This class will install the necessary config to hook the directory in the agent
 #
 # Parameters:
-#   directory
+#   @param directory
 #       (Required) - string, the directory path to monitor
 #       This will be included as a tag: name:<name>.
 #
-#   name
-#       (Optional) - string, tag metrics with specified name. defaults to the "directory"
-#
-#   dirtagname
+#   @param dirtagname
 #       (Optional) - string, the name of the key for the tag used for the directory, the value will be the value of "name" (see above). The resulting tag will be "<dirtagname>:<name>". defaults to "name"
 #
-#   filetagname
+#   @param filetagname
 #       (Optional) - string, the name of the key for the tag used for each file, the value will be the filename. The resulting tag will be "<filetagname>:<filename>". defaults to "filename"
 #
-#   filegauges
+#   @param filegauges
 #       (Optional) - boolean, when true stats will be an individual gauge per file (max. 20 files!) and not a histogram of the whole directory. default False
 #
-#   pattern
+#   @param pattern
 #       (Optional) - string, the `fnmatch` pattern to use when reading the "directory"'s files. The pattern will be matched against the files' absolute paths and relative paths in "directory". default "*"
 #
-#   recursive
+#   @param recursive
 #       (Optional) - boolean, when true the stats will recurse into directories. default False
 #
-#   countonly
+#   @param countonly
 #       (Optional) - boolean, when true the stats will only count the number of files matching the pattern. Useful for very large directories.
+#
+#   @param nametag
+#
+#   @param instances
 #
 #
 # Sample Usage:
@@ -55,17 +56,17 @@
 # }
 
 class datadog_agent::integrations::directory (
-  String $directory          = '',
-  Boolean $filegauges        = false,
-  Boolean $recursive         = true,
-  Boolean $countonly         = false,
-  String $nametag            = '',
-  String $dirtagname         = '',
-  String $filetagname        = '',
-  String $pattern            = '',
-  Optional[Array] $instances = undef,
+  Optional[String] $directory   = undef,
+  Boolean $filegauges           = false,
+  Boolean $recursive            = true,
+  Boolean $countonly            = false,
+  Optional[String] $nametag     = undef,
+  Optional[String] $dirtagname  = undef,
+  Optional[String] $filetagname = undef,
+  Optional[String] $pattern     = undef,
+  Optional[Array] $instances    = undef,
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   if !$instances and $directory == '' {
     fail('bad directory argument and no instances hash provided')
@@ -73,26 +74,26 @@ class datadog_agent::integrations::directory (
 
   if !$instances and $directory {
     $_instances = [{
-      'directory'   => $directory,
-      'filegauges'  => $filegauges,
-      'recursive'  => $recursive,
-      'countonly' => $countonly,
-      'name' => $nametag,
-      'dirtagname' => $dirtagname,
-      'filetagname' => $filetagname,
-      'pattern' => $pattern,
+        'directory'   => $directory,
+        'filegauges'  => $filegauges,
+        'recursive'  => $recursive,
+        'countonly' => $countonly,
+        'name' => $nametag,
+        'dirtagname' => $dirtagname,
+        'filetagname' => $filetagname,
+        'pattern' => $pattern,
     }]
-  } elsif !$instances{
+  } elsif !$instances {
     $_instances = []
   } else {
     $_instances = $instances
   }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/directory.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_dir = "${datadog_agent::params::conf_dir}/directory.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -101,7 +102,7 @@ class datadog_agent::integrations::directory (
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -115,6 +116,6 @@ class datadog_agent::integrations::directory (
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/directory.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

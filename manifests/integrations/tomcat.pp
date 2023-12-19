@@ -3,23 +3,23 @@
 # This class will install the necessary configuration for the tomcat integration
 #
 # Parameters:
-#   $hostname:
+#   @param hostname
 #       The host tomcat is running on. Defaults to 'localhost'
-#   $port
+#   @param port
 #       The JMX port.
-#   $jmx_url
+#   @param jmx_url
 #       The JMX URL.
-#   $username
+#   @param username
 #       The username for connecting to the running JVM. Optional.
-#   $password
+#   @param password
 #       The password for connecting to the running JVM. Optional.
-#   $java_bin_path
+#   @param java_bin_path
 #       The path to the Java binary. Should be set if the agent cannot find your java executable. Optional.
-#   $trust_store_path
+#   @param trust_store_path
 #       The path to the trust store. Should be set if ssl is enabled. Optional.
-#   $trust_store_password
+#   @param trust_store_password
 #       The trust store password. Should be set if ssl is enabled. Optional.
-#   $tags
+#   @param tags
 #       Optional hash of tags { env => 'prod' }.
 #
 # Sample Usage:
@@ -28,25 +28,24 @@
 #    port => 8081,
 #  }
 #
-class datadog_agent::integrations::tomcat(
-  $hostname             = 'localhost',
-  $port                 = 7199,
-  $jmx_url              = undef,
-  $username             = undef,
-  $password             = undef,
-  $java_bin_path        = undef,
-  $trust_store_path     = undef,
-  $trust_store_password = undef,
-  $tags                 = {},
+class datadog_agent::integrations::tomcat (
+  String $hostname                       = 'localhost',
+  Variant[String, Integer] $port         = 7199,
+  Optional[String] $jmx_url              = undef,
+  Optional[String] $username             = undef,
+  Optional[String] $password             = undef,
+  Optional[String] $java_bin_path        = undef,
+  Optional[String] $trust_store_path     = undef,
+  Optional[String] $trust_store_password = undef,
+  Hash $tags                             = {},
 ) inherits datadog_agent::params {
-  require ::datadog_agent
-
+  require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/tomcat.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_dir = "${datadog_agent::params::conf_dir}/tomcat.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -55,7 +54,7 @@ class datadog_agent::integrations::tomcat(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -69,7 +68,6 @@ class datadog_agent::integrations::tomcat(
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/tomcat.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
-
 }

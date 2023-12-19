@@ -3,34 +3,39 @@
 # This class will install the necessary configuration for the mysql integration
 #
 # Parameters:
-#   $password
+#   @param password
 #       The mysql password for the datadog user
-#   $host:
+#   @param host
 #       The host mysql is running on
-#   $user
+#   @param user
 #       The mysql user for the datadog user
-#   $sock
+#   @param sock
 #       Connect mysql via unix socket
-#   $tags
+#   @param tags
 #       Optional array of tags
-#   $replication
+#   @param replication
 #       replication option
-#   $galera_cluster
+#   @param galera_cluster
 #       galera cluster option
-#   $extra_status_metrics
+#   @param extra_status_metrics
 #       extra status metrics
-#   $extra_innodb_metrics
+#   @param extra_innodb_metrics
 #       extra innodb metrics
-#   $extra_performance_metrics
+#   @param extra_performance_metrics
 #       extra performance metrics, query run time, 95th precentile avg
-#   $schema_size_metrics
+#   @param schema_size_metrics
 #       schema size metrics
-#   $disable_innodb_metrics
+#   @param disable_innodb_metrics
 #       disable innodb metrics, used with older versions of MySQL without innodb engine support.
-#   $dbm
+#   @param dbm
 #       Database Monitoring for Application Performance Monitoring (APM)
-#   $queries
+#   @param queries
 #       Custom metrics based on MySQL query
+#   @param port
+#   @param instances
+#   @param logs
+#
+#
 # Sample Usage:
 #
 #  class { 'datadog_agent::integrations::mysql' :
@@ -66,61 +71,61 @@
 #  }
 #
 #
-class datadog_agent::integrations::mysql(
+class datadog_agent::integrations::mysql (
   String $host                             = 'localhost',
-  Optional[String] $user                   = 'datadog',
-  Optional[Variant[String, Integer]] $port = 3306,
+  Optional[String] $user                   = undef,
+  Optional[Variant[String, Integer]] $port = undef,
   Optional[String] $password               = undef,
   Optional[String] $sock                   = undef,
   Array $tags                              = [],
-  $replication                             = '0',
-  $galera_cluster                          = '0',
+  String $replication                      = '0',
+  String $galera_cluster                   = '0',
   Boolean $extra_status_metrics            = false,
   Boolean $extra_innodb_metrics            = false,
   Boolean $extra_performance_metrics       = false,
   Boolean $schema_size_metrics             = false,
   Boolean $disable_innodb_metrics          = false,
   Optional[Boolean] $dbm                   = undef,
-  Optional[Array] $queries                 = [],
+  Optional[Array] $queries                 = undef,
   Optional[Array] $instances               = undef,
-  Optional[Array] $logs                    = [],
-  ) inherits datadog_agent::params {
-  require ::datadog_agent
+  Optional[Array] $logs                    = undef,
+) inherits datadog_agent::params {
+  require datadog_agent
 
   if ($host == undef and $sock == undef) or
-    ($host != undef and $port == undef and $sock == undef) {
+  ($host != undef and $port == undef and $sock == undef) {
     fail('invalid MySQL configuration')
   }
 
   if !$instances and $host {
     $_instances = [{
-      'host'                      => $host,
-      'password'                  => $password,
-      'user'                      => $user,
-      'port'                      => $port,
-      'sock'                      => $sock,
-      'tags'                      => $tags,
-      'replication'               => $replication,
-      'galera_cluster'            => $galera_cluster,
-      'extra_status_metrics'      => $extra_status_metrics,
-      'extra_innodb_metrics'      => $extra_innodb_metrics,
-      'extra_performance_metrics' => $extra_performance_metrics,
-      'schema_size_metrics'       => $schema_size_metrics,
-      'disable_innodb_metrics'    => $disable_innodb_metrics,
-      'dbm'                       => $dbm,
-      'queries'                   => $queries,
+        'host'                      => $host,
+        'password'                  => $password,
+        'user'                      => $user,
+        'port'                      => $port,
+        'sock'                      => $sock,
+        'tags'                      => $tags,
+        'replication'               => $replication,
+        'galera_cluster'            => $galera_cluster,
+        'extra_status_metrics'      => $extra_status_metrics,
+        'extra_innodb_metrics'      => $extra_innodb_metrics,
+        'extra_performance_metrics' => $extra_performance_metrics,
+        'schema_size_metrics'       => $schema_size_metrics,
+        'disable_innodb_metrics'    => $disable_innodb_metrics,
+        'dbm'                       => $dbm,
+        'queries'                   => $queries,
     }]
-  } elsif !$instances{
+  } elsif !$instances {
     $_instances = []
   } else {
     $_instances = $instances
   }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/mysql.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_dir = "${datadog_agent::params::conf_dir}/mysql.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -129,7 +134,7 @@ class datadog_agent::integrations::mysql(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -146,4 +151,3 @@ class datadog_agent::integrations::mysql(
     notify  => Service[$datadog_agent::params::service_name],
   }
 }
-

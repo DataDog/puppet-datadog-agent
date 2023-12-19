@@ -3,28 +3,27 @@
 # This class will install the necessary configuration for the kafka integration
 #
 # Parameters:
-#   $host:
+#   @param host
 #       The host kafka is running on. Defaults to 'localhost'
-#   $username
+#   @param username
 #       Optionally specify username for connection
-#   $password
+#   @param password
 #       Optionally specify password for connection
-#   $port
+#   @param port
 #       The port kafka is running on. Defaults to 9999
-#   $name
-#       Name given to kafka instance
-#   $process_name_regex
+#   @param process_name_regex
 #       Instead of specifying a host, and port. The agent can connect using the attach api.
-#   $tools_jar_path
+#   @param tools_jar_path
 #       Path to tools jar needs to be set when process_name_regex is set
-#   $java_bin_path
+#   @param java_bin_path
 #       Path to java binary, should be set if agent cant find your java executable
-#   $trust_store_path
+#   @param trust_store_path
 #       Path to the trust store, should be set if ssl is enabled
-#   $trust_store_password
+#   @param trust_store_password
 #       Password to the trust store
-#   $tags
+#   @param tags
 #       Optional array of tags
+#   @param instances
 #
 #
 # Sample Usage:
@@ -52,45 +51,45 @@
 #    ]
 #  }
 #
-class datadog_agent::integrations::kafka(
-  $host = 'localhost',
-  Variant[String[1], Integer] $port = 9999,
-  Optional[String[1]] $username = undef,
-  Optional[String[1]] $password = undef,
-  Optional[String[1]] $process_name_regex = undef,
-  Optional[String[1]] $tools_jar_path = undef,
-  Optional[String[1]] $java_bin_path = undef,
-  Optional[String[1]] $trust_store_path = undef,
-  Optional[String[1]] $trust_store_password = undef,
-  Optional[Hash[String[1], String[1]]] $tags = undef,
+class datadog_agent::integrations::kafka (
+  String $host                                      = 'localhost',
+  Variant[String[1], Integer] $port                 = 9999,
+  Optional[String[1]] $username                     = undef,
+  Optional[String[1]] $password                     = undef,
+  Optional[String[1]] $process_name_regex           = undef,
+  Optional[String[1]] $tools_jar_path               = undef,
+  Optional[String[1]] $java_bin_path                = undef,
+  Optional[String[1]] $trust_store_path             = undef,
+  Optional[String[1]] $trust_store_password         = undef,
+  Optional[Hash[String[1], String[1]]] $tags        = undef,
   Optional[Array[Hash[String[1], Data]]] $instances = undef,
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   if !$instances and $host and $port {
     $servers = [{
-      'host'                      => $host,
-      'port'                      => $port,
-      'username'                  => $username,
-      'password'                  => $password,
-      'process_name_regex'        => $process_name_regex,
-      'tools_jar_path'            => $tools_jar_path,
-      'java_bin_path'             => $java_bin_path,
-      'trust_store_path'          => $trust_store_path,
-      'trust_store_password'      => $trust_store_password,
-      'tags'                      => $tags,
+        'host'                      => $host,
+        'port'                      => $port,
+        'username'                  => $username,
+        'password'                  => $password,
+        'process_name_regex'        => $process_name_regex,
+        'tools_jar_path'            => $tools_jar_path,
+        'java_bin_path'             => $java_bin_path,
+        'trust_store_path'          => $trust_store_path,
+        'trust_store_password'      => $trust_store_password,
+        'tags'                      => $tags,
     }]
-  } elsif !$instances{
+  } elsif !$instances {
     $servers = []
   } else {
     $servers = $instances
   }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/kafka.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_dir = "${datadog_agent::params::conf_dir}/kafka.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -99,7 +98,7 @@ class datadog_agent::integrations::kafka(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {

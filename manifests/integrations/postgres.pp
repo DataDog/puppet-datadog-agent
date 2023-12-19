@@ -3,45 +3,45 @@
 # This class will install the necessary configuration for the postgres integration
 #
 # Parameters:
-#   $password
+#   @param password
 #       The password for the datadog user
-#   $host
+#   @param host
 #       The host postgres is running on
-#   $dbname
+#   @param dbname
 #       The postgres database name
-#   $port
+#   @param port
 #       The postgres port number
-#   $username
+#   @param username
 #       The username for the datadog user
-#   $ssl
+#   @param ssl
 #       Boolean to enable SSL
-#   $use_psycopg2
+#   @param use_psycopg2
 #       Boolean to flag connecting to postgres with psycopg2 instead of pg8000.
 #       Warning, psycopg2 doesn't support ssl mode.
-#   $collect_function_metrics
+#   @param collect_function_metrics
 #       Boolean to enable collecting metrics regarding PL/pgSQL functions from pg_stat_user_functions.
-#   $collect_count_metrics
+#   @param collect_count_metrics
 #       Boolean to enable collecting count metrics, default value is True for backward compatibility but they might be slow,
 #       suggested value is False.
-#   $collect_activity_metrics
+#   @param collect_activity_metrics
 #       Boolean to enable collecting metrics regarding transactions from pg_stat_activity, default value is False.
 #       Please make sure the user has sufficient privileges to read from pg_stat_activity before enabling this option.
-#   $collect_database_size_metrics
+#   @param collect_database_size_metrics
 #       Boolean to enable collecting database size metrics. Default value is True but they might be slow with large databases
-#   $collect_default_database
+#   @param collect_default_database
 #       Boolean to enable collecting statistics from the default database 'postgres' in the check metrics, default to false
-#   $tags
+#   @param tags
 #       Optional array of tags
-#   $tables
+#   @param tables
 #       Track per relation/table metrics. Array of strings.
 #       Warning: this can collect lots of metrics per relation
 #       (10 + 10 per index)
-#   $tags
-#       Optional array of tags
-#   $custom_metrics
+#   @param custom_metrics
 #       A hash of custom metrics with the following keys - query, metrics,
 #       relation, descriptors. Refer to this guide for details on those fields:
 #       https://help.datadoghq.com/hc/en-us/articles/208385813-Postgres-custom-metric-collection-explained
+#   @param instances
+#
 #
 # Sample Usage:
 #
@@ -82,7 +82,7 @@
 #           descriptors:
 #           - ["tag_column", "tag_column.datadog.tag"]
 #
-class datadog_agent::integrations::postgres(
+class datadog_agent::integrations::postgres (
   Optional[String] $password             = undef,
   String $host                           = 'localhost',
   String $dbname                         = 'postgres',
@@ -100,13 +100,13 @@ class datadog_agent::integrations::postgres(
   Hash $custom_metrics                   = {},
   Optional[Array] $instances             = undef,
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/postgres.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_dir = "${datadog_agent::params::conf_dir}/postgres.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -115,7 +115,7 @@ class datadog_agent::integrations::postgres(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -124,23 +124,23 @@ class datadog_agent::integrations::postgres(
 
   if !$instances and $host {
     $_instances = [{
-      'host'                          => $host,
-      'password'                      => $password,
-      'dbname'                        => $dbname,
-      'port'                          => $port,
-      'username'                      => $username,
-      'ssl'                           => $ssl,
-      'use_psycopg2'                  => $use_psycopg2,
-      'tags'                          => $tags,
-      'tables'                        => $tables,
-      'custom_metrics'                => $custom_metrics,
-      'collect_function_metrics'      => $collect_function_metrics,
-      'collect_count_metrics'         => $collect_count_metrics,
-      'collect_activity_metrics'      => $collect_activity_metrics,
-      'collect_database_size_metrics' => $collect_database_size_metrics,
-      'collect_default_database'      => $collect_default_database,
+        'host'                          => $host,
+        'password'                      => $password,
+        'dbname'                        => $dbname,
+        'port'                          => $port,
+        'username'                      => $username,
+        'ssl'                           => $ssl,
+        'use_psycopg2'                  => $use_psycopg2,
+        'tags'                          => $tags,
+        'tables'                        => $tables,
+        'custom_metrics'                => $custom_metrics,
+        'collect_function_metrics'      => $collect_function_metrics,
+        'collect_count_metrics'         => $collect_count_metrics,
+        'collect_activity_metrics'      => $collect_activity_metrics,
+        'collect_database_size_metrics' => $collect_database_size_metrics,
+        'collect_default_database'      => $collect_default_database,
     }]
-  } elsif !$instances{
+  } elsif !$instances {
     $_instances = []
   } else {
     $_instances = $instances

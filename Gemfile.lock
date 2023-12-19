@@ -485,11 +485,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  concurrent-ruby (= 1.1.10)
   fast_gettext
   kitchen-docker
   kitchen-puppet
   kitchen-verifier-serverspec
-  librarian-puppet
+  librarian-puppet (<= 4.0.1)
   mixlib-shellout (~> 2.2.7)
   puppet (~> 7.0.0)
   puppet-module-posix-default-r2.7
@@ -500,6 +501,7 @@ DEPENDENCIES
   rubocop-i18n (~> 1.2.0)
   rubocop-rspec (~> 1.16.0)
   ruby-pwsh (~> 0.3.0)
+  semantic_puppet (= 1.0.4)
   test-kitchen (~> 2.5.4)
   xmlrpc
 

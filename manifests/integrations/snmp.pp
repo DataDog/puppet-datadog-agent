@@ -3,17 +3,17 @@
 # This class will enable snmp check
 #
 # Parameters:
-#   $init_config:
+#   @param init_config
 #       Optional hash (see snmp.yaml.example for reference)
 #
-#   $instances:
+#   @param instances
 #        Array of hashes containing snmp instance configuration (see snmp.yaml.example for reference)
 #
-#   $mibs_folder: (Deprecated in favor of $init_config)
-#   $ignore_nonincreasing_oid: (Deprecated in favor of $init_config)
-#   $snmp_v1_instances: (Deprecated in favor of $instances)
-#   $snmp_v2_instances: (Deprecated in favor of $instances)
-#   $snmp_v3_instances: (Deprecated in favor of $instances)
+#   @param mibs_folder (Deprecated in favor of $init_config)
+#   @param ignore_nonincreasing_oid (Deprecated in favor of $init_config)
+#   @param snmp_v1_instances (Deprecated in favor of $instances)
+#   @param snmp_v2_instances (Deprecated in favor of $instances)
+#   @param snmp_v3_instances (Deprecated in favor of $instances)
 #
 # Sample Usage:
 #
@@ -49,18 +49,17 @@
 #       }
 #     ],
 #   }
-
-
+#
 class datadog_agent::integrations::snmp (
-  $mibs_folder              = undef,
-  $ignore_nonincreasing_oid = false,
-  $init_config              = {},
-  $instances                = [],
-  $snmp_v1_instances        = [],
-  $snmp_v2_instances        = [],
-  $snmp_v3_instances        = [],
+  Optional[String] $mibs_folder     = undef,
+  Boolean $ignore_nonincreasing_oid = false,
+  Hash $init_config                 = {},
+  Array $instances                  = [],
+  Array $snmp_v1_instances           = [],
+  Array $snmp_v2_instances           = [],
+  Array $snmp_v3_instances           = [],
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   $versioned_instances = {
     1 => $snmp_v1_instances,
@@ -69,10 +68,10 @@ class datadog_agent::integrations::snmp (
   }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/snmp.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_dir = "${datadog_agent::params::conf_dir}/snmp.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -81,7 +80,7 @@ class datadog_agent::integrations::snmp (
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -95,6 +94,6 @@ class datadog_agent::integrations::snmp (
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/snmp.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

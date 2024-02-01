@@ -192,6 +192,9 @@
 #   $apm_obfuscation
 #       Hash defining obfuscation rules for sensitive data. (Agent 6 and 7 only).
 #       Optional Hash. Default: undef
+#   $apm_filter_tags
+#       Hash defining filter rules for traces. (Agent 6 and 7 only).
+#       Optional Hash. Default: undef
 #   $process_enabled
 #       String to enable the process/container agent
 #       Boolean. Default: false
@@ -341,6 +344,7 @@ class datadog_agent(
   Boolean $apm_non_local_traffic = false,
   Optional[Hash[String, Float[0, 1]]] $apm_analyzed_spans = undef,
   Optional[Hash[String, Data]] $apm_obfuscation = undef,
+  Optional[Hash[String, Data]] $apm_filter_tags = undef,
   Boolean $process_enabled = $datadog_agent::params::process_default_enabled,
   Boolean $scrub_args = $datadog_agent::params::process_default_scrub_args,
   Array $custom_sensitive_words = $datadog_agent::params::process_default_custom_words,
@@ -684,6 +688,16 @@ class datadog_agent(
         $apm_obfuscation_config = {}
     }
 
+    if $apm_filter_tags {
+        $apm_filter_tags_config = {
+          'apm_config' => {
+            'filter_tags' => $apm_filter_tags
+          }
+        }
+    } else {
+        $apm_filter_tags_config = {}
+    }
+
     if $statsd_forward_host.empty {
         $statsd_forward_config = {}
     } else {
@@ -713,6 +727,7 @@ class datadog_agent(
             $agent_extra_options,
             $apm_analyzed_span_config,
             $apm_obfuscation_config,
+            $apm_filter_tags_config,
             $statsd_forward_config,
             $host_config,
             $additional_checksd_config)

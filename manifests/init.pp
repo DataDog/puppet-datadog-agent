@@ -159,9 +159,6 @@
 #   $custom_emitters
 #       Specifies a comma seperated list of non standard emitters to be used
 #       String. Default: empty
-#   $custom_emitters
-#       Specifies a comma seperated list of non standard emitters to be used
-#       String. Default: empty
 #   $agent_log_file
 #       Specifies the log file location (Agent 6 and 7 only).
 #       String. Default: empty

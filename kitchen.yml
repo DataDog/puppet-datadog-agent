@@ -14,14 +14,14 @@ provisioner:
   custom_pre_apply_command: 'cp -r /tmp/modules/* /tmp/kitchen/modules/'
 
 platforms:
-  - name: centos-7-puppet-5
+  - name: centos-7-puppet-6
     driver_config:
       # we use a custom image that runs systemd
       image: 'datadog/docker-library:chef_kitchen_systemd_centos_7'
       run_command: /root/start.sh
     driver:
       provision_command:
-        - rpm -ivh http://yum.puppetlabs.com/puppet5-release-el-7.noarch.rpm #installs the puppet-agent repo
+        - rpm -ivh http://yum.puppetlabs.com/puppet6-release-el-7.noarch.rpm #installs the puppet-agent repo
         - yum install -y puppet-agent rubygems
         - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
@@ -34,7 +34,7 @@ platforms:
         - cd /home && bundle install
         - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
-  - name: rocky-8-puppet-5
+  - name: rocky-8-puppet-7
     driver_config:
       # we use a custom image that runs systemd
       image: 'datadog/docker-library:chef_kitchen_systemd_rocky_8'

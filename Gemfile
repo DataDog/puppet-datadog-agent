@@ -4,7 +4,7 @@ ruby_version = Gem::Version.new(RUBY_VERSION.dup)
 
 # Each version of Puppet recommends a specific version of Ruby. Try to fetch the Puppet version that
 # matches our Ruby (unless PUPPET_VERSION is defined).
-matching_puppet_version = ruby_version > Gem::Version.new('2.5') ? (ruby_version > Gem::Version.new('2.7') ? '7.0.0' : '6.0.1') : '4.10.2'
+matching_puppet_version = ruby_version > Gem::Version.new('2.7') ? '7.0.0' : '6.0.1'
 puppet_version = ENV.fetch('PUPPET_VERSION', matching_puppet_version)
 gem "puppet", "~> #{puppet_version}"
 

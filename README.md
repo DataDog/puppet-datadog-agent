@@ -4,7 +4,7 @@ This module installs the Datadog Agent and sends Puppet reports to Datadog.
 
 ### Requirements
 
-The Datadog Puppet module supports Linux and Windows and is compatible with Puppet >= 4.6.x or Puppet Enterprise version >= 2016.4. For detailed information on compatibility, check the [module page on Puppet Forge][1].
+The Datadog Puppet module supports Linux and Windows and is compatible with Puppet >= 6.0.x or Puppet Enterprise version >= 2019.3. For detailed information on compatibility, check the [module page on Puppet Forge][1].
 
 ### Installation
 

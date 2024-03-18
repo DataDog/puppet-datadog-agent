@@ -193,7 +193,6 @@ workflows:
     jobs:
       - specs-ruby23-puppet60
       - specs-ruby23-puppet65
-      - specs-ruby24-puppet410
       - specs-ruby24-puppet60
       - specs-ruby24-puppet65
       - specs-ruby25-puppet60

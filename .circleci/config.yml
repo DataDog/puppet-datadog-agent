@@ -137,6 +137,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Remove Gemfile.lock
+          command: rm Gemfile.lock
+      - run:
           name: Install Ruby versions
           command: rvm install $RUBY_VERSION
       - run:
@@ -157,6 +160,9 @@ jobs:
       RUBY_VERSION: '2.5.3'
     steps:
       - checkout
+      - run:
+          name: Remove Gemfile.lock
+          command: rm Gemfile.lock
       - run:
           name: Install Ruby versions
           command: rvm install $RUBY_VERSION

@@ -1,63 +1,64 @@
-# Class: datadog_agent::integrations::pgbouncer
+# @summary Install the necessary configuration for the pgbouncer integration
 #
-# This class will install the necessary configuration for the pgbouncer integration
 #
-# Parameters:
-#   $password:
-#       The password for the datadog user
-#   $host:
-#       The host pgbouncer is listening on
-#   $port:
-#       The pgbouncer port number
-#   $username:
-#       The username for the datadog user
-#   $tags:
-#       Optional array of tags
-#   $pgbouncers:
-#       Optional array of pgbouncer hashes. See example
+# @param password
+#   The password for the datadog user
+# @param host
+#   The host pgbouncer is listening on
+# @param port
+#   The pgbouncer port number
+# @param username
+#   The username for the datadog user
+# @param tags
+#   Optional array of tags
+# @param pgbouncers
+#   Optional array of pgbouncer hashes. See example
 #
-# Sample Usage:
 #
-#  class { 'datadog_agent::integrations::pgbouncer' :
-#    host           => 'localhost',
-#    username       => 'datadog',
-#    port           => '6432',
-#    password       => 'some_pass',
-#  }
+# @example
+#   class { 'datadog_agent::integrations::pgbouncer' :
+#     host           => 'localhost',
+#     username       => 'datadog',
+#     port           => '6432',
+#     password       => 'some_pass',
+#   }
 #
-#  class { 'datadog_agent::integrations::pgbouncer' :
-#    pgbouncers     => [
-#      {
-#        'host'     => 'localhost',
-#        'username' => 'datadog',
-#        'port'     => '6432',
-#        'password' => 'some_pass',
-#        'tags'     => ['instance:one'],
-#      },
-#      {
-#        'host'     => 'localhost',
-#        'username' => 'datadog2',
-#        'port'     => '6433',
-#        'password' => 'some_pass2',
-#      },
-#    ],
-#  }
+# @example
+#   class { 'datadog_agent::integrations::pgbouncer' :
+#     pgbouncers     => [
+#       {
+#         'host'     => 'localhost',
+#         'username' => 'datadog',
+#         'port'     => '6432',
+#         'password' => 'some_pass',
+#         'tags'     => ['instance:one'],
+#       },
+#       {
+#         'host'     => 'localhost',
+#         'username' => 'datadog2',
+#         'port'     => '6433',
+#         'password' => 'some_pass2',
+#       },
+#     ],
+#   }
 #
-class datadog_agent::integrations::pgbouncer(
+class datadog_agent::integrations::pgbouncer (
+  # lint:ignore:params_empty_string_assignment
   String $password               = '',
   String $host                   = 'localhost',
   Variant[String, Integer] $port = '6432',
   String $username               = 'datadog',
   Array $tags = [],
   Array $pgbouncers = [],
+  # lint:endignore
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/pgbouncer.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if $datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/pgbouncer.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -66,7 +67,7 @@ class datadog_agent::integrations::pgbouncer(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {

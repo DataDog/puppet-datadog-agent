@@ -23,7 +23,7 @@ class datadog_agent::redhat(
 
     if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ {
       if 0 + $3 > 35 {
-        keys = keys[0,3]
+        $keys = $keys[0,3]
       }
     }
 

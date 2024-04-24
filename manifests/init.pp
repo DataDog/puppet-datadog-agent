@@ -378,7 +378,7 @@ class datadog_agent(
     }
     if $facts['os']['name'] == 'CentOS' and $facts['os']['name']['distro']['release']['major'] < 7 and 0 + $3 > 51 {
       warn('datadog-agent '+ $agent_major_version + '.51 is the last supported version on CentOS 6. Installing ' + $agent_major_version + '.51 now')
-      $agent_version='1:7.51'
+      $agent_version='1:7.51.1'
     }
   } elsif $agent_major_version != undef {
     $_agent_major_version = $agent_major_version

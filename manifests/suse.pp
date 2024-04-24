@@ -20,7 +20,7 @@ class datadog_agent::suse(
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_B01082D3.public',
   ]
 
-  if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ {
+  if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ or $agent_version == 'latest' {
       if 0 + $2 > 5 and 0 + $3 > 35 {
         $all_keys = $all_keys[1,2]
       }

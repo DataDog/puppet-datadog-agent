@@ -22,7 +22,7 @@ class datadog_agent::redhat(
     ]
 
     if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ {
-      notice("[DEBUG] redhat version inside")
+      notice('[DEBUG] redhat version inside')
       if 0 + $2 > 5 and 0 + $3 > 35 {
         $keys = $keys[0,3]
       }

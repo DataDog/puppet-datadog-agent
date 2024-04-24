@@ -14,7 +14,7 @@ class datadog_agent::redhat(
 
   if $manage_repo {
 
-    $keys = [
+    $keys_src = [
         'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public',
         'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
         'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
@@ -23,8 +23,12 @@ class datadog_agent::redhat(
     notice("[DEBUG] before redhat version inside : ${agent_version}")
     if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ or $agent_version == 'latest' {
       if $agent_version == 'latest' or (0 + $2 > 5 and 0 + $3 > 35) {
-        $keys = $keys[0,3]
+        $keys = $keys_src[0,3]
+      } else {
+        $keys = $keys_src
       }
+    } else {
+      $keys = $keys_src
     }
 
     if ($rpm_repo_gpgcheck != undef) {

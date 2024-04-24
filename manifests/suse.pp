@@ -13,7 +13,7 @@ class datadog_agent::suse(
 ) inherits datadog_agent::params {
 
   $current_key = 'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public'
-  $all_keys = [
+  $keys_src = [
     $current_key,
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
@@ -21,9 +21,13 @@ class datadog_agent::suse(
   ]
 
   if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ or $agent_version == 'latest' {
-      if $agent_version == 'latest' or (0 + $2 > 5 and 0 + $3 > 35) {
-        $all_keys = $all_keys[1,2]
+      if 0 + $2 > 5 and 0 + $3 > 35 {
+        $all_keys = $keys_src[1,2]
+      } else {
+        $all_keys = $keys_src
       }
+  } else {
+    $all_keys = $keys_src
   }
 
   if ($rpm_repo_gpgcheck != undef) {

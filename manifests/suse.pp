@@ -20,6 +20,12 @@ class datadog_agent::suse(
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_B01082D3.public',
   ]
 
+  if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ {
+      if 0 + $2 > 5 and 0 + $3 > 35 {
+        $all_keys = $all_keys[1,2]
+      }
+  }
+
   if ($rpm_repo_gpgcheck != undef) {
     $repo_gpgcheck = $rpm_repo_gpgcheck
   } else {

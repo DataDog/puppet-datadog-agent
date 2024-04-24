@@ -21,7 +21,7 @@ class datadog_agent::suse(
   ]
 
   if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ or $agent_version == 'latest' {
-      if 0 + $2 > 5 and 0 + $3 > 35 {
+      if $agent_version == 'latest' or (0 + $2 > 5 and 0 + $3 > 35) {
         $all_keys = $all_keys[1,2]
       }
   }

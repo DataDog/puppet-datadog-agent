@@ -20,7 +20,7 @@ class datadog_agent::redhat(
         'https://keys.datadoghq.com/DATADOG_RPM_KEY_B01082D3.public',
         'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
     ]
-    notice("[DEBUG] before redhat version inside : ${agent_version}")
+    
     if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ or $agent_version == 'latest' {
       if $agent_major_version > 5 and ($agent_version == 'latest' or 0 + $3 > 35) {
         $keys = $keys_src[0,3]

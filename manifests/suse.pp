@@ -15,14 +15,14 @@ class datadog_agent::suse(
   $current_key = 'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public'
   $keys_src = [
     $current_key,
-    'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_B01082D3.public',
+    'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
   ]
 
   if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ or $agent_version == 'latest' {
       if $agent_version == 'latest' or (0 + $2 > 5 and 0 + $3 > 35) {
-        $all_keys = $keys_src[1,2]
+        $all_keys = $keys_src[0,3]
       } else {
         $all_keys = $keys_src
       }

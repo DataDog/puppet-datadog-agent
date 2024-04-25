@@ -377,14 +377,22 @@ class datadog_agent(
       fail('Provided and deduced agent_major_version don\'t match')
     }
     $_agent_minor_version = 0 + $3
-    if $facts['os']['name'] == 'CentOS' and $facts['os']['name']['distro']['release']['major'] < 7 and $_agent_minor_version > 51 {
-      warn('datadog-agent '+ $agent_major_version + '.51 is the last supported version on CentOS 6. Installing ' + $agent_major_version + '.51 now')
-      $agent_version='1:7.51.1'
-    }
   } elsif $agent_major_version != undef {
     $_agent_major_version = $agent_major_version
   } else {
     $_agent_major_version = $datadog_agent::params::default_agent_major_version
+  }
+
+  case $facts['os']['name'] {
+    'RedHat', 'CentOS', 'OracleLinux': {
+      if $agent_version == "latest" {
+        warn('datadog-agent '+ $agent_major_version + '.51 is the last supported version on CentOS 6. Installing ' + $agent_major_version + '.51 now')
+        $agent_version='1:7.51.1'
+      } elsif $facts['os']['name']['distro']['release']['major'] < 7 and $_agent_minor_version != undef and $_agent_minor_version > 51 {
+        fail('datadog-agent '+ $agent_major_version + '.51 is the last supported version on CentOS 6.')
+      }
+    }
+    default: {}
   }
 
   if $_agent_major_version != 5 and $_agent_major_version != 6 and $_agent_major_version != 7 {

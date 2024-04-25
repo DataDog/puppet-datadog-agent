@@ -386,10 +386,10 @@ class datadog_agent(
   case $facts['os']['name'] {
     'RedHat', 'CentOS', 'OracleLinux': {
       if $agent_version == 'latest' {
-        warn('datadog-agent '+ $agent_major_version + '.51 is the last supported version on CentOS 6. Installing ' + $agent_major_version + '.51 now')
+        warn('datadog-agent '+ $_agent_major_version + '.51 is the last supported version on CentOS 6. Installing ' + $_agent_major_version + '.51 now')
         $agent_version='1:7.51.1'
       } elsif $facts['os']['name']['distro']['release']['major'] < 7 and $_agent_minor_version != undef and $_agent_minor_version > 51 {
-        fail('datadog-agent '+ $agent_major_version + '.51 is the last supported version on CentOS 6.')
+        fail('datadog-agent '+ $_agent_major_version + '.51 is the last supported version on CentOS 6.')
       }
     }
     default: {}

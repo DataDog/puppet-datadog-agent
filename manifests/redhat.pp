@@ -22,7 +22,7 @@ class datadog_agent::redhat(
     ]
     notice("[DEBUG] before redhat version inside : ${agent_version}")
     if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ or $agent_version == 'latest' {
-      if $agent_version == 'latest' or ($agent_major_version > 5 and 0 + $3 > 35) {
+      if $agent_major_version > 5 and ($agent_version == 'latest' or 0 + $3 > 35) {
         $keys = $keys_src[0,3]
       } else {
         $keys = $keys_src

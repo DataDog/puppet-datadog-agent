@@ -474,7 +474,7 @@ class datadog_agent(
         class { 'datadog_agent::windows' :
           agent_major_version  => $_agent_major_version,
           agent_repo_uri       => $agent_repo_uri,
-          agent__version       => $agent_full_version,
+          agent_version       => $agent_full_version,
           msi_location         => $win_msi_location,
           api_key              => $api_key,
           hostname             => $host,

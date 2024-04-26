@@ -453,7 +453,7 @@ class datadog_agent(
         }
         class { 'datadog_agent::ubuntu':
           agent_major_version   => $_agent_major_version,
-          agent_full_version         => $agent_full_version,
+          agent_full_version    => $agent_full_version,
           agent_flavor          => $agent_flavor,
           agent_repo_uri        => $agent_repo_uri,
           release               => $apt_release,
@@ -466,7 +466,7 @@ class datadog_agent(
           agent_flavor        => $agent_flavor,
           agent_repo_uri      => $agent_repo_uri,
           manage_repo         => $manage_repo,
-          agent_full_version       => $agent_full_version,
+          agent_full_version  => $agent_full_version,
           rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
         }
       }
@@ -474,7 +474,7 @@ class datadog_agent(
         class { 'datadog_agent::windows' :
           agent_major_version  => $_agent_major_version,
           agent_repo_uri       => $agent_repo_uri,
-          agent_full_version        => $agent_full_version,
+          agent_full_version   => $agent_full_version,
           msi_location         => $win_msi_location,
           api_key              => $api_key,
           hostname             => $host,
@@ -493,7 +493,7 @@ class datadog_agent(
           agent_major_version => $_agent_major_version,
           agent_flavor        => $agent_flavor,
           agent_repo_uri      => $agent_repo_uri,
-          agent_full_version       => $agent_full_version,
+          agent_full_version  => $agent_full_version,
           rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
         }
       }

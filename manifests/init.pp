@@ -385,14 +385,16 @@ class datadog_agent(
 
   case $facts['os']['name'] {
     'RedHat', 'CentOS', 'OracleLinux': {
-      if $agent_version == 'latest' {
+      if $agent_full_version == 'latest' {
         notice("datadog-agent ${_agent_major_version}.51 is the last supported version on CentOS 6. Installing ${_agent_major_version}.51 now")
-        $agent_version='1:7.51.1'
+        $agent_full_version='1:7.51.1'
       } elsif $facts['os']['name']['distro']['release']['major'] < 7 and $_agent_minor_version != undef and $_agent_minor_version > 51 {
         fail("datadog-agent ${_agent_major_version}.51 is the last supported version on CentOS 6.")
+      } else {
+        $agent_full_version = $agent_version
       }
     }
-    default: {}
+    default: { $agent_full_version = $agent_version }
   }
 
   if $_agent_major_version != 5 and $_agent_major_version != 6 and $_agent_major_version != 7 {
@@ -451,7 +453,7 @@ class datadog_agent(
         }
         class { 'datadog_agent::ubuntu':
           agent_major_version   => $_agent_major_version,
-          agent_version         => $agent_version,
+          agent_full_version         => $agent_full_version,
           agent_flavor          => $agent_flavor,
           agent_repo_uri        => $agent_repo_uri,
           release               => $apt_release,
@@ -464,7 +466,7 @@ class datadog_agent(
           agent_flavor        => $agent_flavor,
           agent_repo_uri      => $agent_repo_uri,
           manage_repo         => $manage_repo,
-          agent_version       => $agent_version,
+          agent_full_version       => $agent_full_version,
           rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
         }
       }
@@ -472,7 +474,7 @@ class datadog_agent(
         class { 'datadog_agent::windows' :
           agent_major_version  => $_agent_major_version,
           agent_repo_uri       => $agent_repo_uri,
-          agent_version        => $agent_version,
+          agent_full_version        => $agent_full_version,
           msi_location         => $win_msi_location,
           api_key              => $api_key,
           hostname             => $host,
@@ -491,7 +493,7 @@ class datadog_agent(
           agent_major_version => $_agent_major_version,
           agent_flavor        => $agent_flavor,
           agent_repo_uri      => $agent_repo_uri,
-          agent_version       => $agent_version,
+          agent_full_version       => $agent_full_version,
           rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
         }
       }

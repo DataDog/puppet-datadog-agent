@@ -15,10 +15,20 @@ class datadog_agent::suse(
   $current_key = 'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public'
   $all_keys = [
     $current_key,
-    'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_B01082D3.public',
+    'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
   ]
+  #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'
+  if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ or $agent_version == 'latest' {
+      if $agent_major_version > 5 and ($agent_version == 'latest' or 0 + $3 > 35) {
+        $keys_to_use = $all_keys[0,3]
+      } else {
+        $keys_to_use = $all_keys
+      }
+  } else {
+    $keys_to_use = $all_keys
+  }
 
   if ($rpm_repo_gpgcheck != undef) {
     $repo_gpgcheck = $rpm_repo_gpgcheck
@@ -32,8 +42,8 @@ class datadog_agent::suse(
 
   case $agent_major_version {
       5 : { fail('Agent v5 package not available in SUSE') }
-      6 : { $gpgkeys = $all_keys }
-      7 : { $gpgkeys = $all_keys }
+      6 : { $gpgkeys = $keys_to_use }
+      7 : { $gpgkeys = $keys_to_use }
       default: { fail('invalid agent_major_version') }
   }
 

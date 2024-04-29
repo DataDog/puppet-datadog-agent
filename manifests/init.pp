@@ -376,10 +376,25 @@ class datadog_agent(
     if $agent_major_version != undef and $agent_major_version != $_agent_major_version {
       fail('Provided and deduced agent_major_version don\'t match')
     }
+    $_agent_minor_version = 0 + $3
   } elsif $agent_major_version != undef {
     $_agent_major_version = $agent_major_version
   } else {
     $_agent_major_version = $datadog_agent::params::default_agent_major_version
+  }
+
+  case $facts['os']['name'] {
+    'RedHat', 'CentOS', 'OracleLinux': {
+      if $facts['os']['release']['full'] =~ /^6(.[0-9])?/ and $agent_version == 'latest' {
+        notice("datadog-agent ${_agent_major_version}.51 is the last supported version on CentOS 6. Installing ${_agent_major_version}.51 now")
+        $agent_full_version='7.51.1'
+      } elsif $facts['os']['release']['full'] =~ /^6(.[0-9])?/ and $_agent_minor_version != undef and $_agent_minor_version > 51 {
+        fail("datadog-agent ${_agent_major_version}.51 is the last supported version on CentOS 6.")
+      } else {
+        $agent_full_version = $agent_version
+      }
+    }
+    default: { $agent_full_version = $agent_version }
   }
 
   if $_agent_major_version != 5 and $_agent_major_version != 6 and $_agent_major_version != 7 {
@@ -438,7 +453,7 @@ class datadog_agent(
         }
         class { 'datadog_agent::ubuntu':
           agent_major_version   => $_agent_major_version,
-          agent_version         => $agent_version,
+          agent_version         => $agent_full_version,
           agent_flavor          => $agent_flavor,
           agent_repo_uri        => $agent_repo_uri,
           release               => $apt_release,
@@ -451,7 +466,7 @@ class datadog_agent(
           agent_flavor        => $agent_flavor,
           agent_repo_uri      => $agent_repo_uri,
           manage_repo         => $manage_repo,
-          agent_version       => $agent_version,
+          agent_version       => $agent_full_version,
           rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
         }
       }
@@ -459,7 +474,7 @@ class datadog_agent(
         class { 'datadog_agent::windows' :
           agent_major_version  => $_agent_major_version,
           agent_repo_uri       => $agent_repo_uri,
-          agent_version        => $agent_version,
+          agent_version        => $agent_full_version,
           msi_location         => $win_msi_location,
           api_key              => $api_key,
           hostname             => $host,
@@ -478,7 +493,7 @@ class datadog_agent(
           agent_major_version => $_agent_major_version,
           agent_flavor        => $agent_flavor,
           agent_repo_uri      => $agent_repo_uri,
-          agent_version       => $agent_version,
+          agent_version       => $agent_full_version,
           rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
         }
       }

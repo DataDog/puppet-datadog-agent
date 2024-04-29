@@ -14,12 +14,22 @@ class datadog_agent::redhat(
 
   if $manage_repo {
 
-    $keys = [
+    $all_keys = [
         'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public',
-        'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
         'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
         'https://keys.datadoghq.com/DATADOG_RPM_KEY_B01082D3.public',
+        'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
     ]
+    #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'
+    if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ or $agent_version == 'latest' {
+      if $agent_major_version > 5 and ($agent_version == 'latest' or 0 + $3 > 35) {
+        $keys = $all_keys[0,3]
+      } else {
+        $keys = $all_keys
+      }
+    } else {
+      $keys = $all_keys
+    }
 
     if ($rpm_repo_gpgcheck != undef) {
       $repo_gpgcheck = $rpm_repo_gpgcheck

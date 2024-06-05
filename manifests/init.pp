@@ -238,7 +238,7 @@
 #       Which port to use with a proxy server for RPM repositories.
 #       Applies to Red Hat platforms. When set to `undef`, or `rpm_repo_proxy_url` is `undef`,
 #       no proxy is used to download packages from the repo.
-#       Numerical. Default: undef
+#       Integer. Default: undef
 #   $rpm_repo_proxy_password
 #       Whether to use a password for proxy connections for RPM repositories.
 #       Applies to Red Hat platforms. When set to `undef`, no password is used
@@ -376,7 +376,7 @@ class datadog_agent(
   Optional[String] $agent_repo_uri = undef,
   Optional[Boolean] $rpm_repo_gpgcheck = undef,
   Optional[String] $rpm_repo_proxy_url = undef,
-  Optional[Numerical] $rpm_repo_proxy_port = undef,
+  Optional[Integer] $rpm_repo_proxy_port = undef,
   Optional[String] $rpm_repo_proxy_password = undef,
   Optional[String] $rpm_repo_proxy_username = undef,
   # TODO: $use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver can be

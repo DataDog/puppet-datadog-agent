@@ -11,7 +11,7 @@ class datadog_agent::redhat(
   String $agent_flavor = $datadog_agent::params::package_name,
   Optional[Boolean] $rpm_repo_gpgcheck = undef,
   Optional[String] $rpm_repo_proxy_url = undef,
-  Optional[Numerical] $rpm_repo_proxy_port = undef,
+  Optional[Integer] $rpm_repo_proxy_port = undef,
   Optional[String] $rpm_repo_proxy_password = undef,
   Optional[String] $rpm_repo_proxy_username = undef,
 ) inherits datadog_agent::params {

@@ -229,6 +229,26 @@
 #       The `undef` value also translates to `false` on RHEL/CentOS 8.1 because
 #       of a bug in libdnf: https://bugzilla.redhat.com/show_bug.cgi?id=1792506
 #       Boolean. Default: undef
+#   $rpm_repo_proxy_url
+#       Wether or not to use a proxy server for RPM repositories.
+#       Applies to Red Hat platforms. When set to `undef`, or `rpm_repo_proxy_port` is `undef`,
+#       no proxy is used to download packages from the repo. 
+#       String. Default: undef
+#   $rpm_repo_proxy_port
+#       Which port to use with a proxy server for RPM repositories.
+#       Applies to Red Hat platforms. When set to `undef`, or `rpm_repo_proxy_url` is `undef`,
+#       no proxy is used to download packages from the repo.
+#       Numerical. Default: undef
+#   $rpm_repo_proxy_password
+#       Whether to use a password for proxy connections for RPM repositories.
+#       Applies to Red Hat platforms. When set to `undef`, no password is used
+#       for proxy connections to download packages from the repo. 
+#       String. Default: undef
+#   $rpm_repo_proxy_username
+#       Whether to use a username for proxy connections for RPM repositories.
+#       Applies to Red Hat platforms. When set to `undef`, no username is specified
+#       for proxy connections to download packages from the repo. 
+#       String. Default: undef
 #   $apt_release
 #       The distribution channel to be used for the APT repo. Eg: 'stable' or 'beta'.
 #       String. Default: stable
@@ -355,6 +375,10 @@ class datadog_agent(
   Hash[String[1], Data] $agent_extra_options = {},
   Optional[String] $agent_repo_uri = undef,
   Optional[Boolean] $rpm_repo_gpgcheck = undef,
+  Optional[String] $rpm_repo_proxy_url = undef,
+  Optional[Numerical] $rpm_repo_proxy_port = undef,
+  Optional[String] $rpm_repo_proxy_password = undef,
+  Optional[String] $rpm_repo_proxy_username = undef,
   # TODO: $use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver can be
   # removed in the next major version; they're kept now for backwards compatibility
   Optional[Boolean] $use_apt_backup_keyserver = undef,
@@ -462,12 +486,16 @@ class datadog_agent(
       }
       'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky' : {
         class { 'datadog_agent::redhat':
-          agent_major_version => $_agent_major_version,
-          agent_flavor        => $agent_flavor,
-          agent_repo_uri      => $agent_repo_uri,
-          manage_repo         => $manage_repo,
-          agent_version       => $agent_full_version,
-          rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
+          agent_major_version     => $_agent_major_version,
+          agent_flavor            => $agent_flavor,
+          agent_repo_uri          => $agent_repo_uri,
+          manage_repo             => $manage_repo,
+          agent_version           => $agent_full_version,
+          rpm_repo_gpgcheck       => $rpm_repo_gpgcheck,
+          rpm_repo_proxy_url      => $rpm_repo_proxy_url,
+          rpm_repo_proxy_port     => $rpm_repo_proxy_port,
+          rpm_repo_proxy_password => $rpm_repo_proxy_password,
+          rpm_repo_proxy_username => $rpm_repo_proxy_username,
         }
       }
       'Windows' : {

@@ -60,7 +60,7 @@ class datadog_agent::redhat(
     # only set any proxy variables if a proxy url and port are provided
     if ($rpm_repo_proxy_url != undef) {
       if ($rpm_repo_proxy_port != undef) {
-        $repo_proxy_url = "${rpm_repo_proxy_url}:${rpm_repo_proxy_port}"
+        $repo_proxy_url = "http://${rpm_repo_proxy_url}:${rpm_repo_proxy_port}"
         if ($rpm_repo_proxy_username != undef) {
           $repo_proxy_username = $rpm_repo_proxy_username
           if ($rpm_repo_proxy_password != undef) {

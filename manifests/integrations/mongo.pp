@@ -1,108 +1,107 @@
-# Class: datadog_agent::integrations::mongo
-#
-# This class will install the necessary configuration for the mongo integration
+# @summary Install the necessary configuration for the mongo integration
 #
 # NOTE: In newer versions of the Datadog Agent, the ssl parameters will be deprecated in favor the tls variants
 #
-# Parameters:
-#   $additional_metrics
+#
+# @param servers
+#   an Array of Hashes, containing these Keys
+#
+#   additional_metrics
 #       Optional array of additional metrics
-#   $database
+#   database
 #       Optionally specify database to query. Defaults to 'admin'
-#   $host:
+#   host:
 #       The host mongo is running on. Defaults to '127.0.0.1'
-#   $password
+#   password
 #       Optionally specify password for connection
-#   $port
+#   port
 #       The port mongo is running on. Defaults to 27017
-#   $ssl
+#   ssl
 #       Optionally enable SSL for connection
-#   $ssl_ca_certs
+#   ssl_ca_certs
 #       Optionally specify path to SSL Certificate Authority certificates
-#   $ssl_cert_reqs
+#   ssl_cert_reqs
 #       Optionally require SSL client certificate for connection
-#   $ssl_certfile
+#   ssl_certfile
 #       Optionally specify path to SSL certificate for connection
-#   $ssl_keyfile
+#   ssl_keyfile
 #       Optionally specify path to SSL private key for connection
-#   $tls
+#   tls
 #       Optionally enable TLS for connection
-#   $tls_ca_file
+#   tls_ca_file
 #       Optionally specify path to SSL/TLS Certificate Authority certificates
-#   $tls_allow_invalid_certificates
+#   tls_allow_invalid_certificates
 #       Optionally require SSL/TLS client certificate for connection
-#   $tls_certificate_key_file
+#   tls_certificate_key_file
 #       Optionally specify path to combined SSL/TLS key and certificate for connection
-#   $tags
+#   tags
 #       Optional array of tags
-#   $username
+#   username
 #       Optionally specify username for connection
 #
-# Sample Usage (Older Agent Versions):
+# @example
+#   class { 'datadog_agent::integrations::mongo' :
+#     servers => [
+#       {
+#         'additional_metrics' => ['top'],
+#         'database'           => 'database_name',
+#         'host'               => 'localhost',
+#         'password'           => 'mongo_password',
+#         'port'               => '27017',
+#         'ssl'                => true,
+#         'ssl_ca_certs'       => '/path/to/ca.pem',
+#         'ssl_cert_reqs'      => 'CERT_REQUIRED',
+#         'ssl_certfile'       => '/path/to/client.pem',
+#         'ssl_keyfile'        => '/path/to/key.pem',
+#         'tags'               => ['optional_tag1', 'optional_tag2'],
+#         'username'           => 'mongo_username',
+#       },
+#       {
+#         'host'               => 'localhost',
+#         'port'               => '27018',
+#         'tags'               => [],
+#         'additional_metrics' => [],
+#         'collections'        => [],
+#       },
+#     ]
+#   }
 #
-#  class { 'datadog_agent::integrations::mongo' :
-#    servers => [
-#      {
-#        'additional_metrics' => ['top'],
-#        'database'           => 'database_name',
-#        'host'               => 'localhost',
-#        'password'           => 'mongo_password',
-#        'port'               => '27017',
-#        'ssl'                => true,
-#        'ssl_ca_certs'       => '/path/to/ca.pem',
-#        'ssl_cert_reqs'      => 'CERT_REQUIRED',
-#        'ssl_certfile'       => '/path/to/client.pem',
-#        'ssl_keyfile'        => '/path/to/key.pem',
-#        'tags'               => ['optional_tag1', 'optional_tag2'],
-#        'username'           => 'mongo_username',
-#      },
-#      {
-#        'host'               => 'localhost',
-#        'port'               => '27018',
-#        'tags'               => [],
-#        'additional_metrics' => [],
-#        'collections'        => [],
-#      },
-#    ]
-#  }
+# @example (Newer Agent Versions)
+#   class { 'datadog_agent::integrations::mongo' :
+#     servers => [
+#       {
+#         'additional_metrics' => ['top'],
+#         'database'           => 'database_name',
+#         'host'               => 'localhost',
+#         'password'           => 'mongo_password',
+#         'port'               => '27017',
+#         'tls'                => true,
+#         'tls_ca_file'       => '/path/to/ca.pem',
+#         'tls_allow_invalid_certificates'      => false,
+#         'tls_certificate_key_file'       => '/path/to/combined.pem',
+#         'tags'               => ['optional_tag1', 'optional_tag2'],
+#         'username'           => 'mongo_username',
+#       },
+#       {
+#         'host'               => 'localhost',
+#         'port'               => '27018',
+#         'tags'               => [],
+#         'additional_metrics' => [],
+#         'collections'        => [],
+#       },
+#     ]
+#   }
 #
-# Sample Usage (Newer Agent Versions):
-#
-#  class { 'datadog_agent::integrations::mongo' :
-#    servers => [
-#      {
-#        'additional_metrics' => ['top'],
-#        'database'           => 'database_name',
-#        'host'               => 'localhost',
-#        'password'           => 'mongo_password',
-#        'port'               => '27017',
-#        'tls'                => true,
-#        'tls_ca_file'       => '/path/to/ca.pem',
-#        'tls_allow_invalid_certificates'      => false,
-#        'tls_certificate_key_file'       => '/path/to/combined.pem',
-#        'tags'               => ['optional_tag1', 'optional_tag2'],
-#        'username'           => 'mongo_username',
-#      },
-#      {
-#        'host'               => 'localhost',
-#        'port'               => '27018',
-#        'tags'               => [],
-#        'additional_metrics' => [],
-#        'collections'        => [],
-#      },
-#    ]
-#  }
-#
-class datadog_agent::integrations::mongo(
-  Array $servers = [{'host' => 'localhost', 'port' => '27017'}]
+class datadog_agent::integrations::mongo (
+  Array $servers = [{ 'host' => 'localhost', 'port' => '27017' }]
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/mongo.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if $datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/mongo.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -111,7 +110,7 @@ class datadog_agent::integrations::mongo(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -125,6 +124,6 @@ class datadog_agent::integrations::mongo(
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/mongo.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

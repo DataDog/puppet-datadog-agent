@@ -10,7 +10,12 @@ instances:
     user: <%= @username %>
     password: <%= @password %>
 <% end -%>
-    name: tomcat_instance
+<% if @name -%>
+    name: <%= @name %>
+<% end -%>
+<% if @service_name -%>
+    service_name: <%= @service_name %>
+<% end -%>
 <% if @java_bin_path -%>
     java_bin_path: <%= @java_bin_path %>
 <% end -%>

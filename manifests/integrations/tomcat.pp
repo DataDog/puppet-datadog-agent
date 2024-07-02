@@ -36,6 +36,7 @@ class datadog_agent::integrations::tomcat (
   $password             = undef,
   $instance_name        = undef,
   $service_name         = undef,
+  $application_name     = undef,
   $java_bin_path        = undef,
   $trust_store_path     = undef,
   $trust_store_password = undef,

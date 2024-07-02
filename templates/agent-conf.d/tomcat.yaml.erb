@@ -108,6 +108,6 @@ init_config:
 
 logs:
   - type: file
-    path: "/var/log/tomcat/datadog.log"
+    path: "/var/log/tomcat/<%= @application_name %>.log"
     source: java
     service: <%= @application_name %>

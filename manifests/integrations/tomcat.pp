@@ -72,7 +72,7 @@ class datadog_agent::integrations::tomcat (
     ensure => file,
     owner => root,
     group => tomcat,
-    mode => 0644,
+    mode => '0644',
     content => template('datadog_agent/log4j2.xml.erb')
   }
 }

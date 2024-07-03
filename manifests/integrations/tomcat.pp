@@ -73,6 +73,8 @@ class datadog_agent::integrations::tomcat (
     owner => root,
     group => tomcat,
     mode => '0644',
-    content => template('datadog_agent/log4j2.xml.erb')
+    content => template('datadog_agent/log4j2.xml.erb'),
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name]
   }
 }

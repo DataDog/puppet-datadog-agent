@@ -37,6 +37,7 @@ class datadog_agent::integrations::tomcat (
   $instance_name        = undef,
   $service_name         = undef,
   $application_name     = undef,
+  $tomcat_conf_dir      = undef,
   $java_bin_path        = undef,
   $trust_store_path     = undef,
   $trust_store_password = undef,
@@ -65,5 +66,13 @@ class datadog_agent::integrations::tomcat (
     content => template('datadog_agent/agent-conf.d/tomcat.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]
+  }
+
+  file { "${tomcat_conf_dir}/log4j2.xml":
+    ensure => file,
+    owner => root,
+    group => tomcat,
+    mode => 0644,
+    content => template('datadog_agent/log4j2.xml.erb')
   }
 }

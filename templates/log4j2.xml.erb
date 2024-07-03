@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <Appenders>
+    <RollingFile name="datadog"
+                 fileName="/var/log/tomcat/<%= @application_name %>.log"
+                 filePattern="/var/log/tomcat/<%= @application_name %>-%d{yyyy-MM-dd-HH-mm-ss}.log.gz"
+                 ignoreExceptions="false">
+      <JsonLayout compact="true" properties="true" eventEol="true" stacktraceAsString="true" />
+      <Policies>
+        <SizeBasedTriggeringPolicy size="250 MB"/>
+      </Policies>
+      <DefaultRolloverStrategy>
+        <Delete basePath="/var/log/">
+          <IfFileName glob="<%= @application_name %>.*"/>
+          <IfAccumulatedFileSize exceeds="1 GB" />
+        </Delete>
+      </DefaultRolloverStrategy>
+    </RollingFile>
+  </Appenders>
+  <Loggers>
+    <Root level="info">
+      <AppenderRef ref="datadog"/>
+    </Root>
+  </Loggers>
+</Configuration>

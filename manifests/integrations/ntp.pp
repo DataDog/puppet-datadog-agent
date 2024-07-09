@@ -61,4 +61,10 @@ class datadog_agent::integrations::ntp(
     require => Package[$datadog_agent::params::package_name],
     notify  => Service[$datadog_agent::params::service_name]
   }
+
+  # Remove potential remaining default config file
+  exec { 'remove_default_file':
+    command => "rm ${$dst}.default",
+    onlyif  => "test -e ${$dst}.default",
+  }
 }

@@ -4,7 +4,7 @@ ruby_version = Gem::Version.new(RUBY_VERSION.dup)
 
 # Each version of Puppet recommends a specific version of Ruby. Try to fetch the Puppet version that
 # matches our Ruby (unless PUPPET_VERSION is defined).
-matching_puppet_version = ruby_version > Gem::Version.new('2.5') ? (ruby_version > Gem::Version.new('2.7') ? '7.0.0' : '6.0.1') : '4.10.2'
+matching_puppet_version = ruby_version > Gem::Version.new('2.7') ? '7.0.0' : '6.0.1'
 puppet_version = ENV.fetch('PUPPET_VERSION', matching_puppet_version)
 gem "puppet", "~> #{puppet_version}"
 
@@ -12,7 +12,7 @@ ruby_version_segments = ruby_version.segments
 minor_version = ruby_version_segments[0..1].join('.')
 
 group :development do
-  gem "rake", "~> 12.3.3"                                          if ruby_version < Gem::Version.new('2.6.0') # last version for ruby < 2.6
+  gem "rake", "~> 12.3.3"                                          if ruby_version < Gem::Version.new('2.8.0') # last version for ruby < 2.6
   gem "semantic_puppet", '= 1.0.4'
   gem "xmlrpc"                                                      if ruby_version >= Gem::Version.new('2.3')
   gem "concurrent-ruby", '= 1.1.10'                                if Gem::Requirement.create([' >= 6.9.0', '<7.25.0']).satisfied_by?(Gem::Version.new(puppet_version)) # Add this beucause until Puppet 7.25 concurrent-ruby 1.22 break puppet

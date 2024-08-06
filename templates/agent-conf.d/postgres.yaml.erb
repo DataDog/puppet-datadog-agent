@@ -28,16 +28,20 @@ instances:
     collect_default_database: <%= instance['collect_default_database']  %>
     database_autodiscovery:
       enabled: <%= instance['database_autodiscovery']  %>
-      <% if instance['database_autodiscovery_includes'] -%>
+      <% if ! instance['database_autodiscovery_includes'].empty? -%>
       includes:
-        <% Array(instance['database_autodiscovery_includes']).each do |include| -%> 
+      <% Array(instance['database_autodiscovery_includes']).each do |include| -%> 
+        <%- if include != '' -%>
         - <%= include %>
-        <% end -%>
+        <%- end -%>
       <% end -%>
-      <% if instance['database_autodiscovery_excludes'] -%>
+      <% end -%>
+      <% if ! instance['database_autodiscovery_excludes'].empty? -%>
       excludes:
         <% Array(instance['database_autodiscovery_excludes']).each do |exclude| -%> 
+        <%- if exclude != '' -%>
         - <%= exclude %>
+        <%- end -%>
         <% end -%>
       <% end -%>
       collect_schemas:

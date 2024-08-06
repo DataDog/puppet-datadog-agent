@@ -27,25 +27,25 @@ instances:
     collect_database_size_metrics: <%= instance['collect_database_size_metrics']  %>
     collect_default_database: <%= instance['collect_default_database']  %>
     collect_schemas:
-      enabled: <%= instance['collect_schemas']  %>
+      enabled: <%= instance['collect_schemas'] %>
     database_autodiscovery:
-      enabled: <%= instance['database_autodiscovery']  %>
-      <% if ! instance['database_autodiscovery_includes'].empty? -%>
+      enabled: <%= instance['database_autodiscovery'] %>
+<% if instance['database_autodiscovery_includes']  and ! instance['database_autodiscovery_includes'].empty? -%>
       includes:
-      <% Array(instance['database_autodiscovery_includes']).each do |include| -%> 
-        <%- if include != '' -%>
-        - <%= include -%>
-        <%- end -%>
-      <% end -%>
-      <% end -%>
-      <% if ! instance['database_autodiscovery_excludes'].empty? -%>
+  <%- Array(instance['database_autodiscovery_includes'] ).each do |include| -%>
+    <%- if include != '' -%>
+        - <%= include %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
+<% if instance['database_autodiscovery_excludes']  and ! instance['database_autodiscovery_excludes'].empty? -%>
       excludes:
-        <% Array(instance['database_autodiscovery_excludes']).each do |exclude| -%> 
-          <%- if exclude != '' -%>
-        - <%= exclude -%>
-          <%- end -%>
-        <% end -%>
-      <% end -%>
+  <%- Array(instance['database_autodiscovery_excludes'] ).each do |exclude| -%>
+    <%- if exclude != '' -%>
+        - <%= exclude %>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
 <% if instance['ssl']  == true -%>
     ssl: true
 <% end -%>

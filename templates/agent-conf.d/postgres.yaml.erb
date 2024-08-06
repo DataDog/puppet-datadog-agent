@@ -34,16 +34,16 @@ instances:
       includes:
       <% Array(instance['database_autodiscovery_includes']).each do |include| -%> 
         <%- if include != '' -%>
-        - <%= include %>
+        - <%= include -%>
         <%- end -%>
       <% end -%>
       <% end -%>
       <% if ! instance['database_autodiscovery_excludes'].empty? -%>
       excludes:
         <% Array(instance['database_autodiscovery_excludes']).each do |exclude| -%> 
-        <%- if exclude != '' -%>
-        - <%= exclude %>
-        <%- end -%>
+          <%- if exclude != '' -%>
+        - <%= exclude -%>
+          <%- end -%>
         <% end -%>
       <% end -%>
 <% if instance['ssl']  == true -%>

@@ -26,6 +26,8 @@ instances:
     collect_activity_metrics: <%= instance['collect_activity_metrics']  %>
     collect_database_size_metrics: <%= instance['collect_database_size_metrics']  %>
     collect_default_database: <%= instance['collect_default_database']  %>
+    collect_schemas:
+      enabled: <%= instance['collect_schemas']  %>
     database_autodiscovery:
       enabled: <%= instance['database_autodiscovery']  %>
       <% if ! instance['database_autodiscovery_includes'].empty? -%>
@@ -44,8 +46,6 @@ instances:
         <%- end -%>
         <% end -%>
       <% end -%>
-      collect_schemas:
-        enabled: <%= instance['collect_schemas']  %>
 <% if instance['ssl']  == true -%>
     ssl: true
 <% end -%>

@@ -30,6 +30,16 @@
 #       Boolean to enable collecting database size metrics. Default value is True but they might be slow with large databases
 #   $collect_default_database
 #       Boolean to enable collecting statistics from the default database 'postgres' in the check metrics, default to false
+#   $dbm
+#       Boolean to enable collecting metrics from the dbm tables, default value is False.
+#   $database_autodiscovery
+#       Boolean to enable database autodiscovery, default value is False.
+#   $collect_schemas
+#       Boolean to enable collecting schema metrics, default value is False.
+#   $database_autodiscovery_includes
+#       Array of strings to include in the database autodiscovery, default value is empty array.
+#   $database_autodiscovery_excludes
+#       Array of strings to exclude in the database autodiscovery, default value is empty array.
 #   $tags
 #       Optional array of tags
 #   $tables

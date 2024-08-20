@@ -29,52 +29,44 @@ class datadog_agent::reports(
   $puppet_gem_provider = $datadog_agent::params::gem_provider,
 ) inherits datadog_agent::params {
 
-  if ($facts['os']['name'] == 'Windows') {
+  require ::datadog_agent
 
-    fail('Reporting is not yet supported from a Windows host')
+  if $manage_dogapi_gem {
+    $rubydev_package = $datadog_agent::params::rubydev_package
 
-  } else {
-
-    require ::datadog_agent
-
-    if $manage_dogapi_gem {
-      $rubydev_package = $datadog_agent::params::rubydev_package
-
-      # check to make sure that you're not installing rubydev somewhere else
-      if ! defined(Package[$rubydev_package]) {
-        package {$rubydev_package:
-          ensure => installed,
-          before => Package['dogapi']
-        }
-      }
-
-      if (! defined(Package['rubygems'])) {
-        package { 'ruby':
-          ensure => 'installed',
-          name   => $datadog_agent::params::ruby_package
-        }
-
-        package { 'rubygems':
-          ensure  => 'installed',
-          name    => $datadog_agent::params::rubygems_package,
-          require => Package['ruby']
-        }
-      }
-
-      package{ 'dogapi':
-        ensure   => $dogapi_version,
-        provider => $puppet_gem_provider,
+    # check to make sure that you're not installing rubydev somewhere else
+    if ! defined(Package[$rubydev_package]) {
+      package {$rubydev_package:
+        ensure => installed,
+        before => Package['dogapi']
       }
     }
 
-    file { '/etc/datadog-agent/datadog-reports.yaml':
-      ensure  => file,
-      content => template('datadog_agent/datadog-reports.yaml.erb'),
-      owner   => $puppetmaster_user,
-      group   => 'root',
-      mode    => '0640',
-      require => File['/etc/datadog-agent'],
+    if (! defined(Package['rubygems'])) {
+      package { 'ruby':
+        ensure => 'installed',
+        name   => $datadog_agent::params::ruby_package
+      }
+
+      package { 'rubygems':
+        ensure  => 'installed',
+        name    => $datadog_agent::params::rubygems_package,
+        require => Package['ruby']
+      }
     }
 
+    package{ 'dogapi':
+      ensure   => $dogapi_version,
+      provider => $puppet_gem_provider,
+    }
+  }
+
+  file { '/etc/datadog-agent/datadog-reports.yaml':
+    ensure  => file,
+    content => template('datadog_agent/datadog-reports.yaml.erb'),
+    owner   => $puppetmaster_user,
+    group   => 'root',
+    mode    => '0640',
+    require => File['/etc/datadog-agent'],
   }
 }

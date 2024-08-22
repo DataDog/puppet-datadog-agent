@@ -360,6 +360,7 @@ class datadog_agent (
     $_agent_major_version = $datadog_agent::params::default_agent_major_version
   }
 
+  $agent_full_version = $agent_version
 
   if $_agent_major_version != 6 and $_agent_major_version != 7 {
     fail("agent_major_version must be either 6 or 7, not ${_agent_major_version}")

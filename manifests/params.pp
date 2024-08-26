@@ -26,7 +26,7 @@ class datadog_agent::params {
   case $facts['os']['name'] {
     'Ubuntu','Debian','Raspbian' : {
       $rubydev_package            = 'ruby-dev'
-      case $::operatingsystemrelease{
+      case $facts['os']['release']['full']{
         '14.04': {
           # Specific ruby/rubygems package name for Ubuntu 14.04
           $ruby_package           = 'ruby'

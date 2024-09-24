@@ -32,3 +32,4 @@ environments/**/.vagrant
 /inventory.yaml
 
 .kitchen
+.vscode

@@ -455,16 +455,17 @@ class datadog_agent(
       $manage_install = true
       $datadog_installer_enabled = false
     } else {
-      $manage_install = ! $datadog_installer_enabled
-  } elsif !$manage_install {
-      if $datadog_installer_enabled == undef {
-      $datadog_installer_enabled = false
+        $manage_install = ! $datadog_installer_enabled
     }
+  } elsif ! $manage_install {
+      if $datadog_installer_enabled == undef {
+        $datadog_installer_enabled = false
+      }
   } else {
       if $datadog_installer_enabled == undef {
         $datadog_installer_enabled = false
       } elsif $datadog_installer_enabled {
-        fail('Both manage_install and datadog_installer_enabled are set to true. Only one can be true.')
+          fail('Both manage_install and datadog_installer_enabled are set to true. Only one can be true.')
       }
   }
 

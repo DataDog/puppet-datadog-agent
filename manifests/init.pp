@@ -448,7 +448,9 @@ class datadog_agent(
   # WIP: Datadog installer
   if $datadog_installer_enabled {
     # Disable management of the Agent
-    $manage_install = false
+    class { 'datadog_agent':
+      manage_install => false,
+    }
     class {
       'datadog_agent::installer':
         hello => 'world',

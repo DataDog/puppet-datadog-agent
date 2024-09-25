@@ -287,8 +287,8 @@ class datadog_agent(
   $service_enable = true,
   Boolean $manage_repo = true,
   Boolean $manage_dogapi_gem = true,
-  Boolean $datadog_installer_enabled = false,
-  Boolean $manage_install = ! $datadog_installer_enabled,
+  Optional[Boolean] $manage_install = undef,
+  Optional[Boolean] $datadog_installer_enabled = undef,
   $hostname_extraction_regex = undef,
   Boolean $hostname_fqdn = false,
   Variant[Stdlib::Port, Pattern[/^\d*$/]] $dogstatsd_port = 8125,
@@ -445,7 +445,32 @@ class datadog_agent(
     default:    { $_loglevel = 'INFO' }
   }
 
-  # WIP: Datadog installer
+  # Puppet does not allow variable re-assignment.
+  # We do not want $manage_install and $datadog_installer_enabled to be both true and we fail.
+  # We want to keep the previous behaviour, defaulting to manage_install=true.
+  # Installer is disabled by default.
+
+  if $manage_install == undef {
+    if $datadog_installer_enabled == undef {
+      $manage_install = true
+      $datadog_installer_enabled = false
+    } else {
+      $manage_install = ! $datadog_installer_enabled
+  } elsif ! $manage_install {
+      if $datadog_installer_enabled == undef {
+      $datadog_installer_enabled = false
+    }
+  } else {
+      if $datadog_installer_enabled == undef {
+        $datadog_installer_enabled = false
+      } elsif $datadog_installer_enabled {
+        fail('Both manage_install and datadog_installer_enabled are set to true. Only one can be true.')
+      }
+  }
+
+
+  # WIP Datadog installer
+  # abc
   if $datadog_installer_enabled {
     # Disable management of the Agent
     # We do it with dependent variable instead as can't reassign variable value in puppet

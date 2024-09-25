@@ -445,30 +445,20 @@ class datadog_agent(
     default:    { $_loglevel = 'INFO' }
   }
 
-  # As $manage_install defaults to true, to use the installer, set $datadog_installer_enabled to true and $manage_install to false
-  # Could be improved later by introducing effective variables depending on the value of $datadog_installer_enabled, e.g.
-  # $effective_manage_install = $manage_install and ! $datadog_installer_enabled
-  # Note: variable cannot be re-assigned in Puppet, requiring the introduction of new variables and possibly setting $manage_install as Optional undef
   if $manage_install and $datadog_installer_enabled {
     fail('Both manage_install and datadog_installer_enabled are set to true.
 The Agent package can only be managed by Puppet or the installer.')
   }
 
-  if $manage_install == undef {
-    if $datadog_installer_enabled == undef {
-      $effective_manage_install = true
-      $effective_datadog_installer_enabled = false
-    } else {
-      $effective_manage_install = ! $datadog_installer_enabled
-      $effective_datadog_installer_enabled = $datadog_installer_enabled
-    }
-  } else {
-    $effective_manage_install = $manage_install
-    if $datadog_installer_enabled == undef {
-      $effective_datadog_installer_enabled = false
-    } else {
-      $effective_datadog_installer_enabled = $datadog_installer_enabled
-    }
+  # Note: variable cannot be re-assigned in Puppet, requiring the introduction of new variables and setting $manage_install as Optional undef
+  $effective_datadog_installer_enabled = $datadog_installer_enabled ? {
+    undef  => false,
+    default => $datadog_installer_enabled,
+  }
+
+  $effective_manage_install = $manage_install ? {
+    undef  => ! $effective_datadog_installer_enabled,
+    default => $manage_install,
   }
 
   # WIP Datadog installer

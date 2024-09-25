@@ -448,9 +448,10 @@ class datadog_agent(
   # WIP: Datadog installer
   if $datadog_installer_enabled {
     # Disable management of the Agent
-    class { 'datadog_agent':
-      manage_install => false,
-    }
+    # We do it with dependent variable instead as can't reassign variable value in puppet
+    # class { 'datadog_agent':
+    #   manage_install => false,
+    # }
     class {
       'datadog_agent::installer':
         hello => 'world',

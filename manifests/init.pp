@@ -242,6 +242,9 @@
 #
 #   $windows_ddagentuser_password
 #       (Windows only) The password used to register the service`.
+#   $datadog_installer_enabled
+#       Boolean to enable or disable the Datadog installer.
+#       Boolean. Default: false
 #
 # Sample Usage:
 #
@@ -368,6 +371,7 @@ class datadog_agent(
   Boolean $windows_npm_install = false,
   Optional[String] $windows_ddagentuser_name = undef,
   Optional[String] $windows_ddagentuser_password = undef,
+  Boolean $datadog_installer_enabled = false,
 ) inherits datadog_agent::params {
 
   #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'
@@ -440,6 +444,17 @@ class datadog_agent(
     'WARNING':  { $_loglevel = 'WARNING' }
     default:    { $_loglevel = 'INFO' }
   }
+
+  # WIP: Datadog installer
+  if $datadog_installer_enabled {
+    # Disable management of the Agent
+    $manage_install = false
+    class {
+      'datadog_agent::installer':
+        hello => 'world',
+    }
+  }
+
 
   # Install agent
   if $manage_install {

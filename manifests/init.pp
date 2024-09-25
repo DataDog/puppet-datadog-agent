@@ -456,7 +456,7 @@ class datadog_agent(
       $datadog_installer_enabled = false
     } else {
       $manage_install = ! $datadog_installer_enabled
-  } elsif ! $manage_install {
+  } elsif !$manage_install {
       if $datadog_installer_enabled == undef {
       $datadog_installer_enabled = false
     }

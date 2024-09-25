@@ -445,33 +445,19 @@ class datadog_agent(
     default:    { $_loglevel = 'INFO' }
   }
 
+  # As $manage_install defaults to true, to use the installer, set $datadog_installer_enabled to true and $manage_install to false
+  # Could be improved later by introducing effective variables depending on the value of $datadog_installer_enabled, e.g.
+  # $effective_manage_install = $manage_install and ! $datadog_installer_enabled
   if $manage_install and $datadog_installer_enabled {
     fail('Both manage_install and datadog_installer_enabled are set to true.
-    The Agent package can only be managed by Puppet or the installer.')
+The Agent package can only be managed by Puppet or the installer.')
   }
 
-  if $manage_install == undef {
-    if $datadog_installer_enabled == undef {
-      $manage_install = true
-      $datadog_installer_enabled = false
-    } else {
-        $manage_install = ! $datadog_installer_enabled
-    }
-  } elsif ! $manage_install {
-      if $datadog_installer_enabled == undef {
-        $datadog_installer_enabled = false
-      }
-  } else {
-      if $datadog_installer_enabled == undef {
-        $datadog_installer_enabled = false
-      } elsif $datadog_installer_enabled {
-          fail('Both manage_install and datadog_installer_enabled are set to true. Only one can be true.')
-      }
-  }
-
+  # We cannot re-assign variables in Puppet, so we use a dependent variable to disable management of the Agent.
+  # This is to ensure a user does not need to provide both manage_install and datadog_installer_enabled.
+  $effective_manage_install = $manage_install and ! $datadog_installer_enabled
 
   # WIP Datadog installer
-  # abc
   if $datadog_installer_enabled {
     # Disable management of the Agent
     # We do it with dependent variable instead as can't reassign variable value in puppet
@@ -485,7 +471,7 @@ class datadog_agent(
 
 
   # Install agent
-  if $manage_install {
+  if $effective_manage_install {
     case $facts['os']['name'] {
       'Ubuntu','Debian','Raspbian' : {
         if $use_apt_backup_keyserver != undef or $apt_backup_keyserver != undef or $apt_keyserver != undef {

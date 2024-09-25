@@ -287,8 +287,8 @@ class datadog_agent(
   $service_enable = true,
   Boolean $manage_repo = true,
   Boolean $manage_dogapi_gem = true,
-  Optional[Boolean] $manage_install = undef,
-  Optional[Boolean] $datadog_installer_enabled = undef,
+  Boolean $manage_install = true,
+  Boolean $datadog_installer_enabled = false,
   $hostname_extraction_regex = undef,
   Boolean $hostname_fqdn = false,
   Variant[Stdlib::Port, Pattern[/^\d*$/]] $dogstatsd_port = 8125,
@@ -449,6 +449,11 @@ class datadog_agent(
   # We do not want $manage_install and $datadog_installer_enabled to be both true and we fail.
   # We want to keep the previous behaviour, defaulting to manage_install=true.
   # Installer is disabled by default.
+
+  if $manage_install && $datadog_installer_enabled {
+    fail('Both manage_install and datadog_installer_enabled are set to true.
+    The Agent package can only be managed by Puppet or the installer.')
+  }
 
   if $manage_install == undef {
     if $datadog_installer_enabled == undef {

@@ -287,8 +287,8 @@ class datadog_agent(
   $service_enable = true,
   Boolean $manage_repo = true,
   Boolean $manage_dogapi_gem = true,
-  Boolean $manage_install = true,
-  Boolean $datadog_installer_enabled = false,
+  Optional[Boolean] $manage_install,
+  Optional[Boolean] $datadog_installer_enabled,
   $hostname_extraction_regex = undef,
   Boolean $hostname_fqdn = false,
   Variant[Stdlib::Port, Pattern[/^\d*$/]] $dogstatsd_port = 8125,
@@ -448,17 +448,30 @@ class datadog_agent(
   # As $manage_install defaults to true, to use the installer, set $datadog_installer_enabled to true and $manage_install to false
   # Could be improved later by introducing effective variables depending on the value of $datadog_installer_enabled, e.g.
   # $effective_manage_install = $manage_install and ! $datadog_installer_enabled
+  # Note: variable cannot be re-assigned in Puppet, requiring the introduction of new variables and possibly setting $manage_install as Optional undef
   if $manage_install and $datadog_installer_enabled {
     fail('Both manage_install and datadog_installer_enabled are set to true.
 The Agent package can only be managed by Puppet or the installer.')
   }
 
-  # We cannot re-assign variables in Puppet, so we use a dependent variable to disable management of the Agent.
-  # This is to ensure a user does not need to provide both manage_install and datadog_installer_enabled.
-  $effective_manage_install = $manage_install and ! $datadog_installer_enabled
+  if $manage_install == undef {
+    if $datadog_installer_enabled == undef {
+      $effective_manage_install = true
+      $effective_datadog_installer_enabled = false
+    } else {
+      $effective_manage_install = ! $datadog_installer_enabled
+    }
+  } else {
+    $effective_manage_install = $manage_install
+    if $datadog_installer_enabled == undef {
+      $effective_datadog_installer_enabled = false
+    } else {
+      $effective_datadog_installer_enabled = $datadog_installer_enabled
+    }
+  }
 
   # WIP Datadog installer
-  if $datadog_installer_enabled {
+  if $effective_datadog_installer_enabled {
     # Disable management of the Agent
     # We do it with dependent variable instead as can't reassign variable value in puppet
     # class { 'datadog_agent':

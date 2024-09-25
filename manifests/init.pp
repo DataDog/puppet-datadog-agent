@@ -452,9 +452,8 @@ class datadog_agent(
     # class { 'datadog_agent':
     #   manage_install => false,
     # }
-    class {
-      'datadog_agent::installer':
-        hello => 'world',
+    class { 'datadog_agent::installer' :
+      hello => 'world',
     }
   }
 

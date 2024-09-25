@@ -1,4 +1,4 @@
-class datadog::installer (
+class datadog_agent::installer (
   String $hello = '',
 ) {
   file {

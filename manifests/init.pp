@@ -460,6 +460,7 @@ The Agent package can only be managed by Puppet or the installer.')
       $effective_datadog_installer_enabled = false
     } else {
       $effective_manage_install = ! $datadog_installer_enabled
+      $effective_datadog_installer_enabled = $datadog_installer_enabled
     }
   } else {
     $effective_manage_install = $manage_install

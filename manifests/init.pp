@@ -445,12 +445,7 @@ class datadog_agent(
     default:    { $_loglevel = 'INFO' }
   }
 
-  # Puppet does not allow variable re-assignment.
-  # We do not want $manage_install and $datadog_installer_enabled to be both true and we fail.
-  # We want to keep the previous behaviour, defaulting to manage_install=true.
-  # Installer is disabled by default.
-
-  if $manage_install && $datadog_installer_enabled {
+  if $manage_install and $datadog_installer_enabled {
     fail('Both manage_install and datadog_installer_enabled are set to true.
     The Agent package can only be managed by Puppet or the installer.')
   }

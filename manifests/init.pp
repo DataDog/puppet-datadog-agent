@@ -287,7 +287,8 @@ class datadog_agent(
   $service_enable = true,
   Boolean $manage_repo = true,
   Boolean $manage_dogapi_gem = true,
-  Boolean $manage_install = true,
+  Boolean $datadog_installer_enabled = false,
+  Boolean $manage_install = ! $datadog_installer_enabled,
   $hostname_extraction_regex = undef,
   Boolean $hostname_fqdn = false,
   Variant[Stdlib::Port, Pattern[/^\d*$/]] $dogstatsd_port = 8125,
@@ -371,7 +372,6 @@ class datadog_agent(
   Boolean $windows_npm_install = false,
   Optional[String] $windows_ddagentuser_name = undef,
   Optional[String] $windows_ddagentuser_password = undef,
-  Boolean $datadog_installer_enabled = false,
 ) inherits datadog_agent::params {
 
   #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'

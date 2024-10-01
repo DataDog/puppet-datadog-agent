@@ -260,7 +260,7 @@
 # }
 #
 #
-class datadog_agent(
+class datadog_agent (
   String $dd_url = '',
   String $datadog_site = $datadog_agent::params::datadog_site,
   String $host = '',
@@ -446,7 +446,7 @@ class datadog_agent(
   }
 
   if $manage_install and $datadog_installer_enabled {
-    fail('Both manage_install and datadog_installer_enabled are set to true.
+  fail('Both manage_install and datadog_installer_enabled are set to true.
 The Agent package can only be managed by Puppet or the installer.')
   }
 
@@ -474,7 +474,10 @@ The Agent package can only be managed by Puppet or the installer.')
     case $facts['os']['name'] {
       'Ubuntu','Debian','Raspbian': {
         class { 'datadog_agent::ubuntu_installer':
-          hello => 'ubuntu',
+          installer_repo_uri    => $agent_repo_uri,
+          release               => $apt_release,
+          skip_apt_key_trusting => $skip_apt_key_trusting,
+          hello                 => 'ubuntu',
         }
       }
       default: { fail("Class[datadog_agent::installer]: Unsupported operatingsystem: ${facts['os']['name']}") }
@@ -878,7 +881,6 @@ The Agent package can only be managed by Puppet or the installer.')
         content => template('datadog_agent/install_info.erb'),
         require => File['/etc/datadog-agent'],
       }
-
     }
 
   }

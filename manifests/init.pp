@@ -468,11 +468,18 @@ The Agent package can only be managed by Puppet or the installer.')
     # class { 'datadog_agent':
     #   manage_install => false,
     # }
-    class { 'datadog_agent::installer' :
-      hello => 'world',
+    # class { 'datadog_agent::installer' :
+    #   hello => 'world',
+    # }
+    case $facts['os']['name'] {
+      'Ubuntu','Debian','Raspbian': {
+        class { 'datadog_agent::ubuntu_installer':
+          hello => 'ubuntu',
+        }
+      }
+      default: { fail("Class[datadog_agent::installer]: Unsupported operatingsystem: ${facts['os']['name']}") }
     }
   }
-
 
   # Install agent
   if $effective_manage_install {

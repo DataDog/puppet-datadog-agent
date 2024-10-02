@@ -550,7 +550,7 @@ The Agent package can only be managed by Puppet or the installer.')
       default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${facts['os']['name']}") }
     }
   } else {
-    if ! defined(Package[$agent_flavor]) {
+    if ! defined(Package[$agent_flavor]) and ! $effective_datadog_installer_enabled {
       package { $agent_flavor:
         ensure => present,
         source => 'Agent installation not managed by Puppet, make sure the Agent is installed beforehand.',

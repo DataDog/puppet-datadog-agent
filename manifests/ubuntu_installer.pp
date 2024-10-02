@@ -4,7 +4,7 @@
 #
 
 class datadog_agent::ubuntu_installer (
-  String $hello = '',
+  String $api_key = 'your_API_key',
   Optional[String] $installer_repo_uri = undef,
   String $release = $datadog_agent::params::apt_default_release,
   Boolean $skip_apt_key_trusting = false,
@@ -121,10 +121,10 @@ class datadog_agent::ubuntu_installer (
       'DATADOG_TRACE_ID=1',
       'DATADOG_PARENT_ID=1',
       'DD_SITE=$datadog_site',
-      'DD_API_KEY=$api_key',
-      'DD_REMOTE_UPDATES=$remote_updates',
-      'DD_APM_INSTRUMENTATION_ENABLED=$apm_instrumentation_enabled',
-      'DD_APM_INSTRUMENTATION_LIBRARIES=$apm_instrumentation_libraries',
+      "DD_API_KEY=${api_key}",
+      "DD_REMOTE_UPDATES=${remote_updates}",
+      "DD_APM_INSTRUMENTATION_ENABLED=${apm_instrumentation_enabled}",
+      "DD_APM_INSTRUMENTATION_LIBRARIES=${apm_instrumentation_libraries}",
     ],
     # unless condition => '/usr/bin/dpkg-query -W -f=\'${Status}\' datadog-installer | grep -q "ok installed"',
     #   # when false

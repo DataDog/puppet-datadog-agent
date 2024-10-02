@@ -139,7 +139,7 @@ class datadog_agent::ubuntu_installer (
   exec {
     'Check if installer owns the Datadog Agent package':
       # TO DO: check if `datadog-agent` is the right package name/needs to be parameterized
-      command => 'datadog-installer is-installed datadog-agent',
+      command => '/usr/bin/datadog-installer is-installed datadog-agent',
       require => Exec['Bootstrap the installer'],
   }
 

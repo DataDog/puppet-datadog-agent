@@ -372,6 +372,10 @@ class datadog_agent (
   Boolean $windows_npm_install = false,
   Optional[String] $windows_ddagentuser_name = undef,
   Optional[String] $windows_ddagentuser_password = undef,
+  Optional[String] $remote_updates = undef,
+  Optional[Boolean] $apm_instrumentation_enabled = undef,
+  # TO DO review what it should be
+  Optional[String] $apm_instrumentation_libraries = undef,
 ) inherits datadog_agent::params {
 
   #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'
@@ -474,10 +478,13 @@ The Agent package can only be managed by Puppet or the installer.')
     case $facts['os']['name'] {
       'Ubuntu','Debian','Raspbian': {
         class { 'datadog_agent::ubuntu_installer':
-          installer_repo_uri    => $agent_repo_uri,
-          release               => $apt_release,
-          skip_apt_key_trusting => $skip_apt_key_trusting,
-          hello                 => 'ubuntu',
+          installer_repo_uri            => $agent_repo_uri,
+          release                       => $apt_release,
+          skip_apt_key_trusting         => $skip_apt_key_trusting,
+          apm_instrumentation_enabled   => $apm_instrumentation_enabled,
+          apm_instrumentation_libraries => $apm_instrumentation_libraries,
+          remote_updates                => $remote_updates,
+          hello                         => 'ubuntu',
         }
       }
       default: { fail("Class[datadog_agent::installer]: Unsupported operatingsystem: ${facts['os']['name']}") }

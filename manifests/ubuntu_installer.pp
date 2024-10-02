@@ -23,8 +23,11 @@ class datadog_agent::ubuntu_installer (
     # DATADOG_APT_KEY_382E94DE.public expires in 2022
     'A2923DFF56EDA6E76E55E492D3A80E30382E94DE' => 'https://keys.datadoghq.com/DATADOG_APT_KEY_382E94DE.public',
   },
+  Optional[Boolean] $apm_instrumentation_enabled = undef,
+  # TO DO review what it should be
+  Optional[String] $apm_instrumentation_libraries = undef,
+  Optional[String] $remote_updates = undef,
 ) inherits datadog_agent::params {
-
   # There does not seem to be a need to support version for installer so far looking both at install script and Ansible
   # if $agent_version =~ /^[0-9]+\.[0-9]+\.[0-9]+((?:~|-)[^0-9\s-]+[^-\s]*)?$/ {
   #   $platform_agent_version = "1:${agent_version}-1"
@@ -88,6 +91,7 @@ class datadog_agent::ubuntu_installer (
     ensure => absent,
   }
 
+  # Install APT repository
   apt::source { 'datadog':
     # Installer is located in the same APT repository as the Agent, only within repo 7
     comment  => 'Datadog Agent Repository',
@@ -96,6 +100,7 @@ class datadog_agent::ubuntu_installer (
     repos    => '7',
   }
 
+  # Install `datadog-installer` and `datadog-signing-keys` packages with latest versions
   package { 'datadog-installer':
     ensure  => 'latest',
     require => [Apt::Source['datadog'], Class['apt::update']],
@@ -105,4 +110,38 @@ class datadog_agent::ubuntu_installer (
     ensure  => 'latest',
     require => [Apt::Source['datadog'], Class['apt::update']],
   }
+
+  # Bootstrap the installer
+  # TO DO: check with FA condition to run the command (e.g. if we need to run it only once). Right now, each catalog run.
+  # Doc: https://www.puppet.com/docs/puppet/7/types/exec.html
+  exec { 'Bootstrap the installer':
+    command     => '/usr/bin/datadog-bootstrap bootstrap',
+    environment => [
+      # TO DO: generate random values for trace_id and parent_id
+      'DATADOG_TRACE_ID=1',
+      'DATADOG_PARENT_ID=1',
+      'DD_SITE=$datadog_site',
+      'DD_API_KEY=$api_key',
+      'DD_REMOTE_UPDATES=$remote_updates',
+      'DD_APM_INSTRUMENTATION_ENABLED=$apm_instrumentation_enabled',
+      'DD_APM_INSTRUMENTATION_LIBRARIES=$apm_instrumentation_libraries',
+    ],
+    # unless condition => '/usr/bin/dpkg-query -W -f=\'${Status}\' datadog-installer | grep -q "ok installed"',
+    #   # when false
+    # }
+    # else {
+    #   # when false
+    # }
+    require     => [Package['datadog-installer'], Package['datadog-signing-keys']],
+  }
+
+  # Check if installer owns the Datadog Agent package
+  exec {
+    'Check if installer owns the Datadog Agent package':
+      # TO DO: check if `datadog-agent` is the right package name/needs to be parameterized
+      command => 'datadog-installer is-installed datadog-agent',
+      require => Exec['Bootstrap the installer'],
+  }
+
+  # TO DO: check if installer owns APM package and libraries
 }

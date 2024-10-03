@@ -810,6 +810,8 @@ The Agent package can only be managed by Puppet or the installer.')
             $host_config,
             $additional_checksd_config)
 
+    # TO DO: should Agent config be managed by installer or puppet.
+    # In the meantime, we will manage the config file with puppet and notify the service only if no installer is used
     file { $_conf_dir:
       ensure  => directory,
       purge   => $conf_dir_purge,
@@ -817,7 +819,9 @@ The Agent package can only be managed by Puppet or the installer.')
       force   => $conf_dir_purge,
       owner   => $dd_user,
       group   => $dd_group,
-      notify  => Service[$datadog_agent::params::service_name]
+    }
+    if ! $effective_datadog_installer_enabled {
+      File[$_conf_dir]  ~> Service[$datadog_agent::params::service_name]
     }
 
     $_local_tags = datadog_agent::tag6($local_tags, false, undef)
@@ -878,8 +882,11 @@ The Agent package can only be managed by Puppet or the installer.')
         mode      => '0640',
         content   => template('datadog_agent/datadog.yaml.erb'),
         show_diff => false,
-        notify    => Service[$datadog_agent::params::service_name],
         require   => File['/etc/datadog-agent'],
+      }
+
+      if ! $effective_datadog_installer_enabled {
+        File['/etc/datadog-agent/datadog.yaml']  ~> Service[$datadog_agent::params::service_name]
       }
 
       file { '/etc/datadog-agent/install_info':

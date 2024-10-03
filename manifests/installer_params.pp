@@ -48,7 +48,7 @@ class datadog_agent::installer_params (
             'trace_id'   => $trace_id,
             'span_id'    => $trace_id,
             'parent_id'  => 0,
-            'start'      => $start_time,
+            'start'      => 0,
             # TO DO: check duration calculation, diff between start and stop
             'duration'   => 100,
             'error'      => $rc,
@@ -75,7 +75,7 @@ class datadog_agent::installer_params (
   }
   $json_body = to_json($json_trace_body_hash)
   exec { 'Send trace':
-    command   => "curl -v -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry > /var/log/curl_output.log 2>&1",
+    command   => "curl -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
     path      => ['/usr/bin', '/bin'],
     onlyif    => 'which curl',
     logoutput => true,

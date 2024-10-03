@@ -113,6 +113,7 @@ class datadog_agent::ubuntu_installer (
 
   # Bootstrap the installer
   # TO DO: check with FA condition to run the command (e.g. if we need to run it only once). Right now, each catalog run.
+  # Could check for instance if `datadog-installer version` returns a version number
   # Doc: https://www.puppet.com/docs/puppet/7/types/exec.html
   exec { 'Bootstrap the installer':
     command     => '/usr/bin/datadog-bootstrap bootstrap',

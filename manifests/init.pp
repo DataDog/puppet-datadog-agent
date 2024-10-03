@@ -558,29 +558,30 @@ The Agent package can only be managed by Puppet or the installer.')
     }
   }
 
-  # Declare service
-  class { 'datadog_agent::service' :
-    agent_flavor     => $agent_flavor,
-    service_ensure   => $service_ensure,
-    service_enable   => $service_enable,
-    service_provider => $service_provider,
-  }
-
-  if ($facts['os']['name'] != 'Windows') {
-    if ($dd_groups) {
-      user { $dd_user:
-        groups => $dd_groups,
-        notify => Service[$datadog_agent::params::service_name],
+  # Declare service when not managed by the installer
+  if ! $effective_datadog_installer_enabled {
+    class { 'datadog_agent::service' :
+        agent_flavor     => $agent_flavor,
+        service_ensure   => $service_ensure,
+        service_enable   => $service_enable,
+        service_provider => $service_provider,
       }
-    }
+    if ($facts['os']['name'] != 'Windows') {
+      if ($dd_groups) {
+        user { $dd_user:
+          groups => $dd_groups,
+          notify => Service[$datadog_agent::params::service_name],
+        }
+      }
 
-    # required by reports even in agent5 scenario
-    file { '/etc/datadog-agent':
-      ensure  => directory,
-      owner   => $dd_user,
-      group   => $dd_group,
-      mode    => $datadog_agent::params::permissions_directory,
-      require => Package[$agent_flavor],
+      # required by reports even in agent5 scenario
+      file { '/etc/datadog-agent':
+        ensure  => directory,
+        owner   => $dd_user,
+        group   => $dd_group,
+        mode    => $datadog_agent::params::permissions_directory,
+        require => Package[$agent_flavor],
+      }
     }
   }
 

@@ -77,7 +77,7 @@ class datadog_agent::installer_params (
   exec { 'Send trace':
     command   => "curl -v -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry > /var/log/curl_output.log 2>&1",
     path      => ['/usr/bin', '/bin'],
-    unless    => 'which curl',
+    onlyif    => 'which curl',
     logoutput => true,
   }
 }

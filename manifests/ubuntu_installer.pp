@@ -5,6 +5,7 @@
 
 class datadog_agent::ubuntu_installer (
   String $api_key = 'your_API_key',
+  String $datadog_site = $datadog_agent::params::datadog_site,
   Optional[String] $installer_repo_uri = undef,
   String $release = $datadog_agent::params::apt_default_release,
   Boolean $skip_apt_key_trusting = false,
@@ -35,6 +36,9 @@ class datadog_agent::ubuntu_installer (
   # else {
   #   $platform_agent_version = $agent_version
   # }
+
+  # Generate installer trace ID as a random 64-bit integer (Puppet does not support 128-bit integers)
+  $trace_id = fqdn_rand(9223372036854775807)
 
   if !$skip_apt_key_trusting {
     ensure_packages(['gnupg'])
@@ -145,4 +149,11 @@ class datadog_agent::ubuntu_installer (
   }
 
   # TO DO: check if installer owns APM package and libraries
+
+  # TO DO: telemetry (trace) & logs
+  class { 'datadog_agent::installer_params':
+    api_key  => $api_key,
+    datadog_site => $datadog_site,
+    trace_id => $trace_id,
+  }
 }

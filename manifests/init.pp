@@ -479,6 +479,7 @@ The Agent package can only be managed by Puppet or the installer.')
       'Ubuntu','Debian','Raspbian': {
         class { 'datadog_agent::ubuntu_installer':
           api_key                       => $api_key,
+          datadog_site                  => $datadog_site,
           installer_repo_uri            => $agent_repo_uri,
           release                       => $apt_release,
           skip_apt_key_trusting         => $skip_apt_key_trusting,

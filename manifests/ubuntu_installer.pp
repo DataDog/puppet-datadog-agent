@@ -155,5 +155,6 @@ class datadog_agent::ubuntu_installer (
     api_key  => $api_key,
     datadog_site => $datadog_site,
     trace_id => $trace_id,
+    require  => Exec['Check if installer owns the Datadog Agent package'],
   }
 }

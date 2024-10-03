@@ -583,6 +583,15 @@ The Agent package can only be managed by Puppet or the installer.')
         require => Package[$agent_flavor],
       }
     }
+  } else {
+      # required to manage config and install info files even with installer
+      file { '/etc/datadog-agent':
+          ensure  => directory,
+          owner   => $dd_user,
+          group   => $dd_group,
+          mode    => $datadog_agent::params::permissions_directory,
+          require => Package['datadog-installer'],
+        }
   }
 
   if $_agent_major_version == 5 {

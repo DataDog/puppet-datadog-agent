@@ -12,6 +12,7 @@ class datadog_agent::installer_params (
   $role_version = 'your_role_version_value'
   $rc = 'your_rc_value'
   $stderr = 'your_stderr_value'
+  # Template integers to be replaced with sed
   $start_time = -9990
   $stop_time = -9991
   $packages_to_install = 'your_packages_to_install_value'
@@ -76,28 +77,15 @@ class datadog_agent::installer_params (
   $json_trace_body = to_json($json_trace_body_hash)
   # We use this "hack" to replace the template values in the JSON payload as we can't use Puppet variables dynamically based on file contents
   exec { 'Prepare trace payload replacing template values':
-    command   => [
-      "echo \'${json_trace_body}\' > /tmp/payload.json",
-      'start_time=$(cat /tmp/puppet_start_time)',
-      'stop_time=$(cat /tmp/puppet_stop_time)',
-      'difference=$((stop_time - start_time))',
-      'sed -i "s/-9990/$start_time/" /tmp/payload.json',
-      'sed -i "s/-9992/$difference/" /tmp/payload.json',
-      'sed -i "s/-9991/$stop_time/" /tmp/payload.json',
-    ],
-    # command   => "echo \'${json_trace_body}\' > /tmp/payload.json
-    #           start_time=$(cat /tmp/puppet_start_time)
-    #           stop_time=$(cat /tmp/puppet_stop_time)
-    #           difference=$((stop_time - start_time))
-    #           sed -i \"s/-9990/$start_time/\" /tmp/payload.json
-    #           sed -i \"s/-9992/$difference/\" /tmp/payload.json
-    #           sed -i \"s/-9991/$stop_time/\" /tmp/payload.json",
-    path      => ['/usr/bin', '/bin'],
-    onlyif    => ['which sed', 'which expr'],
-    logoutput => true,
+    command => "echo \'${json_trace_body} > /tmp/trace_payload.json
+      sed -i \"s/-9990/$(cat /tmp/puppet_start_time)/\" /tmp/trace_payload.json
+      sed -i \"s/-9992/$(($(cat /tmp/puppet_stop_time) - $(cat /tmp/puppet_start_time)))/\" /tmp/trace_payload.json
+      sed -i \"s/-9991/$(cat /tmp/puppet_stop_time)/\" /tmp/trace_payload.json",
+    path    => ['/usr/bin', '/bin'],
+    onlyif  => ['which echo', 'which sed'],
   }
   exec { 'Send trace':
-    command   => "curl -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_trace_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
+    command   => "curl -s -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_trace_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
     path      => ['/usr/bin', '/bin'],
     onlyif    => 'which curl',
     logoutput => true,
@@ -136,8 +124,14 @@ class datadog_agent::installer_params (
     },
   }
   $json_logs_body = to_json($json_logs_body_hash)
+  exec { 'Prepare log payload replacing template values':
+    command => "echo \'${json_logs_body} > /tmp/log_payload.json
+      sed -i \"s/-9991/$(cat /tmp/puppet_stop_time)/\" /tmp/log_payload.json",
+    path    => ['/usr/bin', '/bin'],
+    onlyif  => ['which echo', 'which sed'],
+  }
   exec { 'Send logs':
-    command   => "curl -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_logs_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
+    command   => "curl -v -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_logs_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
     path      => ['/usr/bin', '/bin'],
     onlyif    => 'which curl',
     logoutput => true,

@@ -76,13 +76,22 @@ class datadog_agent::installer_params (
   $json_trace_body = to_json($json_trace_body_hash)
   # We use this "hack" to replace the template values in the JSON payload as we can't use Puppet variables dynamically based on file contents
   exec { 'Prepare trace payload replacing template values':
-    command   => "echo \'${json_trace_body}\' > /tmp/payload.json
-              start_time=$(cat /tmp/puppet_start_time)
-              stop_time=$(cat /tmp/puppet_stop_time)
-              difference=$((stop_time - start_time))
-              sed -i \"s/-9990/$start_time/\" /tmp/payload.json
-              sed -i \"s/-9992/$difference/\" /tmp/payload.json
-              sed -i \"s/-9991/$stop_time/\" /tmp/payload.json",
+    command   => [
+      "echo \'${json_trace_body}\' > /tmp/payload.json",
+      'start_time=$(cat /tmp/puppet_start_time)',
+      'stop_time=$(cat /tmp/puppet_stop_time)',
+      'difference=$((stop_time - start_time))',
+      'sed -i "s/-9990/$start_time/" /tmp/payload.json',
+      'sed -i "s/-9992/$difference/" /tmp/payload.json',
+      'sed -i "s/-9991/$stop_time/" /tmp/payload.json',
+    ],
+    # command   => "echo \'${json_trace_body}\' > /tmp/payload.json
+    #           start_time=$(cat /tmp/puppet_start_time)
+    #           stop_time=$(cat /tmp/puppet_stop_time)
+    #           difference=$((stop_time - start_time))
+    #           sed -i \"s/-9990/$start_time/\" /tmp/payload.json
+    #           sed -i \"s/-9992/$difference/\" /tmp/payload.json
+    #           sed -i \"s/-9991/$stop_time/\" /tmp/payload.json",
     path      => ['/usr/bin', '/bin'],
     onlyif    => ['which sed', 'which expr'],
     logoutput => true,

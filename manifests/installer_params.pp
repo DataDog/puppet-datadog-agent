@@ -77,7 +77,7 @@ class datadog_agent::installer_params (
   $json_trace_body = to_json($json_trace_body_hash)
   # We use this "hack" to replace the template values in the JSON payload as we can't use Puppet variables dynamically based on file contents
   exec { 'Prepare trace payload replacing template values':
-    command => "echo \'${json_trace_body} > /tmp/trace_payload.json
+    command => "echo \'${json_trace_body}\' > /tmp/trace_payload.json
       sed -i \"s/-9990/$(cat /tmp/puppet_start_time)/\" /tmp/trace_payload.json
       sed -i \"s/-9992/$(($(cat /tmp/puppet_stop_time) - $(cat /tmp/puppet_start_time)))/\" /tmp/trace_payload.json
       sed -i \"s/-9991/$(cat /tmp/puppet_stop_time)/\" /tmp/trace_payload.json",
@@ -125,7 +125,7 @@ class datadog_agent::installer_params (
   }
   $json_logs_body = to_json($json_logs_body_hash)
   exec { 'Prepare log payload replacing template values':
-    command => "echo \'${json_logs_body} > /tmp/log_payload.json
+    command => "echo \'${json_logs_body}\' > /tmp/log_payload.json
       sed -i \"s/-9991/$(cat /tmp/puppet_stop_time)/\" /tmp/log_payload.json",
     path    => ['/usr/bin', '/bin'],
     onlyif  => ['which echo', 'which sed'],

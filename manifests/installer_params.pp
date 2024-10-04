@@ -131,9 +131,8 @@ class datadog_agent::installer_params (
     onlyif  => ['which echo', 'which sed'],
   }
   exec { 'Send logs':
-    command   => "curl -v -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_logs_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
-    path      => ['/usr/bin', '/bin'],
-    onlyif    => 'which curl',
-    logoutput => true,
+    command => "curl -s -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_logs_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
+    path    => ['/usr/bin', '/bin'],
+    onlyif  => 'which curl',
   }
 }

@@ -7,15 +7,18 @@ class datadog_agent::installer_params (
   String $api_key = 'your_API_key',
   String $datadog_site = 'datadoghq.com',
   Integer $trace_id = 1,
-  Integer $start_time = 0,
-  Integer $stop_time = 0,
 ) {
   $_service = 'datadog-puppet'
   $role_version = 'your_role_version_value'
   $rc = 'your_rc_value'
   $stderr = 'your_stderr_value'
+  $start_time = Integer(file('/tmp/puppet_start_time'))
+  $stop_time = Integer(file('/tmp/puppet_stop_time'))
   $packages_to_install = 'your_packages_to_install_value'
   $packages_to_install_filtered = 'your_packages_to_install_filtered_value'
+  notify { 'Puppet execution time':
+    message => "Start: ${start_time}, Stop: ${stop_time}, Duration: ${stop_time} - ${start_time}",
+  }
   $json_trace_body_hash = {
     'api_version'  => 'v2',
     'request_type' => 'traces',

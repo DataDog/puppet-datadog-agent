@@ -165,18 +165,10 @@ class datadog_agent::ubuntu_installer (
     require => Exec['Check if installer owns the Datadog Agent package'],
   }
 
-  # Read start and stop times
-  # $start_time = Integer(file('/tmp/puppet_start_time'))
-  # $stop_time  = Integer(file('/tmp/puppet_stop_time'))
-  # notify { 'Puppet execution time':
-  #   message => "Start: ${start_time}, Stop: ${stop_time}, Duration: ${stop_time} - ${start_time}",
-  # }
   # TO DO: telemetry (trace) & logs
   class { 'datadog_agent::installer_params':
     api_key      => $api_key,
     datadog_site => $datadog_site,
-    start_time   => Integer(file('/tmp/puppet_start_time')),
-    stop_time    => Integer(file('/tmp/puppet_stop_time')),
     trace_id     => $trace_id,
     require      => Exec['End timer'],
   }

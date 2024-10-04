@@ -12,8 +12,8 @@ class datadog_agent::installer_params (
   $role_version = 'your_role_version_value'
   $rc = 'your_rc_value'
   $stderr = 'your_stderr_value'
-  $start_time = 'TEMPLATE_START_TIME'
-  $stop_time = 'TEMPLATE_STOP_TIME'
+  $start_time = -9990
+  $stop_time = -9991
   $packages_to_install = 'your_packages_to_install_value'
   $packages_to_install_filtered = 'your_packages_to_install_filtered_value'
   $json_trace_body_hash = {
@@ -50,7 +50,7 @@ class datadog_agent::installer_params (
             'parent_id'  => 0,
             'start'      => $start_time,
             # TO DO: check duration calculation, diff between start and stop
-            'duration'   => 'TEMPLATE_DURATION_TIME',
+            'duration'   => -9992,
             'error'      => $rc,
             'meta'       => {
               'language'                  => 'yaml',
@@ -77,9 +77,12 @@ class datadog_agent::installer_params (
   # We use this "hack" to replace the template values in the JSON payload as we can't use Puppet variables dynamically based on file contents
   exec { 'Prepare trace payload replacing template values':
     command   => "echo \'${json_trace_body}\' > /tmp/payload.json
-              sed -i \"s/\"TEMPLATE_START_TIME\"/$(cat /tmp/puppet_start_time)/\" /tmp/payload.json
-              sed -i \"s/\"TEMPLATE_DURATION_TIME\"/expr $(cat /tmp/puppet_stop_time) - $(cat /tmp/puppet_start_time)/\" /tmp/payload.json
-              sed -i \"s/\"TEMPLATE_STOP_TIME\"/$(cat /tmp/puppet_stop_time)/\" /tmp/payload.json",
+              start_time=$(cat /tmp/puppet_start_time)
+              stop_time=$(cat /tmp/puppet_stop_time)
+              difference=$((stop_time - start_time))
+              sed -i \"s/-9990/$start_time/\" /tmp/payload.json
+              sed -i \"s/-9992/$difference/\" /tmp/payload.json
+              sed -i \"s/-9991/$stop_time/\" /tmp/payload.json",
     path      => ['/usr/bin', '/bin'],
     onlyif    => ['which sed', 'which expr'],
     logoutput => true,

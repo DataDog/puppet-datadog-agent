@@ -40,12 +40,19 @@ class datadog_agent::ubuntu_installer (
   # Generate installer trace ID as a random 64-bit integer (Puppet does not support 128-bit integers)
   $trace_id = fqdn_rand(9223372036854775807)
 
+  # Start timer (note: Puppet is not able to measure time directly as it's against its paradigm)
+  exec { 'Start timer':
+    command => 'date +%s > /tmp/puppet_start_time',
+    path    => ['/usr/bin', '/bin'],
+  }
+
   if !$skip_apt_key_trusting {
     ensure_packages(['gnupg'])
 
     file { $apt_usr_share_keyring:
-      ensure => file,
-      mode   => '0644',
+      ensure  => file,
+      mode    => '0644',
+      require => Exec['Start timer'],
     }
 
     $apt_default_keys.each |String $key_fingerprint, String $key_url| {
@@ -150,11 +157,27 @@ class datadog_agent::ubuntu_installer (
 
   # TO DO: check if installer owns APM package and libraries
 
+  # Stop timer
+  exec { 'End timer':
+    command => 'date +%s > /tmp/puppet_stop_time',
+    path    => ['/usr/bin', '/bin'],
+    # TO DO: replace after checking if installer owns APm package and libraries
+    require => Exec['Check if installer owns the Datadog Agent package'],
+  }
+
+  # Read start and stop times
+  $start_time = Integer(file('/tmp/puppet_start_time'))
+  $stop_time  = Integer(file('/tmp/puppet_stop_time'))
+  notify { 'Puppet execution time':
+    message => "Start: ${start_time}, Stop: ${stop_time}, Duration: ${stop_time} - ${start_time}",
+  }
   # TO DO: telemetry (trace) & logs
   class { 'datadog_agent::installer_params':
-    api_key  => $api_key,
+    api_key      => $api_key,
     datadog_site => $datadog_site,
-    trace_id => $trace_id,
-    require  => Exec['Check if installer owns the Datadog Agent package'],
+    start_time   => $start_time,
+    stop_time    => $stop_time,
+    trace_id     => $trace_id,
+    require      => Exec['End timer'],
   }
 }

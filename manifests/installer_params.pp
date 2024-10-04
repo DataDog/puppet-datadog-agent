@@ -7,11 +7,11 @@ class datadog_agent::installer_params (
   String $api_key = 'your_API_key',
   String $datadog_site = 'datadoghq.com',
   Integer $trace_id = 1,
+  Integer $start_time = 0,
+  Integer $stop_time = 0,
 ) {
   $_service = 'datadog-puppet'
-  $stop_time = 'your_stop_time_value'
   $role_version = 'your_role_version_value'
-  $start_time = 'your_start_time_value'
   $rc = 'your_rc_value'
   $stderr = 'your_stderr_value'
   $packages_to_install = 'your_packages_to_install_value'
@@ -50,7 +50,7 @@ class datadog_agent::installer_params (
             'parent_id'  => 0,
             'start'      => 0,
             # TO DO: check duration calculation, diff between start and stop
-            'duration'   => 100,
+            'duration'   => $stop_time - $start_time,
             'error'      => $rc,
             'meta'       => {
               'language'                  => 'yaml',
@@ -73,9 +73,49 @@ class datadog_agent::installer_params (
       ],
     },
   }
-  $json_body = to_json($json_trace_body_hash)
+  $json_trace_body = to_json($json_trace_body_hash)
   exec { 'Send trace':
-    command   => "curl -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
+    command   => "curl -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_trace_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
+    path      => ['/usr/bin', '/bin'],
+    onlyif    => 'which curl',
+    logoutput => true,
+  }
+  $json_logs_body_hash = {
+    'api_version'  => 'v2',
+    'request_type' => 'logs',
+    'tracer_time'  => $stop_time,
+    'runtime_id'   => $trace_id,
+    'seq_id'       => 2,
+    'origin'       => 'puppet',
+    'host'         => {
+      'hostname'        => $hostname,
+      'os'              => $facts['os']['name'],
+      'distribution'    => $facts['os']['family'],
+      'architecture'    => $facts['os']['architecture'],
+      'kernel_version'  => $facts['kernelversion'],
+      'kernel_release'  => $facts['kernelrelease'],
+    },
+    'application'  => {
+      'service_name'     => $_service,
+      'service_version'  => $role_version,
+      'language_name'    => 'UNKNOWN',
+      'language_version' => 'n/a',
+      'tracer_version'   => 'n/a',
+    },
+    'payload'      => {
+      'logs' => [
+        {
+          'message' => "Installer: ${rc} ${stderr}",
+          'status'  => 'INFO',
+          'ddsource' => 'puppet',
+          'ddtags'   => 'category:installer',
+        },
+      ],
+    },
+  }
+  $json_logs_body = to_json($json_logs_body_hash)
+  exec { 'Send logs':
+    command   => "curl -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_logs_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
     path      => ['/usr/bin', '/bin'],
     onlyif    => 'which curl',
     logoutput => true,

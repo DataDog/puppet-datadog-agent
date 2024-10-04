@@ -40,6 +40,12 @@ class datadog_agent::ubuntu_installer (
   # Generate installer trace ID as a random 64-bit integer (Puppet does not support 128-bit integers)
   $trace_id = fqdn_rand(9223372036854775807)
 
+  file { '/tmp/puppet_start_time':
+    ensure => present,
+  }
+  file { '/tmp/puppet_stop_time':
+    ensure => present,
+  }
   # Start timer (note: Puppet is not able to measure time directly as it's against its paradigm)
   exec { 'Start timer':
     command => 'date +%s > /tmp/puppet_start_time',

@@ -12,13 +12,10 @@ class datadog_agent::installer_params (
   $role_version = 'your_role_version_value'
   $rc = 'your_rc_value'
   $stderr = 'your_stderr_value'
-  $start_time = Integer(file('/tmp/puppet_start_time'))
-  $stop_time = Integer(file('/tmp/puppet_stop_time'))
+  $start_time = 'TEMPLATE_START_TIME'
+  $stop_time = 'TEMPLATE_STOP_TIME'
   $packages_to_install = 'your_packages_to_install_value'
   $packages_to_install_filtered = 'your_packages_to_install_filtered_value'
-  notify { 'Puppet execution time':
-    message => "Start: ${start_time}, Stop: ${stop_time}, Duration: ${stop_time} - ${start_time}",
-  }
   $json_trace_body_hash = {
     'api_version'  => 'v2',
     'request_type' => 'traces',
@@ -51,9 +48,9 @@ class datadog_agent::installer_params (
             'trace_id'   => $trace_id,
             'span_id'    => $trace_id,
             'parent_id'  => 0,
-            'start'      => 0,
+            'start'      => $start_time,
             # TO DO: check duration calculation, diff between start and stop
-            'duration'   => $stop_time - $start_time,
+            'duration'   => 'TEMPLATE_DURATION_TIME',
             'error'      => $rc,
             'meta'       => {
               'language'                  => 'yaml',
@@ -77,6 +74,15 @@ class datadog_agent::installer_params (
     },
   }
   $json_trace_body = to_json($json_trace_body_hash)
+  # We use this "hack" to replace the template values in the JSON payload as we can't use Puppet variables dynamically based on file contents
+  exec { 'Prepare trace payload replacing template values':
+    command   => "echo \'${json_trace_body}\' > /tmp/payload.json
+              sed -i \"s/TEMPLATE_START_TIME/$(cat /tmp/puppet_start_time)/\" /tmp/payload.json
+              sed -i \"s/TEMPLATE_STOP_TIME/$(cat /tmp/puppet_stop_time)/\" /tmp/payload.json",
+    path      => ['/usr/bin', '/bin'],
+    onlyif    => 'which sed',
+    logoutput => true,
+  }
   exec { 'Send trace':
     command   => "curl -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_trace_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
     path      => ['/usr/bin', '/bin'],

@@ -1,30 +1,28 @@
-# Class: datadog_agent::integrations::apache
+# @summary Install the necessary configuration for the apache integration
 #
-# This class will install the necessary configuration for the apache integration
 #
-# Parameters:
-#   $url:
-#       The URL for apache status URL handled by mod-status.
-#       Defaults to http://localhost/server-status?auto
-#   $username:
-#   $password:
-#       If your service uses basic authentication, you can optionally
-#       specify a username and password that will be used in the check.
-#       Optional.
-#   $tags
-#       Optional array of tags
+# @param url
+#   The URL for apache status URL handled by mod-status.
+#   Defaults to http://localhost/server-status?auto
+# @param username
+# @param password
+#   If your service uses basic authentication, you can optionally
+#   specify a username and password that will be used in the check.
+#   Optional.
+# @param tags
+#   Optional array of tags
+# @param disable_ssl_validation
 #
-# Sample Usage:
 #
-# include 'datadog_agent::integrations::apache'
+# @example
+#   include 'datadog_agent::integrations::apache'
 #
-# OR
-#
-# class { 'datadog_agent::integrations::apache':
-#   url      => 'http://example.com/server-status?auto',
-#   username => 'status',
-#   password => 'hunter1',
-# }
+# @example
+#   class { 'datadog_agent::integrations::apache':
+#     url      => 'http://example.com/server-status?auto',
+#     username => 'status',
+#     password => 'hunter1',
+#   }
 #
 class datadog_agent::integrations::apache (
   String $url                     = 'http://localhost/server-status?auto',
@@ -33,13 +31,13 @@ class datadog_agent::integrations::apache (
   Array $tags                     = [],
   Boolean $disable_ssl_validation = false
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/apache.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if $datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/apache.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -48,7 +46,7 @@ class datadog_agent::integrations::apache (
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -62,6 +60,6 @@ class datadog_agent::integrations::apache (
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/apache.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

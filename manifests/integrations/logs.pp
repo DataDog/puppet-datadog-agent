@@ -1,10 +1,8 @@
-# Class: datadog_agent::integrations::logs
+# @summary Install the necessary configuration for the logs integration.
 #
-# This class will install the necessary configuration for the logs integration.
 #
-# Parameters:
-#   $logs:
-#       array of log sources.
+# @param logs
+#   array of log sources
 #
 # Log Source:
 #   $type
@@ -18,29 +16,28 @@
 #   $log_processing_rules
 #       Optional array of processing rules.
 #
-# Sample Usage:
 #
-#  class { 'datadog_agent::integrations::logs' :
-#    logs => [
-#      {
-#        'type' => 'file',
-#        'path' => '/var/log/afile.log',
-#      },
-#      {
-#        'type' => 'docker',
-#      },
-#    ],
-# }
+# @example
+#   class { 'datadog_agent::integrations::logs' :
+#     logs => [
+#       {
+#         'type' => 'file',
+#         'path' => '/var/log/afile.log',
+#       },
+#       {
+#         'type' => 'docker',
+#       },
+#     ],
+#   }
 #
 # Documentation:
 # https://docs.datadoghq.com/logs/log_collection
 #
-
-class datadog_agent::integrations::logs(
+class datadog_agent::integrations::logs (
   Array $logs = [],
 ) inherits datadog_agent::params {
-  unless $::datadog_agent::_agent_major_version == 5 {
-    require ::datadog_agent
+  unless $datadog_agent::_agent_major_version == 5 {
+    require datadog_agent
 
     file { "${datadog_agent::params::conf_dir}/logs.yaml":
       ensure  => file,
@@ -49,7 +46,7 @@ class datadog_agent::integrations::logs(
       mode    => $datadog_agent::params::permissions_protected_file,
       content => template('datadog_agent/agent-conf.d/logs.yaml.erb'),
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
   }
 }

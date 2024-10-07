@@ -135,10 +135,9 @@ class datadog_agent::ubuntu_installer (
   exec { 'Bootstrap the installer':
     command     => '/usr/bin/datadog-bootstrap bootstrap',
     environment => [
-      # TO DO: generate random values for trace_id and parent_id
-      'DATADOG_TRACE_ID=1',
-      'DATADOG_PARENT_ID=1',
-      'DD_SITE=$datadog_site',
+      "DATADOG_TRACE_ID=${trace_id}",
+      "DATADOG_PARENT_ID=${trace_id}",
+      "DD_SITE=${datadog_site}",
       "DD_API_KEY=${api_key}",
       "DD_REMOTE_UPDATES=${remote_updates}",
       "DD_APM_INSTRUMENTATION_ENABLED=${apm_instrumentation_enabled}",

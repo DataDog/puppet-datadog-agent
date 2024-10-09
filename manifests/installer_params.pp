@@ -91,6 +91,7 @@ class datadog_agent::installer_params (
     path      => ['/usr/bin', '/bin'],
     onlyif    => 'which curl',
     logoutput => true,
+    require   => Exec['Prepare trace payload replacing template values'],
   }
   $json_logs_body_hash = {
     'api_version'  => 'v2',
@@ -136,5 +137,6 @@ class datadog_agent::installer_params (
     command => "curl -s -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_logs_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
     path    => ['/usr/bin', '/bin'],
     onlyif  => 'which curl',
+    require => Exec['Prepare log payload replacing template values'],
   }
 }

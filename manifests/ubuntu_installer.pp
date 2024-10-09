@@ -58,6 +58,7 @@ class datadog_agent::ubuntu_installer (
   exec { 'Start timer':
     command => 'date +%s%N > /tmp/puppet_start_time',
     path    => ['/usr/bin', '/bin'],
+    require => Exec['Generate trace ID'],
   }
 
   if !$skip_apt_key_trusting {
@@ -123,6 +124,7 @@ class datadog_agent::ubuntu_installer (
     location => $location,
     release  => $release,
     repos    => '7',
+    require  => Exec['Start timer'],
   }
 
   # Install `datadog-installer` and `datadog-signing-keys` packages with latest versions
@@ -142,11 +144,9 @@ class datadog_agent::ubuntu_installer (
   # Doc: https://www.puppet.com/docs/puppet/7/types/exec.html
   exec { 'Bootstrap the installer':
   # &> is bash specific, should be replaced with 2>&1 ?
-    command     => '/usr/bin/datadog-bootstrap bootstrap &> /tmp/datadog-bootstrap-stderr-stdout.log
+    command     => '/usr/bin/datadog-bootstrap DATADOG_TRACE_ID=$(cat /tmp/datadog_trace_id) DATADOG_PARENT_ID=$(cat /tmp/datadog_trace_id) bootstrap &> /tmp/datadog-bootstrap-stderr-stdout.log
       echo $? > /tmp/datadog-bootstrap-rc',
     environment => [
-      "DATADOG_TRACE_ID=$(cat /tmp/datadog_trace_id)",
-      "DATADOG_PARENT_ID=$(cat /tmp/datadog_trace_id)",
       "DD_SITE=${datadog_site}",
       "DD_API_KEY=${api_key}",
       "DD_REMOTE_UPDATES=${remote_updates}",

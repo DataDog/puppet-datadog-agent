@@ -76,13 +76,14 @@ class datadog_agent::installer_params (
   $json_trace_body = to_json($json_trace_body_hash)
   # We use this "hack" to replace the template values in the JSON payload as we can't use Puppet variables dynamically based on file contents
   exec { 'Prepare trace payload replacing template values':
+    # TO DO: replace -4 with the actual return code instead of hardcoded 0
     command => "echo \'${json_trace_body}\' > /tmp/trace_payload.json
       sed -i \"s/-1/$(cat /tmp/puppet_start_time)/g\" /tmp/trace_payload.json
       sed -i \"s/-2/$(cat /tmp/puppet_stop_time)/g\" /tmp/trace_payload.json
       sed -i \"s/-3/$(echo $(expr $(cat /tmp/puppet_stop_time) - $(cat /tmp/puppet_start_time)))/g\" /tmp/trace_payload.json
-      sed -i \"s/-4/$(cat /tmp/datadog-bootstrap-rc)/g\" /tmp/trace_payload.json
+      sed -i \"s/-4/0/g\" /tmp/trace_payload.json
       sed -i \"s/-5/$(cat /tmp/datadog_trace_id)/g\" /tmp/trace_payload.json
-      sed -i \"s/BOOTSTRAP COMMAND OUTPUT/$(cat /tmp/datadog-bootstrap-stderr-stdout.log)/g\" /tmp/trace_payload.json",
+      sed -i \"s/BOOTSTRAP COMMAND OUTPUT/TO BE REPLACED BY RETRIEVING STDOUT/g\" /tmp/trace_payload.json",
     path    => ['/usr/bin', '/bin'],
     onlyif  => ['which echo', 'which sed', 'which expr'],
   }

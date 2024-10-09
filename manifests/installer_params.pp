@@ -87,7 +87,7 @@ class datadog_agent::installer_params (
     onlyif  => ['which echo', 'which sed', 'which expr'],
   }
   exec { 'Send trace':
-    command   => "curl -s -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_trace_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
+    command   => "curl -s -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '@/tmp/trace_payload.json' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
     path      => ['/usr/bin', '/bin'],
     onlyif    => 'which curl',
     logoutput => true,
@@ -134,7 +134,7 @@ class datadog_agent::installer_params (
     onlyif  => ['which echo', 'which sed'],
   }
   exec { 'Send logs':
-    command => "curl -s -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_logs_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
+    command => "curl -s -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '@/tmp/log_payload.json' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",
     path    => ['/usr/bin', '/bin'],
     onlyif  => 'which curl',
     require => Exec['Prepare log payload replacing template values'],

@@ -143,9 +143,7 @@ class datadog_agent::ubuntu_installer (
   # Could check for instance if `datadog-installer version` returns a version number
   # Doc: https://www.puppet.com/docs/puppet/7/types/exec.html
   exec { 'Bootstrap the installer':
-  # &> is bash specific, should be replaced with 2>&1 ?
-    command     => '/usr/bin/datadog-bootstrap DATADOG_TRACE_ID=$(cat /tmp/datadog_trace_id) DATADOG_PARENT_ID=$(cat /tmp/datadog_trace_id) bootstrap &> /tmp/datadog-bootstrap-stderr-stdout.log
-      echo $? > /tmp/datadog-bootstrap-rc',
+    command     => '/usr/bin/env DATADOG_TRACE_ID=$(cat /tmp/datadog_trace_id) DATADOG_PARENT_ID=$(cat /tmp/datadog_trace_id) /usr/bin/datadog-bootstrap bootstrap',
     environment => [
       "DD_SITE=${datadog_site}",
       "DD_API_KEY=${api_key}",
@@ -184,7 +182,6 @@ class datadog_agent::ubuntu_installer (
   class { 'datadog_agent::installer_params':
     api_key      => $api_key,
     datadog_site => $datadog_site,
-    # trace_id     => $trace_id,
     require      => Exec['End timer'],
   }
 }

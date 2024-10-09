@@ -77,14 +77,14 @@ class datadog_agent::installer_params (
   # We use this "hack" to replace the template values in the JSON payload as we can't use Puppet variables dynamically based on file contents
   exec { 'Prepare trace payload replacing template values':
     command => "echo \'${json_trace_body}\' > /tmp/trace_payload.json
-      sed -i \"s/-1/$(< /tmp/puppet_start_time)/g\" /tmp/trace_payload.json
-      sed -i \"s/-2/$(< /tmp/puppet_stop_time)/g\" /tmp/trace_payload.json
-      sed -i \"s/-3/$(($(< /tmp/puppet_stop_time) - $(< /tmp/puppet_start_time)))/g\" /tmp/trace_payload.json
-      sed -i \"s/-4/$(< /tmp/datadog-bootstrap-rc)/g\" /tmp/trace_payload.json
-      sed -i \"s/-5/$(< /tmp/datadog_trace_id)/g\" /tmp/trace_payload.json
-      sed -i \"s/BOOTSTRAP COMMAND OUTPUT/$(< /tmp/datadog-bootstrap-stderr-stdout.log)/g\" /tmp/trace_payload.json",
+      sed -i \"s/-1/$(cat /tmp/puppet_start_time)/g\" /tmp/trace_payload.json
+      sed -i \"s/-2/$(cat /tmp/puppet_stop_time)/g\" /tmp/trace_payload.json
+      sed -i \"s/-3/$(echo $(expr $(cat /tmp/puppet_stop_time) - $(cat /tmp/puppet_start_time)))/g\" /tmp/trace_payload.json
+      sed -i \"s/-4/$(cat /tmp/datadog-bootstrap-rc)/g\" /tmp/trace_payload.json
+      sed -i \"s/-5/$(cat /tmp/datadog_trace_id)/g\" /tmp/trace_payload.json
+      sed -i \"s/BOOTSTRAP COMMAND OUTPUT/$(cat /tmp/datadog-bootstrap-stderr-stdout.log)/g\" /tmp/trace_payload.json",
     path    => ['/usr/bin', '/bin'],
-    onlyif  => ['which echo', 'which sed'],
+    onlyif  => ['which echo', 'which sed', 'which expr'],
   }
   exec { 'Send trace':
     command   => "curl -s -X POST -H 'Content-Type: application/json' -H 'DD-API-KEY: ${api_key}' -d '${json_trace_body}' https://instrumentation-telemetry-intake.${datadog_site}/api/v2/apmtelemetry",

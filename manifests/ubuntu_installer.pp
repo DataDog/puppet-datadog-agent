@@ -39,9 +39,13 @@ class datadog_agent::ubuntu_installer (
 
   # Generate installer trace ID as a random 64-bit integer (Puppet does not support 128-bit integers)
   # Note: we cannot use fqdn_rand as the seed is dependent on the node, meaning the same trace ID would be generated on each run (for the same node)
+  # -An: no address, no leading 0s
+  # -N8: read 8 bytes
+  # -tu8: unsigned integer, 8 bytes (64 bits)
   exec { 'Generate trace ID':
-    command => 'echo $(($RANDOM<<48 | $RANDOM<<32 | $RANDOM<<16 | $RANDOM)) > /tmp/datadog_trace_id',
+    command => 'echo $(od -An -N8 -tu8 /dev/urandom) > /tmp/datadog_trace_id',
     path    => ['/usr/bin', '/bin'],
+    onlyif  => ['which echo', 'which od'],
   }
 
   # file { '/tmp/puppet_start_time':
@@ -137,11 +141,12 @@ class datadog_agent::ubuntu_installer (
   # Could check for instance if `datadog-installer version` returns a version number
   # Doc: https://www.puppet.com/docs/puppet/7/types/exec.html
   exec { 'Bootstrap the installer':
+  # &> is bash specific, should be replaced with 2>&1 ?
     command     => '/usr/bin/datadog-bootstrap bootstrap &> /tmp/datadog-bootstrap-stderr-stdout.log
       echo $? > /tmp/datadog-bootstrap-rc',
     environment => [
-      "DATADOG_TRACE_ID=$(</tmp/datadog_trace_id)",
-      "DATADOG_PARENT_ID=$(</tmp/datadog_trace_id)",
+      "DATADOG_TRACE_ID=$(cat /tmp/datadog_trace_id)",
+      "DATADOG_PARENT_ID=$(cat /tmp/datadog_trace_id)",
       "DD_SITE=${datadog_site}",
       "DD_API_KEY=${api_key}",
       "DD_REMOTE_UPDATES=${remote_updates}",

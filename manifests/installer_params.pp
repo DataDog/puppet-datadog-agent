@@ -9,19 +9,19 @@ class datadog_agent::installer_params (
   Integer $trace_id = 1,
 ) {
   $_service = 'datadog-puppet'
-  $role_version = 'your_role_version_value'
-  $rc = 'your_rc_value'
-  $stderr = 'your_stderr_value'
+  $role_version = load_module_metadata($module_name)['version']
+  $rc = -4
+  $output = 'BOOTSTRAP COMMAND OUTPUT'
   # Template integers to be replaced with sed
-  $start_time = -9990
-  $stop_time = -9991
+  $start_time = -1
+  $stop_time = -2
   $packages_to_install = 'your_packages_to_install_value'
   $packages_to_install_filtered = 'your_packages_to_install_filtered_value'
   $json_trace_body_hash = {
     'api_version'  => 'v2',
     'request_type' => 'traces',
     'tracer_time'  => $stop_time,
-    'runtime_id'   => $trace_id,
+    'runtime_id'   => "${trace_id}",
     'seq_id'       => 1,
     'origin'       => 'puppet',
     'host'         => {
@@ -51,13 +51,13 @@ class datadog_agent::installer_params (
             'parent_id'  => 0,
             'start'      => $start_time,
             # TO DO: check duration calculation, diff between start and stop
-            'duration'   => -9992,
+            'duration'   => -3,
             'error'      => $rc,
             'meta'       => {
               'language'                  => 'yaml',
               'exit_code'                 => $rc,
               'error'                     => {
-                'message' => $stderr,
+                'message' => $output,
               },
               'version'                   => $role_version,
               'packages_to_install'        => $packages_to_install,
@@ -78,9 +78,11 @@ class datadog_agent::installer_params (
   # We use this "hack" to replace the template values in the JSON payload as we can't use Puppet variables dynamically based on file contents
   exec { 'Prepare trace payload replacing template values':
     command => "echo \'${json_trace_body}\' > /tmp/trace_payload.json
-      sed -i \"s/-9990/$(cat /tmp/puppet_start_time)/\" /tmp/trace_payload.json
-      sed -i \"s/-9992/$(($(cat /tmp/puppet_stop_time) - $(cat /tmp/puppet_start_time)))/\" /tmp/trace_payload.json
-      sed -i \"s/-9991/$(cat /tmp/puppet_stop_time)/\" /tmp/trace_payload.json",
+      sed -i \"s/-1/$(cat /tmp/puppet_start_time)/\" /tmp/trace_payload.json
+      sed -i \"s/-2/$(cat /tmp/puppet_stop_time)/\" /tmp/trace_payload.json
+      sed -i \"s/-3/$(($(cat /tmp/puppet_stop_time) - $(cat /tmp/puppet_start_time)))/\" /tmp/trace_payload.json
+      sed -i \"s/-4/$(cat /tmp/datadog-bootstrap-rc)/\" /tmp/trace_payload.json
+      sed -i \"s/BOOTSTRAP COMMAND OUTPUT/$(cat /tmp/datadog-bootstrap-stderr-stdout.log)/\" /tmp/trace_payload.json",
     path    => ['/usr/bin', '/bin'],
     onlyif  => ['which echo', 'which sed'],
   }
@@ -115,7 +117,7 @@ class datadog_agent::installer_params (
     'payload'      => {
       'logs' => [
         {
-          'message' => "Installer: ${rc} ${stderr}",
+          'message' => "Installer: ${rc} ${output}",
           'status'  => 'INFO',
           'ddsource' => 'puppet',
           'ddtags'   => 'category:installer',

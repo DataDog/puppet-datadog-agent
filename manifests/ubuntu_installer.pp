@@ -48,7 +48,7 @@ class datadog_agent::ubuntu_installer (
   # }
   # Start timer (note: Puppet is not able to measure time directly as it's against its paradigm)
   exec { 'Start timer':
-    command => 'date +%s > /tmp/puppet_start_time',
+    command => 'date +%s%N > /tmp/puppet_start_time',
     path    => ['/usr/bin', '/bin'],
   }
 
@@ -133,7 +133,8 @@ class datadog_agent::ubuntu_installer (
   # Could check for instance if `datadog-installer version` returns a version number
   # Doc: https://www.puppet.com/docs/puppet/7/types/exec.html
   exec { 'Bootstrap the installer':
-    command     => '/usr/bin/datadog-bootstrap bootstrap',
+    command     => '/usr/bin/datadog-bootstrap bootstrap  &> /tmp/datadog-bootstrap-stderr-stdout.log
+      echo $? > /tmp/datadog-bootstrap-rc',
     environment => [
       "DATADOG_TRACE_ID=${trace_id}",
       "DATADOG_PARENT_ID=${trace_id}",
@@ -164,7 +165,7 @@ class datadog_agent::ubuntu_installer (
 
   # Stop timer
   exec { 'End timer':
-    command => 'date +%s > /tmp/puppet_stop_time',
+    command => 'date +%s%N > /tmp/puppet_stop_time',
     path    => ['/usr/bin', '/bin'],
     # TO DO: replace after checking if installer owns APm package and libraries
     require => Exec['Check if installer owns the Datadog Agent package'],

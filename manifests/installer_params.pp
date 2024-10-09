@@ -6,11 +6,11 @@
 class datadog_agent::installer_params (
   String $api_key = 'your_API_key',
   String $datadog_site = 'datadoghq.com',
-  Integer $trace_id = 1,
 ) {
   $_service = 'datadog-puppet'
   $role_version = load_module_metadata($module_name)['version']
   $rc = -4
+  $trace_id = -5
   $output = 'BOOTSTRAP COMMAND OUTPUT'
   # Template integers to be replaced with sed
   $start_time = -1
@@ -50,7 +50,6 @@ class datadog_agent::installer_params (
             'span_id'    => $trace_id,
             'parent_id'  => 0,
             'start'      => $start_time,
-            # TO DO: check duration calculation, diff between start and stop
             'duration'   => -3,
             'error'      => $rc,
             'meta'       => {
@@ -78,11 +77,12 @@ class datadog_agent::installer_params (
   # We use this "hack" to replace the template values in the JSON payload as we can't use Puppet variables dynamically based on file contents
   exec { 'Prepare trace payload replacing template values':
     command => "echo \'${json_trace_body}\' > /tmp/trace_payload.json
-      sed -i \"s/-1/$(cat /tmp/puppet_start_time)/\" /tmp/trace_payload.json
-      sed -i \"s/-2/$(cat /tmp/puppet_stop_time)/\" /tmp/trace_payload.json
-      sed -i \"s/-3/$(($(cat /tmp/puppet_stop_time) - $(cat /tmp/puppet_start_time)))/\" /tmp/trace_payload.json
-      sed -i \"s/-4/$(cat /tmp/datadog-bootstrap-rc)/\" /tmp/trace_payload.json
-      sed -i \"s/BOOTSTRAP COMMAND OUTPUT/$(cat /tmp/datadog-bootstrap-stderr-stdout.log)/\" /tmp/trace_payload.json",
+      sed -i \"s/-1/$(< /tmp/puppet_start_time)/g\" /tmp/trace_payload.json
+      sed -i \"s/-2/$(< /tmp/puppet_stop_time)/g\" /tmp/trace_payload.json
+      sed -i \"s/-3/$(($(< /tmp/puppet_stop_time) - $(< /tmp/puppet_start_time)))/g\" /tmp/trace_payload.json
+      sed -i \"s/-4/$(< /tmp/datadog-bootstrap-rc)/g\" /tmp/trace_payload.json
+      sed -i \"s/-5/$(< /tmp/datadog_trace_id)/g\" /tmp/trace_payload.json
+      sed -i \"s/BOOTSTRAP COMMAND OUTPUT/$(< /tmp/datadog-bootstrap-stderr-stdout.log)/g\" /tmp/trace_payload.json",
     path    => ['/usr/bin', '/bin'],
     onlyif  => ['which echo', 'which sed'],
   }

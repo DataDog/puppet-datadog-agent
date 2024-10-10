@@ -138,10 +138,7 @@ class datadog_agent::ubuntu_installer (
     require => [Apt::Source['datadog'], Class['apt::update']],
   }
 
-  # Bootstrap the installer
-  # TO DO: check with FA condition to run the command (e.g. if we need to run it only once). Right now, each catalog run.
-  # Could check for instance if `datadog-installer version` returns a version number
-  # Doc: https://www.puppet.com/docs/puppet/7/types/exec.html
+  # Bootstrap the installer (idempotent per Fleet Automation team)
   exec { 'Bootstrap the installer':
     command     => '/usr/bin/env DATADOG_TRACE_ID=$(cat /tmp/datadog_trace_id) DATADOG_PARENT_ID=$(cat /tmp/datadog_trace_id) /usr/bin/datadog-bootstrap bootstrap',
     environment => [
@@ -151,19 +148,12 @@ class datadog_agent::ubuntu_installer (
       "DD_APM_INSTRUMENTATION_ENABLED=${apm_instrumentation_enabled}",
       "DD_APM_INSTRUMENTATION_LIBRARIES=${apm_instrumentation_libraries}",
     ],
-    # unless condition => '/usr/bin/dpkg-query -W -f=\'${Status}\' datadog-installer | grep -q "ok installed"',
-    #   # when false
-    # }
-    # else {
-    #   # when false
-    # }
     require     => [Package['datadog-installer'], Package['datadog-signing-keys']],
   }
 
   # Check if installer owns the Datadog Agent package
   exec {
     'Check if installer owns the Datadog Agent package':
-      # TO DO: check if `datadog-agent` is the right package name/needs to be parameterized
       command => '/usr/bin/datadog-installer is-installed datadog-agent',
       require => Exec['Bootstrap the installer'],
   }

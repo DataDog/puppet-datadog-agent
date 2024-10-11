@@ -472,9 +472,6 @@ The Agent package can only be managed by Puppet or the installer.')
     # class { 'datadog_agent':
     #   manage_install => false,
     # }
-    # class { 'datadog_agent::installer' :
-    #   hello => 'world',
-    # }
     case $facts['os']['name'] {
       'Ubuntu','Debian','Raspbian': {
         class { 'datadog_agent::ubuntu_installer':

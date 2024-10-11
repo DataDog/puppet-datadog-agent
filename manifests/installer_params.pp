@@ -15,8 +15,8 @@ class datadog_agent::installer_params (
   # Template integers to be replaced with sed
   $start_time = -1
   $stop_time = -2
-  $packages_to_install = 'your_packages_to_install_value'
-  $packages_to_install_filtered = 'your_packages_to_install_filtered_value'
+  $packages_to_install = 'packages_to_install_value'
+  $packages_to_install_filtered = 'packages_to_install_filtered_value'
   $json_trace_body_hash = {
     'api_version'  => 'v2',
     'request_type' => 'traces',

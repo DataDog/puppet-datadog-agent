@@ -29,13 +29,6 @@ class datadog_agent::ubuntu_installer (
   Optional[String] $apm_instrumentation_libraries = undef,
   Optional[String] $remote_updates = undef,
 ) inherits datadog_agent::params {
-  # There does not seem to be a need to support version for installer so far looking both at install script and Ansible
-  # if $agent_version =~ /^[0-9]+\.[0-9]+\.[0-9]+((?:~|-)[^0-9\s-]+[^-\s]*)?$/ {
-  #   $platform_agent_version = "1:${agent_version}-1"
-  # }
-  # else {
-  #   $platform_agent_version = $agent_version
-  # }
 
   # Generate installer trace ID as a random 64-bit integer (Puppet does not support 128-bit integers)
   # Note: we cannot use fqdn_rand as the seed is dependent on the node, meaning the same trace ID would be generated on each run (for the same node)
@@ -48,12 +41,6 @@ class datadog_agent::ubuntu_installer (
     onlyif  => ['which echo', 'which od'],
   }
 
-  # file { '/tmp/puppet_start_time':
-  #   ensure => present,
-  # }
-  # file { '/tmp/puppet_stop_time':
-  #   ensure => present,
-  # }
   # Start timer (note: Puppet is not able to measure time directly as it's against its paradigm)
   exec { 'Start timer':
     command => 'date +%s%N > /tmp/puppet_start_time',
@@ -89,7 +76,6 @@ class datadog_agent::ubuntu_installer (
           | CMD
       }
     }
-    # Check with FA team if we need this check (e.g. do we support Ubuntu < 16 & Debian < 8)
     if ($facts['os']['name'] == 'Ubuntu' and versioncmp($facts['os']['release']['full'], '16') == -1) or
         ($facts['os']['name'] == 'Debian' and versioncmp($facts['os']['release']['full'], '9') == -1) {
       file { $apt_trusted_d_keyring:

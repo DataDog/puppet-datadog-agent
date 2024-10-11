@@ -31,7 +31,8 @@ class datadog_agent::integrations::apache (
   Optional[String] $username      = undef,
   Optional[String] $password      = undef,
   Array $tags                     = [],
-  Boolean $disable_ssl_validation = false
+  Boolean $disable_ssl_validation = false,
+  Boolean $proxy_is_eval          = undef
 ) inherits datadog_agent::params {
   require ::datadog_agent
 

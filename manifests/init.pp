@@ -245,6 +245,14 @@
 #   $datadog_installer_enabled
 #       Boolean to enable or disable the Datadog installer.
 #       Boolean. Default: false
+#   $apm_instrumentation_enabled
+#       Configure APM instrumentation. Possible values are:
+#       - host: Both the Agent and your services are running on a host.
+#       - docker: The Agent and your services are running in separate Docker containers on the same host.
+#       - all: Supports all the previous scenarios for host and docker at the same time.
+#   $apm_instrumentation_libraries
+#       List of APM libraries to install. If not defined and APM instrumentation is set,
+#       the default libraries are pinned: ['java:1', 'python:2', 'js:5', 'dotnet:3', 'ruby:2']
 #
 # Sample Usage:
 #
@@ -373,9 +381,8 @@ class datadog_agent (
   Optional[String] $windows_ddagentuser_name = undef,
   Optional[String] $windows_ddagentuser_password = undef,
   Optional[String] $remote_updates = undef,
-  Optional[Boolean] $apm_instrumentation_enabled = undef,
-  # TO DO review what it should be
-  Optional[String] $apm_instrumentation_libraries = undef,
+  Optional[Enum['host', 'docker', 'all']] $apm_instrumentation_enabled = undef,
+  Optional[Array[String]] $apm_instrumentation_libraries = undef,
 ) inherits datadog_agent::params {
 
   #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'
@@ -472,17 +479,24 @@ The Agent package can only be managed by Puppet or the installer.')
     # class { 'datadog_agent':
     #   manage_install => false,
     # }
+    # If instrumentation is enabled and the libraries are not set, default to pinned latest versions
+    # Else, if user wants to install libraries without enabling instrumentation, use the provided libraries
+    if $apm_instrumentation_enabled and ! $apm_instrumentation_libraries {
+      $apm_instrumentation_libraries_str = join(['java:1', 'python:2', 'js:5', 'dotnet:3', 'ruby:2'], ',')
+    } else {
+      $apm_instrumentation_libraries_str = join($apm_instrumentation_libraries, ',')
+    }
     case $facts['os']['name'] {
       'Ubuntu','Debian','Raspbian': {
         class { 'datadog_agent::ubuntu_installer':
-          api_key                       => $api_key,
-          datadog_site                  => $datadog_site,
-          installer_repo_uri            => $agent_repo_uri,
-          release                       => $apt_release,
-          skip_apt_key_trusting         => $skip_apt_key_trusting,
-          apm_instrumentation_enabled   => $apm_instrumentation_enabled,
-          apm_instrumentation_libraries => $apm_instrumentation_libraries,
-          remote_updates                => $remote_updates,
+          api_key                           => $api_key,
+          datadog_site                      => $datadog_site,
+          installer_repo_uri                => $agent_repo_uri,
+          release                           => $apt_release,
+          skip_apt_key_trusting             => $skip_apt_key_trusting,
+          apm_instrumentation_enabled       => $apm_instrumentation_enabled,
+          apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
+          remote_updates                    => $remote_updates,
         }
       }
       default: { fail("Class[datadog_agent::installer]: Unsupported operatingsystem: ${facts['os']['name']}") }

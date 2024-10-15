@@ -24,12 +24,10 @@ class datadog_agent::ubuntu_installer (
     # DATADOG_APT_KEY_382E94DE.public expires in 2022
     'A2923DFF56EDA6E76E55E492D3A80E30382E94DE' => 'https://keys.datadoghq.com/DATADOG_APT_KEY_382E94DE.public',
   },
-  Optional[Boolean] $apm_instrumentation_enabled = undef,
-  # TO DO review what it should be
-  Optional[String] $apm_instrumentation_libraries = undef,
+  Optional[Enum['host', 'docker', 'all']] $apm_instrumentation_enabled = undef,
+  Optional[String] $apm_instrumentation_libraries_str = undef,
   Optional[String] $remote_updates = undef,
 ) inherits datadog_agent::params {
-
   # Generate installer trace ID as a random 64-bit integer (Puppet does not support 128-bit integers)
   # Note: we cannot use fqdn_rand as the seed is dependent on the node, meaning the same trace ID would be generated on each run (for the same node)
   # -An: no address, no leading 0s

@@ -130,7 +130,7 @@ class datadog_agent::ubuntu_installer (
       "DD_API_KEY=${api_key}",
       "DD_REMOTE_UPDATES=${remote_updates}",
       "DD_APM_INSTRUMENTATION_ENABLED=${apm_instrumentation_enabled}",
-      "DD_APM_INSTRUMENTATION_LIBRARIES=${apm_instrumentation_libraries}",
+      "DD_APM_INSTRUMENTATION_LIBRARIES=${apm_instrumentation_libraries_str}",
     ],
     require     => [Package['datadog-installer'], Package['datadog-signing-keys']],
   }

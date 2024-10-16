@@ -96,7 +96,7 @@ class datadog_agent::installer_params (
     'api_version'  => 'v2',
     'request_type' => 'logs',
     'tracer_time'  => $stop_time,
-    'runtime_id'   => $trace_id,
+    'runtime_id'   => "${trace_id}",
     'seq_id'       => 2,
     'origin'       => 'puppet',
     'host'         => {
@@ -126,6 +126,7 @@ class datadog_agent::installer_params (
     },
   }
   $json_logs_body = to_json($json_logs_body_hash)
+  # TO DO: replace rc and output
   exec { 'Prepare log payload replacing template values':
     command => "echo \'${json_logs_body}\' > /tmp/log_payload.json
       sed -i \"s/-2/$(cat /tmp/puppet_stop_time)/g\" /tmp/log_payload.json

@@ -138,11 +138,27 @@ class datadog_agent::ubuntu_installer (
   # Check if installer owns the Datadog Agent package
   exec {
     'Check if installer owns the Datadog Agent package':
-      command => '/usr/bin/datadog-installer is-installed datadog-agent',
-      require => Exec['Bootstrap the installer'],
+      command     => '/usr/bin/datadog-installer is-installed datadog-agent',
+      environment => [
+        "DD_API_KEY=${api_key}",
+      ],
+      # TODO(FA): Agent package is downloaded only if remote_updates is enabled, so we allow exit 10
+      returns     => [0, 10],
+      require     => Exec['Bootstrap the installer'],
   }
 
-  # TO DO: check if installer owns APM package and libraries
+  # Check if installer owns APM libraries
+  if $apm_instrumentation_libraries_str != '' {
+    $apm_instrumentation_libraries_str.split(',').each |$library| {
+      exec { "Check if installer owns APM library ${library}":
+        command     => "/usr/bin/datadog-installer is-installed datadog-apm-library-${library}",
+        environment => [
+          "DD_API_KEY=${api_key}",
+        ],
+        require     => Exec['Bootstrap the installer'],
+      }
+    }
+  }
 
   # Stop timer
   exec { 'End timer':

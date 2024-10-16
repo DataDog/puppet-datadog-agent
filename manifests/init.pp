@@ -483,8 +483,10 @@ The Agent package can only be managed by Puppet or the installer.')
     # Else, if user wants to install libraries without enabling instrumentation, use the provided libraries
     if $apm_instrumentation_enabled and ! $apm_instrumentation_libraries {
       $apm_instrumentation_libraries_str = join(['java:1', 'python:2', 'js:5', 'dotnet:3', 'ruby:2'], ',')
-    } else {
+    } elsif $apm_instrumentation_libraries {
       $apm_instrumentation_libraries_str = join($apm_instrumentation_libraries, ',')
+    } else {
+      $apm_instrumentation_libraries_str = ''
     }
     case $facts['os']['name'] {
       'Ubuntu','Debian','Raspbian': {

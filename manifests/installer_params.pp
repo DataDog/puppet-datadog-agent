@@ -6,6 +6,7 @@
 class datadog_agent::installer_params (
   String $api_key = 'your_API_key',
   String $datadog_site = 'datadoghq.com',
+  String $packages_to_install = 'datadog-agent',
 ) {
   $_service = 'datadog-puppet'
   $role_version = load_module_metadata($module_name)['version']
@@ -15,8 +16,6 @@ class datadog_agent::installer_params (
   # Template integers to be replaced with sed
   $start_time = -1
   $stop_time = -2
-  $packages_to_install = 'packages_to_install_value'
-  $packages_to_install_filtered = 'packages_to_install_filtered_value'
   $json_trace_body_hash = {
     'api_version'  => 'v2',
     'request_type' => 'traces',
@@ -35,7 +34,7 @@ class datadog_agent::installer_params (
     'application'  => {
       'service_name'     => $_service,
       'service_version'  => $role_version,
-      'language_name'    => 'UNKNOWN',
+      'language_name'    => 'puppet',
       'language_version' => 'n/a',
       'tracer_version'   => 'n/a',
     },
@@ -53,14 +52,13 @@ class datadog_agent::installer_params (
             'duration'   => -3,
             'error'      => $rc,
             'meta'       => {
-              'language'                  => 'yaml',
+              'language'                  => 'puppet',
               'exit_code'                 => $rc,
               'error'                     => {
                 'message' => $output,
               },
               'version'                   => $role_version,
               'packages_to_install'        => $packages_to_install,
-              'packages_to_install_after_installer' => $packages_to_install_filtered,
             },
             'metrics'    => {
               '_trace_root'            => 1,

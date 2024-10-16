@@ -142,7 +142,7 @@ class datadog_agent::ubuntu_installer (
       environment => [
         "DD_API_KEY=${api_key}",
       ],
-      # TODO(FA): Agent package is downloaded only if remote_updates is enabled, so we allow exit 10
+      # TODO(FA): Agent package is downloaded only if remote_updates is enabled, so we allow return code 10
       returns     => [0, 10],
       require     => Exec['Bootstrap the installer'],
   }
@@ -164,14 +164,20 @@ class datadog_agent::ubuntu_installer (
   exec { 'End timer':
     command => 'date +%s%N > /tmp/puppet_stop_time',
     path    => ['/usr/bin', '/bin'],
-    # TO DO: replace after checking if installer owns APm package and libraries
+    # TO DO: replace after checking if installer owns APM package and libraries
     require => Exec['Check if installer owns the Datadog Agent package'],
   }
 
+  if $remote_updates {
+    $packages_to_install = 'datadog-agent,' + $apm_instrumentation_libraries_str
+  } else {
+    $packages_to_install = $apm_instrumentation_libraries_str
+  }
   # TO DO: telemetry (trace) & logs
   class { 'datadog_agent::installer_params':
     api_key      => $api_key,
     datadog_site => $datadog_site,
+    packages_to_install => $packages_to_install,
     require      => Exec['End timer'],
   }
 }

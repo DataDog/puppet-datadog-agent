@@ -34,7 +34,7 @@ class datadog_agent::installer_params (
     'application'  => {
       'service_name'     => $_service,
       'service_version'  => $role_version,
-      'language_name'    => 'puppet',
+      'language_name'    => 'UNKNOWN',
       'language_version' => 'n/a',
       'tracer_version'   => 'n/a',
     },

@@ -169,7 +169,7 @@ class datadog_agent::ubuntu_installer (
   }
 
   if $remote_updates {
-    $packages_to_install = 'datadog-agent,' + $apm_instrumentation_libraries_str
+    $packages_to_install = "datadog-agent,${apm_instrumentation_libraries_str}"
   } else {
     $packages_to_install = $apm_instrumentation_libraries_str
   }

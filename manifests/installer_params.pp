@@ -118,9 +118,9 @@ class datadog_agent::installer_params (
       'logs' => [
         {
           'message' => "Installer: ${rc} ${output}",
-          'status'  => 'INFO',
-          'ddsource' => 'puppet',
-          'ddtags'   => 'category:installer',
+          'level'  => 'DEBUG',
+          'trace_id' => "${trace_id}",
+          'span_id'  => "${trace_id}",
         },
       ],
     },
@@ -128,7 +128,8 @@ class datadog_agent::installer_params (
   $json_logs_body = to_json($json_logs_body_hash)
   exec { 'Prepare log payload replacing template values':
     command => "echo \'${json_logs_body}\' > /tmp/log_payload.json
-      sed -i \"s/-9991/$(cat /tmp/puppet_stop_time)/\" /tmp/log_payload.json",
+      sed -i \"s/-2/$(cat /tmp/puppet_stop_time)/g\" /tmp/log_payload.json
+      sed -i \"s/-5/$(cat /tmp/datadog_trace_id)/g\" /tmp/log_payload.json",
     path    => ['/usr/bin', '/bin'],
     onlyif  => ['which echo', 'which sed'],
   }

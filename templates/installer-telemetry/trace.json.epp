@@ -32,11 +32,11 @@
           "parent_id": 0,
           "start": TRACER_START_TIME_PLACEHOLDER,
           "duration": DURATION_PLACEHOLDER,
-          "error": 0,
+          "error": RETURN_CODE_PLACEHOLDER,
           "meta": {
             "language": "puppet",
-            "exit_code": 0,
-            "error": { "message": "TO BE REPLACED BY RETRIEVING STDOUT" },
+            "exit_code": RETURN_CODE_PLACEHOLDER,
+            "error": { "message": "OUTPUT_PLACEHOLDER" },
             "version": "<%= $role_version %>",
             "packages_to_install": "<%= $packages_to_install %>"
           },

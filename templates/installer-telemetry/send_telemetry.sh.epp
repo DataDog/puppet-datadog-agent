@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -e
+
+# Telemetry URL based on user-provided site
+TELEMETRY_URL="https://instrumentation-telemetry-intake.<%= $datadog_site %>/api/v2/apmtelemetry"
+
+# Retrieve runtime parameters
+TRACER_START_TIME=$(</tmp/puppet_start_time)
+TRACER_END_TIME=$(</tmp/puppet_stop_time)
+DURATION=$(expr $TRACER_END_TIME - $TRACER_START_TIME)
+RUNTIME_ID=$(</tmp/datadog_trace_id)
+# TO DO: retrieve actual return code instead of hardcoded 0
+RETURN_CODE=0
+# TO DO: retrieve stdout/stderr
+OUTPUT="TO BE REPLACED BY RETRIEVING STDOUT"
+
+# Prepare trace payload
+sed -i "s/TRACER_START_TIME_PLACEHOLDER/$TRACER_START_TIME/g" /tmp/trace_payload.json
+sed -i "s/TRACER_END_TIME_PLACEHOLDER/$TRACER_END_TIME/g" /tmp/trace_payload.json
+sed -i "s/DURATION_PLACEHOLDER/$DURATION/g" /tmp/trace_payload.json
+sed -i "s/RETURN_CODE_PLACEHOLDER/$RETURN_CODE/g" /tmp/trace_payload.json
+sed -i "s/OUTPUT_PLACEHOLDER/$OUTPUT/g" /tmp/trace_payload.json
+sed -i "s/RUNTIME_ID_PLACEHOLDER/$RUNTIME_ID/g" /tmp/trace_payload.json
+
+# Prepare log payload
+sed -i "s/TRACER_END_TIME_PLACEHOLDER/$TRACER_END_TIME/g" /tmp/log_payload.json
+sed -i "s/RUNTIME_ID_PLACEHOLDER/$RUNTIME_ID/g" /tmp/log_payload.json
+sed -i "s/RETURN_CODE_PLACEHOLDER/$RETURN_CODE/g" /tmp/log_payload.json
+sed -i "s/OUTPUT_PLACEHOLDER/$OUTPUT/g" /tmp/log_payload.json
+
+# Send trace payload
+curl -f -sSL --retry 5 -o /dev/null -X POST \
+-H 'Content-Type: application/json' \
+-H 'DD-API-KEY: <%= $api_key %>' \
+-d '@/tmp/trace_payload.json' \
+"$TELEMETRY_URL"
+
+# Send log payload
+curl -f -sSL --retry 5 -o /dev/null -X POST \
+-H 'Content-Type: application/json' \
+-H 'DD-API-KEY: <%= $api_key %>' \
+-d '@/tmp/log_payload.json' \
+"$TELEMETRY_URL"

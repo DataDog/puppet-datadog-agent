@@ -173,7 +173,6 @@ class datadog_agent::ubuntu_installer (
   } else {
     $packages_to_install = $apm_instrumentation_libraries_str
   }
-  # TO DO: telemetry (trace) & logs
   class { 'datadog_agent::installer_params':
     api_key      => $api_key,
     datadog_site => $datadog_site,

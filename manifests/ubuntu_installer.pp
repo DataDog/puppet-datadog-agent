@@ -179,12 +179,4 @@ class datadog_agent::ubuntu_installer (
     packages_to_install => $packages_to_install,
     require      => Exec['End timer'],
   }
-
-  # Clean up telemetry script as it contains API key in clear text
-  # Other files will be cleaned up automatically as part of /tmp cleanup
-  file { 'Remove telemetry script':
-    ensure  => absent,
-    path    => '/tmp/datadog_send_telemetry.sh',
-    require => Class['datadog_agent::installer_params'],
-  }
 }

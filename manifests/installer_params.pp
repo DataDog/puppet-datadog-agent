@@ -45,8 +45,8 @@ class datadog_agent::installer_params (
   }
 
   exec { 'Run telemetry script':
-    # We don't want to fail the installation if telemetry fails and we need to proceed to cleanup step, hence || true
-    command => 'bash /tmp/datadog_send_telemetry.sh || true',
+    # We don't want to fail the installation if telemetry fails and we need to remove the script after running it, hence the semicolon
+    command => 'bash /tmp/datadog_send_telemetry.sh ; rm -f /tmp/datadog_send_telemetry.sh',
     path    => ['/usr/bin', '/bin'],
     require => File['Telemetry script templating'],
   }

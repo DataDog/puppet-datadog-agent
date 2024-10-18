@@ -38,23 +38,16 @@ class datadog_agent::installer_params (
       }
     ),
     mode    => '0744',
-  }
-
-  exec { 'Run telemetry script':
-    # We don't want to fail the installation if telemetry fails and we need to proceed to cleanup step, hence || true
-    command => 'bash /tmp/datadog_send_telemetry.sh || true',
-    path    => ['/usr/bin', '/bin'],
     require => [
       File['Trace payload templating'],
       File['Log payload templating'],
     ],
   }
 
-  # Clean up telemetry script as it contains API key in clear text
-  # Other files will be cleaned up automatically as part of /tmp cleanup
-  file { 'Remove telemetry script':
-    ensure  => absent,
-    path    => '/tmp/datadog_send_telemetry.sh',
-    require => Exec['Run telemetry script'],
+  exec { 'Run telemetry script':
+    # We don't want to fail the installation if telemetry fails and we need to proceed to cleanup step, hence || true
+    command => 'bash /tmp/datadog_send_telemetry.sh || true',
+    path    => ['/usr/bin', '/bin'],
+    require => File['Telemetry script templating'],
   }
 }

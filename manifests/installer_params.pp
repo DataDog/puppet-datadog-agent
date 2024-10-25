@@ -13,7 +13,7 @@ class datadog_agent::installer_params (
   file { 'Trace payload templating':
     ensure  => file,
     path    => '/tmp/trace_payload.json',
-    content => epp('datadog_agent/installer-telemetry/trace.json.epp', {
+    content => epp('datadog_agent/installer/telemetry/trace.json.epp', {
         'role_version'        => $role_version,
         'packages_to_install' => $packages_to_install
       }
@@ -23,7 +23,7 @@ class datadog_agent::installer_params (
   file { 'Log payload templating':
     ensure  => file,
     path    => '/tmp/log_payload.json',
-    content => epp('datadog_agent/installer-telemetry/log.json.epp', {
+    content => epp('datadog_agent/installer/telemetry/log.json.epp', {
         'role_version' => $role_version
       }
     ),
@@ -32,7 +32,7 @@ class datadog_agent::installer_params (
   file { 'Telemetry script templating':
     ensure  => file,
     path    => '/tmp/datadog_send_telemetry.sh',
-    content => epp('datadog_agent/installer-telemetry/send_telemetry.sh.epp', {
+    content => epp('datadog_agent/installer/telemetry/send_telemetry.sh.epp', {
         'datadog_site' => $datadog_site,
         'api_key'      => $api_key
       }

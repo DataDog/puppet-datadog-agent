@@ -34,7 +34,7 @@ class datadog_agent::ubuntu_installer (
   # -N8: read 8 bytes
   # -tu8: unsigned integer, 8 bytes (64 bits)
   exec { 'Generate trace ID':
-    command => 'echo $(od -An -N8 -tu8 /dev/urandom) > /tmp/datadog_trace_id',
+    command => "echo $(od -An -N8 -tu8 < /dev/urandom | tr -d ' ') > /tmp/datadog_trace_id",
     path    => ['/usr/bin', '/bin'],
     onlyif  => ['which echo', 'which od'],
   }
@@ -140,6 +140,7 @@ class datadog_agent::ubuntu_installer (
     'Check if installer owns the Datadog Agent package':
       command     => '/usr/bin/datadog-installer is-installed datadog-agent',
       environment => [
+        "DD_SITE=${datadog_site}",
         "DD_API_KEY=${api_key}",
       ],
       # TODO(FA): Agent package is downloaded only if remote_updates is enabled, so we allow return code 10
@@ -153,6 +154,7 @@ class datadog_agent::ubuntu_installer (
       exec { "Check if installer owns APM library ${library}":
         command     => "/usr/bin/datadog-installer is-installed datadog-apm-library-${library}",
         environment => [
+          "DD_SITE=${datadog_site}",
           "DD_API_KEY=${api_key}",
         ],
         require     => Exec['Bootstrap the installer'],

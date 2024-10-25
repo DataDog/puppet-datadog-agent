@@ -23,8 +23,14 @@
   "payload": {
     "logs": [
       {
-        "message": "Bootstrap return code: RETURN_CODE_PLACEHOLDER, Bootstrap stdout/stderr: OUTPUT_PLACEHOLDER",
+        "message": "STDOUT_PLACEHOLDER",
         "level": "DEBUG",
+        "trace_id": "RUNTIME_ID_PLACEHOLDER",
+        "span_id": "RUNTIME_ID_PLACEHOLDER"
+      },
+      {
+        "message": "STDERR_PLACEHOLDER",
+        "level": "ERROR",
         "trace_id": "RUNTIME_ID_PLACEHOLDER",
         "span_id": "RUNTIME_ID_PLACEHOLDER"
       }

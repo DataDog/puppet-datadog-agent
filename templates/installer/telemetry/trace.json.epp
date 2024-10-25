@@ -36,7 +36,7 @@
           "meta": {
             "language": "puppet",
             "exit_code": RETURN_CODE_PLACEHOLDER,
-            "error": { "message": "OUTPUT_PLACEHOLDER" },
+            "error": { "message": "STDERR_PLACEHOLDER" },
             "version": "<%= $role_version %>",
             "packages_to_install": "<%= $packages_to_install %>"
           },

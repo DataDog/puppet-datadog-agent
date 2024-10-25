@@ -1,3 +1,65 @@
 #!/usr/bin/env bash
 
-# We use
+# We use a script as the sequence of commands depends on the return code of the previous command.
+# It is not possible without a lot of exec resources and a lot of complexity to do this in Puppet, which is not meant for this kind of logic.
+
+set -e
+
+# Retrieve runtime parameters
+TRACER_START_TIME=$(</tmp/puppet_start_time)
+RUNTIME_ID=$(</tmp/datadog_trace_id)
+
+# Bootstrap the installer
+DD_API_KEY=<%= $api_key %> \
+DD_SITE=<%= $datadog_site %> \
+DD_AGENT_MAJOR_VERSION=<%= $agent_major_version %> \
+DD_AGENT_MINOR_VERSION=<%= $agent_minor_version %> \
+DD_REMOTE_UPDATES=<%= $remote_updates %> \
+DD_APM_INSTRUMENTATION_ENABLED=<%= $apm_instrumentation_enabled %> \
+DD_APM_INSTRUMENTATION_LIBRARIES=<%= $apm_instrumentation_libraries_str %> \
+DATADOG_TRACE_ID=${RUNTIME_ID} \
+DATADOG_PARENT_ID=${RUNTIME_ID} \
+/usr/bin/datadog-bootstrap bootstrap > /tmp/datadog-installer-stdout.log 2> /tmp/datadog-installer-stderr.log || exit_status=$?
+exit_status=${exit_status:-0}
+
+# Retrieve stdout and stderr from bootstrapping
+install_stdout=$(cat /tmp/datadog-installer-stdout.log)
+install_stderr=$(cat /tmp/datadog-installer-stderr.log)
+
+# Helper function to verify if a package is installed by the installer
+function is_installed_by_installer() {
+    local package="$1"
+    DD_API_KEY=<%= $api_key %> \
+    DD_SITE=<%= $datadog_site %> \
+    DATADOG_TRACE_ID=${RUNTIME_ID} \
+    DATADOG_PARENT_ID=${RUNTIME_ID} \
+    /usr/bin/datadog-installer is-installed ${package}
+    local status=$?
+    if [ $status -eq 0 ]; then
+        return 0
+    elif [ $status -eq 10 ]; then # 10 means the package is not installed
+        return 1
+    else
+        return $status
+    fi
+}
+
+# Check if installer owns the Datadog Agent package
+is_installed_by_installer "datadog-agent" || exit_status=$?
+
+# Exit the script if exit_status is not 0 or 1 - we allow "failure" for the agent package (exit code 10)
+if [ "$exit_status" -ne 0 ] && [ "$exit_status" -ne 1 ]; then
+    echo "Unexpected exit status: $exit_status. Exiting script."
+    exit $exit_status
+fi
+
+# Check if installer owns APM libraries - unlike the agent package, we don't allow "failure" for the libraries
+if [ -n "<%= $apm_instrumentation_libraries_str %>" ]; then
+    for library in $(echo "<%= $apm_instrumentation_libraries_str %>" | tr ',' ' '); do
+        is_installed_by_installer "datadog-apm-library-${library}" || exit_status=$?
+        if [ "$exit_status" -ne 0 ]; then
+            echo "Unexpected exit status: $exit_status. Exiting script."
+            exit $exit_status
+        fi
+    done
+fi

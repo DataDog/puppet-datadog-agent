@@ -498,7 +498,6 @@ The Agent package can only be managed by Puppet or the installer.')
     } else {
       $_agent_minor_version_full = ""
     }
-    $_agent_minor_version_full = "${_agent_minor_version}.${_agent_patch_version}"
     case $facts['os']['name'] {
       'Ubuntu','Debian','Raspbian': {
         class { 'datadog_agent::ubuntu_installer':

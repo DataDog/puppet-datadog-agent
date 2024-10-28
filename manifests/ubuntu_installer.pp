@@ -7,7 +7,7 @@ class datadog_agent::ubuntu_installer (
   String $api_key = 'your_API_key',
   String $datadog_site = $datadog_agent::params::datadog_site,
   Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
-  String $agent_minor_version = '',
+  Optional[String] $agent_minor_version = undef,
   Optional[String] $installer_repo_uri = undef,
   String $release = $datadog_agent::params::apt_default_release,
   Boolean $skip_apt_key_trusting = false,

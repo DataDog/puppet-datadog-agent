@@ -392,6 +392,7 @@ class datadog_agent (
       fail('Provided and deduced agent_major_version don\'t match')
     }
     $_agent_minor_version = 0 + $3
+    $_agent_patch_version = 0 + $4
   } elsif $agent_major_version != undef {
     $_agent_major_version = $agent_major_version
   } else {
@@ -488,13 +489,23 @@ The Agent package can only be managed by Puppet or the installer.')
     } else {
       $apm_instrumentation_libraries_str = ''
     }
+    # Agent version handling: the installer expects DD_AGENT_MINOR_VERSION to include the patch version.
+    # $_agent_minor_version is the minor version without the patch version.
+    # We need to add the patch version to the minor version to get the full version.
+    # If minor and patch version were not extracted (e.g. user is simply providing agent_major_version), we use an empty string for the minor version.
+    if $_agent_minor_version != undef and $_agent_patch_version != undef {
+      $_agent_minor_version_full = "${_agent_minor_version}.${_agent_patch_version}"
+    } else {
+      $_agent_minor_version_full = ""
+    }
+    $_agent_minor_version_full = "${_agent_minor_version}.${_agent_patch_version}"
     case $facts['os']['name'] {
       'Ubuntu','Debian','Raspbian': {
         class { 'datadog_agent::ubuntu_installer':
           api_key                           => $api_key,
           datadog_site                      => $datadog_site,
           agent_major_version               => $_agent_major_version,
-          agent_minor_version               => $_agent_minor_version,
+          agent_minor_version               => $_agent_minor_version_full,
           installer_repo_uri                => $agent_repo_uri,
           release                           => $apt_release,
           skip_apt_key_trusting             => $skip_apt_key_trusting,

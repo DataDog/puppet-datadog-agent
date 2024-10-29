@@ -96,13 +96,8 @@ class datadog_agent::redhat_installer (
     require       => Exec['Start timer'],
   }
 
-  # Install `datadog-installer` and `datadog-signing-keys` packages with latest versions
+  # Install `datadog-installer` package with latest versions
   package { 'datadog-installer':
-    ensure  => 'latest',
-    require => Yumrepo['datadog'],
-  }
-
-  package { 'datadog-signing-keys':
     ensure  => 'latest',
     require => Yumrepo['datadog'],
   }
@@ -129,7 +124,6 @@ class datadog_agent::redhat_installer (
     require => [
       File['Bootstrap and is-installed script templating'],
       Package['datadog-installer'],
-      Package['datadog-signing-keys'],
     ],
   }
 

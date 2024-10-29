@@ -496,7 +496,7 @@ The Agent package can only be managed by Puppet or the installer.')
     if $_agent_minor_version != undef and $_agent_patch_version != undef {
       $_agent_minor_version_full = "${_agent_minor_version}.${_agent_patch_version}"
     } else {
-      $_agent_minor_version_full = ""
+      $_agent_minor_version_full = ''
     }
     case $facts['os']['name'] {
       'Ubuntu','Debian','Raspbian': {
@@ -508,6 +508,19 @@ The Agent package can only be managed by Puppet or the installer.')
           installer_repo_uri                => $agent_repo_uri,
           release                           => $apt_release,
           skip_apt_key_trusting             => $skip_apt_key_trusting,
+          apm_instrumentation_enabled       => $apm_instrumentation_enabled,
+          apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
+          remote_updates                    => $remote_updates,
+        }
+      }
+      'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky' : {
+        class { 'datadog_agent::redhat_installer':
+          api_key                           => $api_key,
+          datadog_site                      => $datadog_site,
+          agent_major_version               => $_agent_major_version,
+          agent_minor_version               => $_agent_minor_version_full,
+          installer_repo_uri                => $agent_repo_uri,
+          rpm_repo_gpgcheck                 => $rpm_repo_gpgcheck,
           apm_instrumentation_enabled       => $apm_instrumentation_enabled,
           apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
           remote_updates                    => $remote_updates,

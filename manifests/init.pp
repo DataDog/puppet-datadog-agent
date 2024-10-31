@@ -526,6 +526,19 @@ The Agent package can only be managed by Puppet or the installer.')
           remote_updates                    => $remote_updates,
         }
       }
+      'OpenSuSE', 'SLES' : {
+        class { 'datadog_agent::suse_installer':
+          api_key                           => $api_key,
+          datadog_site                      => $datadog_site,
+          agent_major_version               => $_agent_major_version,
+          agent_minor_version               => $_agent_minor_version_full,
+          installer_repo_uri                => $agent_repo_uri,
+          rpm_repo_gpgcheck                 => $rpm_repo_gpgcheck,
+          apm_instrumentation_enabled       => $apm_instrumentation_enabled,
+          apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
+          remote_updates                    => $remote_updates,
+        }
+      }
       default: { fail("Class[datadog_agent::installer]: Unsupported operatingsystem: ${facts['os']['name']}") }
     }
   }

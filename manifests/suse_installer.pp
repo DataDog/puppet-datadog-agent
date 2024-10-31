@@ -1,4 +1,4 @@
-# Class: datadog_agent::redhat_installer
+# Class: datadog_agent::suse_installer
 # This class installs and configures the Datadog agent on RedHat-based systems.
 #
 # @param api_key String:Your DataDog API Key. Please replace with your key value.
@@ -11,7 +11,7 @@
 # @param apm_instrumentation_libraries_str Optional[String]: APM instrumentation libraries as a comma-separated string.
 # @param remote_updates Optional[String]: Whether to enable remote updates.
 #
-class datadog_agent::redhat_installer (
+class datadog_agent::suse_installer (
   String $api_key = 'your_API_key',
   String $datadog_site = $datadog_agent::params::datadog_site,
   Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
@@ -39,7 +39,6 @@ class datadog_agent::redhat_installer (
     path    => ['/usr/bin', '/bin'],
     require => Exec['Generate trace ID'],
   }
-
   # Define the GPG keys to use for the repository
   # We only use the latest key and previous key since the installer is signed with the latest key and the agent might be signed with the previous key.
   $all_keys = [
@@ -53,20 +52,8 @@ class datadog_agent::redhat_installer (
   if ($rpm_repo_gpgcheck != undef) {
     $repo_gpgcheck = $rpm_repo_gpgcheck
   } else {
-    if $installer_repo_uri == undef {
-      case $facts['os']['name'] {
-        'RedHat', 'CentOS', 'OracleLinux': {
-          # disable repo_gpgcheck on 8.1 because of https://bugzilla.redhat.com/show_bug.cgi?id=1792506
-          if $facts['os']['release']['full'] =~ /^8.1/ {
-            $repo_gpgcheck = false
-          } else {
-            $repo_gpgcheck = true
-          }
-        }
-        default: {
-          $repo_gpgcheck = true
-        }
-      }
+    if ($installer_repo_uri == undef) {
+      $repo_gpgcheck = true
     } else {
       $repo_gpgcheck = false
     }
@@ -80,32 +67,46 @@ class datadog_agent::redhat_installer (
     $baseurl = "https://yum.datadoghq.com/stable/7/${facts['os']['architecture']}/"
   }
 
-  yumrepo { 'datadog-beta':
-    ensure => absent,
+  # We need to install GPG keys manually since zypper will autoreject new keys
+  # We download each key and import it using rpm --import
+  $all_keys.each |String $key_url| {
+    $key_name = split($key_url, '/')
+    $key_path = "/tmp/${key_name[-1]}"
+
+    file { $key_path:
+      owner  => root,
+      group  => root,
+      mode   => '0600',
+      source => $key_url,
+    }
+
+    exec { "install-${key_name}":
+      command => "/bin/rpm --import ${key_path}",
+    }
   }
 
-  yumrepo { 'datadog5':
-    ensure   => absent,
-  }
-
-  yumrepo { 'datadog6':
-    ensure   => absent,
-  }
-
-  yumrepo { 'datadog':
-    enabled       => 1,
-    gpgcheck      => 1,
-    gpgkey        => join($all_keys, "\n       "),
-    repo_gpgcheck => $repo_gpgcheck,
-    descr         => 'Datadog, Inc.',
-    baseurl       => $baseurl,
-    require       => Exec['Start timer'],
+  zypprepo { 'datadog':
+    baseurl      => $baseurl,
+    enabled      => 1,
+    autorefresh  => 1,
+    name         => 'datadog',
+    gpgcheck     => 1,
+    # zypper on SUSE < 15 only understands a single gpgkey value
+    gpgkey       => (Float($facts['os']['release']['full']) >= 15.0) ? { true => join($all_keys, "\n       "), default => 'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public' },
+    # TODO: when updating zypprepo to 4.0.0, uncomment the repo_gpgcheck line
+    # For now, we can leave this commented, as zypper by default does repodata
+    # signature checks if the repomd.xml.asc is present, so repodata checks
+    # are effective for most users anyway. We'll make this explicit when we
+    # update zypprepo version.
+    # repo_gpgcheck => $repo_gpgcheck,
+    keeppackages => 1,
+    require      => Exec['Start timer'],
   }
 
   # Install `datadog-installer` package with latest versions
   package { 'datadog-installer':
     ensure  => 'latest',
-    require => Yumrepo['datadog'],
+    require => Zypprepo['datadog'],
   }
 
   file { 'Bootstrap and is-installed script templating':

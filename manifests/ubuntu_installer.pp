@@ -1,8 +1,20 @@
 # Class: datadog_agent::ubuntu_installer
+# This class installs and configures the Datadog agent on Debian distributions.
 #
-# This class contains the Datadog installer installation mechanism for Debian derivatives
+# @param api_key String:Your DataDog API Key. Please replace with your key value.
+# @param datadog_site String: The site of the Datadog intake to send Agent data to. Defaults to 'datadoghq.com'.
+# @param agent_major_version Integer: The major version of the Datadog agent to install. Defaults to 7.
+# @param agent_minor_version Optional[String]: The minor version of the Datadog agent to install.
+# @param installer_repo_uri Optional[String]: The URI of the installer repository.
+# @param release String: The distribution channel to be used for the APT repo. Eg: 'stable' or 'beta'. Default: stable.
+# @param skip_apt_key_trusting Boolean: Skip trusting the apt key. Default is false.
+# @param apt_trusted_d_keyring String: The path to the trusted keyring file.
+# @param apt_usr_share_keyring String: The path to the keyring file in /usr/share.
+# @param apt_default_keys Hash[String, String]: A hash of default APT keys and their URLs.
+# @param apm_instrumentation_enabled Optional[Enum['host', 'docker', 'all']]: Enable APM instrumentation for the specified environment (host, docker, or all).
+# @param apm_instrumentation_libraries_str Optional[String]: APM instrumentation libraries as a comma-separated string.
+# @param remote_updates Optional[String]: Whether to enable remote updates.
 #
-
 class datadog_agent::ubuntu_installer (
   String $api_key = 'your_API_key',
   String $datadog_site = $datadog_agent::params::datadog_site,
@@ -11,9 +23,9 @@ class datadog_agent::ubuntu_installer (
   Optional[String] $installer_repo_uri = undef,
   String $release = $datadog_agent::params::apt_default_release,
   Boolean $skip_apt_key_trusting = false,
-  Optional[String] $apt_trusted_d_keyring = '/etc/apt/trusted.gpg.d/datadog-archive-keyring.gpg',
-  Optional[String] $apt_usr_share_keyring = '/usr/share/keyrings/datadog-archive-keyring.gpg',
-  Optional[Hash[String, String]] $apt_default_keys = {
+  String $apt_trusted_d_keyring = '/etc/apt/trusted.gpg.d/datadog-archive-keyring.gpg',
+  String $apt_usr_share_keyring = '/usr/share/keyrings/datadog-archive-keyring.gpg',
+  Hash[String, String] $apt_default_keys = {
     # DATADOG_APT_KEY_CURRENT.public always contains key used to sign current
     # repodata and newly released packages.
     'DATADOG_APT_KEY_CURRENT.public'           => 'https://keys.datadoghq.com/DATADOG_APT_KEY_CURRENT.public',
@@ -38,7 +50,7 @@ class datadog_agent::ubuntu_installer (
   exec { 'Generate trace ID':
     command => "echo $(od -An -N8 -tu8 < /dev/urandom | tr -d ' ') > /tmp/datadog_trace_id",
     path    => ['/usr/bin', '/bin'],
-    onlyif  => ['which echo', 'which od', 'which tr'],
+    onlyif  => ['command -v echo', 'command -v od', 'command -v tr'],
   }
 
   # Start timer (note: Puppet is not able to measure time directly as it's against its paradigm)
@@ -77,7 +89,7 @@ class datadog_agent::ubuntu_installer (
       }
     }
     if ($facts['os']['name'] == 'Ubuntu' and versioncmp($facts['os']['release']['full'], '16') == -1) or
-        ($facts['os']['name'] == 'Debian' and versioncmp($facts['os']['release']['full'], '9') == -1) {
+    ($facts['os']['name'] == 'Debian' and versioncmp($facts['os']['release']['full'], '9') == -1) {
       file { $apt_trusted_d_keyring:
         mode   => '0644',
         source => "file://${apt_usr_share_keyring}",

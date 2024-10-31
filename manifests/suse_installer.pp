@@ -30,7 +30,7 @@ class datadog_agent::suse_installer (
   exec { 'Generate trace ID':
     command => "echo $(od -An -N8 -tu8 < /dev/urandom | tr -d ' ') > /tmp/datadog_trace_id",
     path    => ['/usr/bin', '/bin'],
-    onlyif  => ['command -v echo', 'command -v od', 'command -v tr'],
+    onlyif  => '/bin/sh -c "command -v tr && command -v od && command -v echo"',
   }
 
   # Start timer (note: Puppet is not able to measure time directly as it's against its paradigm)

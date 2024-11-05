@@ -136,37 +136,82 @@ class datadog_agent::ubuntu_installer (
     require => [Apt::Source['datadog'], Class['apt::update']],
   }
 
-  file { 'Bootstrap and is-installed script templating':
-    ensure  => file,
-    path    => '/tmp/datadog_installer_bootstrap.sh',
-    content => epp('datadog_agent/installer/installer_bootstrap.sh.epp', {
-        'datadog_site'                      => $datadog_site,
-        'api_key'                           => $api_key,
-        'agent_major_version'               => $agent_major_version,
-        'agent_minor_version'               => $agent_minor_version,
-        'remote_updates'                    => $remote_updates,
-        'apm_instrumentation_enabled'       => $apm_instrumentation_enabled,
-        'apm_instrumentation_libraries_str' => $apm_instrumentation_libraries_str,
-      }
-    ),
-    mode    => '0744',
+  # Bootstrap the installer
+  exec { 'Bootstrap the installer':
+    # "Hack" to pass the trace ID at runtime instead of compile time
+    command     => '/usr/bin/env DATADOG_TRACE_ID=$(cat /tmp/datadog_trace_id) DATADOG_PARENT_ID=$(cat /tmp/datadog_trace_id) /usr/bin/datadog-bootstrap bootstrap',
+    environment => [
+      "DD_SITE=${datadog_site}",
+      "DD_API_KEY=${api_key}",
+      "DD_AGENT_MAJOR_VERSION=${agent_major_version}",
+      "DD_AGENT_MINOR_VERSION=${agent_minor_version}",
+      "DD_REMOTE_UPDATES=${remote_updates}",
+      "DD_APM_INSTRUMENTATION_ENABLED=${apm_instrumentation_enabled}",
+      "DD_APM_INSTRUMENTATION_LIBRARIES=${apm_instrumentation_libraries_str}",
+    ],
+    require     => [Package['datadog-installer'], Package['datadog-signing-keys']],
   }
 
-  exec { 'Run bootstrap script':
-    command => 'bash /tmp/datadog_installer_bootstrap.sh ; rm -f /tmp/datadog_installer_bootstrap.sh',
-    path    => ['/usr/bin', '/bin'],
-    require => [
-      File['Bootstrap and is-installed script templating'],
-      Package['datadog-installer'],
-      Package['datadog-signing-keys'],
-    ],
+  # Check if installer owns the Datadog Agent package
+  exec {
+    'Check if installer owns the Datadog Agent package':
+      command     => '/usr/bin/datadog-installer is-installed datadog-agent',
+      environment => [
+        "DD_SITE=${datadog_site}",
+        "DD_API_KEY=${api_key}",
+      ],
+      # We allow 0, 10 (package not installed)
+      returns     => [0, 10],
+      require     => Exec['Bootstrap the installer'],
   }
+
+  # Check if installer owns APM libraries
+  if $apm_instrumentation_libraries_str != '' {
+    $apm_instrumentation_libraries_str.split(',').each |$library| {
+      exec { "Check if installer owns APM library ${library}":
+        command     => "/usr/bin/datadog-installer is-installed datadog-apm-library-${library}",
+        environment => [
+          "DD_SITE=${datadog_site}",
+          "DD_API_KEY=${api_key}",
+        ],
+        # We allow 0, 10 (package not installed)
+        returns     => [0, 10],
+        require     => Exec['Bootstrap the installer'],
+      }
+    }
+  }
+
+  # file { 'Bootstrap and is-installed script templating':
+  #   ensure  => file,
+  #   path    => '/tmp/datadog_installer_bootstrap.sh',
+  #   content => epp('datadog_agent/installer/installer_bootstrap.sh.epp', {
+  #       'datadog_site'                      => $datadog_site,
+  #       'api_key'                           => $api_key,
+  #       'agent_major_version'               => $agent_major_version,
+  #       'agent_minor_version'               => $agent_minor_version,
+  #       'remote_updates'                    => $remote_updates,
+  #       'apm_instrumentation_enabled'       => $apm_instrumentation_enabled,
+  #       'apm_instrumentation_libraries_str' => $apm_instrumentation_libraries_str,
+  #     }
+  #   ),
+  #   mode    => '0744',
+  # }
+
+  # exec { 'Run bootstrap script':
+  #   command => 'bash /tmp/datadog_installer_bootstrap.sh ; rm -f /tmp/datadog_installer_bootstrap.sh',
+  #   path    => ['/usr/bin', '/bin'],
+  #   require => [
+  #     File['Bootstrap and is-installed script templating'],
+  #     Package['datadog-installer'],
+  #     Package['datadog-signing-keys'],
+  #   ],
+  # }
 
   # Stop timer
   exec { 'End timer':
     command => 'date +%s%N > /tmp/puppet_stop_time',
     path    => ['/usr/bin', '/bin'],
-    require => Exec['Run bootstrap script'],
+    require => Exec['Bootstrap the installer'],
   }
 
   if $remote_updates {

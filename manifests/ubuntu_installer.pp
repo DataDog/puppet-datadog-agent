@@ -103,18 +103,6 @@ class datadog_agent::ubuntu_installer (
     $location = "[signed-by=${apt_usr_share_keyring}] https://apt.datadoghq.com/"
   }
 
-  apt::source { 'datadog-beta':
-    ensure => absent,
-  }
-
-  apt::source { 'datadog5':
-    ensure => absent,
-  }
-
-  apt::source { 'datadog6':
-    ensure => absent,
-  }
-
   # Install APT repository
   apt::source { 'datadog':
     # Installer is located in the same APT repository as the Agent, only within repo 7
@@ -125,13 +113,8 @@ class datadog_agent::ubuntu_installer (
     require  => Exec['Start timer'],
   }
 
-  # Install `datadog-installer` and `datadog-signing-keys` packages with latest versions
+  # Install `datadog-installer` package with latest versions
   package { 'datadog-installer':
-    ensure  => 'latest',
-    require => [Apt::Source['datadog'], Class['apt::update']],
-  }
-
-  package { 'datadog-signing-keys':
     ensure  => 'latest',
     require => [Apt::Source['datadog'], Class['apt::update']],
   }
@@ -149,7 +132,7 @@ class datadog_agent::ubuntu_installer (
       "DD_APM_INSTRUMENTATION_ENABLED=${apm_instrumentation_enabled}",
       "DD_APM_INSTRUMENTATION_LIBRARIES=${apm_instrumentation_libraries_str}",
     ],
-    require     => [Package['datadog-installer'], Package['datadog-signing-keys']],
+    require     => Package['datadog-installer'],
   }
 
   # Check if installer owns the Datadog Agent package
@@ -180,32 +163,6 @@ class datadog_agent::ubuntu_installer (
       }
     }
   }
-
-  # file { 'Bootstrap and is-installed script templating':
-  #   ensure  => file,
-  #   path    => '/tmp/datadog_installer_bootstrap.sh',
-  #   content => epp('datadog_agent/installer/installer_bootstrap.sh.epp', {
-  #       'datadog_site'                      => $datadog_site,
-  #       'api_key'                           => $api_key,
-  #       'agent_major_version'               => $agent_major_version,
-  #       'agent_minor_version'               => $agent_minor_version,
-  #       'remote_updates'                    => $remote_updates,
-  #       'apm_instrumentation_enabled'       => $apm_instrumentation_enabled,
-  #       'apm_instrumentation_libraries_str' => $apm_instrumentation_libraries_str,
-  #     }
-  #   ),
-  #   mode    => '0744',
-  # }
-
-  # exec { 'Run bootstrap script':
-  #   command => 'bash /tmp/datadog_installer_bootstrap.sh ; rm -f /tmp/datadog_installer_bootstrap.sh',
-  #   path    => ['/usr/bin', '/bin'],
-  #   require => [
-  #     File['Bootstrap and is-installed script templating'],
-  #     Package['datadog-installer'],
-  #     Package['datadog-signing-keys'],
-  #   ],
-  # }
 
   # Stop timer
   exec { 'End timer':

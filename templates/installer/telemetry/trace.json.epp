@@ -32,11 +32,10 @@
           "parent_id": 0,
           "start": TRACER_START_TIME_PLACEHOLDER,
           "duration": DURATION_PLACEHOLDER,
-          "error": RETURN_CODE_PLACEHOLDER,
+          "error": 0,
           "meta": {
             "language": "puppet",
-            "exit_code": RETURN_CODE_PLACEHOLDER,
-            "error": { "message": "STDERR_PLACEHOLDER" },
+            "exit_code": 0,
             "version": "<%= $role_version %>",
             "packages_to_install": "<%= $packages_to_install %>"
           },

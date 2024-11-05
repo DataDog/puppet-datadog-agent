@@ -10,24 +10,16 @@ TRACER_START_TIME=$(</tmp/puppet_start_time)
 TRACER_END_TIME=$(</tmp/puppet_stop_time)
 DURATION=$(expr $TRACER_END_TIME - $TRACER_START_TIME)
 RUNTIME_ID=$(</tmp/datadog_trace_id)
-RETURN_CODE=$(cat /tmp/datadog-installer-exit-status.log 2>/dev/null || echo 0)
-INSTALL_STDOUT=$(</tmp/datadog-installer-stdout.log)
-INSTALL_STDERR=$(</tmp/datadog-installer-stderr.log)
-
 
 # Prepare trace payload
 sed -i "s/TRACER_START_TIME_PLACEHOLDER/$TRACER_START_TIME/g" /tmp/trace_payload.json
 sed -i "s/TRACER_END_TIME_PLACEHOLDER/$TRACER_END_TIME/g" /tmp/trace_payload.json
 sed -i "s/DURATION_PLACEHOLDER/$DURATION/g" /tmp/trace_payload.json
-sed -i "s/RETURN_CODE_PLACEHOLDER/$RETURN_CODE/g" /tmp/trace_payload.json
-sed -i "s/STDERR_PLACEHOLDER/$INSTALL_STDERR/g" /tmp/trace_payload.json
 sed -i "s/RUNTIME_ID_PLACEHOLDER/$RUNTIME_ID/g" /tmp/trace_payload.json
 
 # Prepare log payload
 sed -i "s/TRACER_END_TIME_PLACEHOLDER/$TRACER_END_TIME/g" /tmp/log_payload.json
 sed -i "s/RUNTIME_ID_PLACEHOLDER/$RUNTIME_ID/g" /tmp/log_payload.json
-sed -i "s/STDOUT_PLACEHOLDER/$INSTALL_STDOUT/g" /tmp/log_payload.json
-sed -i "s/STDERR_PLACEHOLDER/$INSTALL_STDERR/g" /tmp/log_payload.json
 
 # Send trace payload
 curl -f -sSL --retry 5 -o /dev/null -X POST \

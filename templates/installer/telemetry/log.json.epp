@@ -23,13 +23,13 @@
   "payload": {
     "logs": [
       {
-        "message": "STDOUT_PLACEHOLDER",
+        "message": "",
         "level": "DEBUG",
         "trace_id": "RUNTIME_ID_PLACEHOLDER",
         "span_id": "RUNTIME_ID_PLACEHOLDER"
       },
       {
-        "message": "STDERR_PLACEHOLDER",
+        "message": "",
         "level": "ERROR",
         "trace_id": "RUNTIME_ID_PLACEHOLDER",
         "span_id": "RUNTIME_ID_PLACEHOLDER"

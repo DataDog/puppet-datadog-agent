@@ -64,7 +64,7 @@ class datadog_agent::suse_installer (
   } else {
     # Unlike the Agent package, the installer is only within the stable repository, version 7
     # Thus, no differentiation based on Agent major version.
-    $baseurl = "https://yum.datadoghq.com/stable/7/${facts['os']['architecture']}/"
+    $baseurl = "https://yum.datadoghq.com/suse/stable/7/${facts['os']['architecture']}/"
   }
 
   # We need to install GPG keys manually since zypper will autoreject new keys

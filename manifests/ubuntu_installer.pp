@@ -177,9 +177,9 @@ class datadog_agent::ubuntu_installer (
     $packages_to_install = $apm_instrumentation_libraries_str
   }
   class { 'datadog_agent::installer_params':
-    api_key      => $api_key,
-    datadog_site => $datadog_site,
+    api_key             => $api_key,
+    datadog_site        => $datadog_site,
     packages_to_install => $packages_to_install,
-    require      => Exec['End timer'],
+    require             => Exec['End timer'],
   }
 }

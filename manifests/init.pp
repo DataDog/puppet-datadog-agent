@@ -457,29 +457,8 @@ class datadog_agent (
     default:    { $_loglevel = 'INFO' }
   }
 
-  if $manage_install and $datadog_installer_enabled {
-  fail('Both manage_install and datadog_installer_enabled are set to true.
-The Agent package can only be managed by Puppet or the installer.')
-  }
-
-  # Note: variable cannot be re-assigned in Puppet, requiring the introduction of new variables and setting $manage_install as Optional undef
-  $effective_datadog_installer_enabled = $datadog_installer_enabled ? {
-    undef  => false,
-    default => $datadog_installer_enabled,
-  }
-
-  $effective_manage_install = $manage_install ? {
-    undef  => ! $effective_datadog_installer_enabled,
-    default => $manage_install,
-  }
-
   # WIP Datadog installer
-  if $effective_datadog_installer_enabled {
-    # Disable management of the Agent
-    # We do it with dependent variable instead as can't reassign variable value in puppet
-    # class { 'datadog_agent':
-    #   manage_install => false,
-    # }
+  if $datadog_installer_enabled {
     # If instrumentation is enabled and the libraries are not set, default to pinned latest versions
     # Else, if user wants to install libraries without enabling instrumentation, use the provided libraries
     if $apm_instrumentation_enabled and ! $apm_instrumentation_libraries {
@@ -544,7 +523,7 @@ The Agent package can only be managed by Puppet or the installer.')
   }
 
   # Install agent
-  if $effective_manage_install {
+  if $manage_install {
     case $facts['os']['name'] {
       'Ubuntu','Debian','Raspbian' : {
         if $use_apt_backup_keyserver != undef or $apt_backup_keyserver != undef or $apt_keyserver != undef {
@@ -602,7 +581,7 @@ The Agent package can only be managed by Puppet or the installer.')
       default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${facts['os']['name']}") }
     }
   } else {
-    if ! defined(Package[$agent_flavor]) and ! $effective_datadog_installer_enabled {
+    if ! defined(Package[$agent_flavor]) {
       package { $agent_flavor:
         ensure => present,
         source => 'Agent installation not managed by Puppet, make sure the Agent is installed beforehand.',
@@ -610,40 +589,29 @@ The Agent package can only be managed by Puppet or the installer.')
     }
   }
 
-  # Declare service when not managed by the installer
-  if ! $effective_datadog_installer_enabled {
-    class { 'datadog_agent::service' :
-        agent_flavor     => $agent_flavor,
-        service_ensure   => $service_ensure,
-        service_enable   => $service_enable,
-        service_provider => $service_provider,
-      }
-    if ($facts['os']['name'] != 'Windows') {
-      if ($dd_groups) {
-        user { $dd_user:
-          groups => $dd_groups,
-          notify => Service[$datadog_agent::params::service_name],
-        }
-      }
-
-      # required by reports even in agent5 scenario
-      file { '/etc/datadog-agent':
-        ensure  => directory,
-        owner   => $dd_user,
-        group   => $dd_group,
-        mode    => $datadog_agent::params::permissions_directory,
-        require => Package[$agent_flavor],
+  # Declare service
+  class { 'datadog_agent::service' :
+      agent_flavor     => $agent_flavor,
+      service_ensure   => $service_ensure,
+      service_enable   => $service_enable,
+      service_provider => $service_provider,
+    }
+  if ($facts['os']['name'] != 'Windows') {
+    if ($dd_groups) {
+      user { $dd_user:
+        groups => $dd_groups,
+        notify => Service[$datadog_agent::params::service_name],
       }
     }
-  } else {
-      # required to manage config and install info files even with installer
-      file { '/etc/datadog-agent':
-          ensure  => directory,
-          owner   => $dd_user,
-          group   => $dd_group,
-          mode    => $datadog_agent::params::permissions_directory,
-          require => Package['datadog-installer'],
-        }
+
+    # required by reports even in agent5 scenario
+    file { '/etc/datadog-agent':
+      ensure  => directory,
+      owner   => $dd_user,
+      group   => $dd_group,
+      mode    => $datadog_agent::params::permissions_directory,
+      require => Package[$agent_flavor],
+    }
   }
 
   if $_agent_major_version == 5 {
@@ -871,8 +839,6 @@ The Agent package can only be managed by Puppet or the installer.')
             $host_config,
             $additional_checksd_config)
 
-    # TO DO: should Agent config be managed by installer or puppet.
-    # In the meantime, we will manage the config file with puppet and notify the service only if no installer is used
     file { $_conf_dir:
       ensure  => directory,
       purge   => $conf_dir_purge,
@@ -880,9 +846,7 @@ The Agent package can only be managed by Puppet or the installer.')
       force   => $conf_dir_purge,
       owner   => $dd_user,
       group   => $dd_group,
-    }
-    if ! $effective_datadog_installer_enabled {
-      File[$_conf_dir]  ~> Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
 
     $_local_tags = datadog_agent::tag6($local_tags, false, undef)
@@ -908,7 +872,6 @@ The Agent package can only be managed by Puppet or the installer.')
     }
 
     $agent_config = deep_merge($_agent_config, $extra_config)
-
 
     if ($facts['os']['name'] == 'Windows') {
 
@@ -943,11 +906,8 @@ The Agent package can only be managed by Puppet or the installer.')
         mode      => '0640',
         content   => template('datadog_agent/datadog.yaml.erb'),
         show_diff => false,
+        notify    => Service[$datadog_agent::params::service_name],
         require   => File['/etc/datadog-agent'],
-      }
-
-      if ! $effective_datadog_installer_enabled {
-        File['/etc/datadog-agent/datadog.yaml']  ~> Service[$datadog_agent::params::service_name]
       }
 
       file { '/etc/datadog-agent/install_info':

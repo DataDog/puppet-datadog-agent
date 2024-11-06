@@ -380,7 +380,7 @@ class datadog_agent (
   Boolean $windows_npm_install = false,
   Optional[String] $windows_ddagentuser_name = undef,
   Optional[String] $windows_ddagentuser_password = undef,
-  Optional[String] $remote_updates = undef,
+  Boolean $remote_updates = $datadog_agent::params::remote_updates,
   Optional[Enum['host', 'docker', 'all']] $apm_instrumentation_enabled = undef,
   Optional[Array[String]] $apm_instrumentation_libraries = undef,
 ) inherits datadog_agent::params {
@@ -484,6 +484,7 @@ class datadog_agent (
           datadog_site                      => $datadog_site,
           agent_major_version               => $_agent_major_version,
           agent_minor_version               => $_agent_minor_version_full,
+          manage_agent_install              => $manage_install,
           installer_repo_uri                => $agent_repo_uri,
           release                           => $apt_release,
           skip_apt_key_trusting             => $skip_apt_key_trusting,
@@ -522,95 +523,111 @@ class datadog_agent (
     }
   }
 
+  # If the agent is managed by the installer, we don't need to manage the agent installation
+  $_agent_managed_by_installer = ($datadog_installer_enabled and $remote_updates)
+
   # Install agent
-  if $manage_install {
-    case $facts['os']['name'] {
-      'Ubuntu','Debian','Raspbian' : {
-        if $use_apt_backup_keyserver != undef or $apt_backup_keyserver != undef or $apt_keyserver != undef {
-          notify { 'apt keyserver arguments deprecation':
-            message  => '$use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver are deprecated since version 3.13.0',
-            loglevel => 'warning',
+  if ! $_agent_managed_by_installer {
+    if $manage_install {
+      case $facts['os']['name'] {
+        'Ubuntu','Debian','Raspbian' : {
+          if $use_apt_backup_keyserver != undef or $apt_backup_keyserver != undef or $apt_keyserver != undef {
+            notify { 'apt keyserver arguments deprecation':
+              message  => '$use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver are deprecated since version 3.13.0',
+              loglevel => 'warning',
+            }
+          }
+          class { 'datadog_agent::ubuntu':
+            agent_major_version   => $_agent_major_version,
+            agent_version         => $agent_full_version,
+            agent_flavor          => $agent_flavor,
+            agent_repo_uri        => $agent_repo_uri,
+            release               => $apt_release,
+            skip_apt_key_trusting => $skip_apt_key_trusting,
           }
         }
-        class { 'datadog_agent::ubuntu':
-          agent_major_version   => $_agent_major_version,
-          agent_version         => $agent_full_version,
-          agent_flavor          => $agent_flavor,
-          agent_repo_uri        => $agent_repo_uri,
-          release               => $apt_release,
-          skip_apt_key_trusting => $skip_apt_key_trusting,
+        'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky' : {
+          class { 'datadog_agent::redhat':
+            agent_major_version => $_agent_major_version,
+            agent_flavor        => $agent_flavor,
+            agent_repo_uri      => $agent_repo_uri,
+            manage_repo         => $manage_repo,
+            agent_version       => $agent_full_version,
+            rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
+          }
         }
+        'Windows' : {
+          class { 'datadog_agent::windows' :
+            agent_major_version  => $_agent_major_version,
+            agent_repo_uri       => $agent_repo_uri,
+            agent_version        => $agent_full_version,
+            msi_location         => $win_msi_location,
+            api_key              => $api_key,
+            hostname             => $host,
+            tags                 => $local_tags,
+            ensure               => $win_ensure,
+            npm_install          => $windows_npm_install,
+            ddagentuser_name     => $windows_ddagentuser_name,
+            ddagentuser_password => $windows_ddagentuser_password,
+          }
+          if ($win_ensure == absent) {
+            return() #Config files will remain unchanged on uninstall
+          }
+        }
+        'OpenSuSE', 'SLES' : {
+          class { 'datadog_agent::suse' :
+            agent_major_version => $_agent_major_version,
+            agent_flavor        => $agent_flavor,
+            agent_repo_uri      => $agent_repo_uri,
+            agent_version       => $agent_full_version,
+            rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
+          }
+        }
+        default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${facts['os']['name']}") }
       }
-      'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky' : {
-        class { 'datadog_agent::redhat':
-          agent_major_version => $_agent_major_version,
-          agent_flavor        => $agent_flavor,
-          agent_repo_uri      => $agent_repo_uri,
-          manage_repo         => $manage_repo,
-          agent_version       => $agent_full_version,
-          rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
+    } else {
+      if ! defined(Package[$agent_flavor]) {
+        package { $agent_flavor:
+          ensure => present,
+          source => 'Agent installation not managed by Puppet, make sure the Agent is installed beforehand.',
         }
-      }
-      'Windows' : {
-        class { 'datadog_agent::windows' :
-          agent_major_version  => $_agent_major_version,
-          agent_repo_uri       => $agent_repo_uri,
-          agent_version        => $agent_full_version,
-          msi_location         => $win_msi_location,
-          api_key              => $api_key,
-          hostname             => $host,
-          tags                 => $local_tags,
-          ensure               => $win_ensure,
-          npm_install          => $windows_npm_install,
-          ddagentuser_name     => $windows_ddagentuser_name,
-          ddagentuser_password => $windows_ddagentuser_password,
-        }
-        if ($win_ensure == absent) {
-          return() #Config files will remain unchanged on uninstall
-        }
-      }
-      'OpenSuSE', 'SLES' : {
-        class { 'datadog_agent::suse' :
-          agent_major_version => $_agent_major_version,
-          agent_flavor        => $agent_flavor,
-          agent_repo_uri      => $agent_repo_uri,
-          agent_version       => $agent_full_version,
-          rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
-        }
-      }
-      default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${facts['os']['name']}") }
-    }
-  } else {
-    if ! defined(Package[$agent_flavor]) {
-      package { $agent_flavor:
-        ensure => present,
-        source => 'Agent installation not managed by Puppet, make sure the Agent is installed beforehand.',
       }
     }
   }
 
   # Declare service
-  class { 'datadog_agent::service' :
-    agent_flavor     => $agent_flavor,
-    service_ensure   => $service_ensure,
-    service_enable   => $service_enable,
-    service_provider => $service_provider,
-  }
-  if ($facts['os']['name'] != 'Windows') {
-    if ($dd_groups) {
-      user { $dd_user:
-        groups => $dd_groups,
-        notify => Service[$datadog_agent::params::service_name],
+  if ! $_agent_managed_by_installer {
+    class { 'datadog_agent::service' :
+      agent_flavor     => $agent_flavor,
+      service_ensure   => $service_ensure,
+      service_enable   => $service_enable,
+      service_provider => $service_provider,
+    }
+    if ($facts['os']['name'] != 'Windows') {
+      if ($dd_groups) {
+        user { $dd_user:
+          groups => $dd_groups,
+          notify => Service[$datadog_agent::params::service_name],
+        }
+      }
+
+      # required by reports even in agent5 scenario
+      file { '/etc/datadog-agent':
+        ensure  => directory,
+        owner   => $dd_user,
+        group   => $dd_group,
+        mode    => $datadog_agent::params::permissions_directory,
+        require => Package[$agent_flavor],
       }
     }
-
-    # required by reports even in agent5 scenario
+  } else {
+    # required to manage config and install info files even with installer
     file { '/etc/datadog-agent':
       ensure  => directory,
       owner   => $dd_user,
       group   => $dd_group,
       mode    => $datadog_agent::params::permissions_directory,
-      require => Package[$agent_flavor],
+      require => Package['datadog-installer'],
     }
   }
 
@@ -846,7 +863,10 @@ class datadog_agent (
       force   => $conf_dir_purge,
       owner   => $dd_user,
       group   => $dd_group,
-      notify  => Service[$datadog_agent::params::service_name],
+    }
+
+    if ! $_agent_managed_by_installer {
+      File[$_conf_dir] ~> Service[$datadog_agent::params::service_name]
     }
 
     $_local_tags = datadog_agent::tag6($local_tags, false, undef)
@@ -868,6 +888,7 @@ class datadog_agent (
       'dogstatsd_non_local_traffic' => $non_local_traffic,
       'log_file' => $agent_log_file,
       'log_level' => $log_level,
+      'remote_updates' => $remote_updates,
       'tags' => unique(flatten(union($_local_tags, $_facts_tags, $_trusted_facts_tags))),
     }
 
@@ -906,8 +927,10 @@ class datadog_agent (
         mode      => '0640',
         content   => template('datadog_agent/datadog.yaml.erb'),
         show_diff => false,
-        notify    => Service[$datadog_agent::params::service_name],
         require   => File['/etc/datadog-agent'],
+      }
+      if ! $_agent_managed_by_installer {
+        File['/etc/datadog-agent/datadog.yaml']  ~> Service[$datadog_agent::params::service_name]
       }
 
       file { '/etc/datadog-agent/install_info':

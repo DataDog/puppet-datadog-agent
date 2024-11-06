@@ -9,7 +9,7 @@
 # @param rpm_repo_gpgcheck Optional[Boolean]: Whether to check the GPG signature of the repository.
 # @param apm_instrumentation_enabled Optional[Enum['host', 'docker', 'all']]: Enable APM instrumentation for the specified environment (host, docker, or all).
 # @param apm_instrumentation_libraries_str Optional[String]: APM instrumentation libraries as a comma-separated string.
-# @param remote_updates Optional[String]: Whether to enable remote updates.
+# @param remote_updates Boolean: Whether to enable Agent remote updates. Default: false.
 #
 class datadog_agent::redhat_installer (
   String $api_key = 'your_API_key',
@@ -20,7 +20,7 @@ class datadog_agent::redhat_installer (
   Optional[Boolean] $rpm_repo_gpgcheck = undef,
   Optional[Enum['host', 'docker', 'all']] $apm_instrumentation_enabled = undef,
   Optional[String] $apm_instrumentation_libraries_str = undef,
-  Optional[String] $remote_updates = undef,
+  Boolean $remote_updates = $datadog_agent::params::remote_updates,
 ) inherits datadog_agent::params {
   # Generate installer trace ID as a random 64-bit integer (Puppet does not support 128-bit integers)
   # Note: we cannot use fqdn_rand as the seed is dependent on the node, meaning the same trace ID would be generated on each run (for the same node)
@@ -80,7 +80,7 @@ class datadog_agent::redhat_installer (
     $baseurl = "https://yum.datadoghq.com/stable/7/${facts['os']['architecture']}/"
   }
 
-  yumrepo { 'datadog':
+  yumrepo { 'datadog-installer':
     enabled       => 1,
     gpgcheck      => 1,
     gpgkey        => join($all_keys, "\n       "),
@@ -93,7 +93,7 @@ class datadog_agent::redhat_installer (
   # Install `datadog-installer` package with latest versions
   package { 'datadog-installer':
     ensure  => 'latest',
-    require => Yumrepo['datadog'],
+    require => Yumrepo['datadog-installer'],
   }
 
   # Bootstrap the installer

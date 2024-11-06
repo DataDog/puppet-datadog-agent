@@ -18,6 +18,7 @@ class datadog_agent::params {
   $process_default_custom_words   = []
   $logs_enabled                   = false
   $logs_open_files_limit          = undef
+  $remote_updates                 = false
   $container_collect_all          = false
   $sysprobe_service_name          = 'datadog-agent-sysprobe'
   $securityagent_service_name     = 'datadog-agent-security'

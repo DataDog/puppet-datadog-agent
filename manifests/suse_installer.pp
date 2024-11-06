@@ -9,7 +9,7 @@
 # @param rpm_repo_gpgcheck Optional[Boolean]: Whether to check the GPG signature of the repository.
 # @param apm_instrumentation_enabled Optional[Enum['host', 'docker', 'all']]: Enable APM instrumentation for the specified environment (host, docker, or all).
 # @param apm_instrumentation_libraries_str Optional[String]: APM instrumentation libraries as a comma-separated string.
-# @param remote_updates Optional[String]: Whether to enable remote updates.
+# @param remote_updates Boolean: Whether to enable Agent remote updates. Default: false.
 #
 class datadog_agent::suse_installer (
   String $api_key = 'your_API_key',
@@ -20,7 +20,7 @@ class datadog_agent::suse_installer (
   Optional[Boolean] $rpm_repo_gpgcheck = undef,
   Optional[Enum['host', 'docker', 'all']] $apm_instrumentation_enabled = undef,
   Optional[String] $apm_instrumentation_libraries_str = undef,
-  Optional[String] $remote_updates = undef,
+  Boolean $remote_updates = $datadog_agent::params::remote_updates,
 ) inherits datadog_agent::params {
   # Generate installer trace ID as a random 64-bit integer (Puppet does not support 128-bit integers)
   # Note: we cannot use fqdn_rand as the seed is dependent on the node, meaning the same trace ID would be generated on each run (for the same node)
@@ -85,11 +85,11 @@ class datadog_agent::suse_installer (
     }
   }
 
-  zypprepo { 'datadog':
+  zypprepo { 'datadog-installer':
     baseurl      => $baseurl,
     enabled      => 1,
     autorefresh  => 1,
-    name         => 'datadog',
+    name         => 'datadog-installer',
     gpgcheck     => 1,
     # zypper on SUSE < 15 only understands a single gpgkey value
     gpgkey       => (Float($facts['os']['release']['full']) >= 15.0) ? { true => join($all_keys, "\n       "), default => 'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public' },
@@ -106,7 +106,7 @@ class datadog_agent::suse_installer (
   # Install `datadog-installer` package with latest versions
   package { 'datadog-installer':
     ensure  => 'latest',
-    require => Zypprepo['datadog'],
+    require => Zypprepo['datadog-installer'],
   }
 
   # Bootstrap the installer

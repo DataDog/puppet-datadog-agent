@@ -8,6 +8,7 @@
 # @param installer_repo_uri Optional[String]: The URI of the installer repository.
 # @param release String: The distribution channel to be used for the APT repo. Eg: 'stable' or 'beta'. Default: stable.
 # @param skip_apt_key_trusting Boolean: Skip trusting the apt key. Default is false.
+# @param manage_agent_install Boolean: Whether Puppet should manage the regular Agent installation. Default is true (inherited from $manage_install).
 # @param apt_trusted_d_keyring String: The path to the trusted keyring file.
 # @param apt_usr_share_keyring String: The path to the keyring file in /usr/share.
 # @param apt_default_keys Hash[String, String]: A hash of default APT keys and their URLs.
@@ -20,6 +21,7 @@ class datadog_agent::ubuntu_installer (
   String $datadog_site = $datadog_agent::params::datadog_site,
   Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
   Optional[String] $agent_minor_version = undef,
+  Boolean $manage_agent_install = true,
   Optional[String] $installer_repo_uri = undef,
   String $release = $datadog_agent::params::apt_default_release,
   Boolean $skip_apt_key_trusting = false,
@@ -60,39 +62,42 @@ class datadog_agent::ubuntu_installer (
     require => Exec['Generate trace ID'],
   }
 
-  if !$skip_apt_key_trusting {
-    ensure_packages(['gnupg'])
+  # Do not re-install keys as it is already managed in `ubuntu.pp`
+  if ! $manage_agent_install {
+    if !$skip_apt_key_trusting {
+      ensure_packages(['gnupg'])
 
-    file { $apt_usr_share_keyring:
-      ensure  => file,
-      mode    => '0644',
-      require => Exec['Start timer'],
-    }
-
-    $apt_default_keys.each |String $key_fingerprint, String $key_url| {
-      $key_path = "/tmp/${key_fingerprint}"
-
-      file { $key_path:
-        owner  => root,
-        group  => root,
-        mode   => '0600',
-        source => $key_url,
+      file { $apt_usr_share_keyring:
+        ensure  => file,
+        mode    => '0644',
+        require => Exec['Start timer'],
       }
 
-      exec { "ensure key ${key_fingerprint} is imported in APT keyring":
-        command => "/bin/cat /tmp/${key_fingerprint} | gpg --import --batch --no-default-keyring --keyring ${apt_usr_share_keyring}",
-        # the second part extracts the fingerprint of the key from output like "fpr::::A2923DFF56EDA6E76E55E492D3A80E30382E94DE:"
-        unless  => @("CMD"/L)
-          /usr/bin/gpg --no-default-keyring --keyring ${apt_usr_share_keyring} --list-keys --with-fingerprint --with-colons | grep \
-          $(cat /tmp/${key_fingerprint} | gpg --with-colons --with-fingerprint 2>/dev/null | grep 'fpr:' | sed 's|^fpr||' | tr -d ':')
-          | CMD
+      $apt_default_keys.each |String $key_fingerprint, String $key_url| {
+        $key_path = "/tmp/${key_fingerprint}"
+
+        file { $key_path:
+          owner  => root,
+          group  => root,
+          mode   => '0600',
+          source => $key_url,
+        }
+
+        exec { "ensure key ${key_fingerprint} is imported in APT keyring":
+          command => "/bin/cat /tmp/${key_fingerprint} | gpg --import --batch --no-default-keyring --keyring ${apt_usr_share_keyring}",
+          # the second part extracts the fingerprint of the key from output like "fpr::::A2923DFF56EDA6E76E55E492D3A80E30382E94DE:"
+          unless  => @("CMD"/L)
+            /usr/bin/gpg --no-default-keyring --keyring ${apt_usr_share_keyring} --list-keys --with-fingerprint --with-colons | grep \
+            $(cat /tmp/${key_fingerprint} | gpg --with-colons --with-fingerprint 2>/dev/null | grep 'fpr:' | sed 's|^fpr||' | tr -d ':')
+            | CMD
+        }
       }
-    }
-    if ($facts['os']['name'] == 'Ubuntu' and versioncmp($facts['os']['release']['full'], '16') == -1) or
-    ($facts['os']['name'] == 'Debian' and versioncmp($facts['os']['release']['full'], '9') == -1) {
-      file { $apt_trusted_d_keyring:
-        mode   => '0644',
-        source => "file://${apt_usr_share_keyring}",
+      if ($facts['os']['name'] == 'Ubuntu' and versioncmp($facts['os']['release']['full'], '16') == -1) or
+      ($facts['os']['name'] == 'Debian' and versioncmp($facts['os']['release']['full'], '9') == -1) {
+        file { $apt_trusted_d_keyring:
+          mode   => '0644',
+          source => "file://${apt_usr_share_keyring}",
+        }
       }
     }
   }
@@ -104,9 +109,9 @@ class datadog_agent::ubuntu_installer (
   }
 
   # Install APT repository
-  apt::source { 'datadog':
+  apt::source { 'datadog installer':
     # Installer is located in the same APT repository as the Agent, only within repo 7
-    comment  => 'Datadog Agent Repository',
+    comment  => 'Datadog Installer Repository',
     location => $location,
     release  => $release,
     repos    => '7',
@@ -116,7 +121,7 @@ class datadog_agent::ubuntu_installer (
   # Install `datadog-installer` package with latest versions
   package { 'datadog-installer':
     ensure  => 'latest',
-    require => [Apt::Source['datadog'], Class['apt::update']],
+    require => [Apt::Source['datadog installer'], Class['apt::update']],
   }
 
   # Bootstrap the installer

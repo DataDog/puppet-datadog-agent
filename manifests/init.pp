@@ -295,7 +295,7 @@ class datadog_agent (
   $service_enable = true,
   Boolean $manage_repo = true,
   Boolean $manage_dogapi_gem = true,
-  Optional[Boolean] $manage_install = undef,
+  Boolean $manage_install = true,
   Optional[Boolean] $datadog_installer_enabled = undef,
   $hostname_extraction_regex = undef,
   Boolean $hostname_fqdn = false,
@@ -591,11 +591,11 @@ class datadog_agent (
 
   # Declare service
   class { 'datadog_agent::service' :
-      agent_flavor     => $agent_flavor,
-      service_ensure   => $service_ensure,
-      service_enable   => $service_enable,
-      service_provider => $service_provider,
-    }
+    agent_flavor     => $agent_flavor,
+    service_ensure   => $service_ensure,
+    service_enable   => $service_enable,
+    service_provider => $service_provider,
+  }
   if ($facts['os']['name'] != 'Windows') {
     if ($dd_groups) {
       user { $dd_user:

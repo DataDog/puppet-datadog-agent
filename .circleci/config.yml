@@ -4,7 +4,7 @@ orbs:
 jobs:
   specs-ruby21-puppet46: &specs
     machine:
-      image: ubuntu-2004:2024.08.1
+      image: ubuntu-2004:2022.10.1
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.1.9'
@@ -28,16 +28,16 @@ jobs:
             fi
       - run:
           name: Install Ruby version
-          command: /usr/share/rvm install $RUBY_VERSION
+          command: rvm install $RUBY_VERSION
       - run:
           name: Install bundler
-          command: /usr/share/rvm $RUBY_VERSION --verbose do gem install bundler:1.17.3
+          command: rvm $RUBY_VERSION --verbose do gem install bundler:1.17.3
       - run:
           name: Install gem dependencies
-          command: rm Gemfile.lock && /usr/share/rvm $RUBY_VERSION --verbose do bundle install --path .bundle
+          command: rm Gemfile.lock && rvm $RUBY_VERSION --verbose do bundle install --path .bundle
       - run:
           name: Run tests
-          command: /usr/share/rvm $RUBY_VERSION --verbose do bundle exec rake test
+          command: rvm $RUBY_VERSION --verbose do bundle exec rake test
 
   specs-ruby21-puppet410:
     <<: *specs
@@ -290,7 +290,7 @@ jobs:
 
   verify-gemfile-lock-dependencies:
     machine:
-      image: ubuntu-2004:2024.08.1
+      image: ubuntu-2004:2022.10.1
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.5.3'
@@ -302,20 +302,20 @@ jobs:
       - checkout
       - run:
           name: Install Ruby versions
-          command: /usr/share/rvm install $RUBY_VERSION
+          command: rvm install $RUBY_VERSION
       - run:
           name: Install bundler
-          command: /usr/share/rvm $RUBY_VERSION --verbose do gem install bundler:1.17.3
+          command: rvm $RUBY_VERSION --verbose do gem install bundler:1.17.3
       - run:
           name: Install gem dependencies
-          command: /usr/share/rvm $RUBY_VERSION --verbose do bundle install --path .bundle
+          command: rvm $RUBY_VERSION --verbose do bundle install --path .bundle
       - run:
           name: Run tests
-          command: /usr/share/rvm $RUBY_VERSION --verbose do bundle exec rake test
+          command: rvm $RUBY_VERSION --verbose do bundle exec rake test
 
   kitchen-tests:
     machine:
-      image: ubuntu-2004:2024.08.1
+      image: ubuntu-2004:2022.10.1
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.5.3'
@@ -327,16 +327,16 @@ jobs:
       - checkout
       - run:
           name: Install Ruby versions
-          command: /usr/share/rvm install $RUBY_VERSION
+          command: rvm install $RUBY_VERSION
       - run:
           name: Install bundler
-          command: /usr/share/rvm $RUBY_VERSION --verbose do gem install bundler:1.17.3
+          command: rvm $RUBY_VERSION --verbose do gem install bundler:1.17.3
       - run:
           name: Install gem dependencies
-          command: /usr/share/rvm $RUBY_VERSION --verbose do bundle install --path .bundle
+          command: rvm $RUBY_VERSION --verbose do bundle install --path .bundle
       - run:
           name: Execute Kitchen tests
-          command: /usr/share/rvm $RUBY_VERSION --verbose do bundle exec rake circle
+          command: rvm $RUBY_VERSION --verbose do bundle exec rake circle
           no_output_timeout: 900
 
 workflows:

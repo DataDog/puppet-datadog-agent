@@ -12,7 +12,6 @@ ruby_version_segments = ruby_version.segments
 minor_version = ruby_version_segments[0..1].join('.')
 
 group :development do
-  gem "ffi", "= 1.16.3"                                            if ruby_version >= Gem::Version.new('2.5') # https://github.com/ffi/ffi/issues/1103 (pin only for Ruby >= 2.5 as this version is not compatible below. ffi 1.17 is not compatible with Ruby 2.5: https://github.com/ffi/ffi/issues/1103)
   gem "rake", "~> 12.3.3"                                          if ruby_version < Gem::Version.new('2.6.0') # last version for ruby < 2.6
   gem "semantic_puppet", '= 1.0.4'
   gem "xmlrpc"                                                      if ruby_version >= Gem::Version.new('2.3')
@@ -32,6 +31,13 @@ group :development do
   gem "mixlib-shellout", "~> 2.2.7",                               platforms: [:ruby]
   gem "rubocop-i18n", "~> 1.2.0"
   gem "rubocop-rspec", "~> 1.16.0"
+
+  # https://github.com/ffi/ffi/issues/1103 (pin only for Ruby >= 2.5 as this version is not compatible below. ffi 1.17 is not compatible with Ruby 2.5: https://github.com/ffi/ffi/issues/1103)
+  if ruby_version >= Gem::Version.new('2.5')
+    gem "ffi", "= 1.16.3", platforms: [:ruby]
+  else
+    gem "ffi", require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  end
 
   if ruby_version >= Gem::Version.new('2.3')
     gem "test-kitchen", '~> 2.5.4'

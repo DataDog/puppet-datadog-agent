@@ -4,7 +4,7 @@ orbs:
 jobs:
   specs-ruby21-puppet46: &specs
     machine:
-      image: ubuntu-2004:2022.10.1
+      image: ubuntu-2004:2023.02.1
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.1.9'
@@ -290,7 +290,7 @@ jobs:
 
   verify-gemfile-lock-dependencies:
     machine:
-      image: ubuntu-2004:2022.10.1
+      image: ubuntu-2004:2023.02.1
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.5.3'
@@ -315,7 +315,7 @@ jobs:
 
   kitchen-tests:
     machine:
-      image: ubuntu-2004:2022.10.1
+      image: ubuntu-2004:2023.02.1
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.5.3'

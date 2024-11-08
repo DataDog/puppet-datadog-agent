@@ -10,6 +10,10 @@ class datadog_agent::redhat(
   String $agent_version = $datadog_agent::params::agent_version,
   String $agent_flavor = $datadog_agent::params::package_name,
   Optional[Boolean] $rpm_repo_gpgcheck = undef,
+  Optional[String] $rpm_repo_proxy_url = undef,
+  Optional[Integer] $rpm_repo_proxy_port = undef,
+  Optional[String] $rpm_repo_proxy_password = undef,
+  Optional[String] $rpm_repo_proxy_username = undef,
 ) inherits datadog_agent::params {
 
   if $manage_repo {
@@ -51,7 +55,25 @@ class datadog_agent::redhat(
       } else {
         $repo_gpgcheck = false
       }
+    }
 
+    # only set any proxy variables if a proxy url and port are provided
+    if ($rpm_repo_proxy_url != undef) {
+      if ($rpm_repo_proxy_port != undef) {
+        $repo_proxy_url = "http://${rpm_repo_proxy_url}:${rpm_repo_proxy_port}"
+        if ($rpm_repo_proxy_username != undef) {
+          $repo_proxy_username = $rpm_repo_proxy_username
+          if ($rpm_repo_proxy_password != undef) {
+            $repo_proxy_password = $rpm_repo_proxy_password
+          } else {
+            $repo_proxy_password = absent
+          }
+        } else {
+          $repo_proxy_username = absent
+        }
+      } else {
+        $repo_proxy_url = absent
+      }
     }
 
     case $agent_major_version {
@@ -94,12 +116,15 @@ class datadog_agent::redhat(
     }
 
     yumrepo {'datadog':
-      enabled       => 1,
-      gpgcheck      => 1,
-      gpgkey        => join($gpgkeys, "\n       "),
-      repo_gpgcheck => $repo_gpgcheck,
-      descr         => 'Datadog, Inc.',
-      baseurl       => $baseurl,
+      enabled        => 1,
+      gpgcheck       => 1,
+      gpgkey         => join($gpgkeys, "\n       "),
+      repo_gpgcheck  => $repo_gpgcheck,
+      descr          => 'Datadog, Inc.',
+      baseurl        => $baseurl,
+      proxy          => $repo_proxy_url,
+      proxy_password => $repo_proxy_password,
+      proxy_username => $repo_proxy_username,
     }
 
     package { $agent_flavor:

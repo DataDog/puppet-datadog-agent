@@ -117,3 +117,15 @@ suites:
         TARGET_PORT: 2222
         LOGIN_USER: root
         LOGIN_PASSWORD: puppet
+  - name: dd-installer
+    manifests: init.pp
+    provisioner:
+      manifests_path: environments/etc/installer-manifests
+    verifier:
+      default_pattern: true
+      additional_install_commmand: source /etc/profile.d/rvm.sh
+      env_vars:
+        TARGET_HOST: 127.0.0.1
+        TARGET_PORT: 2222
+        LOGIN_USER: root
+        LOGIN_PASSWORD: puppet

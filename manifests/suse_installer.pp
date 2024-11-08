@@ -166,7 +166,7 @@ class datadog_agent::suse_installer (
   } else {
     $packages_to_install = $apm_instrumentation_libraries_str
   }
-  class { 'datadog_agent::installer_params':
+  class { 'datadog_agent::installer_telemetry':
     api_key             => $api_key,
     datadog_site        => $datadog_site,
     packages_to_install => $packages_to_install,

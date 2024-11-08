@@ -244,7 +244,7 @@
 #       (Windows only) The password used to register the service`.
 #   $datadog_installer_enabled
 #       Boolean to enable or disable the Datadog installer.
-#       Boolean. Default: false
+#       Boolean. Default: undef (false)
 #   $apm_instrumentation_enabled
 #       Configure APM instrumentation. Possible values are:
 #       - host: Both the Agent and your services are running on a host.
@@ -253,6 +253,9 @@
 #   $apm_instrumentation_libraries
 #       List of APM libraries to install. If not defined and APM instrumentation is set,
 #       the default libraries are pinned: ['java:1', 'python:2', 'js:5', 'dotnet:3', 'ruby:2']
+#   $remote_updates
+#       Boolean to enable or disable Agent remote updates.
+#       Boolean. Default: false
 #
 # Sample Usage:
 #
@@ -457,7 +460,6 @@ class datadog_agent (
     default:    { $_loglevel = 'INFO' }
   }
 
-  # WIP Datadog installer
   if $datadog_installer_enabled {
     # If instrumentation is enabled and the libraries are not set, default to pinned latest versions
     # Else, if user wants to install libraries without enabling instrumentation, use the provided libraries

@@ -32,6 +32,13 @@ group :development do
   gem "rubocop-i18n", "~> 1.2.0"
   gem "rubocop-rspec", "~> 1.16.0"
 
+  # https://github.com/ffi/ffi/issues/1103 (pin only for Ruby >= 2.5 as this version is not compatible below. ffi 1.17 is not compatible with Ruby 2.5: https://github.com/ffi/ffi/issues/1103)
+  if ruby_version >= Gem::Version.new('2.5')
+    gem "ffi", "= 1.16.3", platforms: [:ruby]
+  else
+    gem "ffi", require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  end
+
   if ruby_version >= Gem::Version.new('2.3')
     gem "test-kitchen", '~> 2.5.4'
     gem "puppet-module-posix-default-r#{minor_version}", require: false, platforms: [:ruby]

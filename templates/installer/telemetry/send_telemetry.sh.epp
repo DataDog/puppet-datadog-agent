@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Telemetry URL based on user-provided site
+TELEMETRY_URL="https://instrumentation-telemetry-intake.<%= $datadog_site %>/api/v2/apmtelemetry"
+
+# Retrieve runtime parameters
+TRACER_START_TIME=$(</tmp/puppet_start_time)
+TRACER_END_TIME=$(</tmp/puppet_stop_time)
+DURATION=$(expr $TRACER_END_TIME - $TRACER_START_TIME)
+RUNTIME_ID=$(</tmp/datadog_trace_id)
+
+# Prepare placeholders and values
+declare -A placeholders=(
+  ["TRACER_START_TIME_PLACEHOLDER"]=$TRACER_START_TIME
+  ["TRACER_END_TIME_PLACEHOLDER"]=$TRACER_END_TIME
+  ["DURATION_PLACEHOLDER"]=$DURATION
+  ["RUNTIME_ID_PLACEHOLDER"]=$RUNTIME_ID
+)
+
+# Function to replace placeholders in a file
+replace_placeholders() {
+  local file=$1
+  for placeholder in "${!placeholders[@]}"; do
+    sed -i "s/$placeholder/${placeholders[$placeholder]}/g" "$file"
+  done
+}
+
+# Prepare trace and log payloads
+replace_placeholders /tmp/trace_payload.json
+replace_placeholders /tmp/log_payload.json
+
+# Function to send payload
+send_payload() {
+  local file=$1
+  curl -f -sSL --retry 5 -o /dev/null -X POST \
+    -H 'Content-Type: application/json' \
+    -H 'DD-API-KEY: <%= $api_key %>' \
+    -d "@$file" \
+    "$TELEMETRY_URL"
+}
+
+# Send trace and log payloads
+send_payload /tmp/trace_payload.json
+send_payload /tmp/log_payload.json

@@ -1,7 +1,7 @@
 # Class: datadog_agent::redhat_installer
 # This class installs and configures the Datadog agent on RedHat-based systems.
 #
-# @param api_key String:Your DataDog API Key. Please replace with your key value.
+# @param api_key String:Your DataDog API Key.
 # @param datadog_site String: The site of the Datadog intake to send Agent data to. Defaults to 'datadoghq.com'.
 # @param agent_major_version Integer: The major version of the Datadog agent to install. Defaults to 7.
 # @param agent_minor_version Optional[String]: The minor version of the Datadog agent to install.
@@ -48,6 +48,8 @@ class datadog_agent::redhat_installer (
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
     # Current
     'https://keys.datadoghq.com/DATADOG_RPM_KEY_B01082D3.public',
+    # Future, active from April 2028
+    'https://keys.datadoghq.com/DATADOG_RPM_KEY_4F09D16B.public',
   ]
 
   if ($rpm_repo_gpgcheck != undef) {

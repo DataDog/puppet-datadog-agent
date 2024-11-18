@@ -1,7 +1,7 @@
 # Class: datadog_agent::ubuntu_installer
 # This class installs and configures the Datadog agent on Debian distributions.
 #
-# @param api_key String:Your DataDog API Key. Please replace with your key value.
+# @param api_key String:Your DataDog API Key.
 # @param datadog_site String: The site of the Datadog intake to send Agent data to. Defaults to 'datadoghq.com'.
 # @param agent_major_version Integer: The major version of the Datadog agent to install. Defaults to 7.
 # @param agent_minor_version Optional[String]: The minor version of the Datadog agent to install.

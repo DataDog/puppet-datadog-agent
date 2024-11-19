@@ -50,7 +50,7 @@ class datadog_agent::integrations::disk (
 ) inherits datadog_agent::params {
   require ::datadog_agent
 
-  $use_mount = $use_mount ? {
+  $computed_use_mount = $use_mount ? {
     true    => 'yes',
     default => 'no'
   }

@@ -3,7 +3,7 @@
 init_config:
 
 instances:
-  - use_mount: <%= @use_mount %>
+  - use_mount: <%= @computed_use_mount %>
 <% if @filesystem_blacklist -%>
     file_system_blacklist:
 <% (Array(@filesystem_blacklist)).each do |fs| -%>

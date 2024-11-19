@@ -38,17 +38,22 @@
 #      excluded_disk_re     => '/dev/sd[e-z]*'
 #  }
 class datadog_agent::integrations::disk (
-  String $use_mount                              = 'no',
-  $all_partitions                                = undef,
-  $tag_by_filesystem                             = undef,
-  Optional[Array[String]] $filesystem_exclude    = undef,
-  Optional[Array[String]] $device_exclude        = undef,
-  Optional[Array[String]] $mountpoint_exclude    = undef,
-  Optional[Array[String]] $filesystem_include    = undef,
-  Optional[Array[String]] $device_include        = undef,
-  Optional[Array[String]] $mountpoint_include    = undef,
+  Boolean $use_mount                          = false,
+  $all_partitions                             = undef,
+  $tag_by_filesystem                          = undef,
+  Optional[Array[String]] $filesystem_exclude = undef,
+  Optional[Array[String]] $device_exclude     = undef,
+  Optional[Array[String]] $mountpoint_exclude = undef,
+  Optional[Array[String]] $filesystem_include = undef,
+  Optional[Array[String]] $device_include     = undef,
+  Optional[Array[String]] $mountpoint_include = undef,
 ) inherits datadog_agent::params {
   require ::datadog_agent
+
+  $use_mount = $use_mount ? {
+    true    => 'yes',
+    default => 'no'
+  }
 
   if $use_mount !~ '^(no|yes)$' {
     fail('error during compilation')

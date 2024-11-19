@@ -55,7 +55,7 @@ class datadog_agent::integrations::disk (
     default => 'no'
   }
 
-  if $use_mount !~ '^(no|yes)$' {
+  if $computed_use_mount !~ '^(no|yes)$' {
     fail('error during compilation')
   }
 

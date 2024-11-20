@@ -71,6 +71,27 @@ describe 'datadog_agent::integrations::postgres' do
           }
         end
 
+        context 'with dbm enabled' do
+          let(:params) do
+            {
+              password: 'abc123',
+              dbm: true,
+              database_autodiscovery: true,
+              collect_schemas: true,
+              database_autodiscovery_includes: ['foo', 'bar'],
+              database_autodiscovery_excludes: ['baz', 'qux'],
+            }
+          end
+
+          it {
+            is_expected.to contain_file(conf_file)
+              .with_content(%r{dbm: true})
+              .with_content(%r{database_autodiscovery:\s+enabled: true})
+              .with_content(%r{collect_schemas: true})
+              .with_content(%r{database_autodiscovery:\s+includes:\s+- foo\s+- bar})
+              .with_content(%r{database_autodiscovery:\s+excludes:\s+- baz\s+- qux})
+          }
+        end
         context 'with use_psycopg2' do
           let(:params) do
             {

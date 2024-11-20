@@ -30,6 +30,16 @@
 #       Boolean to enable collecting database size metrics. Default value is True but they might be slow with large databases
 #   $collect_default_database
 #       Boolean to enable collecting statistics from the default database 'postgres' in the check metrics, default to false
+#   $dbm
+#       Boolean to enable collecting metrics from the dbm tables, default value is False.
+#   $database_autodiscovery
+#       Boolean to enable database autodiscovery, default value is False.
+#   $collect_schemas
+#       Boolean to enable collecting schema metrics, default value is False.
+#   $database_autodiscovery_includes
+#       Array of strings to include in the database autodiscovery, default value is empty array.
+#   $database_autodiscovery_excludes
+#       Array of strings to exclude in the database autodiscovery, default value is empty array.
 #   $tags
 #       Optional array of tags
 #   $tables
@@ -83,22 +93,27 @@
 #           - ["tag_column", "tag_column.datadog.tag"]
 #
 class datadog_agent::integrations::postgres(
-  Optional[String] $password             = undef,
-  String $host                           = 'localhost',
-  String $dbname                         = 'postgres',
-  Variant[String, Integer] $port         = '5432',
-  String $username                       = 'datadog',
-  Boolean $ssl                           = false,
-  Boolean $use_psycopg2                  = false,
-  Boolean $collect_function_metrics      = false,
-  Boolean $collect_count_metrics         = false,
-  Boolean $collect_activity_metrics      = false,
-  Boolean $collect_database_size_metrics = false,
-  Boolean $collect_default_database      = false,
-  Array[String] $tags                    = [],
-  Array[String] $tables                  = [],
-  Hash $custom_metrics                   = {},
-  Optional[Array] $instances             = undef,
+  Optional[String] $password                = undef,
+  String $host                                   = 'localhost',
+  String $dbname                                 = 'postgres',
+  Variant[String, Integer] $port                 = '5432',
+  String $username                               = 'datadog',
+  Boolean $ssl                                   = false,
+  Boolean $use_psycopg2                          = false,
+  Boolean $collect_function_metrics              = false,
+  Boolean $collect_count_metrics                 = false,
+  Boolean $collect_activity_metrics              = false,
+  Boolean $collect_database_size_metrics         = false,
+  Boolean $collect_default_database              = false,
+  Boolean $dbm                                   = false,
+  Boolean $database_autodiscovery                = false,
+  Boolean $collect_schemas                       = false,
+  Array[String] $database_autodiscovery_includes = [],
+  Array[String] $database_autodiscovery_excludes = [],
+  Array[String] $tags                            = [],
+  Array[String] $tables                          = [],
+  Hash $custom_metrics                           = {},
+  Optional[Array] $instances                     = undef,
 ) inherits datadog_agent::params {
   require ::datadog_agent
 
@@ -124,21 +139,26 @@ class datadog_agent::integrations::postgres(
 
   if !$instances and $host {
     $_instances = [{
-      'host'                          => $host,
-      'password'                      => $password,
-      'dbname'                        => $dbname,
-      'port'                          => $port,
-      'username'                      => $username,
-      'ssl'                           => $ssl,
-      'use_psycopg2'                  => $use_psycopg2,
-      'tags'                          => $tags,
-      'tables'                        => $tables,
-      'custom_metrics'                => $custom_metrics,
-      'collect_function_metrics'      => $collect_function_metrics,
-      'collect_count_metrics'         => $collect_count_metrics,
-      'collect_activity_metrics'      => $collect_activity_metrics,
-      'collect_database_size_metrics' => $collect_database_size_metrics,
-      'collect_default_database'      => $collect_default_database,
+      'host'                            => $host,
+      'password'                        => $password,
+      'dbname'                          => $dbname,
+      'port'                            => $port,
+      'username'                        => $username,
+      'ssl'                             => $ssl,
+      'dbm'                             => $dbm,
+      'database_autodiscovery'          => $database_autodiscovery,
+      'database_autodiscovery_includes' => $database_autodiscovery_includes,
+      'database_autodiscovery_excludes' => $database_autodiscovery_excludes,
+      'collect_schemas'                 => $collect_schemas,
+      'use_psycopg2'                    => $use_psycopg2,
+      'tags'                            => $tags,
+      'tables'                          => $tables,
+      'custom_metrics'                  => $custom_metrics,
+      'collect_function_metrics'        => $collect_function_metrics,
+      'collect_count_metrics'           => $collect_count_metrics,
+      'collect_activity_metrics'        => $collect_activity_metrics,
+      'collect_database_size_metrics'   => $collect_database_size_metrics,
+      'collect_default_database'        => $collect_default_database,
     }]
   } elsif !$instances{
     $_instances = []

@@ -40,6 +40,15 @@ init_config:
   collect_default_metrics: true
   new_gc_metrics: true
 
+  conf:
+    - include:
+        domain: com.zaxxer.hikari
+        attribute:
+          - IdleConnections
+          - ActiveConnections
+          - TotalConnections
+          - ThreadsAwaitingConnection
+
 # We do not need these config for our default datadog
 #  conf:
 #    - include:

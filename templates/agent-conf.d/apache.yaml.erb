@@ -32,10 +32,24 @@ logs:
       sourcecategory: http_web_access
 
     - type: file
+      path: /var/log/apache2/eval-license.hogrefe-ws.com_access_log
+      source: apache
+      service: <%= @hostname %>-eval-license.hogrefe-ws.com
+      sourcecategory: http_web_access
+
+    - type: file
       path: /var/log/apache2/eval.hogrefe-ws.com_error.log
       source: apache
       service: <%= @hostname %>-eval.hogrefe-ws.com
       sourcecategory: http_web_error
+
+    - type: file
+      path: /var/log/apache2/eval-license.hogrefe-ws.com_error_log
+      source: apache
+      service: <%= @hostname %>-eval-license.hogrefe-ws.com
+      sourcecategory: http_web_error
+
+
 <% end -%>
 <% if ! @proxy_is_eval -%>
     - type: file
@@ -45,8 +59,32 @@ logs:
       sourcecategory: http_web_access
 
     - type: file
+      path: /var/log/apache2/www.hogrefe-ws.com_access.log
+      source: apache
+      service: <%= @hostname %>-hogrefe-ws.com
+      sourcecategory: http_web_access
+
+    - type: file
+      path: /var/log/apache2/api.hogrefe-ws.com_access.log
+      source: apache
+      service: <%= @hostname %>-api.hogrefe-ws.com
+      sourcecategory: http_web_access
+
+    - type: file
       path: /var/log/apache2/www.hogrefe-online.com_error.log
       source: apache
       service: <%= @hostname %>-hogrefe-online.com
+      sourcecategory: http_web_error
+
+    - type: file
+      path: /var/log/apache2/www.hogrefe-ws.com_error.log
+      source: apache
+      service: <%= @hostname %>-hogrefe-ws.com
+      sourcecategory: http_web_error
+
+    - type: file
+      path: /var/log/apache2/api.hogrefe-ws.com_error.log
+      source: apache
+      service: <%= @hostname %>-api.hogrefe-ws.com
       sourcecategory: http_web_error
 <% end -%>

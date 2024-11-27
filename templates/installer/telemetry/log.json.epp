@@ -1,0 +1,39 @@
+{
+  "api_version": "v2",
+  "request_type": "logs",
+  "tracer_time": TRACER_END_TIME_PLACEHOLDER,
+  "runtime_id": "RUNTIME_ID_PLACEHOLDER",
+  "seq_id": 2,
+  "origin": "puppet",
+  "host": {
+    "hostname": "<%= $hostname %>",
+    "os": "<%= $facts['os']['name'] %>",
+    "distribution": "<%= $facts['os']['family'] %>",
+    "architecture": "<%= $facts['os']['architecture'] %>",
+    "kernel_version": "<%= $facts['kernelversion'] %>",
+    "kernel_release": "<%= $facts['kernelrelease'] %>"
+  },
+  "application": {
+    "service_name": "datadog-puppet",
+    "service_version": "<%= $role_version %>",
+    "language_name": "UNKNOWN",
+    "language_version": "n/a",
+    "tracer_version": "n/a"
+  },
+  "payload": {
+    "logs": [
+      {
+        "message": "",
+        "level": "DEBUG",
+        "trace_id": "RUNTIME_ID_PLACEHOLDER",
+        "span_id": "RUNTIME_ID_PLACEHOLDER"
+      },
+      {
+        "message": "",
+        "level": "ERROR",
+        "trace_id": "RUNTIME_ID_PLACEHOLDER",
+        "span_id": "RUNTIME_ID_PLACEHOLDER"
+      }
+    ]
+  }
+}

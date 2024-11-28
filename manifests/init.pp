@@ -630,13 +630,28 @@ class datadog_agent (
       }
     }
   } else {
-    # required to manage config and install info files even with installer
-    file { '/etc/datadog-agent':
-      ensure  => directory,
-      owner   => $dd_user,
-      group   => $dd_group,
-      mode    => $datadog_agent::params::permissions_directory,
-      require => Package['datadog-installer'],
+    class { 'datadog_agent::service' :
+      # Declare service for agent managed by installer with installer flavor
+      agent_flavor     => 'datadog-installer',
+      service_ensure   => $service_ensure,
+      service_enable   => $service_enable,
+      service_provider => $service_provider,
+    }
+    if ($facts['os']['name'] != 'Windows') {
+      if ($dd_groups) {
+        user { $dd_user:
+          groups => $dd_groups,
+          notify => Service[$datadog_agent::params::service_name],
+        }
+      }
+      # required to manage config and install info files even with installer
+      file { '/etc/datadog-agent':
+        ensure  => directory,
+        owner   => $dd_user,
+        group   => $dd_group,
+        mode    => $datadog_agent::params::permissions_directory,
+        require => Package['datadog-installer'],
+      }
     }
   }
 
@@ -937,10 +952,8 @@ class datadog_agent (
         mode      => '0640',
         content   => template('datadog_agent/datadog.yaml.erb'),
         show_diff => false,
+        notify    => Service[$datadog_agent::params::service_name],
         require   => File['/etc/datadog-agent'],
-      }
-      if ! $_agent_managed_by_installer {
-        File['/etc/datadog-agent/datadog.yaml']  ~> Service[$datadog_agent::params::service_name]
       }
 
       file { '/etc/datadog-agent/install_info':

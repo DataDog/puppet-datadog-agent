@@ -15,6 +15,7 @@
 # @param apm_instrumentation_enabled Optional[Enum['host', 'docker', 'all']]: Enable APM instrumentation for the specified environment (host, docker, or all).
 # @param apm_instrumentation_libraries_str Optional[String]: APM instrumentation libraries as a comma-separated string.
 # @param remote_updates Boolean: Whether to enable Agent remote updates. Default: false.
+# @param remote_policies Boolean: Whether to enable Agent remote policies. Default: false.
 #
 class datadog_agent::ubuntu_installer (
   String $api_key = 'your_API_key',
@@ -43,6 +44,7 @@ class datadog_agent::ubuntu_installer (
   Optional[Enum['host', 'docker', 'all']] $apm_instrumentation_enabled = undef,
   Optional[String] $apm_instrumentation_libraries_str = undef,
   Boolean $remote_updates = $datadog_agent::params::remote_updates,
+  Boolean $remote_policies = $datadog_agent::params::remote_policies,
 ) inherits datadog_agent::params {
   # Generate installer trace ID as a random 64-bit integer (Puppet does not support 128-bit integers)
   # Note: we cannot use fqdn_rand as the seed is dependent on the node, meaning the same trace ID would be generated on each run (for the same node)
@@ -134,6 +136,7 @@ class datadog_agent::ubuntu_installer (
       "DD_AGENT_MAJOR_VERSION=${agent_major_version}",
       "DD_AGENT_MINOR_VERSION=${agent_minor_version}",
       "DD_REMOTE_UPDATES=${remote_updates}",
+      "DD_REMOTE_POLICIES=${remote_policies}",
       "DD_APM_INSTRUMENTATION_ENABLED=${apm_instrumentation_enabled}",
       "DD_APM_INSTRUMENTATION_LIBRARIES=${apm_instrumentation_libraries_str}",
     ],

@@ -256,6 +256,9 @@
 #   $remote_updates
 #       Boolean to enable or disable Agent remote updates.
 #       Boolean. Default: false
+#   $remote_policies
+#       Boolean to enable or disable Agent remote policies.
+#       Boolean. Default: false
 #
 # Sample Usage:
 #
@@ -384,6 +387,7 @@ class datadog_agent (
   Optional[String] $windows_ddagentuser_name = undef,
   Optional[String] $windows_ddagentuser_password = undef,
   Boolean $remote_updates = $datadog_agent::params::remote_updates,
+  Boolean $remote_policies = $datadog_agent::params::remote_policies,
   Optional[Enum['host', 'docker', 'all']] $apm_instrumentation_enabled = undef,
   Optional[Array[String]] $apm_instrumentation_libraries = undef,
 ) inherits datadog_agent::params {
@@ -493,6 +497,7 @@ class datadog_agent (
           apm_instrumentation_enabled       => $apm_instrumentation_enabled,
           apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
           remote_updates                    => $remote_updates,
+          remote_policies                   => $remote_policies,
         }
       }
       'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky' : {
@@ -506,6 +511,7 @@ class datadog_agent (
           apm_instrumentation_enabled       => $apm_instrumentation_enabled,
           apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
           remote_updates                    => $remote_updates,
+          remote_policies                   => $remote_policies,
         }
       }
       'OpenSuSE', 'SLES' : {
@@ -519,6 +525,7 @@ class datadog_agent (
           apm_instrumentation_enabled       => $apm_instrumentation_enabled,
           apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
           remote_updates                    => $remote_updates,
+          remote_policies                   => $remote_policies,
         }
       }
       default: { fail("Class[datadog_agent::installer]: Unsupported operatingsystem: ${facts['os']['name']}") }
@@ -891,6 +898,7 @@ class datadog_agent (
       'log_file' => $agent_log_file,
       'log_level' => $log_level,
       'remote_updates' => $remote_updates,
+      'remote_policies' => $remote_policies,
       'tags' => unique(flatten(union($_local_tags, $_facts_tags, $_trusted_facts_tags))),
     }
 

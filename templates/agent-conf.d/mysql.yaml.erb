@@ -5,15 +5,18 @@ require 'yaml'
 %>
 
 init_config:
+<% if @application_name and @application_name != :undef -%>
+  service: <%= @application_name %>
+<% end -%>
 
 instances:
 <%- (Array(@_instances)).each do |instance| -%>
   - server: <%= instance['host'] %>
 <% if instance['user'] and instance['user'] != :undef -%>
-    user: <%= instance['user'] %>
+    username: <%= instance['user'] %>
 <% end -%>
 <% if instance['password'] and instance['password'] != :undef -%>
-    pass: <%= instance['password'] %>
+    password: <%= instance['password'] %>
 <% end -%>
 <% if instance['port'] and instance['port'] != :undef -%>
     port: <%= instance['port'] %>
@@ -53,6 +56,18 @@ instances:
       <%- end -%>
     <%- end -%>
 
+    <% if instance['custom_queries'] and ! instance['custom_queries'].empty? %>
+    custom_queries:
+      <%- Array(instance['custom_queries']).each do |query| -%>
+      - query: <%= query['query'] %>
+        metric_prefix: <%= query['metric_prefix'] %>
+        columns:
+          <%- Array(query['columns']).each do |column| -%>
+          - name:  <%= column['name'] %>
+            type:  <%= column['type'] %>
+          <%- end -%>
+      <%- end -%>
+    <%- end -%>
 <% end -%>
 
 <%= (Array({'logs'=>@logs}.to_yaml.lines))[1..-1].join %>

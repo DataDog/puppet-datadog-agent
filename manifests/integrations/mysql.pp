@@ -85,6 +85,7 @@ class datadog_agent::integrations::mysql (
   $application_name                        = undef,
   Optional[Boolean] $dbm                   = undef,
   Optional[Array] $queries                 = [],
+  Optional[Array] $custom_queries          = [],
   Optional[Array] $instances               = undef,
   Optional[Array] $logs                    = [],
 ) inherits datadog_agent::params {
@@ -112,6 +113,7 @@ class datadog_agent::integrations::mysql (
       'disable_innodb_metrics'    => $disable_innodb_metrics,
       'dbm'                       => $dbm,
       'queries'                   => $queries,
+      'custom_queries'            => $custom_queries,
     }]
   } elsif !$instances {
     $_instances = []

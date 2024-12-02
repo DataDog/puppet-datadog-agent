@@ -256,6 +256,9 @@
 #   $remote_updates
 #       Boolean to enable or disable Agent remote updates.
 #       Boolean. Default: false
+#   $remote_policies
+#       Boolean to enable or disable Agent remote policies.
+#       Boolean. Default: false
 #
 # Sample Usage:
 #
@@ -384,6 +387,7 @@ class datadog_agent (
   Optional[String] $windows_ddagentuser_name = undef,
   Optional[String] $windows_ddagentuser_password = undef,
   Boolean $remote_updates = $datadog_agent::params::remote_updates,
+  Boolean $remote_policies = $datadog_agent::params::remote_policies,
   Optional[Enum['host', 'docker', 'all']] $apm_instrumentation_enabled = undef,
   Optional[Array[String]] $apm_instrumentation_libraries = undef,
 ) inherits datadog_agent::params {
@@ -493,6 +497,7 @@ class datadog_agent (
           apm_instrumentation_enabled       => $apm_instrumentation_enabled,
           apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
           remote_updates                    => $remote_updates,
+          remote_policies                   => $remote_policies,
         }
       }
       'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky' : {
@@ -506,6 +511,7 @@ class datadog_agent (
           apm_instrumentation_enabled       => $apm_instrumentation_enabled,
           apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
           remote_updates                    => $remote_updates,
+          remote_policies                   => $remote_policies,
         }
       }
       'OpenSuSE', 'SLES' : {
@@ -519,6 +525,7 @@ class datadog_agent (
           apm_instrumentation_enabled       => $apm_instrumentation_enabled,
           apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
           remote_updates                    => $remote_updates,
+          remote_policies                   => $remote_policies,
         }
       }
       default: { fail("Class[datadog_agent::installer]: Unsupported operatingsystem: ${facts['os']['name']}") }
@@ -623,13 +630,28 @@ class datadog_agent (
       }
     }
   } else {
-    # required to manage config and install info files even with installer
-    file { '/etc/datadog-agent':
-      ensure  => directory,
-      owner   => $dd_user,
-      group   => $dd_group,
-      mode    => $datadog_agent::params::permissions_directory,
-      require => Package['datadog-installer'],
+    class { 'datadog_agent::service' :
+      # Declare service for agent managed by installer with installer flavor
+      agent_flavor     => 'datadog-installer',
+      service_ensure   => $service_ensure,
+      service_enable   => $service_enable,
+      service_provider => $service_provider,
+    }
+    if ($facts['os']['name'] != 'Windows') {
+      if ($dd_groups) {
+        user { $dd_user:
+          groups => $dd_groups,
+          notify => Service[$datadog_agent::params::service_name],
+        }
+      }
+      # required to manage config and install info files even with installer
+      file { '/etc/datadog-agent':
+        ensure  => directory,
+        owner   => $dd_user,
+        group   => $dd_group,
+        mode    => $datadog_agent::params::permissions_directory,
+        require => Package['datadog-installer'],
+      }
     }
   }
 
@@ -891,6 +913,7 @@ class datadog_agent (
       'log_file' => $agent_log_file,
       'log_level' => $log_level,
       'remote_updates' => $remote_updates,
+      'remote_policies' => $remote_policies,
       'tags' => unique(flatten(union($_local_tags, $_facts_tags, $_trusted_facts_tags))),
     }
 
@@ -929,10 +952,8 @@ class datadog_agent (
         mode      => '0640',
         content   => template('datadog_agent/datadog.yaml.erb'),
         show_diff => false,
+        notify    => Service[$datadog_agent::params::service_name],
         require   => File['/etc/datadog-agent'],
-      }
-      if ! $_agent_managed_by_installer {
-        File['/etc/datadog-agent/datadog.yaml']  ~> Service[$datadog_agent::params::service_name]
       }
 
       file { '/etc/datadog-agent/install_info':

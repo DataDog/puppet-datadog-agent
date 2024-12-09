@@ -1,5 +1,13 @@
 Changes
 =======
+# 3.23.0 / 2024-12-09
+
+* [FEATURE] Add support for `DD_REMOTE_POLICIES` ([#821])
+* [FEATURE] Add support for Datadog installer on Linux systems ([#820])
+* [DEPRECATE] Deprecate CentOS 6 to 7.51.1 maximum and install only relevant gpg keys on redhat based systems ([#806])
+* [SANITY] Remove a duplicate parameter in the documentation ([#799])(thanks [@albertollamaso])
+* [FEATURE] Allow defining `apm_filter_tags` and `apm_filter_tags_regex` to filter traces/spans ([#798])(thanks [@erik-frontify])
+
 # 3.22.0 / 2023-11-15
 
 * [FEATURE] Add support to run agent as domain user on Windows installation ([#785])
@@ -919,10 +927,16 @@ Please read the [docs]() for more details.
 [#755]: https://github.com/DataDog/puppet-datadog-agent/issues/755
 [#756]: https://github.com/DataDog/puppet-datadog-agent/issues/756
 [#761]: https://github.com/DataDog/puppet-datadog-agent/issues/761
-[#782]: https://github.com/DataDog/puppet-datadog-agent/pull/782
-[#785]: https://github.com/DataDog/puppet-datadog-agent/pull/785
-[#789]: https://github.com/DataDog/puppet-datadog-agent/pull/789
-[#790]: https://github.com/DataDog/puppet-datadog-agent/pull/790
+[#770]: https://github.com/DataDog/puppet-datadog-agent/issues/770
+[#782]: https://github.com/DataDog/puppet-datadog-agent/issues/782
+[#785]: https://github.com/DataDog/puppet-datadog-agent/issues/785
+[#789]: https://github.com/DataDog/puppet-datadog-agent/issues/789
+[#790]: https://github.com/DataDog/puppet-datadog-agent/issues/790
+[#798]: https://github.com/DataDog/puppet-datadog-agent/issues/798
+[#799]: https://github.com/DataDog/puppet-datadog-agent/issues/799
+[#806]: https://github.com/DataDog/puppet-datadog-agent/issues/806
+[#820]: https://github.com/DataDog/puppet-datadog-agent/issues/820
+[#821]: https://github.com/DataDog/puppet-datadog-agent/issues/821
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
@@ -937,6 +951,7 @@ Please read the [docs]() for more details.
 [@aaron-miller]: https://github.com/aaron-miller
 [@aepod]: https://github.com/aepod
 [@ajvb]: https://github.com/ajvb
+[@albertollamaso]: https://github.com/albertollamaso
 [@alexberry]: https://github.com/alexberry
 [@alexfouche]: https://github.com/alexfouche
 [@alexharv074]: https://github.com/alexharv074
@@ -974,6 +989,7 @@ Please read the [docs]() for more details.
 [@dschaaff]: https://github.com/dschaaff
 [@dzinek]: https://github.com/dzinek
 [@eddmann]: https://github.com/eddmann
+[@erik-frontify]: https://github.com/erik-frontify
 [@evansj]: https://github.com/evansj
 [@ewansteele]: https://github.com/ewansteele
 [@ffleming]: https://github.com/ffleming

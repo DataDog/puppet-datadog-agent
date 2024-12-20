@@ -6,12 +6,12 @@
 #
 
 class datadog_agent::system_probe (
-  Boolean $enabled = false,
-  Boolean $network_enabled = false,
-  Boolean $service_monitoring_enabled = false,
-  Optional[String] $log_file = undef,
-  Optional[String] $sysprobe_socket = undef,
-  Optional[Boolean] $enable_oom_kill = false,
+  Boolean $enabled                        = false,
+  Boolean $network_enabled                = false,
+  Boolean $service_monitoring_enabled     = false,
+  Optional[String] $log_file              = undef,
+  Optional[String] $sysprobe_socket       = undef,
+  Boolean $enable_oom_kill                = false,
   Optional[Hash] $runtime_security_config = undef,
 
   Boolean $service_enable = true,

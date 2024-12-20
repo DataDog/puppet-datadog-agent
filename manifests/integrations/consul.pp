@@ -26,20 +26,20 @@
 #     new_leader_checks => false,
 #   }
 #
-class datadog_agent::integrations::consul(
+class datadog_agent::integrations::consul (
   String $url                        = 'http://localhost:8500',
   Boolean $catalog_checks            = true,
   Boolean $network_latency_checks    = true,
   Boolean $new_leader_checks         = true,
   Optional[Array] $service_whitelist = []
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/consul.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_dir = "${datadog_agent::params::conf_dir}/consul.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -48,7 +48,7 @@ class datadog_agent::integrations::consul(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -62,6 +62,6 @@ class datadog_agent::integrations::consul(
     mode    => $datadog_agent::params::permissions_file,
     content => template('datadog_agent/agent-conf.d/consul.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

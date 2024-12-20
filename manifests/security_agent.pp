@@ -1,4 +1,4 @@
-class datadog_agent::security_agent(
+class datadog_agent::security_agent (
   Boolean $enabled = false,
   Optional[String] $socket = undef,
 
@@ -7,16 +7,14 @@ class datadog_agent::security_agent(
   Optional[String] $service_provider = undef,
 
 ) inherits datadog_agent::params {
-
   $securityagent_config = {
     'runtime_security_config' => {
       'enabled' => $enabled,
-      'socket' =>  $socket,
+      'socket' => $socket,
     },
   }
 
   if $facts['os']['name'] == 'Windows' {
-
     file { 'C:/ProgramData/Datadog/security-agent.yaml':
       owner   => $datadog_agent::params::dd_user,
       group   => $datadog_agent::params::dd_group,
@@ -24,9 +22,7 @@ class datadog_agent::security_agent(
       content => template('datadog_agent/security-agent.yaml.erb'),
       require => File['C:/ProgramData/Datadog'],
     }
-
   } else {
-
     if $service_provider {
       service { $datadog_agent::params::securityagent_service_name:
         ensure    => $service_ensure,
@@ -55,5 +51,4 @@ class datadog_agent::security_agent(
       require => File['/etc/datadog-agent'],
     }
   }
-
 }

@@ -28,7 +28,7 @@
 #  }
 #
 #
-class datadog_agent::integrations::cassandra(
+class datadog_agent::integrations::cassandra (
   String $host                            = 'localhost',
   Integer $port                           = 7199,
   Optional[String] $user                  = undef,
@@ -36,14 +36,14 @@ class datadog_agent::integrations::cassandra(
   Optional[Hash] $tags                    = {},
   Optional[Integer] $max_returned_metrics = undef,
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/cassandra.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_dir = "${datadog_agent::params::conf_dir}/cassandra.d"
 
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
     file { $dst_dir:
       ensure  => directory,
@@ -51,7 +51,7 @@ class datadog_agent::integrations::cassandra(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {

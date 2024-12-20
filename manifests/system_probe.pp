@@ -5,7 +5,7 @@
 # to 'true on the datadog_agent class.
 #
 
-class datadog_agent::system_probe(
+class datadog_agent::system_probe (
   Boolean $enabled = false,
   Boolean $network_enabled = false,
   Boolean $service_monitoring_enabled = false,
@@ -18,8 +18,6 @@ class datadog_agent::system_probe(
   String $service_ensure = 'running',
   Optional[String] $service_provider = undef,
 ) inherits datadog_agent::params {
-
-
   $sysprobe_config = {
     'system_probe_config' => {
       'enabled' => $enabled,
@@ -45,9 +43,7 @@ class datadog_agent::system_probe(
       require => File['C:/ProgramData/Datadog'],
       notify  => Service[$datadog_agent::params::service_name],
     }
-
   } else {
-
     if $service_provider {
       service { $datadog_agent::params::sysprobe_service_name:
         ensure    => $service_ensure,
@@ -76,5 +72,4 @@ class datadog_agent::system_probe(
       require => File['/etc/datadog-agent'],
     }
   }
-
 }

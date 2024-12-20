@@ -40,7 +40,7 @@
 #       warn_on_missing_keys: true
 #       command_stats: false
 #
-class datadog_agent::integrations::redis(
+class datadog_agent::integrations::redis (
   String $host                              = 'localhost',
   String $password                          = '',
   Variant[String, Integer] $port            = '6379',
@@ -53,10 +53,10 @@ class datadog_agent::integrations::redis(
   Optional[Array] $instances                = undef,
 
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   if $ports == undef {
-    $_ports = [ $port ]
+    $_ports = [$port]
   } else {
     $_ports = $ports
   }
@@ -75,10 +75,10 @@ class datadog_agent::integrations::redis(
   }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/redisdb.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_dir = "${datadog_agent::params::conf_dir}/redisdb.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -87,7 +87,7 @@ class datadog_agent::integrations::redis(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -96,7 +96,7 @@ class datadog_agent::integrations::redis(
 
   if !$instances and $host {
     $_instances = $_port_instances
-  } elsif !$instances{
+  } elsif !$instances {
     $_instances = []
   } else {
     $_instances = $instances
@@ -109,6 +109,6 @@ class datadog_agent::integrations::redis(
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/redisdb.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

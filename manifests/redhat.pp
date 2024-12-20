@@ -3,7 +3,7 @@
 # This class contains the DataDog agent installation mechanism for Red Hat derivatives
 #
 
-class datadog_agent::redhat(
+class datadog_agent::redhat (
   Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
   Optional[String] $agent_repo_uri = undef,
   Boolean $manage_repo = true,
@@ -11,18 +11,16 @@ class datadog_agent::redhat(
   String $agent_flavor = $datadog_agent::params::package_name,
   Optional[Boolean] $rpm_repo_gpgcheck = undef,
 ) inherits datadog_agent::params {
-
   if $manage_repo {
-
     $all_keys = [
-        'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public',
-        'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
-        'https://keys.datadoghq.com/DATADOG_RPM_KEY_B01082D3.public',
-        'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
+      'https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public',
+      'https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public',
+      'https://keys.datadoghq.com/DATADOG_RPM_KEY_B01082D3.public',
+      'https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public',
     ]
     #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'
     if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ or $agent_version == 'latest' {
-      if $agent_major_version > 5 and ($agent_version == 'latest' or 0 + $3 > 35) {
+      if versioncmp($agent_major_version, '5') > 0 and ($agent_version == 'latest' or 0 + $3 > 35) {
         $keys = $all_keys[0,3]
       } else {
         $keys = $all_keys
@@ -34,7 +32,7 @@ class datadog_agent::redhat(
     if ($rpm_repo_gpgcheck != undef) {
       $repo_gpgcheck = $rpm_repo_gpgcheck
     } else {
-      if ($agent_repo_uri == undef) and ($agent_major_version > 5) {
+      if ($agent_repo_uri == undef) and (versioncmp($agent_major_version, '5') > 0) {
         case $facts['os']['name'] {
           'RedHat', 'CentOS', 'OracleLinux': {
             # disable repo_gpgcheck on 8.1 because of https://bugzilla.redhat.com/show_bug.cgi?id=1792506
@@ -51,7 +49,6 @@ class datadog_agent::redhat(
       } else {
         $repo_gpgcheck = false
       }
-
     }
 
     case $agent_major_version {
@@ -85,15 +82,15 @@ class datadog_agent::redhat(
       ensure => absent,
     }
 
-    yumrepo {'datadog5':
+    yumrepo { 'datadog5':
       ensure   => absent,
     }
 
-    yumrepo {'datadog6':
+    yumrepo { 'datadog6':
       ensure   => absent,
     }
 
-    yumrepo {'datadog':
+    yumrepo { 'datadog':
       enabled       => 1,
       gpgcheck      => 1,
       gpgkey        => join($gpgkeys, "\n       "),

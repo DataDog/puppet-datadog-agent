@@ -17,17 +17,17 @@
 #   integration_contents => template(my_custom_template),
 # }
 #
-class datadog_agent::integrations::generic(
+class datadog_agent::integrations::generic (
   Optional[String] $integration_name     = undef,
   Optional[String] $integration_contents = undef,
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/${integration_name}.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_dir = "${datadog_agent::params::conf_dir}/${integration_name}.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -36,7 +36,7 @@ class datadog_agent::integrations::generic(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -50,6 +50,6 @@ class datadog_agent::integrations::generic(
     mode    => $datadog_agent::params::permissions_protected_file,
     content => $integration_contents,
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

@@ -19,7 +19,7 @@
 #  }
 #
 #
-class datadog_agent::integrations::network(
+class datadog_agent::integrations::network (
   Boolean $collect_connection_state          = false,
   Boolean $collect_connection_queues         = false,
   Array[String] $excluded_interfaces         = [],
@@ -39,13 +39,13 @@ class datadog_agent::integrations::network(
   Array[String] $metric_patterns_include     = [],
   Array[String] $metric_patterns_exclude     = [],
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/network.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_dir = "${datadog_agent::params::conf_dir}/network.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -54,7 +54,7 @@ class datadog_agent::integrations::network(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {

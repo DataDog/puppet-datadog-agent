@@ -3,7 +3,7 @@
 # This class contains the DataDog agent installation mechanism for Debian derivatives
 #
 
-class datadog_agent::ubuntu(
+class datadog_agent::ubuntu (
   Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
   String $agent_version = $datadog_agent::params::agent_version,
   Optional[String] $agent_repo_uri = undef,
@@ -19,7 +19,6 @@ class datadog_agent::ubuntu(
     'A2923DFF56EDA6E76E55E492D3A80E30382E94DE' => 'https://keys.datadoghq.com/DATADOG_APT_KEY_382E94DE.public',
   },
 ) inherits datadog_agent::params {
-
   if $agent_version =~ /^[0-9]+\.[0-9]+\.[0-9]+((?:~|-)[^0-9\s-]+[^-\s]*)?$/ {
     $platform_agent_version = "1:${agent_version}-1"
   }
@@ -55,15 +54,15 @@ class datadog_agent::ubuntu(
       exec { "ensure key ${key_fingerprint} is imported in APT keyring":
         command => "/bin/cat /tmp/${key_fingerprint} | gpg --import --batch --no-default-keyring --keyring ${apt_usr_share_keyring}",
         # the second part extracts the fingerprint of the key from output like "fpr::::A2923DFF56EDA6E76E55E492D3A80E30382E94DE:"
-        unless  => @("CMD"/L)
+        unless  => "@(\"CMD\"/L)
           /usr/bin/gpg --no-default-keyring --keyring ${apt_usr_share_keyring} --list-keys --with-fingerprint --with-colons | grep \
           $(cat /tmp/${key_fingerprint} | gpg --with-colons --with-fingerprint 2>/dev/null | grep 'fpr:' | sed 's|^fpr||' | tr -d ':')
-          | CMD
+          | CMD",
       }
     }
 
     if ($facts['os']['name'] == 'Ubuntu' and versioncmp($facts['os']['release']['full'], '16') == -1) or
-        ($facts['os']['name'] == 'Debian' and versioncmp($facts['os']['release']['full'], '9') == -1) {
+    ($facts['os']['name'] == 'Debian' and versioncmp($facts['os']['release']['full'], '9') == -1) {
       file { $apt_trusted_d_keyring:
         mode   => '0644',
         source => "file://${apt_usr_share_keyring}",
@@ -104,12 +103,12 @@ class datadog_agent::ubuntu(
   package { $agent_flavor:
     ensure  => $platform_agent_version,
     require => [Apt::Source['datadog'],
-                Class['apt::update']],
+    Class['apt::update']],
   }
 
   package { 'datadog-signing-keys':
     ensure  => 'latest',
     require => [Apt::Source['datadog'],
-                Class['apt::update']],
+    Class['apt::update']],
   }
 }

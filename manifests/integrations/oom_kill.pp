@@ -19,10 +19,10 @@
 #   }
 #
 
-class datadog_agent::integrations::oom_kill(
+class datadog_agent::integrations::oom_kill (
   Array $instances = [],
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   $dst_dir = "${datadog_agent::params::conf_dir}/oom_kill.d"
   file { $dst_dir:
@@ -31,7 +31,7 @@ class datadog_agent::integrations::oom_kill(
     group   => $datadog_agent::params::dd_group,
     mode    => $datadog_agent::params::permissions_directory,
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
   $dst = "${dst_dir}/conf.yaml"
 
@@ -42,6 +42,6 @@ class datadog_agent::integrations::oom_kill(
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/oom_kill.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

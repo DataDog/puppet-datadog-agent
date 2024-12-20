@@ -84,44 +84,43 @@
 #        }]
 #     }
 
-
 class datadog_agent::integrations::tcp_check (
-  $check_name                = undef,
-  $host                      = undef,
-  $port                      = undef,
-  Integer $timeout           = 10,
-  $threshold                 = undef,
-  $window                    = undef,
-  $collect_response_time     = undef,
-  $skip_event                = undef,
+  String $check_name                = undef,
+  String $host                      = undef,
+  String $port                      = undef,
+  Integer $timeout                  = 10,
+  Integer $threshold                = undef,
+  Integer $window                   = undef,
+  Integer $collect_response_time    = undef,
+  Integer $skip_event               = undef,
   Array $tags                = [],
   Optional[Array] $instances = undef,
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   if !$instances and $host {
     $_instances = [{
-      'check_name'            => $check_name,
-      'host'                  => $host,
-      'port'                  => $port,
-      'timeout'               => $timeout,
-      'threshold'             => $threshold,
-      'window'                => $window,
-      'collect_response_time' => $collect_response_time,
-      'skip_event'            => $skip_event,
-      'tags'                  => $tags,
+        'check_name'            => $check_name,
+        'host'                  => $host,
+        'port'                  => $port,
+        'timeout'               => $timeout,
+        'threshold'             => $threshold,
+        'window'                => $window,
+        'collect_response_time' => $collect_response_time,
+        'skip_event'            => $skip_event,
+        'tags'                  => $tags,
     }]
-  } elsif !$instances{
+  } elsif !$instances {
     $_instances = []
   } else {
     $_instances = $instances
   }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/tcp_check.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_dir = "${datadog_agent::params::conf_dir}/tcp_check.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -130,7 +129,7 @@ class datadog_agent::integrations::tcp_check (
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -144,6 +143,6 @@ class datadog_agent::integrations::tcp_check (
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/tcp_check.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

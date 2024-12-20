@@ -42,7 +42,7 @@
 #       detailed_subscribers: ['subscriber1', 'subscriber2', 'subscriber3']
 #
 #
-class datadog_agent::integrations::activemq_xml(
+class datadog_agent::integrations::activemq_xml (
   String $url                                   = 'http://localhost:8161',
   Boolean $supress_errors                       = false,
   Optional[String] $username                    = undef,
@@ -52,13 +52,13 @@ class datadog_agent::integrations::activemq_xml(
   Optional[Array[String]] $detailed_subscribers = [],
   Optional[Array] $instances                    = undef,
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/activemq_xml.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
     $dst_dir = "${datadog_agent::params::conf_dir}/activemq_xml.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -67,7 +67,7 @@ class datadog_agent::integrations::activemq_xml(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -76,15 +76,15 @@ class datadog_agent::integrations::activemq_xml(
 
   if !$instances and $url {
     $_instances = [{
-      'url'                  => $url,
-      'username'             => $username,
-      'password'             => $password,
-      'supress_errors'       => $supress_errors,
-      'detailed_queues'      => $detailed_queues,
-      'detailed_topics'      => $detailed_topics,
-      'detailed_subscribers' => $detailed_subscribers,
+        'url'                  => $url,
+        'username'             => $username,
+        'password'             => $password,
+        'supress_errors'       => $supress_errors,
+        'detailed_queues'      => $detailed_queues,
+        'detailed_topics'      => $detailed_topics,
+        'detailed_subscribers' => $detailed_subscribers,
     }]
-  } elsif !$instances{
+  } elsif !$instances {
     $_instances = []
   } else {
     $_instances = $instances

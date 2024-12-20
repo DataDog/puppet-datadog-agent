@@ -391,7 +391,6 @@ class datadog_agent (
   Optional[Enum['host', 'docker', 'all']] $apm_instrumentation_enabled = undef,
   Optional[Array[String]] $apm_instrumentation_libraries = undef,
 ) inherits datadog_agent::params {
-
   #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'
   if $agent_version != 'latest' and $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ {
     $_agent_major_version = 0 + $2 # Cast to integer
@@ -411,7 +410,7 @@ class datadog_agent (
       if $facts['os']['release']['full'] =~ /^6(.[0-9])?/ and $agent_version == 'latest' {
         notice("datadog-agent ${_agent_major_version}.51 is the last supported version on CentOS 6. Installing ${_agent_major_version}.51 now")
         $agent_full_version='7.51.1'
-      } elsif $facts['os']['release']['full'] =~ /^6(.[0-9])?/ and $_agent_minor_version != undef and $_agent_minor_version > 51 {
+      } elsif $facts['os']['release']['full'] =~ /^6(.[0-9])?/ and $_agent_minor_version != undef and versioncmp($_agent_minor_version, '51') > 0 {
         fail("datadog-agent ${_agent_major_version}.51 is the last supported version on CentOS 6.")
       } else {
         $agent_full_version = $agent_version
@@ -420,7 +419,7 @@ class datadog_agent (
     default: { $agent_full_version = $agent_version }
   }
 
-  if $_agent_major_version != 5 and $_agent_major_version != 6 and $_agent_major_version != 7 {
+  if versioncmp($_agent_major_version, '5') != 0 and versioncmp($_agent_major_version, '6') != 0 and versioncmp($_agent_major_version, '7') != 0 {
     fail("agent_major_version must be either 5, 6 or 7, not ${_agent_major_version}")
   }
 
@@ -431,7 +430,7 @@ class datadog_agent (
   }
 
   if $conf_dir == undef {
-    if $_agent_major_version == 5 {
+    if versioncmp($_agent_major_version, '5') == 0 {
       $_conf_dir = $datadog_agent::params::legacy_conf_dir
     } else {
       $_conf_dir = $datadog_agent::params::conf_dir
@@ -441,13 +440,13 @@ class datadog_agent (
   }
 
   if $hiera_tags {
-    $local_tags = lookup({ 'name' => 'datadog_agent::tags', 'merge' => 'unique', 'default_value' => []})
+    $local_tags = lookup({ 'name' => 'datadog_agent::tags', 'merge' => 'unique', 'default_value' => [] })
   } else {
     $local_tags = $tags
   }
 
   if $hiera_integrations {
-    $local_integrations = lookup({ 'name' => 'datadog_agent::integrations', 'default_value' => {}})
+    $local_integrations = lookup({ 'name' => 'datadog_agent::integrations', 'default_value' => {} })
   } else {
     $local_integrations = $integrations
   }
@@ -655,14 +654,13 @@ class datadog_agent (
     }
   }
 
-  if $_agent_major_version == 5 {
-
+  if versioncmp($_agent_major_version, '5') == 0 {
     if ($facts['os']['name'] == 'Windows') {
       fail('Installation of agent 5 with puppet is not supported on Windows')
     }
 
     if !empty($agent_extra_options) {
-        notify { 'Setting agent_extra_options has no effect with Agent 5': }
+      notify { 'Setting agent_extra_options has no effect with Agent 5': }
     }
 
     file { '/etc/dd-agent':
@@ -680,10 +678,10 @@ class datadog_agent (
       force   => $conf_dir_purge,
       owner   => $dd_user,
       group   => $dd_group,
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
 
-    concat {'/etc/dd-agent/datadog.conf':
+    concat { '/etc/dd-agent/datadog.conf':
       owner   => $dd_user,
       group   => $dd_group,
       mode    => '0640',
@@ -696,31 +694,31 @@ class datadog_agent (
     } else {
       $_dd_url = $dd_url
     }
-    concat::fragment{ 'datadog header':
+    concat::fragment { 'datadog header':
       target  => '/etc/dd-agent/datadog.conf',
       content => template('datadog_agent/datadog_header.conf.erb'),
       order   => '01',
     }
 
-    concat::fragment{ 'datadog tags':
+    concat::fragment { 'datadog tags':
       target  => '/etc/dd-agent/datadog.conf',
       content => 'tags: ',
       order   => '02',
     }
 
-    datadog_agent::tag5{$local_tags: }
-    datadog_agent::tag5{$facts_to_tags:
+    datadog_agent::tag5 { $local_tags: }
+    datadog_agent::tag5 { $facts_to_tags:
       lookup_fact => true,
     }
 
-    concat::fragment{ 'datadog footer':
+    concat::fragment { 'datadog footer':
       target  => '/etc/dd-agent/datadog.conf',
       content => template('datadog_agent/datadog_footer.conf.erb'),
       order   => '05',
     }
 
     unless $extra_template.empty {
-      concat::fragment{ 'datadog extra_template footer':
+      concat::fragment { 'datadog extra_template footer':
         target  => '/etc/dd-agent/datadog.conf',
         content => template($extra_template),
         order   => '06',
@@ -728,7 +726,7 @@ class datadog_agent (
     }
 
     if ($apm_enabled == true) and (($apm_env != 'none') or $apm_analyzed_spans or $apm_obfuscation) {
-      concat::fragment{ 'datadog apm footer':
+      concat::fragment { 'datadog apm footer':
         target  => '/etc/dd-agent/datadog.conf',
         content => template('datadog_agent/datadog_apm_footer.conf.erb'),
         order   => '07',
@@ -736,58 +734,57 @@ class datadog_agent (
     }
 
     if ($process_enabled == true) {
-      concat::fragment{ 'datadog process agent footer':
+      concat::fragment { 'datadog process agent footer':
         target  => '/etc/dd-agent/datadog.conf',
         content => template('datadog_agent/datadog_process_footer.conf.erb'),
         order   => '08',
       }
     }
 
-    file {'/etc/dd-agent/install_info':
+    file { '/etc/dd-agent/install_info':
       owner   => $dd_user,
       group   => $dd_group,
       mode    => '0640',
       content => template('datadog_agent/install_info.erb'),
       require => File['/etc/dd-agent'],
     }
-
   } else { #Agent 6/7
 
     # notify of broken params on agent6/7
     if !empty($proxy_host) {
-        notify { 'Setting proxy_host is only used with Agent 5. Please use agent_extra_options to set your proxy': }
+      notify { 'Setting proxy_host is only used with Agent 5. Please use agent_extra_options to set your proxy': }
     }
     if !empty($proxy_port) {
-        notify { 'Setting proxy_port is only used with Agent 5. Please use agent_extra_options to set your proxy': }
+      notify { 'Setting proxy_port is only used with Agent 5. Please use agent_extra_options to set your proxy': }
     }
     if !empty($proxy_user) {
-        notify { 'Setting proxy_user is only used with Agent 5. Please use agent_extra_options to set your proxy': }
+      notify { 'Setting proxy_user is only used with Agent 5. Please use agent_extra_options to set your proxy': }
     }
     if !empty($proxy_password) {
-        notify { 'Setting proxy_password is only used with Agent 5. Please use agent_extra_options to set your proxy': }
+      notify { 'Setting proxy_password is only used with Agent 5. Please use agent_extra_options to set your proxy': }
     }
 
     # lint:ignore:quoted_booleans
     $process_enabled_str = $process_enabled ? { true => 'true' , default => 'disabled' }
     # lint:endignore
     $base_extra_config = {
-        'apm_config' => {
-          'enabled'               => $apm_enabled,
-          'env'                   => $apm_env,
-          'apm_non_local_traffic' => $apm_non_local_traffic
-        },
-        'process_config' => {
-          'enabled' => $process_enabled_str,
-          'scrub_args' => $scrub_args,
-          'custom_sensitive_words' => $custom_sensitive_words,
-        },
-        'logs_enabled' => $logs_enabled,
+      'apm_config' => {
+        'enabled'               => $apm_enabled,
+        'env'                   => $apm_env,
+        'apm_non_local_traffic' => $apm_non_local_traffic,
+      },
+      'process_config' => {
+        'enabled' => $process_enabled_str,
+        'scrub_args' => $scrub_args,
+        'custom_sensitive_words' => $custom_sensitive_words,
+      },
+      'logs_enabled' => $logs_enabled,
     }
     if $logs_open_files_limit {
       $logs_base_config = {
         'logs_config' => {
           'container_collect_all' => $container_collect_all,
-          'open_files_limit' => $logs_open_files_limit
+          'open_files_limit' => $logs_open_files_limit,
         },
       }
     } else {
@@ -798,87 +795,88 @@ class datadog_agent (
       }
     }
     if $host.empty {
-        $host_config = {}
+      $host_config = {}
     } else {
-        $host_config = {
-          'hostname' => $host,
-        }
+      $host_config = {
+        'hostname' => $host,
+      }
     }
 
     if $apm_analyzed_spans {
-        $apm_analyzed_span_config = {
-            'apm_config' => {
-                'analyzed_spans' => $apm_analyzed_spans
-            }
-        }
+      $apm_analyzed_span_config = {
+        'apm_config' => {
+          'analyzed_spans' => $apm_analyzed_spans,
+        },
+      }
     } else {
-        $apm_analyzed_span_config = {}
+      $apm_analyzed_span_config = {}
     }
 
     if $apm_obfuscation {
-        $apm_obfuscation_config = {
-          'apm_config' => {
-            'obfuscation' => $apm_obfuscation
-          }
-        }
+      $apm_obfuscation_config = {
+        'apm_config' => {
+          'obfuscation' => $apm_obfuscation,
+        },
+      }
     } else {
-        $apm_obfuscation_config = {}
+      $apm_obfuscation_config = {}
     }
 
     if $apm_filter_tags {
-        $apm_filter_tags_config = {
-          'apm_config' => {
-            'filter_tags' => $apm_filter_tags
-          }
-        }
+      $apm_filter_tags_config = {
+        'apm_config' => {
+          'filter_tags' => $apm_filter_tags,
+        },
+      }
     } else {
-        $apm_filter_tags_config = {}
+      $apm_filter_tags_config = {}
     }
 
     if $apm_filter_tags_regex {
-        $apm_filter_tags_regex_config = {
-          'apm_config' => {
-            'filter_tags_regex' => $apm_filter_tags_regex
-          }
-        }
+      $apm_filter_tags_regex_config = {
+        'apm_config' => {
+          'filter_tags_regex' => $apm_filter_tags_regex,
+        },
+      }
     } else {
-        $apm_filter_tags_regex_config = {}
+      $apm_filter_tags_regex_config = {}
     }
 
     if $statsd_forward_host.empty {
-        $statsd_forward_config = {}
+      $statsd_forward_config = {}
     } else {
-        if String($statsd_forward_port).empty {
-            $statsd_forward_config = {
-              'statsd_forward_host' => $statsd_forward_host,
-            }
-        } else {
-            $statsd_forward_config = {
-              'statsd_forward_host' => $statsd_forward_host,
-              'statsd_forward_port' => $statsd_forward_port,
-            }
+      if String($statsd_forward_port).empty {
+        $statsd_forward_config = {
+          'statsd_forward_host' => $statsd_forward_host,
         }
+      } else {
+        $statsd_forward_config = {
+          'statsd_forward_host' => $statsd_forward_host,
+          'statsd_forward_port' => $statsd_forward_port,
+        }
+      }
     }
 
     if $additional_checksd {
-        $additional_checksd_config = {
-          'additional_checksd' => $additional_checksd,
-        }
+      $additional_checksd_config = {
+        'additional_checksd' => $additional_checksd,
+      }
     } else {
-        $additional_checksd_config = {}
+      $additional_checksd_config = {}
     }
 
     $extra_config = deep_merge(
-            $base_extra_config,
-            $logs_base_config,
-            $agent_extra_options,
-            $apm_analyzed_span_config,
-            $apm_obfuscation_config,
-            $apm_filter_tags_config,
-            $apm_filter_tags_regex_config,
-            $statsd_forward_config,
-            $host_config,
-            $additional_checksd_config)
+      $base_extra_config,
+      $logs_base_config,
+      $agent_extra_options,
+      $apm_analyzed_span_config,
+      $apm_obfuscation_config,
+      $apm_filter_tags_config,
+      $apm_filter_tags_regex_config,
+      $statsd_forward_config,
+      $host_config,
+      $additional_checksd_config
+    )
 
     file { $_conf_dir:
       ensure  => directory,
@@ -920,10 +918,8 @@ class datadog_agent (
     $agent_config = deep_merge($_agent_config, $extra_config)
 
     if ($facts['os']['name'] == 'Windows') {
-
-
       file { 'C:/ProgramData/Datadog':
-        ensure   => directory
+        ensure   => directory,
       }
 
       file { 'C:/ProgramData/Datadog/datadog.yaml':
@@ -943,9 +939,7 @@ class datadog_agent (
         content => template('datadog_agent/install_info.erb'),
         require => File['C:/ProgramData/Datadog'],
       }
-
     } else {
-
       file { '/etc/datadog-agent/datadog.yaml':
         owner     => $dd_user,
         group     => $dd_group,
@@ -964,7 +958,6 @@ class datadog_agent (
         require => File['/etc/datadog-agent'],
       }
     }
-
   }
 
   if $puppet_run_reports {
@@ -993,5 +986,4 @@ class datadog_agent (
   }
 
   create_resources('datadog_agent::integration', $local_integrations)
-
 }

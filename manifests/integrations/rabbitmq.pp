@@ -52,8 +52,8 @@
 
 class datadog_agent::integrations::rabbitmq (
   Optional[String] $url      = undef,
-  Optional[String] $username = 'guest',
-  Optional[String] $password = 'guest',
+  String $username           = 'guest',
+  String $password           = 'guest',
   Boolean $ssl_verify        = true,
   Boolean $tag_families      = false,
   Array $nodes               = [],

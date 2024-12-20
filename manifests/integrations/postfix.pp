@@ -31,7 +31,7 @@
 class datadog_agent::integrations::postfix (
   String $directory          = '/var/spool/postfix',
   Array $queues              = ['active', 'deferred', 'incoming'],
-  Optional[Array] $tags      = [],
+  Array $tags                = [],
   Optional[Array] $instances = undef,
 ) inherits datadog_agent::params {
   require datadog_agent

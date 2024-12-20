@@ -33,7 +33,7 @@ class datadog_agent::integrations::cassandra (
   Integer $port                           = 7199,
   Optional[String] $user                  = undef,
   Optional[String] $password              = undef,
-  Optional[Hash] $tags                    = {},
+  Hash $tags                              = {},
   Optional[Integer] $max_returned_metrics = undef,
 ) inherits datadog_agent::params {
   require datadog_agent

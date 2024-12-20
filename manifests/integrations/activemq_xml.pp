@@ -47,9 +47,9 @@ class datadog_agent::integrations::activemq_xml (
   Boolean $supress_errors                       = false,
   Optional[String] $username                    = undef,
   Optional[String] $password                    = undef,
-  Optional[Array[String]] $detailed_queues      = [],
-  Optional[Array[String]] $detailed_topics      = [],
-  Optional[Array[String]] $detailed_subscribers = [],
+  Array[String] $detailed_queues                = [],
+  Array[String] $detailed_topics                = [],
+  Array[String] $detailed_subscribers           = [],
   Optional[Array] $instances                    = undef,
 ) inherits datadog_agent::params {
   require datadog_agent

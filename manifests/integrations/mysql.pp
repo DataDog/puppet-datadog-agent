@@ -69,21 +69,21 @@
 class datadog_agent::integrations::mysql (
   String $host                             = 'localhost',
   String $user                             = 'datadog',
-  Optional[Variant[String, Integer]] $port = 3306,
+  Variant[String, Integer] $port           = 3306,
   Optional[String] $password               = undef,
   Optional[String] $sock                   = undef,
   Array $tags                              = [],
-  String $replication                             = '0',
-  String $galera_cluster                          = '0',
+  String $replication                      = '0',
+  String $galera_cluster                   = '0',
   Boolean $extra_status_metrics            = false,
   Boolean $extra_innodb_metrics            = false,
   Boolean $extra_performance_metrics       = false,
   Boolean $schema_size_metrics             = false,
   Boolean $disable_innodb_metrics          = false,
   Optional[Boolean] $dbm                   = undef,
-  Optional[Array] $queries                 = [],
+  Array $queries                           = [],
   Optional[Array] $instances               = undef,
-  Optional[Array] $logs                    = [],
+  Array $logs                              = [],
 ) inherits datadog_agent::params {
   require datadog_agent
 

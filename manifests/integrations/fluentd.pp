@@ -18,8 +18,8 @@
 #
 #
 class datadog_agent::integrations::fluentd (
-  $monitor_agent_url = 'http://localhost:24220/api/plugins.json',
-  Optional[Array] $plugin_ids = [],
+  String $monitor_agent_url = 'http://localhost:24220/api/plugins.json',
+  Array $plugin_ids         = [],
 ) inherits datadog_agent::params {
   require datadog_agent
 

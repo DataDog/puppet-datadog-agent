@@ -62,8 +62,8 @@
 #  }
 class datadog_agent::integrations::disk (
   String $use_mount                              = 'no',
-  $all_partitions                                = undef,
-  $tag_by_filesystem                             = undef,
+  String $all_partitions                         = undef,
+  String $tag_by_filesystem                      = undef,
   Optional[Array[String]] $filesystem_exclude    = undef,
   Optional[Array[String]] $device_exclude        = undef,
   Optional[Array[String]] $mountpoint_exclude    = undef,

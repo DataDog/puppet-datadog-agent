@@ -31,7 +31,7 @@ class datadog_agent::integrations::consul (
   Boolean $catalog_checks            = true,
   Boolean $network_latency_checks    = true,
   Boolean $new_leader_checks         = true,
-  Optional[Array] $service_whitelist = []
+  Array   $service_whitelist         = []
 ) inherits datadog_agent::params {
   require datadog_agent
 

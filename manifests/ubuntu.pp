@@ -4,15 +4,15 @@
 #
 
 class datadog_agent::ubuntu (
-  Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
-  String $agent_version = $datadog_agent::params::agent_version,
-  Optional[String] $agent_repo_uri = undef,
-  String $release = $datadog_agent::params::apt_default_release,
-  Boolean $skip_apt_key_trusting = false,
-  String $agent_flavor = $datadog_agent::params::package_name,
-  Optional[String] $apt_trusted_d_keyring = '/etc/apt/trusted.gpg.d/datadog-archive-keyring.gpg',
-  Optional[String] $apt_usr_share_keyring = '/usr/share/keyrings/datadog-archive-keyring.gpg',
-  Optional[Hash[String, String]] $apt_default_keys = {
+  Integer $agent_major_version           = $datadog_agent::params::default_agent_major_version,
+  String $agent_version                  = $datadog_agent::params::agent_version,
+  Optional[String] $agent_repo_uri       = undef,
+  String $release                        = $datadog_agent::params::apt_default_release,
+  Boolean $skip_apt_key_trusting         = false,
+  String $agent_flavor                   = $datadog_agent::params::package_name,
+  String $apt_trusted_d_keyring          = '/etc/apt/trusted.gpg.d/datadog-archive-keyring.gpg',
+  String $apt_usr_share_keyring          = '/usr/share/keyrings/datadog-archive-keyring.gpg',
+  Hash[String, String] $apt_default_keys = {
     'DATADOG_APT_KEY_CURRENT.public'           => 'https://keys.datadoghq.com/DATADOG_APT_KEY_CURRENT.public',
     '5F1E256061D813B125E156E8E6266D4AC0962C7D' => 'https://keys.datadoghq.com/DATADOG_APT_KEY_C0962C7D.public',
     'D75CEA17048B9ACBF186794B32637D44F14F620E' => 'https://keys.datadoghq.com/DATADOG_APT_KEY_F14F620E.public',

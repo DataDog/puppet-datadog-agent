@@ -34,6 +34,8 @@ group :development do
   gem "rubocop-performance", '= 1.16.0',         require: false
   gem "rubocop-rspec", '= 2.19.0',               require: false
   gem "rb-readline", '= 0.5.5',                  require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "io-console", '= 0.7.2',                   require: false
+  gem "bcrypt_pbkdf", '= 1.0.1',                 require: false
   gem "librarian-puppet", '~> 5.0'
   gem "kitchen-puppet"
   gem "kitchen-docker"

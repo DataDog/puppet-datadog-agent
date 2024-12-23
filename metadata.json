@@ -148,11 +148,11 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">=4.6.0 <8.0.0"
+      "version_requirement": ">=4.6.0 < 9.0.0"
     }
   ],
   "description": "This will install the Datadog monitoring agent. Sign up and get your API key at: http://www.datadoghq.com",
-  "pdk-version": "1.15.0",
-  "template-url": "https://github.com/puppetlabs/pdk-templates#1.15.0",
-  "template-ref": "tags/1.15.0-0-g0bc522e"
+  "pdk-version": "3.4.0",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#3.4.0",
+  "template-ref": "tags/3.4.0-0-gd3cc13f"
 }

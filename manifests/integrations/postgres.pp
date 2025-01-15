@@ -88,7 +88,7 @@ class datadog_agent::integrations::postgres(
   String $dbname                         = 'postgres',
   Variant[String, Integer] $port         = '5432',
   String $username                       = 'datadog',
-  Boolean $ssl                           = false,
+  String $ssl                            = 'allow',
   Boolean $use_psycopg2                  = false,
   Boolean $collect_function_metrics      = false,
   Boolean $collect_count_metrics         = false,

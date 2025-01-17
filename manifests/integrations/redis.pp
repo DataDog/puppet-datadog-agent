@@ -11,6 +11,20 @@
 #       The main redis port.
 #   $ports
 #       Array of redis ports: overrides port (optional)
+#   $ssl
+#       Enable SSL/TLS encryption for the check (optional)
+#   $ssl_keyfile
+#       The path to the client-side private keyfile (optional)
+#   $ssl_certfile
+#       The path to the client-side certificate file (optional)
+#   $ssl_ca_certs
+#       The path to the ca_certs file (optional)
+#   $ssl_cert_reqs
+#       Specifies whether a certificate is required from the
+#       other side of the connection, and whether it's validated if provided (optional)
+#         * 0 for ssl.CERT_NONE (certificates ignored)
+#         * 1 for ssl.CERT_OPTIONAL (not required, but validated if provided)
+#         * 2 for ssl.CERT_REQUIRED (required and validated)
 #   $slowlog_max_len
 #       The max length of the slow-query log (optional)
 #   $tags
@@ -40,11 +54,16 @@
 #       warn_on_missing_keys: true
 #       command_stats: false
 #
-class datadog_agent::integrations::redis(
+class datadog_agent::integrations::redis (
   String $host                              = 'localhost',
   String $password                          = '',
   Variant[String, Integer] $port            = '6379',
   Optional[Array] $ports                    = undef,
+  Boolean $ssl                              = false,
+  String $ssl_keyfile                       = '',
+  String $ssl_certfile                      = '',
+  String $ssl_ca_certs                      = '',
+  Variant[String, Integer] $ssl_cert_reqs   = '',
   Variant[String, Integer] $slowlog_max_len = '',
   Array $tags                               = [],
   Array $keys                               = [],
@@ -66,6 +85,11 @@ class datadog_agent::integrations::redis(
       'host'                 => $host,
       'password'             => $password,
       'port'                 => $instance_port,
+      'ssl'                  => $ssl,
+      'ssl_keyfile'          => $ssl_keyfile,
+      'ssl_certfile'         => $ssl_certfile,
+      'ssl_ca_certs'         => $ssl_ca_certs,
+      'ssl_cert_reqs'        => $ssl_cert_reqs,
       'slowlog_max_len'      => $slowlog_max_len,
       'tags'                 => $tags,
       'keys'                 => $keys,
@@ -96,7 +120,7 @@ class datadog_agent::integrations::redis(
 
   if !$instances and $host {
     $_instances = $_port_instances
-  } elsif !$instances{
+  } elsif !$instances {
     $_instances = []
   } else {
     $_instances = $instances

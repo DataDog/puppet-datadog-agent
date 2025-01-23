@@ -16,6 +16,9 @@ instances:
 <% if @service_name -%>
     service: <%= @service_name %>
 <% end -%>
+<% if @max_returned_metrics -%>
+    max_returned_metrics: <%= @max_returned_metrics %>
+<% end -%>
 <% if @java_bin_path -%>
     java_bin_path: <%= @java_bin_path %>
 <% end -%>

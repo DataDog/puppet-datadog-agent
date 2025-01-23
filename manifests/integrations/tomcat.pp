@@ -41,6 +41,7 @@ class datadog_agent::integrations::tomcat (
   $java_bin_path        = undef,
   $trust_store_path     = undef,
   $trust_store_password = undef,
+  $max_returned_metrics = undef,
   $tags                 = {},
 ) inherits datadog_agent::params {
 

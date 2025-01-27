@@ -6,7 +6,7 @@ define datadog_agent::tag5 (
   if $lookup_fact {
     $value = getvar($tag_name)
 
-    if is_array($value) {
+    if $value.is_a(Array) {
       $tags = prefix($value, "${tag_name}:")
       datadog_agent::tag5 { $tags: }
     } else {

@@ -8,5 +8,6 @@
 --no-single_quote_string_with_variables-check
 --no-params_empty_string_assignment-check
 --no-lookup_in_parameter-check
+--no-version_comparison-check
 --no-top_scope_facts-check
 --ignore-paths=.vendor/**/*.pp,.bundle/**/*.pp,pkg/**/*.pp,spec/**/*.pp,tests/**/*.pp,types/**/*.pp,vendor/**/*.pp

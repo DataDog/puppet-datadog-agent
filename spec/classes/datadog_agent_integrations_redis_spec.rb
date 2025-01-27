@@ -140,6 +140,36 @@ describe 'datadog_agent::integrations::redis' do
         it { is_expected.to contain_file(conf_file).without_content(%r{command_stats: true}) }
       end
 
+      context 'with instances set and port nil' do
+        let(:params) do
+          {
+            instances: [
+              {
+                'host' => 'redis1',
+                'password' => 'hunter2',
+                'tags'     => ['foo', 'bar'],
+                'keys'     => ['baz', 'bat'],
+              },
+              {
+                'host'     => 'redis1',
+                'password' => 'hunter2',
+                'tags'     => ['foo', 'bar'],
+                'keys'     => ['baz', 'bat'],
+              },
+            ],
+          }
+        end
+
+        it { is_expected.to contain_file(conf_file).with_content(%r{host: redis1}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{^[^#]*password: hunter2}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{port: 6379}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{tags:.*\s+- foo\s+- bar}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{keys:.*\s+- baz\s+- bat}) }
+        it { is_expected.to contain_file(conf_file).without_content(%r{^[^#]*slowlog-max-len: 5309}) }
+        it { is_expected.to contain_file(conf_file).without_content(%r{warn_on_missing_keys: false}) }
+        it { is_expected.to contain_file(conf_file).without_content(%r{command_stats: true}) }
+      end
+
       context 'with only keys' do
         let(:params) do
           {

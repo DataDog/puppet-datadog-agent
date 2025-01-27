@@ -36,7 +36,7 @@ class datadog_agent::integrations::consul (
   require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/consul.yaml"
-  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
+  if $datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/consul.d"
     file { $legacy_dst:
       ensure => 'absent',

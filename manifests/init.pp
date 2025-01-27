@@ -410,10 +410,7 @@ class datadog_agent (
       if $facts['os']['release']['full'] =~ /^6(.[0-9])?/ and $agent_version == 'latest' {
         notice("datadog-agent ${_agent_major_version}.51 is the last supported version on CentOS 6. Installing ${_agent_major_version}.51 now")
         $agent_full_version='7.51.1'
-# $_agent_minor_version is a Integer, so we can't use the versioncmp function
-# lint:ignore:version_comparison
       } elsif $facts['os']['release']['full'] =~ /^6(.[0-9])?/ and $_agent_minor_version != undef and $_agent_minor_version > 51 {
-# lint:endignore
         fail("datadog-agent ${_agent_major_version}.51 is the last supported version on CentOS 6.")
       } else {
         $agent_full_version = $agent_version
@@ -422,12 +419,9 @@ class datadog_agent (
     default: { $agent_full_version = $agent_version }
   }
 
-# $_agent_major_version is a Integer, so we can't use the versioncmp function
-# lint:ignore:version_comparison
   if $_agent_major_version != 5 and $_agent_major_version != 6 and $_agent_major_version != 7 {
     fail("agent_major_version must be either 5, 6 or 7, not ${_agent_major_version}")
   }
-# lint:endignore
 
   if ($facts['os']['name'] == 'Windows' and $windows_ddagentuser_name != undef) {
     $dd_user = $windows_ddagentuser_name
@@ -436,10 +430,7 @@ class datadog_agent (
   }
 
   if $conf_dir == undef {
-# $_agent_major_version is a Integer, so we can't use the versioncmp function
-# lint:ignore:version_comparison
     if $_agent_major_version == 5 {
-# lint:endignore
       $_conf_dir = $datadog_agent::params::legacy_conf_dir
     } else {
       $_conf_dir = $datadog_agent::params::conf_dir
@@ -663,10 +654,7 @@ class datadog_agent (
     }
   }
 
-# $_agent_major_version is a Integer, so we can't use the versioncmp function
-# lint:ignore:version_comparison
   if $_agent_major_version == 5 {
-# lint:endignore
     if ($facts['os']['name'] == 'Windows') {
       fail('Installation of agent 5 with puppet is not supported on Windows')
     }

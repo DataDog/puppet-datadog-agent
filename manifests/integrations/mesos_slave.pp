@@ -17,7 +17,7 @@ class datadog_agent::integrations::mesos_slave (
   String $url = 'http://localhost:5051'
 ) inherits datadog_agent::params {
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/mesos_slave.yaml"
-  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
+  if $datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/mesos_slave.d"
     file { $legacy_dst:
       ensure => 'absent',

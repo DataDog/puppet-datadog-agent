@@ -39,7 +39,7 @@
 class datadog_agent::integrations::logs (
   Array $logs = [],
 ) inherits datadog_agent::params {
-  unless versioncmp($datadog_agent::_agent_major_version, '5') == 0 {
+  unless $datadog_agent::_agent_major_version == 5 {
     require datadog_agent
 
     file { "${datadog_agent::params::conf_dir}/logs.yaml":

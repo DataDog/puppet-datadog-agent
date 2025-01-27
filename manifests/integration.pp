@@ -10,7 +10,7 @@ define datadog_agent::integration (
   # datadog_agent class, causing a dependency cycle. If using this class
   # directly, you should define datadog_agent before datadog_agent::integration.
 
-  if versioncmp($datadog_agent::_agent_major_version, '5') > 0 {
+  if $datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/${integration}.d"
     $dst = "${dst_dir}/${$conf_file}.yaml"
     if (! defined(File[$dst_dir])) {

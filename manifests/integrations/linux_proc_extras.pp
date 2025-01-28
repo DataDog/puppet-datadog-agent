@@ -12,7 +12,6 @@
 #  class { 'datadog_agent::integrations::linux_proc_extras':
 #      tags => [ 'env:production' ],
 #  }
-
 class datadog_agent::integrations::linux_proc_extras (
   Array $tags = [],
 ) inherits datadog_agent::params {

@@ -165,30 +165,29 @@
 #          'tags'     => ['production', 'wordpress']
 #        }]
 #     }
-
 class datadog_agent::integrations::http_check (
-  String $sitename  = undef,
-  String $url       = undef,
-  String $username  = undef,
-  Any $password  = undef,
+  Optional[String] $sitename  = undef,
+  Optional[String] $url       = undef,
+  Optional[String] $username  = undef,
+  Optional[Any] $password  = undef,
   Integer $timeout   = 1,
   String $method    = 'get',
-  Integer $min_collection_interval = undef,
-  Any $data      = undef,
-  Integer $threshold = undef,
-  Integer $window    = undef,
-  String $content_match = undef,
+  Optional[Integer] $min_collection_interval = undef,
+  Optional[Any] $data      = undef,
+  Optional[Integer] $threshold = undef,
+  Optional[Integer] $window    = undef,
+  Optional[String] $content_match = undef,
   Boolean $reverse_content_match = false,
   Boolean $include_content = false,
-  String $http_response_status_code = undef,
+  Optional[String] $http_response_status_code = undef,
   Boolean $collect_response_time = true,
   Boolean $disable_ssl_validation = false,
   Boolean $ignore_ssl_warning = false,
   Boolean $skip_event = true,
   Boolean $no_proxy  = false,
   Boolean $check_certificate_expiration = true,
-  Integer $days_warning = undef,
-  Integer $days_critical = undef,
+  Optional[Integer] $days_warning = undef,
+  Optional[Integer] $days_critical = undef,
   Optional[Boolean] $check_hostname = undef,
   Optional[String] $ssl_server_name = undef,
   Array $headers   = [],
@@ -196,7 +195,7 @@ class datadog_agent::integrations::http_check (
   Array $tags      = [],
   Array $contact   = [],
   Optional[Array] $instances  = undef,
-  String $ca_certs  = undef,
+  Optional[String] $ca_certs  = undef,
 ) inherits datadog_agent::params {
   require datadog_agent
 

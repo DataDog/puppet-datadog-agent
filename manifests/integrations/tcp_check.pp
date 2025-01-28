@@ -83,16 +83,15 @@
 #          'port'       => '443',
 #        }]
 #     }
-
 class datadog_agent::integrations::tcp_check (
-  String $check_name                = undef,
-  String $host                      = undef,
-  String $port                      = undef,
-  Integer $timeout                  = 10,
-  Integer $threshold                = undef,
-  Integer $window                   = undef,
-  Integer $collect_response_time    = undef,
-  Integer $skip_event               = undef,
+  Optional[String] $check_name              = undef,
+  Optional[String] $host                    = undef,
+  Optional[String] $port                    = undef,
+  Integer $timeout                          = 10,
+  Optional[Integer] $threshold              = undef,
+  Optional[Integer] $window                 = undef,
+  Optional[Integer] $collect_response_time  = undef,
+  Optional[Integer] $skip_event             = undef,
   Array $tags                = [],
   Optional[Array] $instances = undef,
 ) inherits datadog_agent::params {

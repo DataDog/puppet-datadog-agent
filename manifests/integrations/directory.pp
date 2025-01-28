@@ -53,7 +53,6 @@
 #     },
 #   ]
 # }
-
 class datadog_agent::integrations::directory (
   String $directory          = '',
   Boolean $filegauges        = false,

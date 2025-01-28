@@ -40,7 +40,6 @@
 #
 #
 #
-
 class datadog_agent::integrations::supervisord (
   Array $instances    = [{ 'servername' => 'server0', 'hostname' => 'localhost', 'port' => '9001' }],
 ) inherits datadog_agent::params {

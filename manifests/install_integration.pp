@@ -1,7 +1,8 @@
+# Installs the integration with the given name and version.
 define datadog_agent::install_integration (
   Enum['present', 'absent'] $ensure           = 'present',
-  String                    $integration_name = undef,
-  String                    $version          = undef,
+  Optional[String]          $integration_name = undef,
+  Optional[String]          $version          = undef,
   Boolean                   $third_party      = false,
 ) {
   require datadog_agent

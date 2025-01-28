@@ -13,10 +13,10 @@
 #       The path to the cacti rrd directory e.g. /var/lib/cacti/rra/
 #
 class datadog_agent::integrations::cacti (
-  String $mysql_host = 'localhost',
-  String $mysql_user = 'cacti',
-  Any $mysql_password = undef,
-  String $rrd_path = '/var/lib/cacti/rra/',
+  String $mysql_host            = 'localhost',
+  String $mysql_user            = 'cacti',
+  Optional[Any] $mysql_password = undef,
+  String $rrd_path              = '/var/lib/cacti/rra/',
 ) inherits datadog_agent::params {
   require datadog_agent
 

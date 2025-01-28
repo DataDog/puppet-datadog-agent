@@ -58,7 +58,6 @@
 #         source: nginx
 #         sourcecategory: 'http_web_access'
 #
-
 class datadog_agent::integrations::nginx (
   Array $instances = [],
   Optional[Array] $logs = undef,

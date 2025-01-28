@@ -166,7 +166,7 @@
 #        }]
 #     }
 class datadog_agent::integrations::http_check (
-  Optional[String] $sitename  = undef,
+  String $sitename,
   Optional[String] $url       = undef,
   Optional[String] $username  = undef,
   Optional[Any] $password  = undef,

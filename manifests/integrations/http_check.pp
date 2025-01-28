@@ -172,7 +172,7 @@ class datadog_agent::integrations::http_check (
   Optional[Any] $password  = undef,
   Integer $timeout   = 1,
   String $method    = 'get',
-  Optional[Integer] $min_collection_interval = undef,
+  Integer $min_collection_interval = 15,
   Optional[Any] $data      = undef,
   Optional[Integer] $threshold = undef,
   Optional[Integer] $window    = undef,

@@ -86,7 +86,7 @@
 class datadog_agent::integrations::tcp_check (
   String $check_name,
   String $host,
-  Optional[String] $port                    = undef,
+  String $port,
   Integer $timeout                          = 10,
   Optional[Integer] $threshold              = undef,
   Optional[Integer] $window                 = undef,

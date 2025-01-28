@@ -83,7 +83,6 @@
 #          'port'       => '443',
 #        }]
 #     }
-
 class datadog_agent::integrations::tcp_check (
   String $check_name                = undef,
   String $host                      = undef,

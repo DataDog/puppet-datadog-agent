@@ -35,7 +35,6 @@
 # Documentation:
 # https://docs.datadoghq.com/logs/log_collection
 #
-
 class datadog_agent::integrations::logs (
   Array $logs = [],
 ) inherits datadog_agent::params {

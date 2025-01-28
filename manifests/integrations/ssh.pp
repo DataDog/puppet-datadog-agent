@@ -25,7 +25,6 @@
 #    private_key_file => '/opt/super_secret_key',
 #  }
 #
-
 class datadog_agent::integrations::ssh (
   String $host              = $trusted['certname'],
   Integer $port              = 22,

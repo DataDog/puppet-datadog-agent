@@ -49,7 +49,6 @@
 #       }
 #     ],
 #   }
-
 class datadog_agent::integrations::snmp (
   Any $mibs_folder              = undef,
   Boolean $ignore_nonincreasing_oid = false,

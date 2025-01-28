@@ -49,7 +49,6 @@
 #   password => 'guest',
 # }
 #
-
 class datadog_agent::integrations::rabbitmq (
   Optional[String] $url      = undef,
   String $username           = 'guest',

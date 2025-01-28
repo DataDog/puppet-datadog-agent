@@ -1,3 +1,7 @@
+# Define: datadog_agent::install_integration
+#
+# Definition to install an agent integration
+#
 define datadog_agent::install_integration (
   Enum['present', 'absent'] $ensure           = 'present',
   String                    $integration_name = undef,

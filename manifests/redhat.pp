@@ -2,7 +2,6 @@
 #
 # This class contains the DataDog agent installation mechanism for Red Hat derivatives
 #
-
 class datadog_agent::redhat (
   Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
   Optional[String] $agent_repo_uri = undef,

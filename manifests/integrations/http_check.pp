@@ -165,7 +165,6 @@
 #          'tags'     => ['production', 'wordpress']
 #        }]
 #     }
-
 class datadog_agent::integrations::http_check (
   String $sitename  = undef,
   String $url       = undef,

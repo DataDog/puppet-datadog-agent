@@ -1,3 +1,7 @@
+# Define: datadog_agent::integration
+#
+# Definition for an agent integration
+#
 define datadog_agent::integration (
   Array $instances                  = [],
   Optional[Hash] $init_config       = undef,

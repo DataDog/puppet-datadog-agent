@@ -25,7 +25,6 @@
 #    ping_url       => 'http://localhost/fpm_ping'
 #  }
 #
-
 class datadog_agent::integrations::php_fpm (
   String $status_url       = 'http://localhost/status',
   String $ping_url         = 'http://localhost/ping',

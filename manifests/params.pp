@@ -2,7 +2,6 @@
 #
 # This class contains the parameters for the Datadog module
 #
-
 class datadog_agent::params {
   $datadog_site                   = 'datadoghq.com'
   $dd_groups                      = undef

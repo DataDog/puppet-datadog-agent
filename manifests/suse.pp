@@ -2,7 +2,6 @@
 #
 # This class contains the DataDog agent installation mechanism for SUSE distributions
 #
-
 class datadog_agent::suse (
   Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
   String $agent_version = $datadog_agent::params::agent_version,

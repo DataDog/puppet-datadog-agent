@@ -22,7 +22,6 @@
 #    host                 => 'pool.ntp.org',
 #  }
 #
-
 class datadog_agent::integrations::ntp (
   Integer $offset_threshold = 60,
   String $host             = undef,

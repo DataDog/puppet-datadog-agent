@@ -2,7 +2,6 @@
 #
 # This class declares the datadog-agent service
 #
-
 class datadog_agent::service (
   String $service_ensure = 'running',
   Variant[Boolean, Enum['manual', 'mask', 'delayed']] $service_enable = true,

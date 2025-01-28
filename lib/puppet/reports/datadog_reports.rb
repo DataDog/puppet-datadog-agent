@@ -127,7 +127,7 @@ Puppet::Reports.register_report(:datadog_reports) do
     Puppet.debug "Sending metrics for #{@msg_host} to Datadog"
     @dog.batch_metrics do
       metrics.each do |metric, data|
-        data.values.each do |val|
+        data.each_value do |val|
           name = "puppet.#{val[1].tr(' ', '_')}.#{metric}".downcase
           value = val[2]
           @dog.emit_point(name.to_s, value, host: @msg_host.to_s)

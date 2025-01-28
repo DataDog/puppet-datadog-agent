@@ -18,8 +18,9 @@ cd puppet-datadog-agent
 First, to install the Ruby dependencies run:
 
 ```bash
-gem install bundler:1.17.3
-bundle install --path .bundle
+gem install bundler:2.4.13
+bundle config set --local path '.bundle'
+bundle install
 ```
 
 Afterwards, on the first run of the tests, further dependencies will be installed.

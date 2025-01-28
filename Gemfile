@@ -1,5 +1,7 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
+ruby_version = Gem::Version.new(RUBY_VERSION.dup)
+
 def location_for(place_or_version, fake_version = nil)
   git_url_regex = %r{\A(?<url>(https?|git)[:@][^#]*)(#(?<branch>.*))?}
   file_url_regex = %r{\Afile:\/\/(?<path>.*)}
@@ -42,7 +44,11 @@ group :development do
   gem "kitchen-verifier-serverspec"
   gem "rexml", '>= 3.0.0', '< 3.2.7',            require: false
   gem "mixlib-shellout", "~> 2.2.7",                               platforms: [:ruby]
-  gem "test-kitchen", '~> 3.7.0'
+  if ruby_version >= Gem::Version.new('2.7') && ruby_version < Gem::Version.new('3.1')
+    gem "test-kitchen", '~> 3.4.0', platforms: [:ruby]
+  else
+    gem "test-kitchen", '~> 3.7.0'
+  end
 end
 group :development, :release_prep do
   gem "puppet-strings", '~> 4.0',         require: false

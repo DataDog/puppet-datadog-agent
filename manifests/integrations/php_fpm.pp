@@ -1,39 +1,37 @@
-# Class: datadog_agent::integrations::php_fpm
+# @summary
 #
 # This class will set-up PHP FPM monitoring
 #
-# Parameters:
-#   $status_url
+# @param status_url
 #        URL to fetch FPM metrics. Default: http://localhost/status
 #
-#   $ping_url
+# @param  ping_url
 #        URL to get a reliable check of the FPM pool. Default: http://localhost/ping
 #
-#   $ping_reply
+# @param  ping_reply
 #        Expected response from ping_url. Default: pong
 #
-#   $tags
+# @param  tags
 #        Optional array of tags
 #
-#   $use_fastcgi
+# @param use_fastcgi
 #        Use fastcgi to get stats.  Default: false
 #
-# Sample Usage:
+# @example
 #
 #  class { 'datadog_agent::integrations::php_fpm' :
 #    status_url     => 'http://localhost/fpm_status',
 #    ping_url       => 'http://localhost/fpm_ping'
 #  }
 #
-
 class datadog_agent::integrations::php_fpm (
-  String $status_url       = 'http://localhost/status',
-  String $ping_url         = 'http://localhost/ping',
-  String $ping_reply       = 'pong',
-  String $http_host        = undef,
-  Array $tags             = [],
-  Array $instances        = undef,
-  String $use_fastcgi      = 'false'
+  String $status_url           = 'http://localhost/status',
+  String $ping_url             = 'http://localhost/ping',
+  String $ping_reply           = 'pong',
+  Optional[String] $http_host  = undef,
+  Array $tags                  = [],
+  Optional[Array] $instances   = undef,
+  String $use_fastcgi          = 'false'
 ) inherits datadog_agent::params {
   require datadog_agent
 

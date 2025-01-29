@@ -29,15 +29,15 @@
 #  }
 #
 class datadog_agent::integrations::tomcat (
-  String $hostname             = 'localhost',
-  Integer $port                 = 7199,
-  String $jmx_url              = undef,
-  String $username             = undef,
-  Any $password             = undef,
-  String $java_bin_path        = undef,
-  String $trust_store_path     = undef,
-  Any $trust_store_password = undef,
-  Hash $tags                 = {},
+  String $hostname                    = 'localhost',
+  Integer $port                       = 7199,
+  Optional[String] $jmx_url           = undef,
+  Optional[String] $username          = undef,
+  Optional[Any] $password             = undef,
+  Optional[String] $java_bin_path     = undef,
+  Optional[String] $trust_store_path  = undef,
+  Optional[Any] $trust_store_password = undef,
+  Hash $tags                          = {},
 ) inherits datadog_agent::params {
   require datadog_agent
 

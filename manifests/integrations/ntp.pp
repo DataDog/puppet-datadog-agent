@@ -24,10 +24,10 @@
 #
 class datadog_agent::integrations::ntp (
   Integer $offset_threshold = 60,
-  String $host             = undef,
-  Integer $port             = undef,
-  String $version          = undef,
-  Integer $timeout          = undef,
+  Optional[String] $host             = undef,
+  Optional[Integer] $port             = undef,
+  Optional[String] $version          = undef,
+  Optional[Integer] $timeout          = undef,
 ) inherits datadog_agent::params {
   require datadog_agent
 

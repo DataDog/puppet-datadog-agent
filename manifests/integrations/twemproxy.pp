@@ -24,9 +24,9 @@
 #  }
 #
 class datadog_agent::integrations::twemproxy (
-  String $host = 'localhost',
-  String $port = '22222',
-  Array $instances = undef,
+  String $host               = 'localhost',
+  String $port               = '22222',
+  Optional[Array] $instances = undef,
 ) inherits datadog_agent::params {
   require datadog_agent
 

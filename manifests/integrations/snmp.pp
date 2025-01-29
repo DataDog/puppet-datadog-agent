@@ -50,9 +50,9 @@
 #     ],
 #   }
 class datadog_agent::integrations::snmp (
-  Any $mibs_folder              = undef,
+  Optional[Any] $mibs_folder        = undef,
   Boolean $ignore_nonincreasing_oid = false,
-  Hash $init_config              = {},
+  Hash $init_config               = {},
   Array $instances                = [],
   Array $snmp_v1_instances        = [],
   Array $snmp_v2_instances        = [],

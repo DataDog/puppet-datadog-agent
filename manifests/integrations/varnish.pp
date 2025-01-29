@@ -22,9 +22,9 @@
 # }
 #
 class datadog_agent::integrations::varnish (
-  String $varnishstat   = '/usr/bin/varnishstat',
-  String $instance_name = undef,
-  Array $tags          = [],
+  String $varnishstat             = '/usr/bin/varnishstat',
+  Optional[String] $instance_name = undef,
+  Array $tags                     = [],
 ) inherits datadog_agent::params {
   require datadog_agent
 

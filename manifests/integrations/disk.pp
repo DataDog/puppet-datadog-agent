@@ -51,7 +51,6 @@
 #       Regular expression (optional) to exclude disks, eg: /dev/sde.*
 #   $excluded_mountpoint_re (DEPRECATED in agent version>6.9, use $mountpoint_exclude instead)
 #       Regular expression (optional) to exclude , eg: /mnt/somebody-elses-problem.*
-
 #
 # Sample Usage:
 #
@@ -62,8 +61,8 @@
 #  }
 class datadog_agent::integrations::disk (
   String $use_mount                              = 'no',
-  String $all_partitions                         = undef,
-  String $tag_by_filesystem                      = undef,
+  Optional[String] $all_partitions               = undef,
+  Optional[String] $tag_by_filesystem            = undef,
   Optional[Array[String]] $filesystem_exclude    = undef,
   Optional[Array[String]] $device_exclude        = undef,
   Optional[Array[String]] $mountpoint_exclude    = undef,

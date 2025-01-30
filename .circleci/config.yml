@@ -213,11 +213,11 @@ jobs:
   #     PUPPET_VERSION: '5.3.3'
 
   # specs-ruby24-puppet60:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.4.3'
-      PUPPET_VERSION: '6.0.0'
+    # <<: *specs
+    # environment:
+    #   STRICT_VARIABLES: 'yes'
+    #   RUBY_VERSION: '2.4.3'
+    #   PUPPET_VERSION: '6.0.0'
 
   specs-ruby24-puppet65:
     <<: *specs

@@ -1,5 +1,12 @@
 Changes
 =======
+# 4.0.0 / 2025-02-01
+
+* [FEATURE] Add Support for Puppet 8 ([#823])
+* [FEATURE] Update Module Dependencies including updates for StdLib, migrating to newer functions where appropriate ([#823])
+* [BUGFIX] Fix issue where MSI path was not correctly parsed ([#823])
+* [FEATURE] Update to CI Builds to work with Ruby 3
+
 # 3.23.0 / 2024-12-09
 
 * [FEATURE] Add support for `DD_REMOTE_POLICIES` ([#821])

@@ -159,10 +159,10 @@ jobs:
         command: rvm install $RUBY_VERSION
     - run:
         name: Install bundler
-        command: rvm $RUBY_VERSION --verbose do bundle config set --local path '.bundle' && gem install bundler:2.4.13
+        command: rm Gemfile.lock && rvm $RUBY_VERSION --verbose do bundle config set --local path '.bundle' && gem install bundler:2.4.13
     - run:
         name: Install gem dependencies
-        command: rm Gemfile.lock && rvm $RUBY_VERSION --verbose do bundle install --path .bundle
+        command: rvm $RUBY_VERSION --verbose do bundle install --path .bundle
     - run:
         name: Run tests
         command: rvm $RUBY_VERSION --verbose do bundle exec rake test

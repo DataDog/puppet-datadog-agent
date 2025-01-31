@@ -15,7 +15,7 @@ jobs:
         name: Install libcurl4 and openssl
         command: |
           # Needed to bundle install a puppet_litmus gem dependency
-          sudo apt update
+          sudo apt update -y
           sudo apt install -y libcurl4 curl libcurl4-openssl-dev
     - run:
         name: Install RVM
@@ -30,16 +30,9 @@ jobs:
         command: |
           rm Gemfile.lock && rvm $RUBY_VERSION --verbose do bundle config set path '.bundle'
           rvm $RUBY_VERSION --verbose do  gem install bundler:2.4.13
-          rvm $RUBY_VERSION --verbose do bundle -v
     - run:
         name: Install gem dependencies
-        command: |
-          rvm $RUBY_VERSION --verbose do bundle -v
-          rvm $RUBY_VERSION --verbose do bundle install    
-
-    - run:
-        name: Install gem dependencies
-        command: rvm $RUBY_VERSION --verbose do bundle install --path .bundle
+        command: rvm $RUBY_VERSION --verbose do bundle install
     - run:
         name: Run tests
         command: rvm $RUBY_VERSION --verbose do bundle exec rake test
@@ -136,7 +129,7 @@ jobs:
         name: Install libcurl4 and openssl
         command: |
           # Needed to bundle install a puppet_litmus gem dependency
-          sudo apt update
+          sudo apt update -y
           sudo apt install -y libcurl4 curl libcurl4-openssl-dev
     - run:
         name: Install RVM
@@ -151,12 +144,9 @@ jobs:
         command: |
           rvm $RUBY_VERSION --verbose do bundle config set path '.bundle'
           rvm $RUBY_VERSION --verbose do  gem install bundler:2.4.13
-          rvm $RUBY_VERSION --verbose do bundle -v
     - run:
         name: Install gem dependencies
-        command: |
-          rvm $RUBY_VERSION --verbose do bundle -v
-          rvm $RUBY_VERSION --verbose do bundle install
+        command: rvm $RUBY_VERSION --verbose do bundle install
     - run:
         name: Run tests
         command: rvm $RUBY_VERSION --verbose do bundle exec rake test
@@ -188,12 +178,9 @@ jobs:
         command: |
           rvm $RUBY_VERSION --verbose do bundle config set path '.bundle'
           rvm $RUBY_VERSION --verbose do  gem install bundler:2.4.13
-          rvm $RUBY_VERSION --verbose do bundle -v
     - run:
         name: Install gem dependencies
-        command: |
-          rvm $RUBY_VERSION --verbose do bundle -v
-          rvm $RUBY_VERSION --verbose do bundle install
+        command: rvm $RUBY_VERSION --verbose do bundle install
     - run:
         name: Execute Kitchen tests
         command: rvm $RUBY_VERSION --verbose do bundle exec rake circle
@@ -206,7 +193,7 @@ workflows:
     - specs-ruby26-puppet79
     - specs-ruby26-puppet714
     - specs-ruby26-puppet725
-    # - specs-ruby27-puppet79-windows # puppet_litmus requires a dependency patron, which doesn't run on windows
+    # - specs-ruby27-puppet79-windows # puppet_litmus requires a dependency "patron", which doesn't run on windows
     - specs-ruby27-puppet65
     - specs-ruby27-puppet79
     - specs-ruby27-puppet714

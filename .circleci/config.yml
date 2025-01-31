@@ -99,7 +99,13 @@ jobs:
         command: rvm install $RUBY_VERSION
     - run:
         name: Install bundler
-        command: rvm $RUBY_VERSION --verbose do bundle config set path '.bundle' && gem install bundler:2.4.13
+        command: |
+          rvm $RUBY_VERSION --verbose do bundle config set path '.bundle' && gem install bundler:2.4.13
+          ruby --version
+          bundler --version
+          export PATH=$GEM_HOME/bin:$PATH
+          ruby --version
+          bundler --version
     - run:
         name: Install gem dependencies
         command: rvm $RUBY_VERSION --verbose do bundle install --path .bundle

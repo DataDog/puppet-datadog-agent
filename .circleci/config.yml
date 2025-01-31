@@ -12,6 +12,12 @@ jobs:
     steps:
     - checkout
     - run:
+        name: Install libcurl4 and openssl
+        command: |
+          # Needed to bundle install a puppet_litmus gem dependency
+          sudo apt update
+          sudo apt install -y libcurl4 curl libcurl4-openssl-dev
+    - run:
         name: Install RVM
         command: |
           gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
@@ -21,7 +27,16 @@ jobs:
         command: rvm install $RUBY_VERSION
     - run:
         name: Install bundler
-        command: rm Gemfile.lock && rvm $RUBY_VERSION --verbose do bundle config set path '.bundle' && gem install bundler:2.4.13
+        command: |
+          rm Gemfile.lock && rvm $RUBY_VERSION --verbose do bundle config set path '.bundle'
+          rvm $RUBY_VERSION --verbose do  gem install bundler:2.4.13
+          rvm $RUBY_VERSION --verbose do bundle -v
+    - run:
+        name: Install gem dependencies
+        command: |
+          rvm $RUBY_VERSION --verbose do bundle -v
+          rvm $RUBY_VERSION --verbose do bundle install    
+
     - run:
         name: Install gem dependencies
         command: rvm $RUBY_VERSION --verbose do bundle install --path .bundle
@@ -50,6 +65,34 @@ jobs:
       RUBY_VERSION: '2.7.5'
       PUPPET_VERSION: '7.25.0'
 
+  specs-ruby26-puppet65:
+    <<: *specs
+    environment:
+      STRICT_VARIABLES: 'yes'
+      RUBY_VERSION: '2.6.3'
+      PUPPET_VERSION: '6.5.0'
+
+  specs-ruby26-puppet79:
+    <<: *specs
+    environment:
+      STRICT_VARIABLES: 'yes'
+      RUBY_VERSION: '2.6.3'
+      PUPPET_VERSION: '7.9.0'
+
+  specs-ruby26-puppet714:
+    <<: *specs
+    environment:
+      STRICT_VARIABLES: 'yes'
+      RUBY_VERSION: '2.6.3'
+      PUPPET_VERSION: '7.14.0'
+
+  specs-ruby26-puppet725:
+    <<: *specs
+    environment:
+      STRICT_VARIABLES: 'yes'
+      RUBY_VERSION: '2.6.3'
+      PUPPET_VERSION: '7.25.0'
+
   specs-ruby31-puppet734:
     <<: *specs
     environment:
@@ -57,29 +100,29 @@ jobs:
       RUBY_VERSION: '3.0.0'
       PUPPET_VERSION: '7.34.0'
 
-  specs-ruby27-puppet79-windows:
-    # &windows-specs
-    executor:
-      name: win/default
-      shell: bash.exe
-    steps:
-    - checkout
-    - run:
-        name: Run tests
-        command: |
-          set -e
-          choco install ruby --allow-downgrade -y --version=2.7.5.1 # Keep version in sync with next command!
-          export PATH=/c/tools/ruby27/bin:$PATH # Make Ruby 2.7 take precedence over the pre-installed version
-          ruby --version
-          choco install msys2 -y
-          ridk.cmd exec pacman -S --noconfirm --needed base-devel mingw-w64-x86_64-toolchain
-          gem install bundler -v 2.4.13
-          rm Gemfile.lock && bundle install --path .bundle
-          bundle exec rake test
-    environment:
-      STRICT_VARIABLES: 'yes'
-      #RUBY_VERSION hardcoded in install script
-      PUPPET_VERSION: '7.9.0'
+  # specs-ruby27-puppet79-windows:
+  #   # &windows-specs
+  #   executor:
+  #     name: win/default
+  #     shell: bash.exe
+  #   steps:
+  #   - checkout
+  #   - run:
+  #       name: Run tests
+  #       command: |
+  #         set -e
+  #         choco install ruby --allow-downgrade -y --version=2.7.5.1 # Keep version in sync with next command!
+  #         export PATH=/c/tools/ruby27/bin:$PATH # Make Ruby 2.7 take precedence over the pre-installed version
+  #         ruby --version
+  #         choco install msys2 -y
+  #         ridk.cmd exec pacman -S --noconfirm --needed base-devel mingw-w64-x86_64-toolchain
+  #         gem install bundler -v 2.4.13
+  #         rm Gemfile.lock && bundle install --path .bundle
+  #         bundle exec rake test
+  #   environment:
+  #     STRICT_VARIABLES: 'yes'
+  #     #RUBY_VERSION hardcoded in install script
+  #     PUPPET_VERSION: '7.9.0'
 
   verify-gemfile-lock-dependencies:
     machine:
@@ -89,6 +132,12 @@ jobs:
       RUBY_VERSION: '2.7.5'
     steps:
     - checkout
+    - run:
+        name: Install libcurl4 and openssl
+        command: |
+          # Needed to bundle install a puppet_litmus gem dependency
+          sudo apt update
+          sudo apt install -y libcurl4 curl libcurl4-openssl-dev
     - run:
         name: Install RVM
         command: |
@@ -100,15 +149,14 @@ jobs:
     - run:
         name: Install bundler
         command: |
-          rvm $RUBY_VERSION --verbose do bundle config set path '.bundle' && gem install bundler:2.4.13
-          ruby --version
-          bundler --version
-          export PATH=$GEM_HOME/bin:$PATH
-          ruby --version
-          bundler --version
+          rvm $RUBY_VERSION --verbose do bundle config set path '.bundle'
+          rvm $RUBY_VERSION --verbose do  gem install bundler:2.4.13
+          rvm $RUBY_VERSION --verbose do bundle -v
     - run:
         name: Install gem dependencies
-        command: rvm $RUBY_VERSION --verbose do bundle install --path .bundle
+        command: |
+          rvm $RUBY_VERSION --verbose do bundle -v
+          rvm $RUBY_VERSION --verbose do bundle install
     - run:
         name: Run tests
         command: rvm $RUBY_VERSION --verbose do bundle exec rake test
@@ -122,6 +170,12 @@ jobs:
     steps:
     - checkout
     - run:
+        name: Install libcurl4 and openssl
+        command: |
+          # Needed to bundle install a puppet_litmus gem dependency
+          sudo apt update
+          sudo apt install -y libcurl4 curl libcurl4-openssl-dev
+    - run:
         name: Install RVM
         command: |
           gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
@@ -131,10 +185,15 @@ jobs:
         command: rvm install $RUBY_VERSION
     - run:
         name: Install bundler
-        command: rvm $RUBY_VERSION --verbose do bundle config set path '.bundle' && gem install bundler:2.4.13
+        command: |
+          rvm $RUBY_VERSION --verbose do bundle config set path '.bundle'
+          rvm $RUBY_VERSION --verbose do  gem install bundler:2.4.13
+          rvm $RUBY_VERSION --verbose do bundle -v
     - run:
         name: Install gem dependencies
-        command: rvm $RUBY_VERSION --verbose do bundle install --path .bundle
+        command: |
+          rvm $RUBY_VERSION --verbose do bundle -v
+          rvm $RUBY_VERSION --verbose do bundle install
     - run:
         name: Execute Kitchen tests
         command: rvm $RUBY_VERSION --verbose do bundle exec rake circle
@@ -143,7 +202,11 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-    - specs-ruby27-puppet79-windows
+    - specs-ruby26-puppet65
+    - specs-ruby26-puppet79
+    - specs-ruby26-puppet714
+    - specs-ruby26-puppet725
+    # - specs-ruby27-puppet79-windows # puppet_litmus requires a dependency patron, which doesn't run on windows
     - specs-ruby27-puppet65
     - specs-ruby27-puppet79
     - specs-ruby27-puppet714

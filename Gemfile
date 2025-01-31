@@ -35,7 +35,7 @@ group :development do
   gem "rexml", '>= 3.0.0', '< 3.2.7',            require: false
   gem "mixlib-shellout", "~> 2.2.7",                               platforms: [:ruby]
   if ruby_version >= Gem::Version.new('2.5') && ruby_version < Gem::Version.new('3.1')
-    gem "test-kitchen", '~> 3.0.0', platforms: [:ruby]
+    gem "test-kitchen", '= 3.0.0', platforms: [:ruby]
     gem "rubocop", '~> 1.19',                    require: false
     gem "rubocop-rspec", '= 2.10.0',               require: false
     gem "facterdb", '~> 1.21',                      require: false
@@ -73,7 +73,7 @@ group :development, :release_prep do
 end
 group :system_tests do
   if ruby_version >= Gem::Version.new('2.5') && ruby_version < Gem::Version.new('3.1')
-    gem "puppet_litmus", '~> 0.36.2',   require: false, platforms: [:ruby, :x64_mingw]
+    gem "puppet_litmus", '= 0.0.1',   require: false, platforms: [:ruby, :x64_mingw]
   else
     gem "puppet_litmus", '~> 1.0',   require: false, platforms: [:ruby, :x64_mingw]
   end

@@ -1,16 +1,16 @@
 fixtures:
   repositories:
     stdlib:
-      repo: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
+      repo: "https://github.com/puppetlabs/puppetlabs-stdlib.git" # TODO: why git: and not https:?
       ref: "4.25.0"
     concat:
-      repo: "git://github.com/puppetlabs/puppetlabs-concat.git"
+      repo: "https://github.com/puppetlabs/puppetlabs-concat.git"
       ref: "4.1.1"
     apt:
-      repo: "git://github.com/puppetlabs/puppetlabs-apt.git"
+      repo: "https://github.com/puppetlabs/puppetlabs-apt.git"
       ref: "4.5.0"
     puppetserver_gem:
-      repo: "git://github.com/puppetlabs/puppetlabs-puppetserver_gem.git"
+      repo: "https://github.com/puppetlabs/puppetlabs-puppetserver_gem.git"
       ref: "1.0.0"
   forge_modules:
     yumrepo_core:

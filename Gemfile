@@ -61,7 +61,7 @@ group :development do
   end
 end
 group :development, :release_prep do
-  if ruby_version >= Gem::Version.new('2.5') && ruby_version < Gem::Version.new('2.7')
+  if ruby_version >= Gem::Version.new('2.5') && ruby_version < Gem::Version.new('3.1')
     gem "puppetlabs_spec_helper", '~> 5.0.3', require: false
     gem "puppet-blacksmith", '= 6.1.1',      require: false
     gem "puppet-strings", '= 2.9.0',         require: false
@@ -72,7 +72,7 @@ group :development, :release_prep do
   end
 end
 group :system_tests do
-  if ruby_version >= Gem::Version.new('2.5') && ruby_version < Gem::Version.new('2.7')
+  if ruby_version >= Gem::Version.new('2.5') && ruby_version < Gem::Version.new('3.1')
     gem "puppet_litmus", '~> 0.36.2',   require: false, platforms: [:ruby, :x64_mingw]
   else
     gem "puppet_litmus", '~> 1.0',   require: false, platforms: [:ruby, :x64_mingw]

@@ -2,18 +2,14 @@ version: 2.1
 orbs:
   win: circleci/windows@2.2.0
 jobs:
-  specs-ruby26-puppet65: &specs
+  specs-ruby27-puppet65: &specs
     machine:
       image: ubuntu-2004:2024.08.1
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
+      RUBY_VERSION: '2.7.5'
       PUPPET_VERSION: '6.5.0'
     steps:
-    # See https://github.blog/2021-09-01-improving-git-protocol-security-github/
-    - run:
-        name: Fix git clones
-        command: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
     - checkout
     - run:
         name: Install RVM
@@ -33,32 +29,25 @@ jobs:
         name: Run tests
         command: rvm $RUBY_VERSION --verbose do bundle exec rake test
 
-  specs-ruby26-puppet79:
+  specs-ruby27-puppet79:
     <<: *specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
+      RUBY_VERSION: '2.7.5'
       PUPPET_VERSION: '7.9.0'
 
-  specs-ruby26-puppet714:
+  specs-ruby27-puppet714:
     <<: *specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
+      RUBY_VERSION: '2.7.5'
       PUPPET_VERSION: '7.14.0'
-
-  specs-ruby26-puppet725:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
-      PUPPET_VERSION: '7.25.0'
 
   specs-ruby27-puppet725:
     <<: *specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.7.2'
+      RUBY_VERSION: '2.7.5'
       PUPPET_VERSION: '7.25.0'
 
   specs-ruby31-puppet734:
@@ -68,20 +57,19 @@ jobs:
       RUBY_VERSION: '3.0.0'
       PUPPET_VERSION: '7.34.0'
 
-  specs-ruby26-puppet79-windows: &windows-specs
+  specs-ruby27-puppet79-windows:
+    # &windows-specs
     executor:
-      name: win/default # Comes with ruby 2.6, which is not supported on Windows as of puppet 6.10.1
+      name: win/default
       shell: bash.exe
     steps:
-    # See https://github.blog/2021-09-01-improving-git-protocol-security-github/
-    - run:
-        name: Fix git clones
-        command: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
     - checkout
     - run:
         name: Run tests
         command: |
           set -e
+          choco install ruby --allow-downgrade -y --version=2.7.5.1 # Keep version in sync with next command!
+          export PATH=/c/tools/ruby27/bin:$PATH # Make Ruby 2.7 take precedence over the pre-installed version
           ruby --version
           choco install msys2 -y
           ridk.cmd exec pacman -S --noconfirm --needed base-devel mingw-w64-x86_64-toolchain
@@ -98,12 +86,8 @@ jobs:
       image: ubuntu-2004:2024.08.1
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
+      RUBY_VERSION: '2.7.5'
     steps:
-    # See https://github.blog/2021-09-01-improving-git-protocol-security-github/
-    - run:
-        name: Fix git clones
-        command: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
     - checkout
     - run:
         name: Install RVM
@@ -128,12 +112,8 @@ jobs:
       image: ubuntu-2004:2024.08.1
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
+      RUBY_VERSION: '2.7.5'
     steps:
-    # See https://github.blog/2021-09-01-improving-git-protocol-security-github/
-    - run:
-        name: Fix git clones
-        command: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
     - checkout
     - run:
         name: Install RVM
@@ -155,13 +135,13 @@ jobs:
         no_output_timeout: "900s"
 
 workflows:
-  version: 2
   build_and_test:
     jobs:
-    - specs-ruby26-puppet79-windows
-    - specs-ruby26-puppet65
-    - specs-ruby26-puppet79
-    - specs-ruby26-puppet714
-    - specs-ruby26-puppet725
+    - specs-ruby27-puppet79-windows
+    - specs-ruby27-puppet65
+    - specs-ruby27-puppet79
+    - specs-ruby27-puppet714
+    - specs-ruby27-puppet725
+    - specs-ruby31-puppet734
     - verify-gemfile-lock-dependencies
     - kitchen-tests

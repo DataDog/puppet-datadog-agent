@@ -14,118 +14,181 @@ provisioner:
   custom_pre_apply_command: 'cp -r /tmp/modules/* /tmp/kitchen/modules/'
 
 platforms:
-  - name: centos-7-puppet-5
-    driver_config:
-      # we use a custom image that runs systemd
-      image: 'datadog/docker-library:chef_kitchen_systemd_centos_7'
-      run_command: /root/start.sh
-    driver:
-      provision_command:
-        - rpm -ivh http://yum.puppetlabs.com/puppet5-release-el-7.noarch.rpm #installs the puppet-agent repo
-        - yum install -y puppet-agent rubygems
-        - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
+- name: centos-7-puppet-6
+  driver_config:
+    # we use a custom image that runs systemd
+    image: 'datadog/docker-library:chef_kitchen_systemd_centos_7'
+    run_command: /root/start.sh
+  driver:
+    provision_command:
+    - rpm -ivh http://yum.puppetlabs.com/puppet6-release-el-7.noarch.rpm #installs the puppet-agent repo
+    - yum install -y puppet-agent rubygems
+    - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
-        - mkdir /home/kitchen/puppet
-        - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
-        - printf <%= File.read('environments/etc/Gemfile').inspect %> > /home/Gemfile
+    - mkdir /home/kitchen/puppet
+    - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
+    - printf <%= File.read('environments/etc/Gemfile').inspect %> > /home/Gemfile
 
-        - gem install bundler -v '= 2.4.13'
-        # we use bundle to install gems and to lock dependencies versions of semantic_puppet and multipart-post
-        - cd /home && bundle install
-        - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
+    - gem install bundler -v '= 2.4.13'
+    # we use bundle to install gems and to lock dependencies versions of semantic_puppet and multipart-post
+    - cd /home && bundle install
+    - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
-  - name: rocky-8-puppet-5
-    driver_config:
-      # we use a custom image that runs systemd
-      image: 'datadog/docker-library:chef_kitchen_systemd_rocky_8'
-      platform: rhel # kitchen-docker doesn't recognize rocky otherwise
-      run_command: /root/start.sh
-    driver:
-      provision_command:
-        - dnf install -y https://yum.puppetlabs.com/puppet7-release-el-8.noarch.rpm #installs the puppet-agent repo
-        - dnf install -y puppet-agent rubygems
-        - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
+- name: rocky-8-puppet-7
+  driver_config:
+    # we use a custom image that runs systemd
+    image: 'datadog/docker-library:chef_kitchen_systemd_rocky_8'
+    platform: rhel # kitchen-docker doesn't recognize rocky otherwise
+    run_command: /root/start.sh
+  driver:
+    provision_command:
+    - dnf install -y https://yum.puppetlabs.com/puppet7-release-el-8.noarch.rpm #installs the puppet-agent repo
+    - dnf install -y puppet-agent rubygems
+    - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
-        - mkdir /home/kitchen/puppet
-        - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
-        - printf <%= File.read('environments/etc/Gemfile').inspect %> > /home/Gemfile
+    - mkdir /home/kitchen/puppet
+    - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
+    - printf <%= File.read('environments/etc/Gemfile').inspect %> > /home/Gemfile
 
-        - gem install bundler -v '= 2.4.13'
+    - gem install bundler -v '= 2.4.13'
 
-        - cd /home && bundle install
-        - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
+    - cd /home && bundle install
+    - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
-  - name: ubuntu-1604-puppet-6
-    driver_config:
-       # we use the official image
-      image: 'ubuntu:16.04'
-    driver:
-      provision_command:
-        - apt-get install -y apt-utils apt-transport-https ca-certificates
-        - wget https://apt.puppetlabs.com/puppet6-release-xenial.deb
-        - dpkg -i puppet6-release-xenial.deb #installs the puppet-agent repo
-        - apt-get update
-        - apt-get install -y puppet-agent rubygems
-        - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
+- name: ubuntu-2004-puppet-6
+  driver_config:
+    # we use the official image
+    image: 'ubuntu:20.04'
+  driver:
+    provision_command:
+    - apt-get install -y apt-utils apt-transport-https ca-certificates
+    - wget https://apt.puppetlabs.com/puppet6-release-focal.deb
+    - dpkg -i puppet6-release-focal.deb #installs the puppet-agent repo
+    - apt-get update
+    - apt-get install -y puppet-agent rubygems
+    - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
-        - mkdir /home/kitchen/puppet
-        - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
-        - printf <%= File.read('environments/etc/Gemfile').inspect %> > /home/Gemfile
+    - mkdir /home/kitchen/puppet
+    - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
+    - printf <%= File.read('environments/etc/Gemfile').inspect %> > /home/Gemfile
 
-        - gem install bundler -v '= 2.4.13'
-        - cd /home && bundle install
-        - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
-        
-  - name: opensuse/leap-15
-    # Workaround for flakes on initializing opensuse/leap-15:
-    # => SCP did not finish successfully (255):  (Net::SCP::Error)
-    transport:
-      max_ssh_sessions: 1
-    driver_config:
-      # we use a custom image that runs systemd
-      image: 'datadog/docker-library:chef_kitchen_systemd_opensuse_leap_15'
-      run_command: /root/start.sh
+    - gem install bundler -v '= 2.4.13'
+    - cd /home && bundle install
+    - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
-    driver:
-      provision_command:
-        - zypper ar -G https://yum.puppet.com/puppet/sles/15/x86_64/ puppet-repo
-        - zypper install -y puppet-agent ruby=2.5
-        - gem install bundler -v '= 2.4.13'
-        - gem install net-ssh -v '= 6.1.0'
-        - gem install rspec-its -v '= 1.3.1'
-        - gem install serverspec rspec
-        - ln -s /usr/bin/rspec.ruby2.5 /usr/bin/rspec
-        - ln -s /opt/puppetlabs/puppet/bin/puppet /usr/bin/puppet
-        - mkdir /home/kitchen/puppet
-        - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
-        - printf <%= File.read('environments/etc/Gemfile').inspect %> > /home/Gemfile
+- name: ubuntu-2004-puppet-7
+  driver_config:
+    # we use the official image
+    image: 'ubuntu:20.04'
+  driver:
+    provision_command:
+    - apt-get install -y apt-utils apt-transport-https ca-certificates
+    - wget https://apt.puppetlabs.com/puppet7-release-focal.deb
+    - dpkg -i puppet7-release-focal.deb #installs the puppet-agent repo
+    - apt-get update
+    - apt-get install -y puppet-agent rubygems
+    - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
-        - cd /home && bundle.ruby2.5 install
-        - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
+    - mkdir /home/kitchen/puppet
+    - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
+    - printf <%= File.read('environments/etc/Gemfile').inspect %> > /home/Gemfile
+
+    - gem install bundler -v '= 2.4.13'
+    - cd /home && bundle install
+    - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
+
+- name: ubuntu-2204-puppet-8
+  driver_config:
+    # we use the official image
+    image: 'ubuntu:22.04'
+  driver:
+    provision_command:
+    - apt-get install -y apt-utils apt-transport-https ca-certificates
+    - wget https://apt.puppetlabs.com/puppet8-release-jammy.deb
+    - dpkg -i puppet8-release-jammy.deb #installs the puppet-agent repo
+    - apt-get update
+    - apt-get install -y puppet-agent rubygems
+    - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
+
+    - mkdir /home/kitchen/puppet
+    - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
+    - printf <%= File.read('environments/etc/Gemfile').inspect %> > /home/Gemfile
+
+    - gem install bundler -v '= 2.4.13'
+    - cd /home && bundle install
+    - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
+
+- name: ubuntu-2404-puppet-8
+  driver_config:
+    # we use the official image
+    image: 'ubuntu:24.04'
+  driver:
+    provision_command:
+    - apt-get install -y apt-utils apt-transport-https ca-certificates
+    - wget https://apt.puppetlabs.com/puppet8-release-noble.deb
+    - dpkg -i puppet8-release-noble.deb #installs the puppet-agent repo
+    - apt-get update
+    - apt-get install -y puppet-agent rubygems
+    - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
+
+    - mkdir /home/kitchen/puppet
+    - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
+    - printf <%= File.read('environments/etc/Gemfile').inspect %> > /home/Gemfile
+
+    - gem install bundler -v '= 2.4.13'
+    - cd /home && bundle install
+    - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
+
+- name: opensuse/leap-15
+  # Workaround for flakes on initializing opensuse/leap-15:
+  # => SCP did not finish successfully (255):  (Net::SCP::Error)
+  transport:
+    max_ssh_sessions: 1
+  driver_config:
+    # we use a custom image that runs systemd
+    image: 'datadog/docker-library:chef_kitchen_systemd_opensuse_leap_15'
+    run_command: /root/start.sh
+
+  driver:
+    provision_command:
+    - zypper ar -G https://yum.puppet.com/puppet/sles/15/x86_64/ puppet-repo
+    - zypper install -y puppet-agent ruby=2.6
+    - gem install bundler -v '= 2.4.13'
+    - gem install net-ssh -v '= 6.1.0'
+    - gem install rspec-its -v '= 1.3.1'
+    - gem install serverspec rspec
+    - ln -s /usr/bin/rspec.ruby2.6 /usr/bin/rspec
+    - ln -s /opt/puppetlabs/puppet/bin/puppet /usr/bin/puppet
+    - mkdir /home/kitchen/puppet
+    - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
+    - printf <%= File.read('environments/etc/Gemfile').inspect %> > /home/Gemfile
+
+    - cd /home && bundle.ruby2.6 install
+    - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
 verifier:
   name: serverspec
 
 suites:
-  - name: dd-agent
-    manifests: init.pp
-    verifier:
-      default_pattern: true
-      additional_install_commmand: source /etc/profile.d/rvm.sh
-      env_vars:
-        TARGET_HOST: 127.0.0.1
-        TARGET_PORT: 2222
-        LOGIN_USER: root
-        LOGIN_PASSWORD: puppet
-  - name: dd-installer
-    manifests: init.pp
-    provisioner:
-      manifests_path: environments/etc/installer-manifests
-    verifier:
-      default_pattern: true
-      additional_install_commmand: source /etc/profile.d/rvm.sh
-      env_vars:
-        TARGET_HOST: 127.0.0.1
-        TARGET_PORT: 2222
-        LOGIN_USER: root
-        LOGIN_PASSWORD: puppet
+- name: dd-agent
+  manifests: init.pp
+  verifier:
+    default_pattern: true
+    additional_install_commmand: source /etc/profile.d/rvm.sh
+    env_vars:
+      TARGET_HOST: 127.0.0.1
+      TARGET_PORT: 2222
+      LOGIN_USER: root
+      LOGIN_PASSWORD: puppet
+- name: dd-installer
+  manifests: init.pp
+  provisioner:
+    manifests_path: environments/etc/installer-manifests
+  verifier:
+    default_pattern: true
+    additional_install_commmand: source /etc/profile.d/rvm.sh
+    env_vars:
+      TARGET_HOST: 127.0.0.1
+      TARGET_PORT: 2222
+      LOGIN_USER: root
+      LOGIN_PASSWORD: puppet

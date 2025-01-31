@@ -136,12 +136,12 @@ jobs:
   #     RUBY_VERSION: '2.3.6'
   #     PUPPET_VERSION: '6.0.0'
 
-  specs-ruby25-puppet65: &specs
+  specs-ruby26-puppet65: &specs
     machine:
       image: ubuntu-2004:2024.08.1
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.5.3'
+      RUBY_VERSION: '2.6.3'
       PUPPET_VERSION: '6.5.0'
     steps:
     # See https://github.blog/2021-09-01-improving-git-protocol-security-github/
@@ -159,7 +159,7 @@ jobs:
         command: rvm install $RUBY_VERSION
     - run:
         name: Install bundler
-        command: rvm $RUBY_VERSION --verbose do bundle config set --local path '.bundle' && gem install bundler:2.3.26
+        command: rvm $RUBY_VERSION --verbose do bundle config set --local path '.bundle' && gem install bundler:2.4.13
     - run:
         name: Install gem dependencies
         command: rm Gemfile.lock && rvm $RUBY_VERSION --verbose do bundle install --path .bundle
@@ -262,13 +262,6 @@ jobs:
     #     RUBY_VERSION: '2.6.3'
     #     PUPPET_VERSION: '6.0.0'
 
-  specs-ruby26-puppet65:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
-      PUPPET_VERSION: '6.5.0'
-
   specs-ruby26-puppet79:
     <<: *specs
     environment:
@@ -304,7 +297,7 @@ jobs:
       RUBY_VERSION: '3.0.0'
       PUPPET_VERSION: '7.34.0'
 
-  specs-ruby25-puppet65-windows: &windows-specs
+  specs-ruby26-puppet79-windows: &windows-specs
     executor:
       name: win/default # Comes with ruby 2.6, which is not supported on Windows as of puppet 6.10.1
       shell: bash.exe
@@ -318,10 +311,8 @@ jobs:
         name: Run tests
         command: |
           set -e
-          choco install ruby --allow-downgrade -y --version 2.5.3.101 # Keep version in sync with next command!
-          export PATH=/c/tools/ruby25/bin:$PATH # Make Ruby 2.5 take precedence over the pre-installed 2.6
           ruby --version
-          choco install msys2 --allow-downgrade -y --version 20210604.0.0
+          choco install msys2 -y
           ridk.cmd exec pacman -S --noconfirm --needed base-devel mingw-w64-x86_64-toolchain
           gem install bundler -v 2.4.13
           rm Gemfile.lock && bundle install --path .bundle
@@ -329,7 +320,7 @@ jobs:
     environment:
       STRICT_VARIABLES: 'yes'
       #RUBY_VERSION hardcoded in install script
-      PUPPET_VERSION: '6.5.0'
+      PUPPET_VERSION: '7.9.0'
 
   verify-gemfile-lock-dependencies:
     machine:
@@ -419,8 +410,8 @@ workflows:
     # - specs-ruby25-puppet50
     # - specs-ruby25-puppet53
     # - specs-ruby25-puppet60
-    - specs-ruby25-puppet65
-    - specs-ruby25-puppet65-windows
+    # - specs-ruby25-puppet65
+    - specs-ruby26-puppet79-windows
     # - specs-ruby26-puppet60
     - specs-ruby26-puppet65
     - specs-ruby26-puppet79

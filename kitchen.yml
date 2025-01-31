@@ -21,6 +21,9 @@ platforms:
     run_command: /root/start.sh
   driver:
     provision_command:
+    - yum --enablerepo=centos-sclo-rh -y install rh-ruby26
+    - scl enable rh-ruby26 bash
+
     - rpm -ivh http://yum.puppetlabs.com/puppet6-release-el-7.noarch.rpm #installs the puppet-agent repo
     - yum install -y puppet-agent rubygems
     - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet

@@ -344,6 +344,7 @@ class datadog_agent (
   String $apt_release                                                       = $datadog_agent::params::apt_default_release,
   Optional[String] $service_provider                                        = undef,
   Optional[String] $agent_version                                           = $datadog_agent::params::agent_version,
+  Boolean $otlp_enabled                                                     = false,
 ) inherits datadog_agent::params {
 
   #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'

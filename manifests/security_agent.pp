@@ -1,3 +1,7 @@
+# Class: datadog_agent::security_agent
+#
+# This class defines the Datadog Security Agent configuration.
+#
 class datadog_agent::security_agent (
   Boolean $enabled = false,
   Optional[String] $socket = undef,

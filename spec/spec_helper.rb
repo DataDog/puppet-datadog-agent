@@ -18,23 +18,23 @@ WINDOWS_OS = ['Windows'].freeze
 if RSpec::Support::OS.windows?
   ALL_OS                     = WINDOWS_OS
   ALL_SUPPORTED_AGENTS       = [6, 7].freeze
-  CONF_DIR = 'C:/ProgramData/Datadog/conf.d'.freeze
-  DD_USER                    = 'ddagentuser'.freeze
-  DD_GROUP                   = 'S-1-5-32-544'.freeze
-  SERVICE_NAME               = 'datadogagent'.freeze
-  PACKAGE_NAME               = 'Datadog Agent'.freeze
-  PERMISSIONS_FILE           = '0664'.freeze
-  PERMISSIONS_PROTECTED_FILE = '0660'.freeze
+  CONF_DIR = 'C:/ProgramData/Datadog/conf.d'
+  DD_USER                    = 'ddagentuser'
+  DD_GROUP                   = 'S-1-5-32-544'
+  SERVICE_NAME               = 'datadogagent'
+  PACKAGE_NAME               = 'Datadog Agent'
+  PERMISSIONS_FILE           = '0664'
+  PERMISSIONS_PROTECTED_FILE = '0660'
 else
   ALL_OS                     = DEBIAN_OS + REDHAT_OS
   ALL_SUPPORTED_AGENTS       = [5, 6, 7].freeze
-  CONF_DIR = '/etc/datadog-agent/conf.d'.freeze
-  DD_USER                    = 'dd-agent'.freeze
-  DD_GROUP                   = 'dd-agent'.freeze
-  SERVICE_NAME               = 'datadog-agent'.freeze
-  PACKAGE_NAME               = 'datadog-agent'.freeze
-  PERMISSIONS_FILE           = '0644'.freeze
-  PERMISSIONS_PROTECTED_FILE = '0600'.freeze
+  CONF_DIR = '/etc/datadog-agent/conf.d'
+  DD_USER                    = 'dd-agent'
+  DD_GROUP                   = 'dd-agent'
+  SERVICE_NAME               = 'datadog-agent'
+  PACKAGE_NAME               = 'datadog-agent'
+  PERMISSIONS_FILE           = '0644'
+  PERMISSIONS_PROTECTED_FILE = '0600'
 end
 
 def min_puppet_version(version)

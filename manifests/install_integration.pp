@@ -1,3 +1,5 @@
+# Define: datadog_agent::install_integration
+#
 # Installs the integration with the given name and version.
 define datadog_agent::install_integration (
   Enum['present', 'absent'] $ensure           = 'present',

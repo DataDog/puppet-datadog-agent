@@ -18,7 +18,6 @@
 #     ],
 #   }
 #
-
 class datadog_agent::integrations::oom_kill (
   Array $instances = [],
 ) inherits datadog_agent::params {

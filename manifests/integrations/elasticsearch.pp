@@ -31,19 +31,14 @@ class datadog_agent::integrations::elasticsearch (
   Boolean $pshard_stats                = false,
   Optional[String] $ssl_cert           = undef,
   Optional[String] $ssl_key            = undef,
-  Variant[Boolean, String] $ssl_verify = true,
+  Boolean $ssl_verify                  = true, #kept for backwards compatibility
+  Boolean $tls_verify                  = $ssl_verify,
   Array $tags                          = [],
   String $url                          = 'http://localhost:9200',
   Optional[String] $username           = undef,
   Optional[Array] $instances           = undef
 ) inherits datadog_agent::params {
   require datadog_agent
-
-  # $ssl_verify can be a bool or a string
-  # https://github.com/DataDog/dd-agent/blob/master/checks.d/elastic.py#L454-L455
-  if $ssl_verify.is_a(String) {
-    validate_absolute_path($ssl_verify) #potentially replace with find_file
-  }
 
   if !$instances and $url {
     $_instances = [{
@@ -54,7 +49,7 @@ class datadog_agent::integrations::elasticsearch (
         'pshard_stats'       => $pshard_stats,
         'ssl_cert'           => $ssl_cert,
         'ssl_key'            => $ssl_key,
-        'ssl_verify'         => $ssl_verify,
+        'tls_verify'         => $tls_verify,
         'tags'               => $tags,
         'url'                => $url,
         'username'           => $username

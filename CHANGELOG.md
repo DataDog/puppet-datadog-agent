@@ -6,6 +6,7 @@ Changes
 * [FEATURE] Update Module Dependencies including updates for StdLib, migrating to newer functions where appropriate ([#823])
 * [BUGFIX] Fix issue where MSI path was not correctly parsed ([#823])
 * [FEATURE] Update to CI Builds to work with Ruby 3
+* [DEPRECATE] Remove support for supply a String to the SSL_Verify option on the elasticsearch integration. We now use tls_verify which matches core DataDog code.
 
 # 3.23.0 / 2024-12-09
 

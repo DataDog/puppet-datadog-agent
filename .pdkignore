@@ -50,7 +50,6 @@ bolt-debug.log
 /..yml
 /.yardopts
 /spec/
-/.vscode/
 /.sync.yml
 /.devcontainer/
 /.github/

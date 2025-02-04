@@ -36,7 +36,7 @@ group :development do
   gem "mixlib-shellout", "~> 2.2.7",                               platforms: [:ruby]
   if ruby_version >= Gem::Version.new('2.5') && ruby_version < Gem::Version.new('3.1')
     gem "test-kitchen", '= 3.0.0', platforms: [:ruby]
-    gem "rubocop", '~> 1.19',                    require: false
+    gem "rubocop", '~> 1.30',                    require: false
     gem "rubocop-rspec", '= 2.10.0',               require: false
     gem "facterdb", '~> 1.21',                      require: false
     gem "rspec-puppet-facts", '~> 1.10.0',            require: false

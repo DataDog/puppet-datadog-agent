@@ -31,7 +31,7 @@ describe 'datadog_agent::integrations::elasticsearch' do
         it { is_expected.to contain_file(conf_file).with_content(%r{      pshard_stats: false}) }
         it { is_expected.not_to contain_file(conf_file).with_content(%r{      username}) }
         it { is_expected.not_to contain_file(conf_file).with_content(%r{      password}) }
-        it { is_expected.not_to contain_file(conf_file).with_content(%r{      ssl_verify}) }
+        it { is_expected.not_to contain_file(conf_file).with_content(%r{      tls_verify}) }
         it { is_expected.not_to contain_file(conf_file).with_content(%r{      ssl_cert}) }
         it { is_expected.not_to contain_file(conf_file).with_content(%r{      ssl_key}) }
         it { is_expected.not_to contain_file(conf_file).with_content(%r{      tags:}) }
@@ -54,7 +54,7 @@ describe 'datadog_agent::integrations::elasticsearch' do
         it { is_expected.to contain_file(conf_file).with_content(%r{      pending_task_stats: false}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      username: username}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      password: password}) }
-        it { is_expected.to contain_file(conf_file).with_content(%r{      ssl_verify: true}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{      tls_verify: true}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      ssl_cert: /etc/ssl/certs/client.pem}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      ssl_key: /etc/ssl/private/client.key}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      tags:}) }
@@ -73,7 +73,7 @@ describe 'datadog_agent::integrations::elasticsearch' do
                 'pshard_stats'       => true,
                 'url'                => 'https://foo:4242',
                 'username'           => 'username',
-                'ssl_verify'         => true,
+                'tls_verify'         => true,
                 'ssl_cert'           => '/etc/ssl/certs/client.pem',
                 'ssl_key'            => '/etc/ssl/private/client.key',
                 'tags'               => ['tag1:key1'],
@@ -86,7 +86,7 @@ describe 'datadog_agent::integrations::elasticsearch' do
                 'pshard_stats'       => false,
                 'url'                => 'https://bar:2424',
                 'username'           => 'username_2',
-                'ssl_verify'         => false,
+                'tls_verify'         => false,
                 'tags'               => ['tag2:key2'],
               },
             ],
@@ -101,7 +101,7 @@ describe 'datadog_agent::integrations::elasticsearch' do
         it { is_expected.to contain_file(conf_file).with_content(%r{      username: username}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      password: password}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      pshard_stats: true}) }
-        it { is_expected.to contain_file(conf_file).with_content(%r{      ssl_verify: true}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{      tls_verify: true}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      ssl_cert: /etc/ssl/certs/client.pem}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      ssl_key: /etc/ssl/private/client.key}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      tags:\n        - tag1:key1}) }
@@ -112,7 +112,7 @@ describe 'datadog_agent::integrations::elasticsearch' do
         it { is_expected.to contain_file(conf_file).with_content(%r{      username: username_2}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      password: password_2}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      pshard_stats: false}) }
-        it { is_expected.to contain_file(conf_file).with_content(%r{      ssl_verify: false}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{      tls_verify: false}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{      tags:\n        - tag2:key2}) }
       end
     end

@@ -42,7 +42,7 @@ class datadog_agent::integrations::elasticsearch (
   # $ssl_verify can be a bool or a string
   # https://github.com/DataDog/dd-agent/blob/master/checks.d/elastic.py#L454-L455
   if $ssl_verify.is_a(String) {
-    validate_absolute_path($ssl_verify)
+    validate_absolute_path($ssl_verify) #potentially replace with find_file
   }
 
   if !$instances and $url {

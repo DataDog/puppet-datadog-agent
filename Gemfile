@@ -32,13 +32,8 @@ group :development do
   gem "kitchen-puppet"
   gem "kitchen-docker", '~> 3.0.0',              require: false
   gem "kitchen-verifier-serverspec"
-<<<<<<< Updated upstream
   gem "rexml", '= 3.2.6',                        require: false
-  gem "mixlib-shellout", "~> 2.2.7",                               platforms: [:ruby]
-=======
-  gem "rexml", '>= 3.0.0', '< 3.2.7',            require: false
   gem "mixlib-shellout", "~> 2.2.7",             platforms: [:ruby]
->>>>>>> Stashed changes
   if ruby_version >= Gem::Version.new('2.5') && ruby_version < Gem::Version.new('3.1')
     gem "test-kitchen", '= 3.0.0', platforms: [:ruby]
     gem "rubocop", '~> 1.30',                    require: false

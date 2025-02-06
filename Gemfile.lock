@@ -545,7 +545,7 @@ DEPENDENCIES
   puppet_litmus (~> 1.0)
   puppetlabs_spec_helper (~> 8.0)
   rb-readline (= 0.5.5)
-  rexml (>= 3.0.0, < 3.2.7)
+  rexml (= 3.2.6)
   rspec-puppet-facts (~> 4.0)
   rubocop (~> 1.50.0)
   rubocop-performance (= 1.16.0)

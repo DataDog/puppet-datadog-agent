@@ -12,11 +12,14 @@ jobs:
     steps:
     - checkout
     - run:
-        name: Install libcurl4 and openssl
+        name: Setup
         command: |
           # Needed to bundle install a puppet_litmus gem dependency
           sudo apt update -y
           sudo apt install -y libcurl4 curl libcurl4-openssl-dev
+
+          # Set /tmp permissions to 1777: https://www.puppet.com/docs/puppet/8/server/known_issues.html#tmp-directory-mounted-noexec
+          sudo chmod 1777 /tmp
     - run:
         name: Install RVM
         command: |
@@ -124,11 +127,14 @@ jobs:
     steps:
     - checkout
     - run:
-        name: Install libcurl4 and openssl
+        name: Setup
         command: |
           # Needed to bundle install a puppet_litmus gem dependency
           sudo apt update -y
           sudo apt install -y libcurl4 curl libcurl4-openssl-dev
+
+          # Set /tmp permissions to 1777: https://www.puppet.com/docs/puppet/8/server/known_issues.html#tmp-directory-mounted-noexec
+          sudo chmod 1777 /tmp
     - run:
         name: Install RVM
         command: |
@@ -203,11 +209,14 @@ jobs:
     steps:
     - checkout
     - run:
-        name: Install libcurl4 and openssl
+        name: Setup
         command: |
           # Needed to bundle install a puppet_litmus gem dependency
           sudo apt update -y
           sudo apt install -y libcurl4 curl libcurl4-openssl-dev
+
+          # Set /tmp permissions to 1777: https://www.puppet.com/docs/puppet/8/server/known_issues.html#tmp-directory-mounted-noexec
+          sudo chmod 1777 /tmp
     - run:
         name: Install RVM
         command: |

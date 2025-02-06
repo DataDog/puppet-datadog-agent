@@ -30,22 +30,22 @@ group :development do
   gem "rb-readline", '= 0.5.5',                  require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "bcrypt_pbkdf", '= 1.0.1',                 require: false
   gem "kitchen-puppet"
-  gem "kitchen-docker"
+  gem "kitchen-docker", '~> 3.0.0',              require: false
   gem "kitchen-verifier-serverspec"
-  gem "rexml", '>= 3.0.0', '< 3.2.7',            require: false
-  gem "mixlib-shellout", "~> 2.2.7",                               platforms: [:ruby]
+  gem "rexml", '= 3.2.6',                        require: false
+  gem "mixlib-shellout", "~> 2.2.7",             platforms: [:ruby]
   if ruby_version >= Gem::Version.new('2.5') && ruby_version < Gem::Version.new('3.1')
     gem "test-kitchen", '= 3.0.0', platforms: [:ruby]
     gem "rubocop", '~> 1.30',                    require: false
-    gem "rubocop-rspec", '= 2.10.0',               require: false
-    gem "facterdb", '~> 1.21',                      require: false
-    gem "rspec-puppet-facts", '~> 1.10.0',            require: false
-    gem "rubocop-performance", '~> 1.11',         require: false
+    gem "rubocop-rspec", '= 2.10.0',             require: false
+    gem "facterdb", '~> 1.21',                   require: false
+    gem "rspec-puppet-facts", '~> 1.10.0',       require: false
+    gem "rubocop-performance", '~> 1.11',        require: false
     gem "librarian-puppet", '= 4.0.1'
-    gem "io-console", '= 0.5.9',                   require: false
-    gem "metadata-json-lint", '~> 3.0.3',            require: false
+    gem "io-console", '= 0.5.9',                 require: false
+    gem "metadata-json-lint", '~> 3.0.3',        require: false
     gem "voxpupuli-puppet-lint-plugins", '~> 4.0', require: false
-    gem "dependency_checker", '= 0.3.0',          require: false
+    gem "dependency_checker", '= 0.3.0',           require: false
   else
     gem "facterdb", '~> 2.1',                      require: false
     gem "test-kitchen", '~> 3.7.0'
@@ -63,8 +63,8 @@ end
 group :development, :release_prep do
   if ruby_version >= Gem::Version.new('2.5') && ruby_version < Gem::Version.new('3.1')
     gem "puppetlabs_spec_helper", '~> 5.0.3', require: false
-    gem "puppet-blacksmith", '= 6.1.1',      require: false
-    gem "puppet-strings", '= 2.9.0',         require: false
+    gem "puppet-blacksmith", '= 6.1.1',       require: false
+    gem "puppet-strings", '= 2.9.0',          require: false
   else
     gem "puppetlabs_spec_helper", '~> 8.0', require: false
     gem "puppet-blacksmith", '~> 7.0',      require: false
@@ -75,10 +75,10 @@ group :system_tests do
   if ruby_version >= Gem::Version.new('2.5') && ruby_version < Gem::Version.new('3.1')
     gem "puppet_litmus", '= 0.0.1',   require: false, platforms: [:ruby, :x64_mingw]
   else
-    gem "puppet_litmus", '~> 1.0',   require: false, platforms: [:ruby, :x64_mingw]
+    gem "puppet_litmus", '~> 1.0',    require: false, platforms: [:ruby, :x64_mingw]
   end
-  gem "CFPropertyList", '< 3.0.7', require: false, platforms: [:mswin, :mingw, :x64_mingw]
-  gem "serverspec", '~> 2.41',     require: false
+  gem "CFPropertyList", '< 3.0.7',    require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "serverspec", '~> 2.41',        require: false
 end
 
 puppet_version = ENV['PUPPET_GEM_VERSION']

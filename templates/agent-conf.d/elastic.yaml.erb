@@ -16,7 +16,7 @@ instances:
       pshard_stats: <%= instance['pshard_stats'] %>
       pending_task_stats: <%= instance['pending_task_stats'] %>
 <%- if instance['url'].match(/^https/) -%>
-      ssl_verify: <%= instance['ssl_verify'] %>
+      tls_verify: <%= instance['tls_verify'] %>
 <%- end -%>
 <%- if instance['ssl_cert'] && instance['ssl_cert'] != :undef -%>
       ssl_cert: <%= instance['ssl_cert'] %>

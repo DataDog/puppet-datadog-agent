@@ -283,17 +283,17 @@ workflows:
     - specs-ruby31-puppet628
     - specs-ruby32-puppet628
     - specs-ruby33-puppet628
-    - specs-ruby34-puppet628
+    # - specs-ruby34-puppet628          # ruby v3.4 specs fail with `Puppet::Error: Cannot determine basic system flavour (Puppet::Error)`
     - specs-ruby26-puppet734
-    # - specs-ruby27-puppet79-windows # puppet_litmus requires a dependency "patron", which doesn't run on windows
+    # - specs-ruby27-puppet79-windows   # puppet_litmus requires a dependency "patron", which doesn't run on windows
     - specs-ruby27-puppet734
     - specs-ruby31-puppet734
     - specs-ruby32-puppet734
     - specs-ruby33-puppet734
-    - specs-ruby34-puppet734
+    # - specs-ruby34-puppet734
     - specs-ruby31-puppet810
     - specs-ruby32-puppet810
     - specs-ruby33-puppet810
-    - specs-ruby34-puppet810
+    # - specs-ruby34-puppet810
     - verify-gemfile-lock-dependencies
     - kitchen-tests

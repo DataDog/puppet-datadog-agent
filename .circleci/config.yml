@@ -2,9 +2,9 @@ version: 2.1
 orbs:
   win: circleci/windows@2.2.0
 jobs:
-  specs-ruby27-puppet65: &specs
+  specs-ruby27-puppet65: &ubuntu2004-specs
     machine:
-      image: ubuntu-2404:2024.08.1
+      image: ubuntu-2004:2024.08.1
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.7.5'
@@ -38,60 +38,95 @@ jobs:
         command: rvm $RUBY_VERSION --verbose do bundle exec rake test
 
   specs-ruby27-puppet79:
-    <<: *specs
+    <<: *ubuntu2004-specs
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.7.5'
       PUPPET_VERSION: '7.9.0'
 
   specs-ruby27-puppet714:
-    <<: *specs
+    <<: *ubuntu2004-specs
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.7.5'
       PUPPET_VERSION: '7.14.0'
 
   specs-ruby27-puppet725:
-    <<: *specs
+    <<: *ubuntu2004-specs
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.7.5'
       PUPPET_VERSION: '7.25.0'
 
   specs-ruby26-puppet65:
-    <<: *specs
+    <<: *ubuntu2004-specs
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.6.3'
       PUPPET_VERSION: '6.5.0'
 
   specs-ruby26-puppet79:
-    <<: *specs
+    <<: *ubuntu2004-specs
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.6.3'
       PUPPET_VERSION: '7.9.0'
 
   specs-ruby26-puppet714:
-    <<: *specs
+    <<: *ubuntu2004-specs
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.6.3'
       PUPPET_VERSION: '7.14.0'
 
   specs-ruby26-puppet725:
-    <<: *specs
+    <<: *ubuntu2004-specs
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '2.6.3'
       PUPPET_VERSION: '7.25.0'
 
-  specs-ruby31-puppet734:
-    <<: *specs
+  specs-ruby31-puppet734: &ubuntu2404-specs
+    machine:
+      image: ubuntu-2404:2024.08.1
     environment:
       STRICT_VARIABLES: 'yes'
       RUBY_VERSION: '3.1.6'
       PUPPET_VERSION: '7.34.0'
+    steps:
+    - checkout
+    - run:
+        name: Install libcurl4 and openssl
+        command: |
+          # Needed to bundle install a puppet_litmus gem dependency
+          sudo apt update -y
+          sudo apt install -y libcurl4 curl libcurl4-openssl-dev
+    - run:
+        name: Install RVM
+        command: |
+          gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+          \curl -sSL https://get.rvm.io | bash -s stable
+    - run:
+        name: Install Ruby version
+        command: rvm install $RUBY_VERSION
+    - run:
+        name: Install bundler
+        command: |
+          rm Gemfile.lock && rvm $RUBY_VERSION --verbose do bundle config set path '.bundle'
+          rvm $RUBY_VERSION --verbose do  gem install bundler:2.4.13
+    - run:
+        name: Install gem dependencies
+        command: rvm $RUBY_VERSION --verbose do bundle install
+    - run:
+        name: Run tests
+        command: rvm $RUBY_VERSION --verbose do bundle exec rake test
+
+  specs-ruby31-puppet810:
+    <<: *ubuntu2404-specs
+    environment:
+      STRICT_VARIABLES: 'yes'
+      RUBY_VERSION: '3.1.6'
+      PUPPET_VERSION: '8.10.0'
 
   # specs-ruby27-puppet79-windows:
   #   # &windows-specs
@@ -199,5 +234,6 @@ workflows:
     - specs-ruby27-puppet714
     - specs-ruby27-puppet725
     - specs-ruby31-puppet734
+    - specs-ruby31-puppet810
     - verify-gemfile-lock-dependencies
     - kitchen-tests

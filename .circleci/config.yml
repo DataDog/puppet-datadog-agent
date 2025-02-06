@@ -205,7 +205,7 @@ jobs:
       image: ubuntu-2404:2024.08.1
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '3.4.1'
+      RUBY_VERSION: '3.3.7'
     steps:
     - checkout
     - run:

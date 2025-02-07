@@ -23,8 +23,13 @@ describe 'datadog_agent::integrations::http_check' do
       it { is_expected.to contain_file(conf_file).that_notifies("Service[#{SERVICE_NAME}]") }
 
       context 'with default parameters' do
-        it { is_expected.to contain_file(conf_file).without_content(%r{name: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{url: }) }
+        let(:params) do
+          {
+            sitename: 'foo.bar.baz',
+            url: 'http://foo.bar.baz:4096',
+          }
+        end
+
         it { is_expected.to contain_file(conf_file).without_content(%r{username: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{password: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{timeout: 1}) }

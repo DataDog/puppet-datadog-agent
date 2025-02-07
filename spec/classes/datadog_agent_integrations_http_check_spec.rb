@@ -43,7 +43,7 @@ describe 'datadog_agent::integrations::http_check' do
         it { is_expected.to contain_file(conf_file).without_content(%(threshold: )) }
         it { is_expected.to contain_file(conf_file).without_content(%r{window: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{content_match: }) }
-        it { is_expected.to contain_file(conf_file).with_content(%r{reverse_content_match: false}) } # default value is false
+        it { is_expected.to contain_file(conf_file).without_content(%r{reverse_content_match: false}) }
         it { is_expected.to contain_file(conf_file).without_content(%r{include_content: true}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{collect_response_time: true}) } # default value is true
         it { is_expected.to contain_file(conf_file).without_content(%r{http_response_status_code: }) }

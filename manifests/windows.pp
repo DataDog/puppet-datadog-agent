@@ -33,7 +33,7 @@ class datadog_agent::windows (
 
   if $ensure == 'present' {
     if ($agent_version in ['6.14.0', '6.14.1']) {
-      fail('The specified agent version has been blacklisted, please specify a version other than 6.14.0 or 6.14.1')
+      fail('The specified agent version has been deemed unacceptable for installation, please specify a version other than 6.14.0 or 6.14.1')
     }
 
     file { 'installer':
@@ -42,15 +42,15 @@ class datadog_agent::windows (
       provider => 'windows',
     }
 
-    $unless_cmd = @("ACCEPTABLE"/L)
-      \$blacklist = '928b00d2f952219732cda9ae0515351b15f9b9c1ea1d546738f9dc0fda70c336','78b2bb2b231bcc185eb73dd367bfb6cb8a5d45ba93a46a7890fd607dc9188194';
+    $unless_cmd = @("ACCEPTABLE"/$L)
+      \$denylist = '928b00d2f952219732cda9ae0515351b15f9b9c1ea1d546738f9dc0fda70c336','78b2bb2b231bcc185eb73dd367bfb6cb8a5d45ba93a46a7890fd607dc9188194';
       \$fileStream = [system.io.file]::openread('${msi_full_path}');
       \$hasher = [System.Security.Cryptography.HashAlgorithm]::create('sha256');
       \$hash = \$hasher.ComputeHash(\$fileStream);
       \$fileStream.close();
       \$fileStream.dispose();
       \$hexhash = [system.bitconverter]::tostring(\$hash).ToLower().replace('-','');
-      if (\$blacklist.Contains(\$hexhash)) { Exit 1 } else { Exit 0 }
+      if (\$denylist.Contains(\$hexhash)) { Exit 1 } else { Exit 0 }
       | ACCEPTABLE
 
     exec { 'assert-acceptable-msi':,

@@ -2,11 +2,15 @@ Changes
 =======
 # 4.0.0 / 2025-02-01
 
-* [FEATURE] Add Support for Puppet 8 ([#823])
-* [FEATURE] Update Module Dependencies including updates for StdLib, migrating to newer functions where appropriate ([#823])
-* [BUGFIX] Fix issue where MSI path was not correctly parsed ([#823])
+* [FEATURE] Add Support for Puppet 8 ([#779])
+* [FEATURE] Update Module Dependencies including updates for StdLib, migrating to newer functions where appropriate ([#800])
+* [FEATURE] Class definitions updated with references to DataDog examples
 * [FEATURE] Update to CI Builds to work with Ruby 3
+* [BUGFIX] Fix issue where MSI path was not correctly parsed ([#814])
+* [DEPRECATE] Drop support for Puppet 6 and below
 * [DEPRECATE] Remove support for supply a String to the SSL_Verify option on the elasticsearch integration. We now use tls_verify which matches core DataDog code.
+* [DEPRECATE] Support for Jenkins integrations is removed
+* [DEPRECATE] No longer possible to use the custom metrics parameter when using the PostgresSQL class
 
 # 3.23.0 / 2024-12-09
 
@@ -936,13 +940,16 @@ Please read the [docs]() for more details.
 [#756]: https://github.com/DataDog/puppet-datadog-agent/issues/756
 [#761]: https://github.com/DataDog/puppet-datadog-agent/issues/761
 [#770]: https://github.com/DataDog/puppet-datadog-agent/issues/770
+[#779]: https://github.com/DataDog/puppet-datadog-agent/issues/779
 [#782]: https://github.com/DataDog/puppet-datadog-agent/issues/782
 [#785]: https://github.com/DataDog/puppet-datadog-agent/issues/785
 [#789]: https://github.com/DataDog/puppet-datadog-agent/issues/789
 [#790]: https://github.com/DataDog/puppet-datadog-agent/issues/790
 [#798]: https://github.com/DataDog/puppet-datadog-agent/issues/798
 [#799]: https://github.com/DataDog/puppet-datadog-agent/issues/799
+[#800]: https://github.com/DataDog/puppet-datadog-agent/issues/800
 [#806]: https://github.com/DataDog/puppet-datadog-agent/issues/806
+[#814]: https://github.com/DataDog/puppet-datadog-agent/issues/814
 [#820]: https://github.com/DataDog/puppet-datadog-agent/issues/820
 [#821]: https://github.com/DataDog/puppet-datadog-agent/issues/821
 [@Aramack]: https://github.com/Aramack

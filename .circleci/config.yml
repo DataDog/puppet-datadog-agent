@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  win: circleci/windows@2.2.0
+  win: circleci/windows@5.0.0
 jobs:
   specs-ruby26-puppet734: &ubuntu2004-specs
     machine:

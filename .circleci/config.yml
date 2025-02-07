@@ -2,13 +2,13 @@ version: 2.1
 orbs:
   win: circleci/windows@2.2.0
 jobs:
-  specs-ruby27-puppet628: &ubuntu2004-specs
+  specs-ruby26-puppet734: &ubuntu2004-specs
     machine:
       image: ubuntu-2004:2024.08.1
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.7.5'
-      PUPPET_VERSION: '6.28.0'
+      RUBY_VERSION: '2.6.3'
+      PUPPET_VERSION: '7.34.0'
     steps:
     - checkout
     - run:
@@ -36,48 +36,6 @@ jobs:
     - run:
         name: Run tests
         command: rvm $RUBY_VERSION --verbose do bundle exec rake test
-
-  specs-ruby31-puppet628:
-    <<: *ubuntu2004-specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '3.1.6'
-      PUPPET_VERSION: '6.28.0'
-
-  specs-ruby32-puppet628:
-    <<: *ubuntu2004-specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '3.2.7'
-      PUPPET_VERSION: '6.28.0'
-
-  specs-ruby33-puppet628:
-    <<: *ubuntu2004-specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '3.3.7'
-      PUPPET_VERSION: '6.28.0'
-
-  specs-ruby34-puppet628:
-    <<: *ubuntu2004-specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '3.4.1'
-      PUPPET_VERSION: '6.28.0'
-
-  specs-ruby26-puppet628:
-    <<: *ubuntu2004-specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
-      PUPPET_VERSION: '6.28.0'
-
-  specs-ruby26-puppet734:
-    <<: *ubuntu2004-specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
-      PUPPET_VERSION: '7.34.0'
 
   specs-ruby27-puppet734:
     <<: *ubuntu2004-specs
@@ -266,19 +224,13 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-    - specs-ruby26-puppet628
-    - specs-ruby27-puppet628
-    - specs-ruby31-puppet628
-    - specs-ruby32-puppet628
-    - specs-ruby33-puppet628
-    # - specs-ruby34-puppet628          # ruby v3.4 specs fail with `Puppet::Error: Cannot determine basic system flavour (Puppet::Error)`
     - specs-ruby26-puppet734
     # - specs-ruby27-puppet79-windows   # puppet_litmus requires a dependency "patron", which doesn't run on windows
     - specs-ruby27-puppet734
     - specs-ruby31-puppet734
     - specs-ruby32-puppet734
     - specs-ruby33-puppet734
-    # - specs-ruby34-puppet734
+    # - specs-ruby34-puppet734          # ruby v3.4 specs fail with `Puppet::Error: Cannot determine basic system flavour (Puppet::Error)`
     - specs-ruby31-puppet810
     - specs-ruby32-puppet810
     - specs-ruby33-puppet810

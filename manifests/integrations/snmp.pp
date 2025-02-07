@@ -55,11 +55,11 @@
 class datadog_agent::integrations::snmp (
   Optional[Any] $mibs_folder        = undef,
   Boolean $ignore_nonincreasing_oid = false,
-  Hash $init_config               = {},
-  Array $instances                = [],
-  Array $snmp_v1_instances        = [],
-  Array $snmp_v2_instances        = [],
-  Array $snmp_v3_instances        = [],
+  Hash $init_config                 = {},
+  Array[Hash] $instances            = [],
+  Array $snmp_v1_instances          = [],
+  Array $snmp_v2_instances          = [],
+  Array $snmp_v3_instances          = [],
 ) inherits datadog_agent::params {
   require datadog_agent
 

@@ -3,6 +3,9 @@
 # This class will install the necessary configuration for the oom_kill integration
 # For it to work you also need to enable the system-probe with enable_oom_kill set to true.
 #
+# See the sample oom_kill.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/datadog-agent/blob/main/cmd/agent/dist/conf.d/oom_kill.d/conf.yaml.example
+#
 # Parameters:
 #   $instances:
 #       Array of hashes for all oom_kill configs and associates tags. See example

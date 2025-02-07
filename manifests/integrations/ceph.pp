@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the ceph integration
 #
+# See the sample ceph.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/ceph/datadog_checks/ceph/data/conf.yaml.example
+#
 # Parameters:
 #   $tags
 #       Optional array of tags

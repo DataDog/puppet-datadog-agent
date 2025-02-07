@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the system_core integration
 #
+# See the sample system_core.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/system_core/datadog_checks/system_core/data/conf.yaml.example
+#
 # Sample Usage:
 #   include 'datadog_agent::integrations::system_core'
 #

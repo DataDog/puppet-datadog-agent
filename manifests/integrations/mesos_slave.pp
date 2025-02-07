@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the mesos slave integration
 #
+# See the sample mesos_slave.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/mesos_slave/datadog_checks/mesos_slave/data/conf.yaml.example
+#
 # Parameters:
 #   $url:
 #     The URL for Mesos slave

@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the logs integration.
 #
+# See the Datadog Logs Collection docs for all available configuration options
+# https://docs.datadoghq.com/agent/logs/?tab=tailfiles#custom-log-collection
+#
 # Parameters:
 #   $logs:
 #       array of log sources.

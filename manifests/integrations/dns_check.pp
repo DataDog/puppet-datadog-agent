@@ -3,6 +3,9 @@
 # This class will install the necessary configuration for the DNS check
 # integration.
 #
+# See the sample dns_check.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/dns_check/datadog_checks/dns_check/data/conf.yaml.example
+#
 # Parameters:
 #   $hostname:
 #       Domain or IP you wish to check the availability of.

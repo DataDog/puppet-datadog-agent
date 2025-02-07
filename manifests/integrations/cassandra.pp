@@ -3,6 +3,12 @@
 # This class will install the necessary configuration for the Cassandra
 # integration.
 #
+# See the sample cassandra.d/conf.yaml for all available configuration options.
+# https://github.com/DataDog/integrations-core/blob/master/cassandra/datadog_checks/cassandra/data/conf.yaml.example
+#
+# See the metrics.yaml file for the list of default collected metrics.
+# https://github.com/DataDog/integrations-core/blob/master/cassandra/datadog_checks/cassandra/data/metrics.yaml
+#
 # This check has a limit of 350 metrics per instance. If you require 
 # additional metrics, contact Datadog Support at https://docs.datadoghq.com/help/
 #

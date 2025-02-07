@@ -2,6 +2,9 @@
 #
 # This class will enable ntp check
 #
+# See the sample ntp.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/datadog-agent/blob/main/cmd/agent/dist/conf.d/ntp.d/conf.yaml.default
+#
 # Parameters:
 #   $offset_threshold:
 #        Offset threshold for a critical alert. Defaults to 600.

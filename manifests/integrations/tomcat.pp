@@ -2,6 +2,15 @@
 #
 # This class will install the necessary configuration for the tomcat integration
 #
+# See the sample tomcat.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/tomcat/datadog_checks/tomcat/data/conf.yaml.example
+#
+# See the metrics.yaml file for the list of default collected metrics.
+# https://github.com/DataDog/integrations-core/blob/master/tomcat/datadog_checks/tomcat/data/metrics.yaml
+#
+# This check has a limit of 350 metrics per instance. If you require 
+# additional metrics, contact Datadog Support at https://docs.datadoghq.com/help/
+#
 # Parameters:
 #   $hostname:
 #       The host tomcat is running on. Defaults to 'localhost'

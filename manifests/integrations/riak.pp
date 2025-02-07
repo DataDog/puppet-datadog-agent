@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the riak integration
 #
+# See the sample riak.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/riak/datadog_checks/riak/data/conf.yaml.example
+#
 # Parameters:
 #   $url:
 #     The URL for riak

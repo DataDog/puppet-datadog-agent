@@ -2,6 +2,9 @@
 #
 # This class will install the necessary config to hook the tcp_check in the agent
 #
+# See the sample tcp_check.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/tcp_check/datadog_checks/tcp_check/data/conf.yaml.example
+#
 # Parameters:
 #   check_name
 #       (Required) - Name of the service.

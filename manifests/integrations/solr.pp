@@ -2,6 +2,15 @@
 #
 # This class will install the necessary configuration for the solr integration
 #
+# See the sample solr.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/solr/datadog_checks/solr/data/conf.yaml.example
+#
+# See the metrics.yaml file for the list of default collected metrics.
+# https://github.com/DataDog/integrations-core/blob/master/solr/datadog_checks/solr/data/metrics.yaml
+#
+# This check has a limit of 350 metrics per instance. If you require 
+# additional metrics, contact Datadog Support at https://docs.datadoghq.com/help/
+#
 # Parameters:
 #   $hostname:
 #       The host solr is running on. Defaults to 'localhost'

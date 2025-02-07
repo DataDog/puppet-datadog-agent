@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the mesos integration
 #
+# See the sample mesos_master.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/mesos_master/datadog_checks/mesos_master/data/conf.yaml.example
+#
 # Parameters:
 #   $url:
 #     The URL for Mesos master

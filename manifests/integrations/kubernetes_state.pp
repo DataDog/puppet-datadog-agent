@@ -1,6 +1,9 @@
 # Class: datadog_agent::integrations::kubernetes
 #
-# This class will install the necessary configuration for the kubernetes integration
+# This class will install the necessary configuration for the kubernetes_state integration
+#
+# See the sample kubernetes_state.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/kubernetes_state/datadog_checks/kubernetes_state/data/conf.yaml.example
 #
 # Parameters:
 #   $url:

@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the haproxy integration
 #
+# See the sample haproxy.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/haproxy/datadog_checks/haproxy/data/conf.yaml.example
+#
 # Parameters:
 #   $url:
 #     The URL for haproxy

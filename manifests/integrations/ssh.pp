@@ -2,6 +2,9 @@
 #
 # This class will enable ssh check
 #
+# See the sample ssh_check.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/ssh_check/datadog_checks/ssh_check/data/conf.yaml.example
+#
 # Parameters:
 #   $host:
 #        ssh server to use for ssh check

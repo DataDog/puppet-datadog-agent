@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the mysql integration
 #
+# See the sample mysql.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/mysql/datadog_checks/mysql/data/conf.yaml.example
+#
 # Parameters:
 #   $password
 #       The mysql password for the datadog user

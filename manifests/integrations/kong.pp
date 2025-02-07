@@ -2,7 +2,10 @@
 #
 # This class will install the necessary configuration for the Kong integration
 #
-# Note: if you're Cassandra data-store is large in size the `/status` page may
+# See the sample kong.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/kong/datadog_checks/kong/data/conf.yaml.example
+#
+# Note: if your Kong data-store is large in size the `/status` page may
 # take a long time to return.
 # <https://github.com/Mashape/kong/issues/1323>
 #

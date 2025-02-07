@@ -2,6 +2,9 @@
 #
 # This class will install the fluentd integration
 #
+# See the sample fluentd.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/fluentd/datadog_checks/fluentd/data/conf.yaml.example
+#
 # Parameters:
 #   $monitor_agent_url
 #       The url fluentd lists it's plugins on

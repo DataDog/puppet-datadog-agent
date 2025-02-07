@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the mongo integration
 #
+# See the sample mongo.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/mongo/datadog_checks/mongo/data/conf.yaml.example
+#
 # NOTE: In newer versions of the Datadog Agent, the ssl parameters will be deprecated in favor the tls variants
 #
 # Parameters:

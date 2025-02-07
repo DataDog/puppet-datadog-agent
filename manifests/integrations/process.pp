@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the process integration
 #
+# See the sample process.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/process/datadog_checks/process/data/conf.yaml.example
+#
 # Parameters:
 #   $processes:
 #       Array of process hashes. See example

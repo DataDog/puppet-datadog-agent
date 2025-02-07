@@ -2,6 +2,9 @@
 #
 # This class will enable snmp check
 #
+# See the sample snmp.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/snmp/datadog_checks/snmp/data/conf.yaml.example
+#
 # Parameters:
 #   $init_config:
 #       Optional hash (see snmp.yaml.example for reference)
@@ -52,11 +55,11 @@
 class datadog_agent::integrations::snmp (
   Optional[Any] $mibs_folder        = undef,
   Boolean $ignore_nonincreasing_oid = false,
-  Hash $init_config               = {},
-  Array $instances                = [],
-  Array $snmp_v1_instances        = [],
-  Array $snmp_v2_instances        = [],
-  Array $snmp_v3_instances        = [],
+  Hash $init_config                 = {},
+  Array[Hash] $instances            = [],
+  Array $snmp_v1_instances          = [],
+  Array $snmp_v2_instances          = [],
+  Array $snmp_v3_instances          = [],
 ) inherits datadog_agent::params {
   require datadog_agent
 

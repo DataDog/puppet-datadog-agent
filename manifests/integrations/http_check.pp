@@ -101,7 +101,8 @@
 #       left in the certificate, and alternatively raise a critical
 #       warning if the certificate is y days from the expiration date.
 #       The SSL certificate will always be validated for this additional
-#       service check regardless of the value of disable_ssl_validation
+#       service check regardless of the value of disable_ssl_validation.
+#       check_certification_expiration defaults to true.
 #
 #   headers
 #       The (optional) headers parameter allows you to send extra headers with

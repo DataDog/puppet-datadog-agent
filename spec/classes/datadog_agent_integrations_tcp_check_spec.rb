@@ -41,7 +41,7 @@ describe 'datadog_agent::integrations::tcp_check' do
         it { is_expected.to contain_file(conf_file).with_content(%r{name: }) }
         it { is_expected.to contain_file(conf_file).with_content(%r{host: }) }
         it { is_expected.to contain_file(conf_file).with_content(%r{port: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{timeout: 1}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{timeout: 10}) } # default value is 10
         it { is_expected.to contain_file(conf_file).without_content(%(threshold: )) }
         it { is_expected.to contain_file(conf_file).without_content(%r{window: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{collect_response_time: }) }

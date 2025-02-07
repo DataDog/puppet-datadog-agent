@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the Marathon integration
 #
+# See the sample marathon.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/marathon/datadog_checks/marathon/data/conf.yaml.example
+#
 # Parameters:
 #   $url:
 #     The URL for Marathon

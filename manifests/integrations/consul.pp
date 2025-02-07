@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the consul integration
 #
+# See the sample consul.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/consul/datadog_checks/consul/data/conf.yaml.example
+#
 # Parameters:
 #   $url:
 #     The URL for consul

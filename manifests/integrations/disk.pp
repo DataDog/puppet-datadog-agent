@@ -2,6 +2,9 @@
 #
 # This class will install the necessary config to hook the disk check
 #
+# See the sample disk.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/disk/datadog_checks/disk/data/conf.yaml.default
+#
 # Parameters:
 #   $use_mount
 #       The use_mount parameter will instruct the check to collect disk

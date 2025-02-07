@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the twemproxy aka nutcracker integration
 #
+# See the sample twemproxy.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/twemproxy/datadog_checks/twemproxy/data/conf.yaml.example
+#
 # Parameters:
 #   $host:
 #       The host twemproxy is running on. Defaults to '127.0.0.1'

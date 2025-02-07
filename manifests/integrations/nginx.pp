@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the nginx integration
 #
+# See the sample nginx.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/nginx/datadog_checks/nginx/data/conf.yaml.example
+#
 # Parameters:
 #   $instances:
 #       Array of hashes for all nginx urls and associates tags. See example

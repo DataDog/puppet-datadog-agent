@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the CPU cores integration
 #
+# See the sample linux_proc_extras.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/linux_proc_extras/datadog_checks/linux_proc_extras/data/conf.yaml.example
+#
 # Parameters:
 #
 #   tags

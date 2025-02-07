@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the varnish integration
 #
+# See the sample varnish.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/varnish/datadog_checks/varnish/data/conf.yaml.example
+#
 # Parameters:
 #   varnishstat
 #       Path to the varnishstat binary

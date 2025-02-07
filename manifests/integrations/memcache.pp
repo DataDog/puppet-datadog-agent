@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the memcache integration
 #
+# See the sample memcache.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/memcache/datadog_checks/memcache/data/conf.yaml.example
+#
 # Parameters:
 #   $url:
 #       url used to connect to the memcached instance

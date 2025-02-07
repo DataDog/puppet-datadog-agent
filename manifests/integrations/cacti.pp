@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the cacti integration
 #
+# See the sample cacti.d/conf.yaml for all available configuration options.
+# https://github.com/DataDog/integrations-core/blob/master/cacti/datadog_checks/cacti/data/conf.yaml.example
+# 
 # Parameters:
 #   $host:
 #       The host cacti MySQL db is running on

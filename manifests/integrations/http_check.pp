@@ -2,6 +2,9 @@
 #
 # This class will install the necessary config to hook the http_check in the agent
 #
+# See the sample http_check.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/http_check/datadog_checks/http_check/data/conf.yaml.example
+#
 # Parameters:
 #   sitename
 #       (Required) The name of the instance.

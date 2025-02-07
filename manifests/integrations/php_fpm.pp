@@ -2,6 +2,9 @@
 #
 # This class will set-up PHP FPM monitoring
 #
+# See the sample php_fpm.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/php_fpm/datadog_checks/php_fpm/data/conf.yaml.example
+#
 # @param status_url
 #        URL to fetch FPM metrics. Default: http://localhost/status
 #

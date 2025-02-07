@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the apache integration
 #
+# See the sample apache.d/conf.yaml for all available configuration options.
+# https://github.com/DataDog/integrations-core/blob/master/apache/datadog_checks/apache/data/conf.yaml.example
+#
 # Parameters:
 #   $url:
 #       The URL for apache status URL handled by mod-status.

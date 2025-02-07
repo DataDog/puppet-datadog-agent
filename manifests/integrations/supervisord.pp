@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the supervisord integration
 #
+# See the sample supervisord.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/supervisord/datadog_checks/supervisord/data/conf.yaml.example
+#
 # Parameters:
 #   servername
 #   socket

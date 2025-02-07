@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the zk integration
 #
+# See the sample zk.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/zk/datadog_checks/zk/data/conf.yaml.example
+#
 # Parameters:
 #   $host:
 #       The host zk is running on. Defaults to '127.0.0.1'

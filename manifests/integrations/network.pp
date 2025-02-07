@@ -2,6 +2,9 @@
 #
 # This class will install the network integration
 #
+# See the sample network.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/network/datadog_checks/network/data/conf.yaml.default
+#
 # Parameters:
 #   $collect_connection_state
 #       Enable TCP connection state counts

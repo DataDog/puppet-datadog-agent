@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the kubernetes integration
 #
+# See the sample kubernetes.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/kubernetes/datadog_checks/kubernetes/data/conf.yaml.example
+#
 # Parameters:
 #   $url:
 #     The URL for kubernetes API

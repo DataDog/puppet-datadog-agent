@@ -2,6 +2,9 @@
 #
 # This class will enable snmp check
 #
+# See the sample snmp.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/snmp/datadog_checks/snmp/data/conf.yaml.example
+#
 # Parameters:
 #   $init_config:
 #       Optional hash (see snmp.yaml.example for reference)

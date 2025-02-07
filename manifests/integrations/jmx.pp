@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the jmx integration
 #
+# See the sample jmx.d/conf.yaml for all available configuration options
+# https://docs.datadoghq.com/integrations/java/?tab=host#overview
+#
 # Parameters:
 #   $init_config:
 #       Hash of inital configuration, consisting of the following keys:

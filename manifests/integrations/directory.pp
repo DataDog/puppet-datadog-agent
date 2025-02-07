@@ -2,6 +2,9 @@
 #
 # This class will install the necessary config to hook the directory in the agent
 #
+# See the sample directory.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/directory/datadog_checks/directory/data/conf.yaml.example
+#
 # Parameters:
 #   directory
 #       (Required) - string, the directory path to monitor

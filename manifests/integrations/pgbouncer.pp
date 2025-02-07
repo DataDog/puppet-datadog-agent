@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the pgbouncer integration
 #
+# See the sample pgbouncer.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/pgbouncer/datadog_checks/pgbouncer/data/conf.yaml.example
+#
 # Parameters:
 #   $password:
 #       The password for the datadog user

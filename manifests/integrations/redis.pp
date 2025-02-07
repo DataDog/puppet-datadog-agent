@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the redis integration
 #
+# See the sample redisdb.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/redisdb/datadog_checks/redisdb/data/conf.yaml.example
+#
 # Parameters:
 #   $host:
 #       The host redis is running on

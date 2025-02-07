@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the elasticsearch integration
 #
+# See the sample elastic.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/elastic/datadog_checks/elastic/data/conf.yaml.example
+#
 # Parameters:
 #   $url:
 #     The URL for Elasticsearch

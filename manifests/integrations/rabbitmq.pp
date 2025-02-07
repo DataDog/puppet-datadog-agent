@@ -2,6 +2,9 @@
 #
 # This class will install the necessary config to hook the rabbitmq in the agent
 #
+# See the sample rabbitmq.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/rabbitmq/datadog_checks/rabbitmq/data/conf.yaml.example
+#
 # Parameters:
 #   $url
 #       Required. URL pointing to the RabbitMQ Managment Plugin

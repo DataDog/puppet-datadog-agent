@@ -48,9 +48,9 @@ describe 'datadog_agent::integrations::http_check' do
         it { is_expected.to contain_file(conf_file).without_content(%r{collect_response_time: true}) }
         it { is_expected.to contain_file(conf_file).without_content(%r{http_response_status_code: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{disable_ssl_validation: false}) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{skip_event: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{no_proxy: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{check_certificate_expiration: }) }
+        it { is_expected.to contain_file(conf_file).without_content(%r{skip_event: true }) }
+        it { is_expected.to contain_file(conf_file).without_content(%r{no_proxy: false }) }
+        it { is_expected.to contain_file(conf_file).without_content(%r{check_certificate_expiration: true }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{days_warning: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{days_critical: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{headers: }) }

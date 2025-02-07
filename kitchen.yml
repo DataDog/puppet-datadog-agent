@@ -58,11 +58,11 @@ platforms:
     image: 'ubuntu:20.04'
     docker_platform: linux/amd64
     provision_command:
-    - apt-get install -y apt-utils apt-transport-https ca-certificates
+    - apt-get install -y apt-utils apt-transport-https ca-certificates make gcc
     - wget https://apt.puppet.com/puppet8-release-focal.deb
     - dpkg -i puppet8-release-focal.deb #installs the puppet-agent repo
     - apt-get update
-    - apt-get install -y puppet-agent rubygems
+    - apt-get install -y puppet-agent rubygems ruby-dev
     - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
     - mkdir /home/kitchen/puppet
@@ -165,6 +165,7 @@ suites:
 - name: dd-agent
   manifests: init.pp
   verifier:
+    name: serverspec
     default_pattern: true
     additional_install_commmand: source /etc/profile.d/rvm.sh
     env_vars:
@@ -177,6 +178,7 @@ suites:
   provisioner:
     manifests_path: environments/etc/installer-manifests
   verifier:
+    name: serverspec
     default_pattern: true
     additional_install_commmand: source /etc/profile.d/rvm.sh
     env_vars:

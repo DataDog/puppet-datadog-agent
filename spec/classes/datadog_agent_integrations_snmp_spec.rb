@@ -71,7 +71,8 @@ describe 'datadog_agent::integrations::snmp' do
           expect(yaml).to include('init_config')
           expect(yaml['init_config']).to include('ignore_nonincreasing_oid')
           expect(yaml).to include('instances')
-          expect(yaml['instances']['tags']).to include('optional_tag_1')
+          expect(yaml['instances'][0]).to include('tags')
+          expect(yaml['instances'][0]['tags']).to include('optional_tag_1')
         end
       end
     end

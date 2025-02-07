@@ -101,7 +101,6 @@ describe 'datadog_agent::integrations::postgres' do
           it { is_expected.to contain_file(conf_file).with_content(%r{username: monitoring}) }
           it { is_expected.to contain_file(conf_file).with_content(%r{^[^#]*tags:\s+- foo\s+- bar\s+- baz}) }
           it { is_expected.to contain_file(conf_file).with_content(%r{^[^#]*relations:\s+- furry\s+- fuzzy\s+- funky}) }
-
         end
       end
     end

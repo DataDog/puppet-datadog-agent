@@ -4,6 +4,12 @@ describe 'datadog_agent::integrations::http_check' do
   ALL_SUPPORTED_AGENTS.each do |agent_major_version|
     context 'supported agents' do
       let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
+      let(:params) do
+        {
+          sitename: 'foo.bar.baz',
+          url: 'http://foo.bar.baz:4096',
+        }
+      end
 
       conf_file = if agent_major_version == 5
                     '/etc/dd-agent/conf.d/http_check.yaml'

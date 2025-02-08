@@ -72,7 +72,7 @@ group :development, :release_prep do
   end
 end
 group :system_tests do
-  if ruby_version >= Gem::Version.new('2.5') && ruby_version < Gem::Version.new('3.1')
+  if ruby_version >= Gem::Version.new('2.5') && ruby_version < Gem::Version.new('3.0')
     gem "puppet_litmus", '= 0.0.1',   require: false, platforms: [:ruby, :x64_mingw]
   else
     gem "puppet_litmus", '~> 1.0',    require: false, platforms: [:ruby, :x64_mingw]

@@ -33,11 +33,6 @@
 #       response time metric will be collected. If it is set to true, the
 #       metric returned is network.tcp.response_time.
 #
-#   skip_event
-#        The (optional) skip_event parameter will instruct the check to not
-#        create any event to avoid duplicates with a server side service check.
-#        This default to False.
-#
 #   tags
 #       The (optional) tags to add to the check instance.
 #
@@ -67,8 +62,7 @@
 #   timeout               => '8',
 #   threshold             => 1,
 #   window                => 1,
-#   collect_response_time => 1,
-#   skip_event            => 1,
+#   collect_response_time => true,
 #   tags                  => ['production', 'webserver response time'],
 # }
 #
@@ -90,13 +84,12 @@ class datadog_agent::integrations::tcp_check (
   String $check_name,
   String $host,
   String $port,
-  Integer $timeout                          = 10,
-  Optional[Integer] $threshold              = undef,
-  Optional[Integer] $window                 = undef,
-  Optional[Integer] $collect_response_time  = undef,
-  Optional[Integer] $skip_event             = undef,
-  Array $tags                = [],
-  Optional[Array] $instances = undef,
+  Integer $timeout                  = 10,
+  Optional[Integer] $threshold      = undef,
+  Optional[Integer] $window         = undef,
+  Boolean $collect_response_time    = false,
+  Array $tags                       = [],
+  Optional[Array] $instances        = undef,
 ) inherits datadog_agent::params {
   require datadog_agent
 
@@ -109,7 +102,6 @@ class datadog_agent::integrations::tcp_check (
         'threshold'             => $threshold,
         'window'                => $window,
         'collect_response_time' => $collect_response_time,
-        'skip_event'            => $skip_event,
         'tags'                  => $tags,
     }]
   } elsif !$instances {

@@ -45,7 +45,6 @@ describe 'datadog_agent::integrations::tcp_check' do
         it { is_expected.to contain_file(conf_file).without_content(%(threshold: )) }
         it { is_expected.to contain_file(conf_file).without_content(%r{window: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{collect_response_time: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{skip_event: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{tags: }) }
       end
 
@@ -59,7 +58,6 @@ describe 'datadog_agent::integrations::tcp_check' do
             threshold: 456,
             window: 789,
             collect_response_time: true,
-            skip_event: true,
           }
         end
 
@@ -70,7 +68,6 @@ describe 'datadog_agent::integrations::tcp_check' do
         it { is_expected.to contain_file(conf_file).with_content(%r{threshold: 456}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{window: 789}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{collect_response_time: true}) }
-        it { is_expected.to contain_file(conf_file).with_content(%r{skip_event: true}) }
       end
 
       context 'with tags parameter array' do

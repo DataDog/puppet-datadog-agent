@@ -12,6 +12,7 @@ Changes
 * [DEPRECATE] Support for Jenkins integrations is removed
 * [DEPRECATE] No longer possible to use the custom metrics parameter when using the PostgresSQL class
 * [DEPRECATE] `ganglia` configuration no longer supported as per DataDog Agent v6+
+* [DEPRECATE] `skip_event` setting on TCP Check class has been removed from DataDog integration
 
 # 3.23.0 / 2024-12-09
 

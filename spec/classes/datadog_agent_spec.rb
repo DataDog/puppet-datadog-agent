@@ -536,19 +536,6 @@ describe 'datadog_agent' do
                 }
               end
 
-              context 'for ganglia' do
-                it {
-                  is_expected.to contain_concat__fragment('datadog footer').with(
-                    'content' => %r{^# ganglia_host: localhost\n},
-                  )
-                }
-                it {
-                  is_expected.to contain_concat__fragment('datadog footer').with(
-                    'content' => %r{^# ganglia_port: 8651\n},
-                  )
-                }
-              end
-
               context 'for logging' do
                 it {
                   is_expected.to contain_concat__fragment('datadog footer').with(
@@ -1225,55 +1212,6 @@ describe 'datadog_agent' do
                 it {
                   is_expected.to contain_concat__fragment('datadog footer').with(
                     'content' => %r{^device_blacklist_re: test\n},
-                  )
-                }
-              end
-              context 'with ganglia_host set to localhost and ganglia_port set to 12345' do
-                let(:params) do
-                  {
-                    ganglia_host: 'testhost',
-                    ganglia_port: '12345',
-                    agent_major_version: 5,
-                  }
-                end
-
-                it {
-                  is_expected.to contain_concat__fragment('datadog footer').with(
-                    'content' => %r{^ganglia_port: 12345\n},
-                  )
-                }
-                it {
-                  is_expected.to contain_concat__fragment('datadog footer').with(
-                    'content' => %r{^ganglia_host: testhost\n},
-                  )
-                }
-              end
-              context 'with ganglia_host set to localhost and ganglia_port set to 12345, port specified as an integer' do
-                let(:params) do
-                  {
-                    ganglia_host: 'testhost',
-                    ganglia_port: 12_345,
-                    agent_major_version: 5,
-                  }
-                end
-
-                it {
-                  is_expected.to contain_concat__fragment('datadog footer').with(
-                    'content' => %r{^ganglia_port: 12345\n},
-                  )
-                }
-              end
-              context 'with dogstreams set to /path/to/log1:/path/to/parser' do
-                let(:params) do
-                  {
-                    dogstreams: ['/path/to/log1:/path/to/parser'],
-                    agent_major_version: 5,
-                  }
-                end
-
-                it {
-                  is_expected.to contain_concat__fragment('datadog footer').with(
-                    'content' => %r{dogstreams: /path/to/log1:/path/to/parser\n},
                   )
                 }
               end

@@ -11,6 +11,7 @@ Changes
 * [DEPRECATE] Remove support for supply a String to the SSL_Verify option on the elasticsearch integration. We now use tls_verify which matches core DataDog code.
 * [DEPRECATE] Support for Jenkins integrations is removed
 * [DEPRECATE] No longer possible to use the custom metrics parameter when using the PostgresSQL class
+* [DEPRECATE] `ganglia` configuration no longer supported as per DataDog Agent v6+
 
 # 3.23.0 / 2024-12-09
 

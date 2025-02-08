@@ -147,12 +147,6 @@
 #   $device_blacklist_re
 #       Specifies pattern for device blacklisting.
 #       String. Default: empty
-#   $ganglia_host
-#       Specifies host where gmetad is running
-#       String. Default: empty
-#   $ganglia_port
-#       Specifies port  for $ganglia_host
-#       String. Default: empty
 #   $dogstreams
 #       Specifies port for list of logstreams/modules to be used.
 #       String. Default: empty
@@ -318,8 +312,6 @@ class datadog_agent (
   Optional[String] $proxy_password = undef,
   Variant[Stdlib::Port, Pattern[/^\d*$/]] $graphite_listen_port = '',
   String $extra_template = '',
-  String $ganglia_host = '',
-  Integer $ganglia_port = 8651,
   Boolean $skip_ssl_validation = false,
   Boolean $skip_apt_key_trusting = false,
   Boolean $use_curl_http_client = false,

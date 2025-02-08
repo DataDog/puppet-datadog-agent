@@ -163,25 +163,6 @@ device_blacklist_re: <%= @device_blacklist_re %>
 <% end -%>
 
 # -------------------------------------------------------------------------- #
-#   Ganglia                                                                  #
-# -------------------------------------------------------------------------- #
-
-<% if @ganglia_host.empty? -%>
-# Ganglia host where gmetad is running
-# ganglia_host: localhost
-#
-# Ganglia port where gmetad is running
-# ganglia_port: 8651
-<% else -%>
-# Ganglia host where gmetad is running
-ganglia_host: <%= @ganglia_host %>
-
-# Ganglia port where gmetad is running
-ganglia_port: <%= @ganglia_port %>
-<% end -%>
-
-
-# -------------------------------------------------------------------------- #
 #  Dogstream (log file parser)
 # -------------------------------------------------------------------------- #
 

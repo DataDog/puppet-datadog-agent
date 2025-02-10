@@ -85,10 +85,14 @@ class datadog_agent::integrations::disk (
 ) inherits datadog_agent::params {
   require datadog_agent
 
-  validate_legacy('Optional[String]', 'validate_re', $all_partitions, '^(no|yes)$')
+  # check that $all_partitions is either no or yes
+  if $all_partitions !~ '^(no|yes)$' {
+    fail('all_partitions must be either no or yes')
+  }
 
+  # check that $use_mount is either no or yes
   if $use_mount !~ '^(no|yes)$' {
-    fail('error during compilation')
+    fail('use_mount must be either no or yes')
   }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/disk.yaml"

@@ -8,4 +8,4 @@ networking:
   mac: "AA:AA:AA:AA:AA:AA"
 is_pe: false
 
-os.distro.codename: "jammy"
+os::distro::codename: "jammy"

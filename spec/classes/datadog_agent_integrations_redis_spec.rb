@@ -213,8 +213,8 @@ describe 'datadog_agent::integrations::redis' do
                 'ssl_certfile' => '/path/to/cert.pem',
                 'ssl_ca_certs' => '/path/to/ca_certs',
                 'ssl_cert_reqs' => 0,
-              }
-            ]
+              },
+            ],
           }
         end
 

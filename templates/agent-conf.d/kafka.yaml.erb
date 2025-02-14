@@ -1,11 +1,5 @@
 ### MANAGED BY PUPPET
 
-##########
-# WARNING
-##########
-# This sample works only for Kafka >= 0.8.2.
-# If you are running a version older than that, you can refer to agent 5.2.x released
-# sample files, https://raw.githubusercontent.com/DataDog/dd-agent/5.2.1/conf.d/kafka.yaml.example
 instances:
 <% @servers.each do |server| -%>
   - host: <%= server['host'] %>

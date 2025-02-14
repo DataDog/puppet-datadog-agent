@@ -97,7 +97,7 @@ platforms:
 
 
 # TODO: validate module support for CentOS Stream
-#        Debug: Service[datadog-agent](provider=base): Executing 'ps -ef'
+#       Debug: Service[datadog-agent](provider=base): Executing 'ps -ef'
 #       Debug: Executing: 'ps -ef'
 #       Error: /Service[datadog-agent]: Could not evaluate: Execution of 'ps -ef' returned 1: Error: Could not execute posix command: No such file or directory - ps
 #       Debug: Service[datadog-agent](provider=base): Executing 'ps -ef'
@@ -126,24 +126,33 @@ platforms:
 #    - cd /home && bundle install
 #    - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
-- name: rocky-9-puppet-8
-  driver:
-    image: 'rockylinux:9.3'
-    platform: centosstream # kitchen-docker has issues installing packages otherwises
-    provision_command:
-    - dnf install -y https://yum.puppet.com/puppet8-release-el-9.noarch.rpm #installs the puppet-agent repo
-    - dnf install -y puppet-agent rubygems ruby-devel
-    - dnf group install -y "Development Tools"
-    - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
-    - mkdir /home/kitchen/puppet
-    - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
-    - printf <%= File.read('environments/etc/Gemfile').inspect %> > /home/Gemfile
-
-    - gem install bundler -v '= 2.4.13'
-
-    - cd /home && bundle install
-    - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
+# TODO: validate module support for Rocky Linux
+#       Debug: Service[datadog-agent](provider=base): Executing 'ps -ef'
+#       Debug: Executing: 'ps -ef'
+#       Error: /Service[datadog-agent]: Could not evaluate: Execution of 'ps -ef' returned 1: Error: Could not execute posix command: No such file or directory - ps
+#       Debug: Service[datadog-agent](provider=base): Executing 'ps -ef'
+#       Debug: Executing: 'ps -ef'
+#       Error: /Service[datadog-agent]: Failed to call refresh: Execution of 'ps -ef' returned 1: Error: Could not execute posix command: No such file or directory - ps
+#       Error: /Service[datadog-agent]: Execution of 'ps -ef' returned 1: Error: Could not execute posix command: No such file or directory - ps
+#- name: rocky-9-puppet-8
+#  driver:
+#    image: 'rockylinux:9.3'
+#    platform: centosstream # kitchen-docker has issues installing packages otherwises
+#    provision_command:
+#    - dnf install -y https://yum.puppet.com/puppet8-release-el-9.noarch.rpm #installs the puppet-agent repo
+#    - dnf install -y puppet-agent rubygems ruby-devel
+#    - dnf group install -y "Development Tools"
+#    - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
+#
+#    - mkdir /home/kitchen/puppet
+#    - printf <%= File.read('environments/etc/Puppetfile').inspect %> > /home/kitchen/puppet/Puppetfile
+#    - printf <%= File.read('environments/etc/Gemfile').inspect %> > /home/Gemfile
+#
+#    - gem install bundler -v '= 2.4.13'
+#
+#    - cd /home && bundle install
+#    - cd /home/kitchen/puppet && r10k puppetfile install --moduledir=/tmp/modules
 
 # - name: opensuse/leap-15
 #     # Workaround for flakes on initializing opensuse/leap-15:

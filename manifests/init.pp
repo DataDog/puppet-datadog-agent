@@ -395,6 +395,8 @@ class datadog_agent (
     $_agent_major_version = $agent_major_version
   } else {
     $_agent_major_version = $datadog_agent::params::default_agent_major_version
+    $_agent_minor_version = 0
+    $_agent_patch_version = 0
   }
 
   case $facts['os']['name'] {

@@ -6,7 +6,7 @@
   "seq_id": 2,
   "origin": "puppet",
   "host": {
-    "hostname": "<%= $hostname %>",
+    "hostname": "<%= $facts['networking']['hostname'] %>",
     "os": "<%= $facts['os']['name'] %>",
     "distribution": "<%= $facts['os']['family'] %>",
     "architecture": "<%= $facts['os']['architecture'] %>",

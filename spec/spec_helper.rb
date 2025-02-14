@@ -27,7 +27,7 @@ if RSpec::Support::OS.windows?
   PERMISSIONS_PROTECTED_FILE = '0660'
 else
   ALL_OS                     = DEBIAN_OS + REDHAT_OS
-  ALL_SUPPORTED_AGENTS       = [5, 6, 7].freeze
+  ALL_SUPPORTED_AGENTS       = [6, 7].freeze
   CONF_DIR = '/etc/datadog-agent/conf.d'
   DD_USER                    = 'dd-agent'
   DD_GROUP                   = 'dd-agent'

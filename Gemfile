@@ -47,11 +47,11 @@ group :development do
     gem "voxpupuli-puppet-lint-plugins", '~> 4.0', require: false
     gem "dependency_checker", '= 0.3.0',           require: false
   else
-    gem "facterdb", '~> 2.1',                      require: false
+    gem "facterdb", '~> 3.4.0',                      require: false
     gem "test-kitchen", '~> 3.7.0'
     gem "rubocop", '~> 1.50.0',                    require: false
     gem "rubocop-rspec", '= 2.19.0',               require: false
-    gem "rspec-puppet-facts", '~> 4.0',            require: false
+    gem "rspec-puppet-facts", '~> 5.2.0',            require: false
     gem "rubocop-performance", '= 1.16.0',         require: false
     gem "librarian-puppet", '~> 5.0'
     gem "io-console", '= 0.7.2',                   require: false

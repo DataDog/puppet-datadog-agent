@@ -14,6 +14,9 @@ describe 'datadog_agent' do
                 'major' => '3',
                 'full' => '3.0',
               },
+              'distro' => {
+                'codename' => 'nexenta',
+              }
             },
           }
         end
@@ -68,6 +71,9 @@ describe 'datadog_agent' do
               'major' => '14',
               'full' => '14.04',
             },
+            'distro' => {
+              'codename' => 'trusty',
+            },
           },
         }
       end
@@ -94,6 +100,9 @@ describe 'datadog_agent' do
               'major' => '14',
               'full' => '14.04',
             },
+            'distro' => {
+              'codename' => 'trusty',
+            },
           },
         }
       end
@@ -119,6 +128,9 @@ describe 'datadog_agent' do
             'release' => {
               'major' => '14',
               'full' => '14.04',
+            },
+            'distro' => {
+              'codename' => 'trusty',
             },
           },
         }

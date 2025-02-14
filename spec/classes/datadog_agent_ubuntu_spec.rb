@@ -94,6 +94,9 @@ describe 'datadog_agent::ubuntu' do
             'major' => '14',
             'full' => '14.04',
           },
+          'distro' => {
+            'codename' => 'trusty',
+          }
         },
       }
     end
@@ -146,6 +149,9 @@ describe 'datadog_agent::ubuntu' do
             'major' => '14',
             'full' => '14.04',
           },
+          'distro' => {
+            'codename' => 'trusty',
+          }
         },
       }
     end
@@ -195,6 +201,9 @@ describe 'datadog_agent::ubuntu' do
             'major' => '14',
             'full' => '14.04',
           },
+          'distro' => {
+            'codename' => 'trusty',
+          }
         },
       }
     end
@@ -219,6 +228,9 @@ describe 'datadog_agent::ubuntu' do
             'major' => '16',
             'full' => '16.04',
           },
+          'distro' => {
+            'codename' => 'xenial',
+          }
         },
       }
     end
@@ -243,6 +255,9 @@ describe 'datadog_agent::ubuntu' do
             'major' => '8',
             'full' => '8.0',
           },
+          'distro' => {
+            'codename' => 'jessie',
+          }
         },
       }
     end
@@ -267,6 +282,9 @@ describe 'datadog_agent::ubuntu' do
             'major' => '9',
             'full' => '9.0',
           },
+          'distro' => {
+            'codename' => 'stretch',
+          }
         },
       }
     end

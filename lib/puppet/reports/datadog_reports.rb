@@ -147,7 +147,7 @@ Puppet::Reports.register_report(:datadog_reports) do
                                       msg_title: event_title,
                                       event_type: 'config_management.run',
                                       event_object: @msg_host,
-                                      alert_type: alert_type,
+                                      alert_type:,
                                       priority: event_priority,
                                       source_type_name: 'puppet',
                                       tags: dog_tags),

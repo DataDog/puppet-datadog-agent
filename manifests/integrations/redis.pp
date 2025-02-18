@@ -63,7 +63,7 @@ class datadog_agent::integrations::redis(
   String $ssl_keyfile                       = '',
   String $ssl_certfile                      = '',
   String $ssl_ca_certs                      = '',
-  Variant[String, Integer] $ssl_cert_reqs   = '',
+  Optional[Integer] $ssl_cert_reqs          = undef,
   Variant[String, Integer] $slowlog_max_len = '',
   Array $tags                               = [],
   Array $keys                               = [],

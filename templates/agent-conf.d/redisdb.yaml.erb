@@ -21,7 +21,7 @@ instances:
 <% if instance['ssl_ca_certs']  and ! instance['ssl_ca_certs'].empty? -%>
     ssl_ca_certs: <%= instance['ssl_ca_certs'] %>
 <% end -%>
-<% if instance['ssl_cert_reqs']  and ! instance['ssl_cert_reqs'].to_s.empty? -%>
+<% if instance['ssl_cert_reqs']  and ! instance['ssl_cert_reqs'].nil? -%>
     ssl_cert_reqs: <%= instance['ssl_cert_reqs'] %>
 <% end -%>
 <% if instance['slowlog_max_len'] and ! instance['slowlog_max_len'].to_s.empty? -%>

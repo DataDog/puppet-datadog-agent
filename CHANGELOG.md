@@ -943,9 +943,7 @@ Please read the [docs]() for more details.
 [#806]: https://github.com/DataDog/puppet-datadog-agent/issues/806
 [#820]: https://github.com/DataDog/puppet-datadog-agent/issues/820
 [#821]: https://github.com/DataDog/puppet-datadog-agent/issues/821
-
 [#824]: https://github.com/DataDog/puppet-datadog-agent/issues/824
-
 [#835]: https://github.com/DataDog/puppet-datadog-agent/issues/835
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews

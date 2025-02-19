@@ -117,6 +117,11 @@ describe 'datadog_agent::integrations::redis' do
                 'port'     => 2379,
                 'tags'     => ['foo', 'bar'],
                 'keys'     => ['baz', 'bat'],
+                'ssl' => true,
+                'ssl_keyfile' => '/etc/pki/tls/certs/localhost.crt',
+                'ssl_certfile' => '/path/to/cert.pem',
+                'ssl_ca_certs' => '/path/to/ca_certs',
+                'ssl_cert_reqs' => 0,
               },
               {
                 'host'     => 'redis1',
@@ -124,6 +129,11 @@ describe 'datadog_agent::integrations::redis' do
                 'port'     => 2380,
                 'tags'     => ['foo', 'bar'],
                 'keys'     => ['baz', 'bat'],
+                'ssl' => true,
+                'ssl_keyfile' => '/etc/pki/tls/certs/localhost.crt',
+                'ssl_certfile' => '/path/to/other/cert.pem',
+                'ssl_ca_certs' => '/path/to/other/ca_certs',
+                'ssl_cert_reqs' => 1,
               },
             ],
           }
@@ -138,6 +148,14 @@ describe 'datadog_agent::integrations::redis' do
         it { is_expected.to contain_file(conf_file).without_content(%r{^[^#]*slowlog-max-len: 5309}) }
         it { is_expected.to contain_file(conf_file).without_content(%r{warn_on_missing_keys: false}) }
         it { is_expected.to contain_file(conf_file).without_content(%r{command_stats: true}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{ssl: true}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{ssl_keyfile: /etc/pki/tls/certs/localhost.crt}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{ssl_certfile: /path/to/cert.pem}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{ssl_certfile: /path/to/other/cert.pem}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{ssl_ca_certs: /path/to/ca_certs}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{ssl_ca_certs: /path/to/other/ca_certs}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{ssl_cert_reqs: 0}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{ssl_cert_reqs: 1}) }
       end
 
       context 'with only keys' do
@@ -180,6 +198,35 @@ describe 'datadog_agent::integrations::redis' do
         it { is_expected.to contain_file(conf_file).with_content(%r{^[^#]*password: hunter2}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{port: 2379}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{tags:.*\s+- baz\s+- bat}) }
+      end
+
+      context 'with ssl configs' do
+        let(:params) do
+          {
+            instances: [
+              {
+                'host' => 'redis1',
+                'password' => 'hunter2',
+                'port' => 2379,
+                'ssl' => true,
+                'ssl_keyfile' => '/etc/pki/tls/certs/localhost.crt',
+                'ssl_certfile' => '/path/to/cert.pem',
+                'ssl_ca_certs' => '/path/to/ca_certs',
+                'ssl_cert_reqs' => 0,
+              },
+            ],
+          }
+        end
+
+        it { is_expected.to contain_file(conf_file).with_content(%r{host: redis1}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{^[^#]*password: hunter2}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{port: 2379}) }
+
+        it { is_expected.to contain_file(conf_file).with_content(%r{ssl: true}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{ssl_keyfile: /etc/pki/tls/certs/localhost.crt}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{ssl_certfile: /path/to/cert.pem}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{ssl_ca_certs: /path/to/ca_certs}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{ssl_cert_reqs: 0}) }
       end
     end
   end

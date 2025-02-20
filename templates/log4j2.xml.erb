@@ -10,7 +10,7 @@
         <SizeBasedTriggeringPolicy size="250 MB"/>
       </Policies>
       <DefaultRolloverStrategy>
-        <Delete basePath="/var/log/">
+        <Delete basePath="/var/log/tomcat">
           <IfFileName glob="<%= @application_name %>.*"/>
           <IfAccumulatedFileSize exceeds="1 GB" />
         </Delete>

@@ -395,6 +395,8 @@ class datadog_agent (
     $_agent_major_version = $agent_major_version
   } else {
     $_agent_major_version = $datadog_agent::params::default_agent_major_version
+    $_agent_minor_version = 0
+    $_agent_patch_version = 0
   }
 
   case $facts['os']['name'] {
@@ -646,309 +648,198 @@ class datadog_agent (
     }
   }
 
-  if $_agent_major_version == 5 {
-    if ($facts['os']['name'] == 'Windows') {
-      fail('Installation of agent 5 with puppet is not supported on Windows')
+  # lint:ignore:quoted_booleans
+  $process_enabled_str = $process_enabled ? { true => 'true' , default => 'disabled' }
+  # lint:endignore
+  $base_extra_config = {
+    'apm_config' => {
+      'enabled'               => $apm_enabled,
+      'env'                   => $apm_env,
+      'apm_non_local_traffic' => $apm_non_local_traffic,
+    },
+    'process_config' => {
+      'enabled' => $process_enabled_str,
+      'scrub_args' => $scrub_args,
+      'custom_sensitive_words' => $custom_sensitive_words,
+    },
+    'logs_enabled' => $logs_enabled,
+  }
+  if $logs_open_files_limit {
+    $logs_base_config = {
+      'logs_config' => {
+        'container_collect_all' => $container_collect_all,
+        'open_files_limit' => $logs_open_files_limit,
+      },
     }
-
-    if !empty($agent_extra_options) {
-      notify { 'Setting agent_extra_options has no effect with Agent 5': }
+  } else {
+    $logs_base_config = {
+      'logs_config' => {
+        'container_collect_all' => $container_collect_all,
+      },
     }
-
-    file { '/etc/dd-agent':
-      ensure  => directory,
-      owner   => $dd_user,
-      group   => $dd_group,
-      mode    => $datadog_agent::params::permissions_directory,
-      require => Package[$agent_flavor],
+  }
+  if $host.empty {
+    $host_config = {}
+  } else {
+    $host_config = {
+      'hostname' => $host,
     }
+  }
 
-    file { $_conf_dir:
-      ensure  => directory,
-      purge   => $conf_dir_purge,
-      recurse => true,
-      force   => $conf_dir_purge,
-      owner   => $dd_user,
-      group   => $dd_group,
-      notify  => Service[$datadog_agent::params::service_name],
+  if $apm_analyzed_spans {
+    $apm_analyzed_span_config = {
+      'apm_config' => {
+        'analyzed_spans' => $apm_analyzed_spans,
+      },
     }
+  } else {
+    $apm_analyzed_span_config = {}
+  }
 
-    concat { '/etc/dd-agent/datadog.conf':
-      owner   => $dd_user,
-      group   => $dd_group,
-      mode    => '0640',
-      notify  => Service[$datadog_agent::params::service_name],
-      require => File['/etc/dd-agent'],
+  if $apm_obfuscation {
+    $apm_obfuscation_config = {
+      'apm_config' => {
+        'obfuscation' => $apm_obfuscation,
+      },
     }
+  } else {
+    $apm_obfuscation_config = {}
+  }
 
-    if $dd_url.empty {
-      $_dd_url = 'https://app.datadoghq.com'
+  if $apm_filter_tags {
+    $apm_filter_tags_config = {
+      'apm_config' => {
+        'filter_tags' => $apm_filter_tags,
+      },
+    }
+  } else {
+    $apm_filter_tags_config = {}
+  }
+
+  if $apm_filter_tags_regex {
+    $apm_filter_tags_regex_config = {
+      'apm_config' => {
+        'filter_tags_regex' => $apm_filter_tags_regex,
+      },
+    }
+  } else {
+    $apm_filter_tags_regex_config = {}
+  }
+
+  if $statsd_forward_host.empty {
+    $statsd_forward_config = {}
+  } else {
+    if String($statsd_forward_port).empty {
+      $statsd_forward_config = {
+        'statsd_forward_host' => $statsd_forward_host,
+      }
     } else {
-      $_dd_url = $dd_url
-    }
-    concat::fragment { 'datadog header':
-      target  => '/etc/dd-agent/datadog.conf',
-      content => template('datadog_agent/datadog_header.conf.erb'),
-      order   => '01',
-    }
-
-    concat::fragment { 'datadog tags':
-      target  => '/etc/dd-agent/datadog.conf',
-      content => 'tags: ',
-      order   => '02',
-    }
-
-    datadog_agent::tag5 { $local_tags: }
-    datadog_agent::tag5 { $facts_to_tags:
-      lookup_fact => true,
-    }
-
-    concat::fragment { 'datadog footer':
-      target  => '/etc/dd-agent/datadog.conf',
-      content => template('datadog_agent/datadog_footer.conf.erb'),
-      order   => '05',
-    }
-
-    unless $extra_template.empty {
-      concat::fragment { 'datadog extra_template footer':
-        target  => '/etc/dd-agent/datadog.conf',
-        content => template($extra_template),
-        order   => '06',
+      $statsd_forward_config = {
+        'statsd_forward_host' => $statsd_forward_host,
+        'statsd_forward_port' => $statsd_forward_port,
       }
     }
+  }
 
-    if ($apm_enabled == true) and (($apm_env != 'none') or $apm_analyzed_spans or $apm_obfuscation) {
-      concat::fragment { 'datadog apm footer':
-        target  => '/etc/dd-agent/datadog.conf',
-        content => template('datadog_agent/datadog_apm_footer.conf.erb'),
-        order   => '07',
-      }
+  if $additional_checksd {
+    $additional_checksd_config = {
+      'additional_checksd' => $additional_checksd,
+    }
+  } else {
+    $additional_checksd_config = {}
+  }
+
+  $extra_config = deep_merge(
+    $base_extra_config,
+    $logs_base_config,
+    $agent_extra_options,
+    $apm_analyzed_span_config,
+    $apm_obfuscation_config,
+    $apm_filter_tags_config,
+    $apm_filter_tags_regex_config,
+    $statsd_forward_config,
+    $host_config,
+    $additional_checksd_config
+  )
+
+  file { $_conf_dir:
+    ensure  => directory,
+    purge   => $conf_dir_purge,
+    recurse => true,
+    force   => $conf_dir_purge,
+    owner   => $dd_user,
+    group   => $dd_group,
+  }
+
+  if ! $_agent_managed_by_installer {
+    File[$_conf_dir] ~> Service[$datadog_agent::params::service_name]
+  }
+
+  $_local_tags = datadog_agent::tag6($local_tags, false, undef)
+  $_facts_tags = datadog_agent::tag6($facts_to_tags, true, $facts)
+  $_trusted_facts_tags = datadog_agent::tag6($trusted_facts_to_tags, true, $trusted)
+
+  $_agent_config = {
+    'api_key' => $api_key,
+    'dd_url' => $dd_url,
+    'site' => $datadog_site,
+    'cmd_port' => $cmd_port,
+    'hostname_fqdn' => $hostname_fqdn,
+    'collect_ec2_tags' => $collect_ec2_tags,
+    'collect_gce_tags' => $collect_gce_tags,
+    'confd_path' => $_conf_dir,
+    'enable_metadata_collection' => $collect_instance_metadata,
+    'dogstatsd_port' => $dogstatsd_port,
+    'dogstatsd_socket' => $dogstatsd_socket,
+    'dogstatsd_non_local_traffic' => $non_local_traffic,
+    'log_file' => $agent_log_file,
+    'log_level' => $log_level,
+    'remote_updates' => $remote_updates,
+    'remote_policies' => $remote_policies,
+    'tags' => unique(flatten(union($_local_tags, $_facts_tags, $_trusted_facts_tags))),
+  }
+
+  $agent_config = deep_merge($_agent_config, $extra_config)
+
+  if ($facts['os']['name'] == 'Windows') {
+    file { 'C:/ProgramData/Datadog':
+      ensure   => directory,
     }
 
-    if ($process_enabled == true) {
-      concat::fragment { 'datadog process agent footer':
-        target  => '/etc/dd-agent/datadog.conf',
-        content => template('datadog_agent/datadog_process_footer.conf.erb'),
-        order   => '08',
-      }
+    file { 'C:/ProgramData/Datadog/datadog.yaml':
+      owner     => $dd_user,
+      group     => $dd_group,
+      mode      => '0660',
+      content   => template('datadog_agent/datadog.yaml.erb'),
+      show_diff => false,
+      notify    => Service[$datadog_agent::params::service_name],
+      require   => File['C:/ProgramData/Datadog'],
     }
 
-    file { '/etc/dd-agent/install_info':
+    file { 'C:/ProgramData/Datadog/install_info':
+      owner   => $dd_user,
+      group   => $dd_group,
+      mode    => '0660',
+      content => template('datadog_agent/install_info.erb'),
+      require => File['C:/ProgramData/Datadog'],
+    }
+  } else {
+    file { '/etc/datadog-agent/datadog.yaml':
+      owner     => $dd_user,
+      group     => $dd_group,
+      mode      => '0640',
+      content   => template('datadog_agent/datadog.yaml.erb'),
+      show_diff => false,
+      notify    => Service[$datadog_agent::params::service_name],
+      require   => File['/etc/datadog-agent'],
+    }
+
+    file { '/etc/datadog-agent/install_info':
       owner   => $dd_user,
       group   => $dd_group,
       mode    => '0640',
       content => template('datadog_agent/install_info.erb'),
-      require => File['/etc/dd-agent'],
-    }
-  } else { #Agent 6/7
-
-    # notify of broken params on agent6/7
-    if !empty($proxy_host) {
-      notify { 'Setting proxy_host is only used with Agent 5. Please use agent_extra_options to set your proxy': }
-    }
-    if !empty($proxy_port) {
-      notify { 'Setting proxy_port is only used with Agent 5. Please use agent_extra_options to set your proxy': }
-    }
-    if !empty($proxy_user) {
-      notify { 'Setting proxy_user is only used with Agent 5. Please use agent_extra_options to set your proxy': }
-    }
-    if !empty($proxy_password) {
-      notify { 'Setting proxy_password is only used with Agent 5. Please use agent_extra_options to set your proxy': }
-    }
-
-    # lint:ignore:quoted_booleans
-    $process_enabled_str = $process_enabled ? { true => 'true' , default => 'disabled' }
-    # lint:endignore
-    $base_extra_config = {
-      'apm_config' => {
-        'enabled'               => $apm_enabled,
-        'env'                   => $apm_env,
-        'apm_non_local_traffic' => $apm_non_local_traffic,
-      },
-      'process_config' => {
-        'enabled' => $process_enabled_str,
-        'scrub_args' => $scrub_args,
-        'custom_sensitive_words' => $custom_sensitive_words,
-      },
-      'logs_enabled' => $logs_enabled,
-    }
-    if $logs_open_files_limit {
-      $logs_base_config = {
-        'logs_config' => {
-          'container_collect_all' => $container_collect_all,
-          'open_files_limit' => $logs_open_files_limit,
-        },
-      }
-    } else {
-      $logs_base_config = {
-        'logs_config' => {
-          'container_collect_all' => $container_collect_all,
-        },
-      }
-    }
-    if $host.empty {
-      $host_config = {}
-    } else {
-      $host_config = {
-        'hostname' => $host,
-      }
-    }
-
-    if $apm_analyzed_spans {
-      $apm_analyzed_span_config = {
-        'apm_config' => {
-          'analyzed_spans' => $apm_analyzed_spans,
-        },
-      }
-    } else {
-      $apm_analyzed_span_config = {}
-    }
-
-    if $apm_obfuscation {
-      $apm_obfuscation_config = {
-        'apm_config' => {
-          'obfuscation' => $apm_obfuscation,
-        },
-      }
-    } else {
-      $apm_obfuscation_config = {}
-    }
-
-    if $apm_filter_tags {
-      $apm_filter_tags_config = {
-        'apm_config' => {
-          'filter_tags' => $apm_filter_tags,
-        },
-      }
-    } else {
-      $apm_filter_tags_config = {}
-    }
-
-    if $apm_filter_tags_regex {
-      $apm_filter_tags_regex_config = {
-        'apm_config' => {
-          'filter_tags_regex' => $apm_filter_tags_regex,
-        },
-      }
-    } else {
-      $apm_filter_tags_regex_config = {}
-    }
-
-    if $statsd_forward_host.empty {
-      $statsd_forward_config = {}
-    } else {
-      if String($statsd_forward_port).empty {
-        $statsd_forward_config = {
-          'statsd_forward_host' => $statsd_forward_host,
-        }
-      } else {
-        $statsd_forward_config = {
-          'statsd_forward_host' => $statsd_forward_host,
-          'statsd_forward_port' => $statsd_forward_port,
-        }
-      }
-    }
-
-    if $additional_checksd {
-      $additional_checksd_config = {
-        'additional_checksd' => $additional_checksd,
-      }
-    } else {
-      $additional_checksd_config = {}
-    }
-
-    $extra_config = deep_merge(
-      $base_extra_config,
-      $logs_base_config,
-      $agent_extra_options,
-      $apm_analyzed_span_config,
-      $apm_obfuscation_config,
-      $apm_filter_tags_config,
-      $apm_filter_tags_regex_config,
-      $statsd_forward_config,
-      $host_config,
-      $additional_checksd_config
-    )
-
-    file { $_conf_dir:
-      ensure  => directory,
-      purge   => $conf_dir_purge,
-      recurse => true,
-      force   => $conf_dir_purge,
-      owner   => $dd_user,
-      group   => $dd_group,
-    }
-
-    if ! $_agent_managed_by_installer {
-      File[$_conf_dir] ~> Service[$datadog_agent::params::service_name]
-    }
-
-    $_local_tags = datadog_agent::tag6($local_tags, false, undef)
-    $_facts_tags = datadog_agent::tag6($facts_to_tags, true, $facts)
-    $_trusted_facts_tags = datadog_agent::tag6($trusted_facts_to_tags, true, $trusted)
-
-    $_agent_config = {
-      'api_key' => $api_key,
-      'dd_url' => $dd_url,
-      'site' => $datadog_site,
-      'cmd_port' => $cmd_port,
-      'hostname_fqdn' => $hostname_fqdn,
-      'collect_ec2_tags' => $collect_ec2_tags,
-      'collect_gce_tags' => $collect_gce_tags,
-      'confd_path' => $_conf_dir,
-      'enable_metadata_collection' => $collect_instance_metadata,
-      'dogstatsd_port' => $dogstatsd_port,
-      'dogstatsd_socket' => $dogstatsd_socket,
-      'dogstatsd_non_local_traffic' => $non_local_traffic,
-      'log_file' => $agent_log_file,
-      'log_level' => $log_level,
-      'remote_updates' => $remote_updates,
-      'remote_policies' => $remote_policies,
-      'tags' => unique(flatten(union($_local_tags, $_facts_tags, $_trusted_facts_tags))),
-    }
-
-    $agent_config = deep_merge($_agent_config, $extra_config)
-
-    if ($facts['os']['name'] == 'Windows') {
-      file { 'C:/ProgramData/Datadog':
-        ensure   => directory,
-      }
-
-      file { 'C:/ProgramData/Datadog/datadog.yaml':
-        owner     => $dd_user,
-        group     => $dd_group,
-        mode      => '0660',
-        content   => template('datadog_agent/datadog.yaml.erb'),
-        show_diff => false,
-        notify    => Service[$datadog_agent::params::service_name],
-        require   => File['C:/ProgramData/Datadog'],
-      }
-
-      file { 'C:/ProgramData/Datadog/install_info':
-        owner   => $dd_user,
-        group   => $dd_group,
-        mode    => '0660',
-        content => template('datadog_agent/install_info.erb'),
-        require => File['C:/ProgramData/Datadog'],
-      }
-    } else {
-      file { '/etc/datadog-agent/datadog.yaml':
-        owner     => $dd_user,
-        group     => $dd_group,
-        mode      => '0640',
-        content   => template('datadog_agent/datadog.yaml.erb'),
-        show_diff => false,
-        notify    => Service[$datadog_agent::params::service_name],
-        require   => File['/etc/datadog-agent'],
-      }
-
-      file { '/etc/datadog-agent/install_info':
-        owner   => $dd_user,
-        group   => $dd_group,
-        mode    => '0640',
-        content => template('datadog_agent/install_info.erb'),
-        require => File['/etc/datadog-agent'],
-      }
+      require => File['/etc/datadog-agent'],
     }
   }
 

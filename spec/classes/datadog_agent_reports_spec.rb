@@ -28,6 +28,9 @@ describe 'datadog_agent::reports' do
                 'major' => getosmajor(operatingsystem),
                 'full' => getosrelease(operatingsystem),
               },
+              'distro' => {
+                'codename' => getoscodename(operatingsystem),
+              }
             },
           }
         end
@@ -95,6 +98,9 @@ describe 'datadog_agent::reports' do
               'major' => '8',
               'full' => '8.1',
             },
+            'distro' => {
+              'codename' => 'jessie',
+            }
           },
         }
       end
@@ -144,6 +150,9 @@ describe 'datadog_agent::reports' do
               'major' => '8',
               'full' => '8.1',
             },
+            'distro' => {
+              'codename' => 'jessie',
+            }
           },
         }
       end
@@ -188,6 +197,9 @@ describe 'datadog_agent::reports' do
               'major' => '8',
               'full' => '8.1',
             },
+            'distro' => {
+              'codename' => 'jessie',
+            }
           },
         }
       end
@@ -234,6 +246,9 @@ describe 'datadog_agent::reports' do
               'major' => '8',
               'full' => '8.1',
             },
+            'distro' => {
+              'codename' => 'jessie',
+            }
           },
         }
       end

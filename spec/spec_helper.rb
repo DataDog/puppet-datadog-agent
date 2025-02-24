@@ -27,7 +27,7 @@ if RSpec::Support::OS.windows?
   PERMISSIONS_PROTECTED_FILE = '0660'
 else
   ALL_OS                     = DEBIAN_OS + REDHAT_OS
-  ALL_SUPPORTED_AGENTS       = [5, 6, 7].freeze
+  ALL_SUPPORTED_AGENTS       = [6, 7].freeze
   CONF_DIR = '/etc/datadog-agent/conf.d'
   DD_USER                    = 'dd-agent'
   DD_GROUP                   = 'dd-agent'
@@ -71,6 +71,16 @@ def getosrelease(operatingsystem)
   end
 end
 
+def getoscodename(operatingsystem)
+  if DEBIAN_OS.include?(operatingsystem)
+    'trusty'
+  elsif REDHAT_OS.include?(operatingsystem)
+    'maipo'
+  else
+    'seattle'
+  end
+end
+
 # Get parameters from catalogue.
 def get_from_catalogue(type, name, parameter)
   catalogue.resource(type, name).send(:parameters)[parameter.to_sym]
@@ -95,6 +105,9 @@ default_facts = {
       major:        (RSpec::Support::OS.windows? ? '2019' : '14'),
       minor:        (RSpec::Support::OS.windows? ? 'SP1' : '04'),
       full:         (RSpec::Support::OS.windows? ? '2019 SP1' : '14.04'),
+    },
+    'distro' => {
+      'codename' => (RSpec::Support::OS.windows? ? 'seattle' : 'focal'),
     },
   }
 }

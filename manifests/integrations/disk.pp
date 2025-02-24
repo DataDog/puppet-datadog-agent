@@ -63,9 +63,9 @@
 #      excluded_disk_re     => '/dev/sd[e-z]*'
 #  }
 class datadog_agent::integrations::disk (
-  String $use_mount                              = 'no',
-  Optional[String] $all_partitions               = undef,
-  Optional[String] $tag_by_filesystem            = undef,
+  Optional[Boolean] $use_mount                   = undef,
+  Optional[Boolean] $all_partitions              = undef,
+  Optional[Boolean] $tag_by_filesystem           = undef,
   Optional[Array[String]] $filesystem_exclude    = undef,
   Optional[Array[String]] $device_exclude        = undef,
   Optional[Array[String]] $mountpoint_exclude    = undef,
@@ -84,16 +84,6 @@ class datadog_agent::integrations::disk (
   Optional[String] $excluded_mountpoint_re = undef,  # deprecated in agent versions >6.9
 ) inherits datadog_agent::params {
   require datadog_agent
-
-  # check that $all_partitions is either no or yes
-  if $all_partitions !~ '^(no|yes)$' {
-    fail('all_partitions must be either no or yes')
-  }
-
-  # check that $use_mount is either no or yes
-  if $use_mount !~ '^(no|yes)$' {
-    fail('use_mount must be either no or yes')
-  }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/disk.yaml"
   if $datadog_agent::_agent_major_version > 5 {

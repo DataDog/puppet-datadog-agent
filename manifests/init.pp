@@ -292,7 +292,7 @@ class datadog_agent (
   String $log_level = 'info',
   Boolean $log_to_syslog = true,
   String $service_ensure = 'running',
-  Boolean $service_enable = true,
+  Variant[Boolean, Enum['manual', 'mask', 'delayed']] $service_enable = true,
   Boolean $manage_repo = true,
   Boolean $manage_dogapi_gem = true,
   Boolean $manage_install = true,

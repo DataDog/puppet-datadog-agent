@@ -3,9 +3,11 @@ Changes
 <!-- markdownlint-disable MD025 -->
 <!-- markdownlint-disable MD003 -->
 
-# 4.0.0 / 2025-02-01
+# 4.0.0 / 2025-02-24
 
 This release has multiple breaking changes, you may need to update your module integration; note that module dependencies has been updated.
+
+This release brings support for Puppet 8, which means all classes are now using defined class parameters types; this could break existing implementations.
 
 * [FEATURE] Add Support for Puppet 8 ([#779])
 * [FEATURE] Update Module Dependencies including updates for StdLib, migrating to newer functions where appropriate ([#800])
@@ -19,6 +21,7 @@ This release has multiple breaking changes, you may need to update your module i
 * [DEPRECATE] No longer possible to use the custom metrics parameter when using the PostgresSQL class
 * [DEPRECATE] `ganglia` configuration no longer supported as per DataDog Agent v6+
 * [DEPRECATE] `skip_event` setting on TCP Check class has been removed from DataDog integration
+* [DEPRECATE] Drop support for Datadog Agent version 5, including removal of unit tests
 
 # 3.23.0 / 2024-12-09
 

@@ -1,5 +1,11 @@
 Changes
 =======
+
+# 3.24.0 / 2025-02-25
+
+* [BUGFIX] Fix incorrect SSL parameter data type for postgres integration ([#824])
+* [FEATURE] Add missing SSL parameters for redis integration ([#835])
+
 # 3.23.0 / 2024-12-09
 
 * [FEATURE] Add support for `DD_REMOTE_POLICIES` ([#821])
@@ -937,6 +943,8 @@ Please read the [docs]() for more details.
 [#806]: https://github.com/DataDog/puppet-datadog-agent/issues/806
 [#820]: https://github.com/DataDog/puppet-datadog-agent/issues/820
 [#821]: https://github.com/DataDog/puppet-datadog-agent/issues/821
+[#824]: https://github.com/DataDog/puppet-datadog-agent/issues/824
+[#835]: https://github.com/DataDog/puppet-datadog-agent/issues/835
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

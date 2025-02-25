@@ -1,7 +1,7 @@
 Changes
 =======
 
-# 3.24.0 / 2025-02-12
+# 3.24.0 / 2025-02-25
 
 * [BUGFIX] Fix incorrect SSL parameter data type for postgres integration ([#824])
 * [FEATURE] Add missing SSL parameters for redis integration ([#835])

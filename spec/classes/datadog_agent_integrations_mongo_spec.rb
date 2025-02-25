@@ -27,6 +27,30 @@ describe 'datadog_agent::integrations::mongo' do
         it { is_expected.to contain_file(conf_file).without_content(%r{tags:}) }
       end
 
+      context 'with one mongo host defined in hosts' do
+        let(:params) do
+          {
+            servers: [
+              {
+                'hosts' => ['localhost:27017'],
+                'username' => 'user',
+                'password' => 'pass',
+                'dbm' => true,
+                'database_autodiscovery' => { 'enabled' => true },
+                'reported_database_hostname' => 'mongohost',
+              },
+            ],
+          }
+        end
+
+        it { is_expected.to contain_file(conf_file).with_content(%r{- hosts:\s+- localhost:27017}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{username: user}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{password: pass}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{dbm: true}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{database_autodiscovery:\s+enabled: true}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{reported_database_hostname: mongohost}) }
+      end
+
       context 'with one mongo' do
         let(:params) do
           {

@@ -1,9 +1,11 @@
 Changes
 =======
 <!-- markdownlint-disable MD025 -->
+<!-- markdownlint-disable MD024 -->
 <!-- markdownlint-disable MD003 -->
+<!-- markdownlint-disable MD001 -->
 
-# 4.0.0 / 2025-02-24
+# 4.0.0 / 2025-02-28
 
 This release has multiple breaking changes, you may need to update your module integration; note that module dependencies has been updated.
 
@@ -22,6 +24,11 @@ This release brings support for Puppet 8, which means all classes are now using 
 * [DEPRECATE] `ganglia` configuration no longer supported as per DataDog Agent v6+
 * [DEPRECATE] `skip_event` setting on TCP Check class has been removed from DataDog integration
 * [DEPRECATE] Drop support for Datadog Agent version 5, including removal of unit tests
+
+# 3.24.0 / 2025-02-25
+
+* [BUGFIX] Fix incorrect SSL parameter data type for postgres integration ([#824])
+* [FEATURE] Add missing SSL parameters for redis integration ([#835])
 
 # 3.23.0 / 2024-12-09
 
@@ -962,6 +969,8 @@ Please read the [docs]() for more details.
 [#814]: https://github.com/DataDog/puppet-datadog-agent/issues/814
 [#820]: https://github.com/DataDog/puppet-datadog-agent/issues/820
 [#821]: https://github.com/DataDog/puppet-datadog-agent/issues/821
+[#824]: https://github.com/DataDog/puppet-datadog-agent/issues/824
+[#835]: https://github.com/DataDog/puppet-datadog-agent/issues/835
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

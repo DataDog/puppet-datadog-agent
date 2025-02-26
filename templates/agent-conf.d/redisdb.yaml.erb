@@ -9,6 +9,21 @@ instances:
 <% if instance['password']  and ! instance['password'].empty? -%>
     password: <%= instance['password'] %>
 <% end -%>
+<% if instance['ssl']  and ! instance['ssl'].nil? -%>
+    ssl: <%= instance['ssl'] %>
+<% end -%>
+<% if instance['ssl_keyfile']  and ! instance['ssl_keyfile'].empty? -%>
+    ssl_keyfile: <%= instance['ssl_keyfile'] %>
+<% end -%>
+<% if instance['ssl_certfile']  and ! instance['ssl_certfile'].empty? -%>
+    ssl_certfile: <%= instance['ssl_certfile'] %>
+<% end -%>
+<% if instance['ssl_ca_certs']  and ! instance['ssl_ca_certs'].empty? -%>
+    ssl_ca_certs: <%= instance['ssl_ca_certs'] %>
+<% end -%>
+<% if instance['ssl_cert_reqs']  and ! instance['ssl_cert_reqs'].nil? -%>
+    ssl_cert_reqs: <%= instance['ssl_cert_reqs'] %>
+<% end -%>
 <% if instance['slowlog_max_len'] and ! instance['slowlog_max_len'].to_s.empty? -%>
     # unix_socket_path: /var/run/redis/redis.sock # optional, can be used in lieu of host/port
     slowlog-max-len: <%= instance['slowlog_max_len'] %>

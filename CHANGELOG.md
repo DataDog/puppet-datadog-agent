@@ -1,5 +1,29 @@
 Changes
 =======
+<!-- markdownlint-disable MD025 -->
+<!-- markdownlint-disable MD024 -->
+<!-- markdownlint-disable MD003 -->
+<!-- markdownlint-disable MD001 -->
+
+# 4.0.0 / 2025-02-28
+
+This release has multiple breaking changes, you may need to update your module integration; note that module dependencies has been updated.
+
+This release brings support for Puppet 8, which means all classes are now using defined class parameters types; this could break existing implementations.
+
+* [FEATURE] Add Support for Puppet 8 ([#779])
+* [FEATURE] Update Module Dependencies including updates for StdLib, migrating to newer functions where appropriate ([#800])
+* [FEATURE] Class definitions updated with references to DataDog examples
+* [FEATURE] Update to CI Builds to work with Ruby 3
+* [BUGFIX] Fix issue where MSI path was not correctly parsed ([#814])
+* [BUGFIX] BREAKING - `datadog_agent::integrations::disk` now expects booleans for `use_mount`, `all_partitions` and `tag_by_filesystem`
+* [DEPRECATE] Drop support for Puppet 6 and below
+* [DEPRECATE] Remove support for supply a String to the SSL_Verify option on the elasticsearch integration. We now use tls_verify which matches core DataDog code.
+* [DEPRECATE] Support for Jenkins integrations is removed
+* [DEPRECATE] No longer possible to use the custom metrics parameter when using the PostgresSQL class
+* [DEPRECATE] `ganglia` configuration no longer supported as per DataDog Agent v6+
+* [DEPRECATE] `skip_event` setting on TCP Check class has been removed from DataDog integration
+* [DEPRECATE] Drop support for Datadog Agent version 5, including removal of unit tests
 
 # 3.24.0 / 2025-02-25
 
@@ -23,6 +47,7 @@ Changes
 # 3.21.0 / 2023-07-03
 
 * [FEATURE] Trust new APT and RPM keys. ([#782])
+
 # 3.20.0 / 2023-01-12
 
 * [DEPRECATE] Remove the old RPM GPG key 4172A230 from hosts that still trust it, and stop trusting it. ([#770][])
@@ -68,7 +93,7 @@ Changes
 * [BUGFIX] Do not add process integration configuration file if not configured ([#703][]) (Thanks [@yanjunding][])
 * [FEATURE] add support for `min_collection_interval` for HTTP check ([#699][]) (Thanks [@yanjunding][])
 * [FEATURE] Improvements for APT keys management ([#698][], [#700][], [#701][] and [#714][])
-* [FEATURE] Include 'datadog_agent' class in the catalog when using the generic integration ([#697][]) (Thanks [@stantona][]) 
+* [FEATURE] Include 'datadog_agent' class in the catalog when using the generic integration ([#697][]) (Thanks [@stantona][])
 * [BUGFIX] Update `excluded_interface_re` type to String ([#696][]) (Thanks [@florusboth][])
 
 # 3.12.0 / 2021-05-06
@@ -167,9 +192,9 @@ then it is safe to upgrade.
 ### Notes
 
 * [MAJOR] Agent 7 support. See [#588][].
-    * Introduces `agent_major_version` parameter that replaces `agent5_enable`.
-    * Removes `agent6`/`agent5` prefixes in argument names.
-    * Unifies config for Agent 5/6 repos and removes the use of facter.
+  * Introduces `agent_major_version` parameter that replaces `agent5_enable`.
+  * Removes `agent6`/`agent5` prefixes in argument names.
+  * Unifies config for Agent 5/6 repos and removes the use of facter.
 * [IMPROVEMENT] Removes uses of `validate_legacy`.
 * [IMPROVEMENT] Keeps the group ownership of config files as `dd-agent`.
 * [IMPROVEMENT] Removes `service_name` and `package_name` parameters.
@@ -339,6 +364,7 @@ then it is safe to upgrade.
 # 2.0.0 / 2018-02-27
 
 ### Overview
+
 This release is a major release, there are a some breaking changes. We have
 tried to keep the interface as similar as possible to what the community
 was already used to, but have had to make some changes and cleaned up some
@@ -447,7 +473,6 @@ Please read the [docs]() for more details.
 * [DOCUMENTATION] Cleanup EC2-related parameter docs. See [#252][] (Thanks [@jdavisp3][])
 * [DOCUMENTATION] Zookeeper: fix comment to match reality. See [#297][] (Thanks [@generica][])
 
-
 # 1.9.0 / 2016-12-20
 
 ### Notes
@@ -476,8 +501,6 @@ Please read the [docs]() for more details.
 
 * [CI] Multiple fixes related to the spec tests on older puppets.
 * [CI] Consul: adding spec tests. See [#264][]. (Thanks [@flyinprogrammer][]).
-
-
 
 # 1.8.1 / 2016-08-15
 
@@ -628,6 +651,7 @@ Please read the [docs]() for more details.
 * [FEATURE] Add `use_mount` option in the base datadog_agent class
 * [FEATURE] Add proxy options in the base datadog_agent class
 * [BUGFIX] Use correct JMX-styled tags in JMX integrations
+
 > Careful this means that you probably have to update a buggy array of tags (that gives you nothing in the agent) to a hash of tags.
 
 * [BUGFIX] Fix ordering in YAML templates using `to_yaml` broken because of ruby 1.8
@@ -670,7 +694,6 @@ Please read the [docs]() for more details.
 [#164]: https://github.com/DataDog/puppet-datadog-agent/issues/164
 [#168]: https://github.com/DataDog/puppet-datadog-agent/issues/168
 [#169]: https://github.com/DataDog/puppet-datadog-agent/issues/169
-[#171]: https://github.com/DataDog/puppet-datadog-agent/issues/171
 [#173]: https://github.com/DataDog/puppet-datadog-agent/issues/173
 [#174]: https://github.com/DataDog/puppet-datadog-agent/issues/174
 [#175]: https://github.com/DataDog/puppet-datadog-agent/issues/175
@@ -934,13 +957,16 @@ Please read the [docs]() for more details.
 [#756]: https://github.com/DataDog/puppet-datadog-agent/issues/756
 [#761]: https://github.com/DataDog/puppet-datadog-agent/issues/761
 [#770]: https://github.com/DataDog/puppet-datadog-agent/issues/770
+[#779]: https://github.com/DataDog/puppet-datadog-agent/issues/779
 [#782]: https://github.com/DataDog/puppet-datadog-agent/issues/782
 [#785]: https://github.com/DataDog/puppet-datadog-agent/issues/785
 [#789]: https://github.com/DataDog/puppet-datadog-agent/issues/789
 [#790]: https://github.com/DataDog/puppet-datadog-agent/issues/790
 [#798]: https://github.com/DataDog/puppet-datadog-agent/issues/798
 [#799]: https://github.com/DataDog/puppet-datadog-agent/issues/799
+[#800]: https://github.com/DataDog/puppet-datadog-agent/issues/800
 [#806]: https://github.com/DataDog/puppet-datadog-agent/issues/806
+[#814]: https://github.com/DataDog/puppet-datadog-agent/issues/814
 [#820]: https://github.com/DataDog/puppet-datadog-agent/issues/820
 [#821]: https://github.com/DataDog/puppet-datadog-agent/issues/821
 [#824]: https://github.com/DataDog/puppet-datadog-agent/issues/824

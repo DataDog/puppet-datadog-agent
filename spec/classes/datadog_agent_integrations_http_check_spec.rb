@@ -4,6 +4,12 @@ describe 'datadog_agent::integrations::http_check' do
   ALL_SUPPORTED_AGENTS.each do |agent_major_version|
     context 'supported agents' do
       let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
+      let(:params) do
+        {
+          sitename: 'foo.bar.baz',
+          url: 'http://foo.bar.baz:4096',
+        }
+      end
 
       conf_file = if agent_major_version == 5
                     '/etc/dd-agent/conf.d/http_check.yaml'
@@ -23,23 +29,28 @@ describe 'datadog_agent::integrations::http_check' do
       it { is_expected.to contain_file(conf_file).that_notifies("Service[#{SERVICE_NAME}]") }
 
       context 'with default parameters' do
-        it { is_expected.to contain_file(conf_file).without_content(%r{name: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{url: }) }
+        let(:params) do
+          {
+            sitename: 'foo.bar.baz',
+            url: 'http://foo.bar.baz:4096',
+          }
+        end
+
         it { is_expected.to contain_file(conf_file).without_content(%r{username: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{password: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{timeout: 1}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{timeout: 1}) } # default value is 1
         it { is_expected.to contain_file(conf_file).without_content(%r{data: }) }
         it { is_expected.to contain_file(conf_file).without_content(%(threshold: )) }
         it { is_expected.to contain_file(conf_file).without_content(%r{window: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{content_match: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{reverse_content_match: true}) }
+        it { is_expected.to contain_file(conf_file).without_content(%r{reverse_content_match: false}) }
         it { is_expected.to contain_file(conf_file).without_content(%r{include_content: true}) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{collect_response_time: true}) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{collect_response_time: true}) } # default value is true
         it { is_expected.to contain_file(conf_file).without_content(%r{http_response_status_code: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{disable_ssl_validation: false}) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{skip_event: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{no_proxy: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{check_certificate_expiration: }) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{disable_ssl_validation: false}) } # default value is false
+        it { is_expected.to contain_file(conf_file).with_content(%r{skip_event: true}) } # default value is true
+        it { is_expected.to contain_file(conf_file).with_content(%r{no_proxy: false}) } # default value is false
+        it { is_expected.to contain_file(conf_file).with_content(%r{check_certificate_expiration: true}) } # default value is true
         it { is_expected.to contain_file(conf_file).without_content(%r{days_warning: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{days_critical: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{headers: }) }

@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the process integration
 #
+# See the sample process.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/process/datadog_checks/process/data/conf.yaml.example
+#
 # Parameters:
 #   $processes:
 #       Array of process hashes. See example
@@ -40,12 +43,12 @@
 
 #
 #
-class datadog_agent::integrations::process(
+class datadog_agent::integrations::process (
   Boolean $hiera_processes = false,
-  $init_config = {},
+  Hash $init_config = {},
   Array $processes = [],
-  ) inherits datadog_agent::params {
-  require ::datadog_agent
+) inherits datadog_agent::params {
+  require datadog_agent
 
   if $hiera_processes {
     $local_processes = lookup({ 'name' => 'datadog_agent::integrations::process::processes', 'merge' => 'unique', 'default_value' => $processes })
@@ -54,10 +57,10 @@ class datadog_agent::integrations::process(
   }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/process.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if $datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/process.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -66,7 +69,7 @@ class datadog_agent::integrations::process(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -74,12 +77,12 @@ class datadog_agent::integrations::process(
   }
 
   file { $dst:
-    ensure  => $local_processes.length ? { 0 => absent, default => file},
+    ensure  => $local_processes.length ? { 0 => 'absent', default => file },
     owner   => $datadog_agent::dd_user,
     group   => $datadog_agent::params::dd_group,
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/process.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

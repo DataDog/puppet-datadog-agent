@@ -30,34 +30,36 @@ describe 'datadog_agent::integrations::snmp' do
         let(:params) do
           {
             ignore_nonincreasing_oid: true,
-            instances: {
-              ip_address: 'localhost',
-              port: 161,
-              community_string: 'public',
-              tags: [
-                'optional_tag_1',
-              ],
-              metrics: [
-                {
-                  MIB: 'IF-MIB',
-                  table: 'ifTable',
-                  symbols: [
-                    'ifInOctets',
-                    'ifOutOctets',
-                  ],
-                  metric_tags: [
-                    {
-                      tag: 'interface',
-                      column: 'ifDescr',
-                    },
-                    {
-                      tag: 'interface_index',
-                      column: 'ifIndex',
-                    },
-                  ],
-                },
-              ],
-            },
+            instances: [
+              {
+                ip_address: 'localhost',
+                port: 161,
+                community_string: 'public',
+                tags: [
+                  'optional_tag_1',
+                ],
+                metrics: [
+                  {
+                    MIB: 'IF-MIB',
+                    table: 'ifTable',
+                    symbols: [
+                      'ifInOctets',
+                      'ifOutOctets',
+                    ],
+                    metric_tags: [
+                      {
+                        tag: 'interface',
+                        column: 'ifDescr',
+                      },
+                      {
+                        tag: 'interface_index',
+                        column: 'ifIndex',
+                      },
+                    ],
+                  },
+                ],
+              },
+            ]
           }
         end
 
@@ -69,8 +71,8 @@ describe 'datadog_agent::integrations::snmp' do
           expect(yaml).to include('init_config')
           expect(yaml['init_config']).to include('ignore_nonincreasing_oid')
           expect(yaml).to include('instances')
-          expect(yaml['instances']).to include('tags')
-          expect(yaml['instances']['tags']).to include('optional_tag_1')
+          expect(yaml['instances'][0]).to include('tags')
+          expect(yaml['instances'][0]['tags']).to include('optional_tag_1')
         end
       end
     end

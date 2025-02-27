@@ -4,6 +4,13 @@ describe 'datadog_agent::integrations::tcp_check' do
   ALL_SUPPORTED_AGENTS.each do |agent_major_version|
     context 'supported agents' do
       let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
+      let(:params) do
+        {
+          check_name: 'foo.bar.baz',
+          host: 'foo.bar.baz',
+          port: '80'
+        }
+      end
 
       conf_file = if agent_major_version == 5
                     '/etc/dd-agent/conf.d/tcp_check.yaml'
@@ -23,14 +30,21 @@ describe 'datadog_agent::integrations::tcp_check' do
       it { is_expected.to contain_file(conf_file).that_notifies("Service[#{SERVICE_NAME}]") }
 
       context 'with default parameters' do
-        it { is_expected.to contain_file(conf_file).without_content(%r{name: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{host: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{port: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{timeout: 1}) }
+        let(:params) do
+          {
+            check_name: 'foo.bar.baz',
+            host: 'foo.bar.baz',
+            port: '80'
+          }
+        end
+
+        it { is_expected.to contain_file(conf_file).with_content(%r{name: }) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{host: }) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{port: }) }
+        it { is_expected.to contain_file(conf_file).with_content(%r{timeout: 10}) } # default value is 10
         it { is_expected.to contain_file(conf_file).without_content(%(threshold: )) }
         it { is_expected.to contain_file(conf_file).without_content(%r{window: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{collect_response_time: }) }
-        it { is_expected.to contain_file(conf_file).without_content(%r{skip_event: }) }
         it { is_expected.to contain_file(conf_file).without_content(%r{tags: }) }
       end
 
@@ -44,7 +58,6 @@ describe 'datadog_agent::integrations::tcp_check' do
             threshold: 456,
             window: 789,
             collect_response_time: true,
-            skip_event: true,
           }
         end
 
@@ -55,7 +68,6 @@ describe 'datadog_agent::integrations::tcp_check' do
         it { is_expected.to contain_file(conf_file).with_content(%r{threshold: 456}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{window: 789}) }
         it { is_expected.to contain_file(conf_file).with_content(%r{collect_response_time: true}) }
-        it { is_expected.to contain_file(conf_file).with_content(%r{skip_event: true}) }
       end
 
       context 'with tags parameter array' do

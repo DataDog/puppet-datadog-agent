@@ -19,7 +19,7 @@ class datadog_agent::suse (
   ]
   #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'
   if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ or $agent_version == 'latest' {
-    if $agent_major_version > 5 and ($agent_version == 'latest' or 0 + $3 > 35) {
+    if $agent_major_version >= 6 and ($agent_version == 'latest' or 0 + $3 > 35) {
       $keys_to_use = $all_keys[0,3]
     } else {
       $keys_to_use = $all_keys
@@ -39,7 +39,6 @@ class datadog_agent::suse (
   }
 
   case $agent_major_version {
-    5 : { fail('Agent v5 package not available in SUSE') }
     6 : { $gpgkeys = $keys_to_use }
     7 : { $gpgkeys = $keys_to_use }
     default: { fail('invalid agent_major_version') }

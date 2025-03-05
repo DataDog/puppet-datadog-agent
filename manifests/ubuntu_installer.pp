@@ -67,7 +67,7 @@ class datadog_agent::ubuntu_installer (
   # Do not re-install keys as it is already managed in `ubuntu.pp`
   if ! $manage_agent_install {
     if !$skip_apt_key_trusting {
-      ensure_packages(['gnupg'])
+      stdlib::ensure_packages(['gnupg'])
 
       file { $apt_usr_share_keyring:
         ensure  => file,

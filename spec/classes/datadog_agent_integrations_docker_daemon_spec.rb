@@ -72,16 +72,6 @@ describe 'datadog_agent::integrations::docker_daemon' do
 
           it { is_expected.to contain_file(conf_file).with_content(%r{tags: \[\]}) }
         end
-
-        context 'single value empty string' do
-          let(:params) do
-            {
-              tags: '',
-            }
-          end
-
-          it { is_expected.to contain_file(conf_file).with_content(%r{tags: \[\]}) }
-        end
       end
     end
   end

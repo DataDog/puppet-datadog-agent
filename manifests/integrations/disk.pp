@@ -2,6 +2,9 @@
 #
 # This class will install the necessary config to hook the disk check
 #
+# See the sample disk.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/disk/datadog_checks/disk/data/conf.yaml.default
+#
 # Parameters:
 #   $use_mount
 #       The use_mount parameter will instruct the check to collect disk
@@ -51,7 +54,6 @@
 #       Regular expression (optional) to exclude disks, eg: /dev/sde.*
 #   $excluded_mountpoint_re (DEPRECATED in agent version>6.9, use $mountpoint_exclude instead)
 #       Regular expression (optional) to exclude , eg: /mnt/somebody-elses-problem.*
-
 #
 # Sample Usage:
 #
@@ -61,9 +63,9 @@
 #      excluded_disk_re     => '/dev/sd[e-z]*'
 #  }
 class datadog_agent::integrations::disk (
-  String $use_mount                              = 'no',
-  $all_partitions                                = undef,
-  $tag_by_filesystem                             = undef,
+  Optional[Boolean] $use_mount                   = undef,
+  Optional[Boolean] $all_partitions              = undef,
+  Optional[Boolean] $tag_by_filesystem           = undef,
   Optional[Array[String]] $filesystem_exclude    = undef,
   Optional[Array[String]] $device_exclude        = undef,
   Optional[Array[String]] $mountpoint_exclude    = undef,
@@ -81,19 +83,13 @@ class datadog_agent::integrations::disk (
   Optional[String] $excluded_disk_re       = undef,  # deprecated in agent versions >6.9
   Optional[String] $excluded_mountpoint_re = undef,  # deprecated in agent versions >6.9
 ) inherits datadog_agent::params {
-  require ::datadog_agent
-
-  validate_legacy('Optional[String]', 'validate_re', $all_partitions, '^(no|yes)$')
-
-  if $use_mount !~ '^(no|yes)$' {
-    fail('error during compilation')
-  }
+  require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/disk.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if $datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/disk.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -102,7 +98,7 @@ class datadog_agent::integrations::disk (
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -116,6 +112,6 @@ class datadog_agent::integrations::disk (
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/disk.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

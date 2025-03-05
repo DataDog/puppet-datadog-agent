@@ -14,8 +14,11 @@
 /junit/
 /log/
 /pkg/
+/spec/fixtures/manifests/
+/spec/fixtures/modules/*
 /tmp/
 /vendor/
+/.vendor/
 /convert_report.txt
 /update_report.txt
 spec/fixtures
@@ -32,4 +35,11 @@ environments/**/.vagrant
 /inventory.yaml
 
 .kitchen
-.vscode
+
+/spec/fixtures/litmus_inventory.yaml
+.resource_types
+.modules
+.task_cache.json
+.plan_cache.json
+.rerun.json
+bolt-debug.log

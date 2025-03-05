@@ -1,6 +1,15 @@
 # Class: datadog_agent::integrations::activemq_xml
 #
-# This class will install the necessary configuration for the activemq_xml integration
+# This class will install the necessary configuration for the activemq_xml integration.
+#
+# See the sample activemq.d/conf.yaml for all available configuration options.
+# https://github.com/DataDog/integrations-core/blob/master/activemq/datadog_checks/activemq/data/conf.yaml.example 
+#
+# See the metrics.yaml file for the list of default collected metrics.
+# https://github.com/DataDog/integrations-core/blob/master/activemq/datadog_checks/activemq/data/metrics.yaml
+#
+# This check has a limit of 350 metrics per instance. If you require 
+# additional metrics, contact Datadog Support at https://docs.datadoghq.com/help/
 #
 # Parameters:
 #   $url
@@ -42,23 +51,23 @@
 #       detailed_subscribers: ['subscriber1', 'subscriber2', 'subscriber3']
 #
 #
-class datadog_agent::integrations::activemq_xml(
+class datadog_agent::integrations::activemq_xml (
   String $url                                   = 'http://localhost:8161',
   Boolean $supress_errors                       = false,
   Optional[String] $username                    = undef,
   Optional[String] $password                    = undef,
-  Optional[Array[String]] $detailed_queues      = [],
-  Optional[Array[String]] $detailed_topics      = [],
-  Optional[Array[String]] $detailed_subscribers = [],
+  Array[String] $detailed_queues                = [],
+  Array[String] $detailed_topics                = [],
+  Array[String] $detailed_subscribers           = [],
   Optional[Array] $instances                    = undef,
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/activemq_xml.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if $datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/activemq_xml.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -67,7 +76,7 @@ class datadog_agent::integrations::activemq_xml(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {
@@ -76,15 +85,15 @@ class datadog_agent::integrations::activemq_xml(
 
   if !$instances and $url {
     $_instances = [{
-      'url'                  => $url,
-      'username'             => $username,
-      'password'             => $password,
-      'supress_errors'       => $supress_errors,
-      'detailed_queues'      => $detailed_queues,
-      'detailed_topics'      => $detailed_topics,
-      'detailed_subscribers' => $detailed_subscribers,
+        'url'                  => $url,
+        'username'             => $username,
+        'password'             => $password,
+        'supress_errors'       => $supress_errors,
+        'detailed_queues'      => $detailed_queues,
+        'detailed_topics'      => $detailed_topics,
+        'detailed_subscribers' => $detailed_subscribers,
     }]
-  } elsif !$instances{
+  } elsif !$instances {
     $_instances = []
   } else {
     $_instances = $instances

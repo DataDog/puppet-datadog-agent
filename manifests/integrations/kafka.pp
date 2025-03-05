@@ -2,6 +2,15 @@
 #
 # This class will install the necessary configuration for the kafka integration
 #
+# See the sample kafka.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/kafka/datadog_checks/kafka/data/conf.yaml.example
+#
+# # See the metrics.yaml file for the list of default collected metrics.
+# https://github.com/DataDog/integrations-core/blob/master/kafka/datadog_checks/kafka/data/metrics.yaml
+#
+# This check has a limit of 350 metrics per instance. If you require 
+# additional metrics, contact Datadog Support at https://docs.datadoghq.com/help/
+#
 # Parameters:
 #   $host:
 #       The host kafka is running on. Defaults to 'localhost'
@@ -52,8 +61,8 @@
 #    ]
 #  }
 #
-class datadog_agent::integrations::kafka(
-  $host = 'localhost',
+class datadog_agent::integrations::kafka (
+  String $host = 'localhost',
   Variant[String[1], Integer] $port = 9999,
   Optional[String[1]] $username = undef,
   Optional[String[1]] $password = undef,
@@ -65,32 +74,32 @@ class datadog_agent::integrations::kafka(
   Optional[Hash[String[1], String[1]]] $tags = undef,
   Optional[Array[Hash[String[1], Data]]] $instances = undef,
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   if !$instances and $host and $port {
     $servers = [{
-      'host'                      => $host,
-      'port'                      => $port,
-      'username'                  => $username,
-      'password'                  => $password,
-      'process_name_regex'        => $process_name_regex,
-      'tools_jar_path'            => $tools_jar_path,
-      'java_bin_path'             => $java_bin_path,
-      'trust_store_path'          => $trust_store_path,
-      'trust_store_password'      => $trust_store_password,
-      'tags'                      => $tags,
+        'host'                      => $host,
+        'port'                      => $port,
+        'username'                  => $username,
+        'password'                  => $password,
+        'process_name_regex'        => $process_name_regex,
+        'tools_jar_path'            => $tools_jar_path,
+        'java_bin_path'             => $java_bin_path,
+        'trust_store_path'          => $trust_store_path,
+        'trust_store_password'      => $trust_store_password,
+        'tags'                      => $tags,
     }]
-  } elsif !$instances{
+  } elsif !$instances {
     $servers = []
   } else {
     $servers = $instances
   }
 
   $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/kafka.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
+  if $datadog_agent::_agent_major_version > 5 {
     $dst_dir = "${datadog_agent::params::conf_dir}/kafka.d"
     file { $legacy_dst:
-      ensure => 'absent'
+      ensure => 'absent',
     }
 
     file { $dst_dir:
@@ -99,7 +108,7 @@ class datadog_agent::integrations::kafka(
       group   => $datadog_agent::params::dd_group,
       mode    => $datadog_agent::params::permissions_directory,
       require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      notify  => Service[$datadog_agent::params::service_name],
     }
     $dst = "${dst_dir}/conf.yaml"
   } else {

@@ -80,7 +80,6 @@ platforms:
     docker_platform: linux/amd64
     privileged: true
     run_options: --cgroupns=host --tmpfs=/run --volume=/sys/fs/cgroup:/sys/fs/cgroup:rw
-    publish_all: true
     run_command: /root/start.sh
     provision_command:
     - dnf module -y reset ruby
@@ -107,7 +106,6 @@ platforms:
     platform: rhel # kitchen-docker has issues installing packages otherwises
     docker_platform: linux/amd64
     privileged: true
-    use_cache: false
     run_options: --cgroupns=host --volume=/sys/fs/cgroup:/sys/fs/cgroup:rw
     run_command: /root/start.sh
     provision_command:

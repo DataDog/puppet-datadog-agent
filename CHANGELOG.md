@@ -17,13 +17,14 @@ This release brings support for Puppet 8, which means all classes are now using 
 * [FEATURE] Update to CI Builds to work with Ruby 3
 * [BUGFIX] Fix issue where MSI path was not correctly parsed ([#814])
 * [BUGFIX] BREAKING - `datadog_agent::integrations::disk` now expects booleans for `use_mount`, `all_partitions` and `tag_by_filesystem`
+* [DEPRECATE] Drop support for Datadog Agent version 5, including removal of unit tests
 * [DEPRECATE] Drop support for Puppet 6 and below
 * [DEPRECATE] Remove support for supply a String to the SSL_Verify option on the elasticsearch integration. We now use tls_verify which matches core DataDog code.
 * [DEPRECATE] Support for Jenkins integrations is removed
 * [DEPRECATE] No longer possible to use the custom metrics parameter when using the PostgresSQL class
 * [DEPRECATE] `ganglia` configuration no longer supported as per DataDog Agent v6+
 * [DEPRECATE] `skip_event` setting on TCP Check class has been removed from DataDog integration
-* [DEPRECATE] Drop support for Datadog Agent version 5, including removal of unit tests
+* [DEPRECATE] Removal of SSL settings from the Redis integration
 
 # 3.24.0 / 2025-02-25
 

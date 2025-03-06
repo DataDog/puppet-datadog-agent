@@ -17,19 +17,7 @@
 #   $username
 #       The username for the datadog user
 #   $ssl
-#       This option determines whether or not and with what priority a secure SSL TCP/IP connection
-#         is negotiated with the server. There are six modes:
-#         - `disable`: Only tries a non-SSL connection.
-#         - `allow`: First tries a non-SSL connection; if if fails, tries an SSL connection.
-#         - `prefer`: First tries an SSL connection; if it fails, tries a non-SSL connection.
-#         - `require`: Only tries an SSL connection. If a root CA file is present, verifies the certificate in
-#                      the same way as if verify-ca was specified.
-#         - `verify-ca`: Only tries an SSL connection, and verifies that the server certificate is issued by a
-#                        trusted certificate authority (CA).
-#         - `verify-full`: Only tries an SSL connection and verifies that the server certificate is issued by a
-#                          trusted CA and that the requested server host name matches the one in the certificate.
-#
-#         For a detailed description of how these options work see https://www.postgresql.org/docs/current/libpq-ssl.html
+#       Boolean to enable SSL
 #   $use_psycopg2
 #       Boolean to flag connecting to postgres with psycopg2 instead of pg8000.
 #       Warning, psycopg2 doesn't support ssl mode.
@@ -71,15 +59,7 @@
 #       dbname: 'postgres'
 #       username: 'datadog'
 #       password: 'some_pass'
-#       ssl: 'allow'
-#       custom_metrics:
-#         a_custom_query:
-#           query: 'select tag_column, %s from table'
-#           relation: false
-#           metrics:
-#             value_column: ["value_column.datadog.tag", "GAUGE"]
-#           descriptors:
-#           - ["tag_column", "tag_column.datadog.tag"]
+#       ssl: false
 #
 class datadog_agent::integrations::postgres (
   Optional[String] $password             = undef,
@@ -87,7 +67,7 @@ class datadog_agent::integrations::postgres (
   String $dbname                         = 'postgres',
   Variant[String, Integer] $port         = '5432',
   String $username                       = 'datadog',
-  String $ssl                            = 'allow',
+  Boolean $ssl                           = false,
   Boolean $use_psycopg2                  = false,
   Boolean $collect_function_metrics      = false,
   Boolean $collect_count_metrics         = false,
@@ -100,25 +80,17 @@ class datadog_agent::integrations::postgres (
 ) inherits datadog_agent::params {
   require datadog_agent
 
-  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/postgres.yaml"
-  if $datadog_agent::_agent_major_version > 5 {
-    $dst_dir = "${datadog_agent::params::conf_dir}/postgres.d"
-    file { $legacy_dst:
-      ensure => 'absent',
-    }
+  $dst_dir = "${datadog_agent::params::conf_dir}/postgres.d"
 
-    file { $dst_dir:
-      ensure  => directory,
-      owner   => $datadog_agent::dd_user,
-      group   => $datadog_agent::params::dd_group,
-      mode    => $datadog_agent::params::permissions_directory,
-      require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name],
-    }
-    $dst = "${dst_dir}/conf.yaml"
-  } else {
-    $dst = $legacy_dst
+  file { $dst_dir:
+    ensure  => directory,
+    owner   => $datadog_agent::dd_user,
+    group   => $datadog_agent::params::dd_group,
+    mode    => $datadog_agent::params::permissions_directory,
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name],
   }
+  $dst = "${dst_dir}/conf.yaml"
 
   if !$instances and $host {
     $_instances = [{

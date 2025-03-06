@@ -26,7 +26,6 @@ class datadog_agent::ubuntu (
   }
 
   case $agent_major_version {
-    5 : { $repos = 'main' }
     6 : { $repos = '6' }
     7 : { $repos = '7' }
     default: { fail('invalid agent_major_version') }

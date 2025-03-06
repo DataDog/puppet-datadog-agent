@@ -29,6 +29,36 @@ describe 'datadog_agent' do
       end
     end
 
+    context 'autodetect major version agent 5' do
+      let(:params) do
+        {
+          agent_version: '5.15.1',
+        }
+      end
+      let(:facts) do
+        {
+          os: {
+            'architecture' => 'x86_64',
+            'family' => 'debian',
+            'name' => 'Ubuntu',
+            'release' => {
+              'major' => '14',
+              'full' => '14.04',
+            },
+            'distro' => {
+              'codename' => 'trusty',
+            },
+          },
+        }
+      end
+
+      it do
+        expect {
+          is_expected.to contain_package('module')
+        }.to raise_error(Puppet::Error, %r{agent_major_version must be either 6 or 7, not 5})
+      end
+    end
+
     context 'autodetect major version agent 6' do
       let(:params) do
         {

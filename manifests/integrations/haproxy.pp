@@ -20,9 +20,9 @@
 #   }
 #
 class datadog_agent::integrations::haproxy (
-  Hash $creds                     = {},
-  String $url                       = "http://${facts['networking']['ip']}:8080",
-  Hash $options                   = {},
+  Hash $creds                = {},
+  String $url                = "http://${facts['networking']['ip']}:8080",
+  Hash $options              = {},
   Optional[Array] $instances = undef
 ) inherits datadog_agent::params {
   require datadog_agent
@@ -39,25 +39,17 @@ class datadog_agent::integrations::haproxy (
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/haproxy.yaml"
-  if $datadog_agent::_agent_major_version > 5 {
-    $dst_dir = "${datadog_agent::params::conf_dir}/haproxy.d"
-    file { $legacy_dst:
-      ensure => 'absent',
-    }
+  $dst_dir = "${datadog_agent::params::conf_dir}/haproxy.d"
 
-    file { $dst_dir:
-      ensure  => directory,
-      owner   => $datadog_agent::dd_user,
-      group   => $datadog_agent::params::dd_group,
-      mode    => $datadog_agent::params::permissions_directory,
-      require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name],
-    }
-    $dst = "${dst_dir}/conf.yaml"
-  } else {
-    $dst = $legacy_dst
+  file { $dst_dir:
+    ensure  => directory,
+    owner   => $datadog_agent::dd_user,
+    group   => $datadog_agent::params::dd_group,
+    mode    => $datadog_agent::params::permissions_directory,
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name],
   }
+  $dst = "${dst_dir}/conf.yaml"
 
   file { $dst:
     ensure  => file,

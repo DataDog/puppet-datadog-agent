@@ -413,8 +413,8 @@ class datadog_agent (
     default: { $agent_full_version = $agent_version }
   }
 
-  if $_agent_major_version != 5 and $_agent_major_version != 6 and $_agent_major_version != 7 {
-    fail("agent_major_version must be either 5, 6 or 7, not ${_agent_major_version}")
+  if $_agent_major_version != 6 and $_agent_major_version != 7 {
+    fail("agent_major_version must be either 6 or 7, not ${_agent_major_version}")
   }
 
   if ($facts['os']['name'] == 'Windows' and $windows_ddagentuser_name != undef) {
@@ -424,11 +424,7 @@ class datadog_agent (
   }
 
   if $conf_dir == undef {
-    if $_agent_major_version == 5 {
-      $_conf_dir = $datadog_agent::params::legacy_conf_dir
-    } else {
-      $_conf_dir = $datadog_agent::params::conf_dir
-    }
+    $_conf_dir = $datadog_agent::params::conf_dir
   } else {
     $_conf_dir = $conf_dir
   }

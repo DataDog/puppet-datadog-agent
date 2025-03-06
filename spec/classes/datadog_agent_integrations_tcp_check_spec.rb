@@ -12,11 +12,7 @@ describe 'datadog_agent::integrations::tcp_check' do
         }
       end
 
-      conf_file = if agent_major_version == 5
-                    '/etc/dd-agent/conf.d/tcp_check.yaml'
-                  else
-                    "#{CONF_DIR}/tcp_check.d/conf.yaml"
-                  end
+      conf_file = "#{CONF_DIR}/tcp_check.d/conf.yaml"
 
       it { is_expected.to compile.with_all_deps }
       it {

@@ -3,7 +3,11 @@
 init_config:
 
 instances:
+<% if @use_mount.nil? -%>
+  - use_mount: false
+<% else -%>
   - use_mount: <%= @use_mount %>
+<% end -%>
 <% if @filesystem_blacklist -%>
     file_system_blacklist:
 <% (Array(@filesystem_blacklist)).each do |fs| -%>
@@ -94,9 +98,9 @@ instances:
 <% if @excluded_mountpoint_re -%>
     excluded_mountpoint_re: <%= @excluded_mountpoint_re %>
 <% end -%>
-<% if @all_partitions -%>
+<% if not @all_partitions.nil? -%>
     all_partitions: <%= @all_partitions %>
 <% end -%>
-<% if @tag_by_filesystem -%>
+<% if not @tag_by_filesystem.nil? -%>
     tag_by_filesystem: <%= @tag_by_filesystem %>
 <% end -%>

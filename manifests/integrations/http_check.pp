@@ -7,10 +7,10 @@
 #
 # Parameters:
 #   sitename
-#       (Required) The name of the instance.
+#       The name of the instance.
 #
 #   url
-#       (Required) The url to check.
+#       The url to check.
 #
 #   timeout
 #       The (optional) timeout in seconds.
@@ -170,8 +170,8 @@
 #        }]
 #     }
 class datadog_agent::integrations::http_check (
-  String $sitename,
-  String $url,
+  Optional[String] $sitename = undef,
+  Optional[String] $url = undef,
   Optional[String] $username  = undef,
   Optional[Any] $password  = undef,
   Integer $timeout   = 1,

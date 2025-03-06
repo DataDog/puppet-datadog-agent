@@ -1,27 +1,24 @@
 fixtures:
   repositories:
     stdlib:
-      repo: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
-      ref: "4.25.0"
+      repo: "https://github.com/puppetlabs/puppetlabs-stdlib.git" # TODO: why git: and not https:?
+      ref: "v9.7.0" # Puppet >= 7.0.0 < 9.0.0
     concat:
-      repo: "git://github.com/puppetlabs/puppetlabs-concat.git"
-      ref: "4.1.1"
+      repo: "https://github.com/puppetlabs/puppetlabs-concat.git"
+      ref: "v9.1.0" # Puppet >= 7.0.0 < 9.0.0
     apt:
-      repo: "git://github.com/puppetlabs/puppetlabs-apt.git"
-      ref: "4.5.0"
-    puppetserver_gem:
-      repo: "git://github.com/puppetlabs/puppetlabs-puppetserver_gem.git"
-      ref: "1.0.0"
+      repo: "https://github.com/puppetlabs/puppetlabs-apt.git"
+      ref: "v10.0.1" # Puppet >= 7.0.0 < 9.0.0
   forge_modules:
     yumrepo_core:
       repo: "puppetlabs/yumrepo_core"
-      ref: "1.2.0"
+      ref: "2.1.0"
     powershell:
       repo: "puppetlabs/powershell"
-      ref: "4.1.0"
+      ref: "6.0.2"
     zypprepo:
       repo: "puppet/zypprepo"
-      ref: "3.1.0"
+      ref: "5.0.0"
   symlinks:
     custom_datadog: "#{source_dir}/spec/custom_fixtures/custom_datadog"
     datadog_agent: "#{source_dir}"

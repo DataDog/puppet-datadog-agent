@@ -1,392 +1,239 @@
 version: 2.1
 orbs:
-  win: circleci/windows@2.2.0
+  win: circleci/windows@5.0.0
 jobs:
-  specs-ruby21-puppet46: &specs
+  specs-ruby26-puppet734: &ubuntu2004-specs
     machine:
       image: ubuntu-2004:2024.08.1
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.1.9'
-      PUPPET_VERSION: '4.6.2'
+      RUBY_VERSION: '2.6.3'
+      PUPPET_VERSION: '7.34.0'
     steps:
-      # See https://github.blog/2021-09-01-improving-git-protocol-security-github/
-      - run:
-          name: Fix git clones
-          command: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
-      - checkout
-      - run:
-          name: Install RVM
-          command: |
-            gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-            \curl -sSL https://get.rvm.io | bash -s stable
-      - run:
-          name: Install old libssl1.0-dev
-          command: |
-            ruby_major=$(echo $RUBY_VERSION | awk -F. '{ print $1 }')
-            ruby_minor=$(echo $RUBY_VERSION | awk -F. '{ print $2 }')
-            # We need libssl1.0-dev to even compile Ruby <= 2.3 with RVM;
-            if [ $ruby_major -eq "2" ] && [ $ruby_minor -le "3" ]; then
-              sudo bash -c "echo deb http://security.ubuntu.com/ubuntu bionic-security main >> /etc/apt/sources.list"
-              sudo apt update && apt-cache policy libssl1.0-dev
-              sudo apt install -y libssl1.0-dev
-            fi
-      - run:
-          name: Install Ruby version
-          command: rvm install $RUBY_VERSION
-      - run:
-          name: Install bundler
-          command: rvm $RUBY_VERSION --verbose do gem install bundler:1.17.3
-      - run:
-          name: Install gem dependencies
-          command: rm Gemfile.lock && rvm $RUBY_VERSION --verbose do bundle install --path .bundle
-      - run:
-          name: Run tests
-          command: rvm $RUBY_VERSION --verbose do bundle exec rake test
+    - checkout
+    - run:
+        name: Setup
+        command: |
+          # Needed to bundle install a puppet_litmus gem dependency
+          sudo apt update -y
+          sudo apt install -y libcurl4 curl libcurl4-openssl-dev
+    - run:
+        name: Install RVM
+        command: |
+          gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+          \curl -sSL https://get.rvm.io | bash -s stable
+    - run:
+        name: Install Ruby version
+        command: rvm install $RUBY_VERSION
+    - run:
+        name: Install bundler
+        command: |
+          rm Gemfile.lock && rvm $RUBY_VERSION --verbose do bundle config set path '.bundle'
+          rvm $RUBY_VERSION --verbose do  gem install bundler:2.4.13
+    - run:
+        name: Install gem dependencies
+        command: rvm $RUBY_VERSION --verbose do bundle install
+    - run:
+        name: Run tests
+        command: rvm $RUBY_VERSION --verbose do bundle exec rake test
 
-  specs-ruby21-puppet410:
-    <<: *specs
+  specs-ruby27-puppet734:
+    <<: *ubuntu2004-specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.1.9'
-      PUPPET_VERSION: '4.10.9'
+      RUBY_VERSION: '2.7.5'
+      PUPPET_VERSION: '7.34.0'
 
-  specs-ruby21-puppet50:
-    <<: *specs
+  specs-ruby31-puppet734:
+    <<: *ubuntu2004-specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.1.9'
-      PUPPET_VERSION: '5.0.1'
+      RUBY_VERSION: '3.1.6'
+      PUPPET_VERSION: '7.34.0'
 
-  specs-ruby21-puppet53:
-    <<: *specs
+  specs-ruby32-puppet734:
+    <<: *ubuntu2004-specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.1.9'
-      PUPPET_VERSION: '5.3.3'
+      RUBY_VERSION: '3.2.7'
+      PUPPET_VERSION: '7.34.0'
 
-  # Puppet 6 depends on ruby >= 2.3
-  #specs-ruby21-puppet60
-  #specs-ruby21-puppet65
-
-  specs-ruby22-puppet46:
-    <<: *specs
+  specs-ruby33-puppet734:
+    <<: *ubuntu2004-specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.2.3'
-      PUPPET_VERSION: '4.6.2'
+      RUBY_VERSION: '3.3.7'
+      PUPPET_VERSION: '7.34.0'
 
-  specs-ruby22-puppet410:
-    <<: *specs
+  specs-ruby34-puppet734:
+    <<: *ubuntu2004-specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.2.3'
-      PUPPET_VERSION: '4.10.9'
+      RUBY_VERSION: '3.4.1'
+      PUPPET_VERSION: '7.34.0'
 
-  specs-ruby22-puppet50:
-    <<: *specs
+  specs-ruby31-puppet810: &ubuntu2404-specs
+    machine:
+      image: ubuntu-2404:2024.08.1
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.2.3'
-      PUPPET_VERSION: '5.0.1'
+      RUBY_VERSION: '3.1.6'
+      PUPPET_VERSION: '8.10.0'
+    steps:
+    - checkout
+    - run:
+        name: Setup
+        command: |
+          # Needed to bundle install a puppet_litmus gem dependency
+          sudo apt update -y
+          sudo apt install -y libcurl4 curl libcurl4-openssl-dev
+    - run:
+        name: Install RVM
+        command: |
+          gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+          \curl -sSL https://get.rvm.io | bash -s stable
+    - run:
+        name: Install Ruby version
+        command: rvm install $RUBY_VERSION
+    - run:
+        name: Install bundler
+        command: |
+          rm Gemfile.lock && rvm $RUBY_VERSION --verbose do bundle config set path '.bundle'
+          rvm $RUBY_VERSION --verbose do  gem install bundler:2.4.13
+    - run:
+        name: Install gem dependencies
+        command: rvm $RUBY_VERSION --verbose do bundle install
+    - run:
+        name: Run tests
+        command: rvm $RUBY_VERSION --verbose do bundle exec rake test
 
-  specs-ruby22-puppet53:
-    <<: *specs
+  specs-ruby32-puppet810:
+    <<: *ubuntu2404-specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.2.3'
-      PUPPET_VERSION: '5.3.3'
+      RUBY_VERSION: '3.2.7'
+      PUPPET_VERSION: '8.10.0'
 
-  # Puppet 6 depends on ruby >= 2.3
-  #specs-ruby22-puppet60
-  #specs-ruby22-puppet65
-
-  specs-ruby23-puppet46:
-    <<: *specs
+  specs-ruby33-puppet810:
+    <<: *ubuntu2404-specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.3.6'
-      PUPPET_VERSION: '4.6.2'
+      RUBY_VERSION: '3.3.7'
+      PUPPET_VERSION: '8.10.0'
 
-  specs-ruby23-puppet410:
-    <<: *specs
+  specs-ruby34-puppet810:
+    <<: *ubuntu2404-specs
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.3.6'
-      PUPPET_VERSION: '4.10.9'
+      RUBY_VERSION: '3.4.1'
+      PUPPET_VERSION: '8.10.0'
 
-  specs-ruby23-puppet50:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.3.6'
-      PUPPET_VERSION: '5.0.1'
-
-  specs-ruby23-puppet53:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.3.6'
-      PUPPET_VERSION: '5.3.3'
-
-  specs-ruby23-puppet60:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.3.6'
-      PUPPET_VERSION: '6.0.0'
-
-  specs-ruby23-puppet65:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.3.6'
-      PUPPET_VERSION: '6.5.0'
-
-  # Puppet < 5 doesn't work with Ruby when it's compiled with libssl > 1.0 - see
-  # https://bugzilla.redhat.com/show_bug.cgi?id=1440710 for details - but RVM
-  # refuses to compile with older libssl. We could use --autolibs=0 RVM option,
-  # but then we'd have to manually install all deps ourselves and maintain that
-  # solution... So we just disable specs-ruby24-puppet46 and specs-ruby25-puppet46.
-  # specs-ruby24-puppet46:
-  #   <<: *specs
+  # specs-ruby27-puppet79-windows:
+  #   # &windows-specs
+  #   executor:
+  #     name: win/default
+  #     shell: bash.exe
+  #   steps:
+  #   - checkout
+  #   - run:
+  #       name: Run tests
+  #       command: |
+  #         set -e
+  #         choco install ruby --allow-downgrade -y --version=2.7.5.1 # Keep version in sync with next command!
+  #         export PATH=/c/tools/ruby27/bin:$PATH # Make Ruby 2.7 take precedence over the pre-installed version
+  #         ruby --version
+  #         choco install msys2 -y
+  #         ridk.cmd exec pacman -S --noconfirm --needed base-devel mingw-w64-x86_64-toolchain
+  #         gem install bundler -v 2.4.13
+  #         rm Gemfile.lock && bundle install --path .bundle
+  #         bundle exec rake test
   #   environment:
   #     STRICT_VARIABLES: 'yes'
-  #     RUBY_VERSION: '2.4.3'
-  #     PUPPET_VERSION: '4.6.2'
-
-  specs-ruby24-puppet410:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.4.3'
-      PUPPET_VERSION: '4.10.9'
-
-  specs-ruby24-puppet50:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.4.3'
-      PUPPET_VERSION: '5.0.1'
-
-  specs-ruby24-puppet53:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.4.3'
-      PUPPET_VERSION: '5.3.3'
-
-  specs-ruby24-puppet60:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.4.3'
-      PUPPET_VERSION: '6.0.0'
-
-  specs-ruby24-puppet65:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.4.3'
-      PUPPET_VERSION: '6.5.0'
-
-  # specs-ruby25-puppet46:
-  #   <<: *specs
-  #   environment:
-  #     STRICT_VARIABLES: 'yes'
-  #     RUBY_VERSION: '2.5.3'
-  #     PUPPET_VERSION: '4.6.2'
-
-  specs-ruby25-puppet410:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.5.3'
-      PUPPET_VERSION: '4.10.9'
-
-  specs-ruby25-puppet50:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.5.3'
-      PUPPET_VERSION: '5.0.1'
-
-  specs-ruby25-puppet53:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.5.3'
-      PUPPET_VERSION: '5.3.3'
-
-  specs-ruby25-puppet60:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.5.3'
-      PUPPET_VERSION: '6.0.0'
-
-  specs-ruby25-puppet65:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.5.3'
-      PUPPET_VERSION: '6.5.0'
-
-  specs-ruby26-puppet60:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
-      PUPPET_VERSION: '6.0.0'
-
-  specs-ruby26-puppet65:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
-      PUPPET_VERSION: '6.5.0'
-  specs-ruby26-puppet79:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
-      PUPPET_VERSION: '7.9.0'
-
-  specs-ruby26-puppet714:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
-      PUPPET_VERSION: '7.14.0'
-
-  specs-ruby26-puppet725:
-    <<: *specs
-    environment:
-      STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.6.3'
-      PUPPET_VERSION: '7.25.0'
-
-  specs-ruby25-puppet65-windows: &windows-specs
-    executor:
-      name: win/default # Comes with ruby 2.6, which is not supported on Windows as of puppet 6.10.1
-      shell: bash.exe
-    steps:
-      # See https://github.blog/2021-09-01-improving-git-protocol-security-github/
-      - run:
-          name: Fix git clones
-          command: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
-      - checkout
-      - run:
-          name: Run tests
-          command: |
-            set -e
-            choco install ruby --allow-downgrade -y --version 2.5.3.101 # Keep version in sync with next command!
-            export PATH=/c/tools/ruby25/bin:$PATH # Make Ruby 2.5 take precedence over the pre-installed 2.6
-            ruby --version
-            choco install msys2 --allow-downgrade -y --version 20210604.0.0
-            ridk.cmd exec pacman -S --noconfirm --needed base-devel mingw-w64-x86_64-toolchain
-            gem install bundler -v 1.17.3
-            rm Gemfile.lock && bundle install --path .bundle
-            bundle exec rake test
-    environment:
-      STRICT_VARIABLES: 'yes'
-      #RUBY_VERSION hardcoded in install script
-      PUPPET_VERSION: '6.5.0'
+  #     #RUBY_VERSION hardcoded in install script
+  #     PUPPET_VERSION: '7.9.0'
 
   verify-gemfile-lock-dependencies:
     machine:
-      image: ubuntu-2004:2024.08.1
+      image: ubuntu-2404:2024.08.1
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.5.3'
+      RUBY_VERSION: '3.3.7'
     steps:
-      # See https://github.blog/2021-09-01-improving-git-protocol-security-github/
-      - run:
-          name: Fix git clones
-          command: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
-      - checkout
-      - run:
-          name: Install RVM
-          command: |
-            gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-            \curl -sSL https://get.rvm.io | bash -s stable
-      - run:
-          name: Install Ruby versions
-          command: rvm install $RUBY_VERSION
-      - run:
-          name: Install bundler
-          command: rvm $RUBY_VERSION --verbose do gem install bundler:1.17.3
-      - run:
-          name: Install gem dependencies
-          command: rvm $RUBY_VERSION --verbose do bundle install --path .bundle
-      - run:
-          name: Run tests
-          command: rvm $RUBY_VERSION --verbose do bundle exec rake test
+    - checkout
+    - run:
+        name: Setup
+        command: |
+          # Needed to bundle install a puppet_litmus gem dependency
+          sudo apt update -y
+          sudo apt install -y libcurl4 curl libcurl4-openssl-dev
+    - run:
+        name: Install RVM
+        command: |
+          gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+          \curl -sSL https://get.rvm.io | bash -s stable
+    - run:
+        name: Install Ruby versions
+        command: rvm install $RUBY_VERSION
+    - run:
+        name: Install bundler
+        command: |
+          rvm $RUBY_VERSION --verbose do bundle config set path '.bundle'
+          rvm $RUBY_VERSION --verbose do  gem install bundler:2.4.13
+    - run:
+        name: Install gem dependencies
+        command: rvm $RUBY_VERSION --verbose do bundle install
+    - run:
+        name: Run tests
+        command: rvm $RUBY_VERSION --verbose do bundle exec rake test
 
   kitchen-tests:
     machine:
-      image: ubuntu-2004:2024.08.1
+      image: ubuntu-2204:2024.08.1
     environment:
       STRICT_VARIABLES: 'yes'
-      RUBY_VERSION: '2.5.3'
+      RUBY_VERSION: '3.4.1'
     steps:
-      # See https://github.blog/2021-09-01-improving-git-protocol-security-github/
-      - run:
-          name: Fix git clones
-          command: echo -e '[url "https://github.com/"]\n  insteadOf = "git://github.com/"' >> ~/.gitconfig
-      - checkout
-      - run:
-          name: Install RVM
-          command: |
-            gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-            \curl -sSL https://get.rvm.io | bash -s stable
-      - run:
-          name: Install Ruby versions
-          command: rvm install $RUBY_VERSION
-      - run:
-          name: Install bundler
-          command: rvm $RUBY_VERSION --verbose do gem install bundler:1.17.3
-      - run:
-          name: Install gem dependencies
-          command: rvm $RUBY_VERSION --verbose do bundle install --path .bundle
-      - run:
-          name: Execute Kitchen tests
-          command: rvm $RUBY_VERSION --verbose do bundle exec rake circle
-          no_output_timeout: 900
+    - checkout
+    - run:
+        name: Setup
+        command: |
+          # Needed to bundle install a puppet_litmus gem dependency
+          sudo apt update -y
+          sudo apt install -y libcurl4 curl libcurl4-openssl-dev      
+    - run:
+        name: Install RVM
+        command: |
+          gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+          \curl -sSL https://get.rvm.io | bash -s stable
+    - run:
+        name: Install Ruby versions
+        command: rvm install $RUBY_VERSION
+    - run:
+        name: Install bundler
+        command: |
+          rvm $RUBY_VERSION --verbose do bundle config set path '.bundle'
+          rvm $RUBY_VERSION --verbose do  gem install bundler:2.4.13
+    - run:
+        name: Install gem dependencies
+        command: rvm $RUBY_VERSION --verbose do bundle install
+    - run:
+        name: Execute Kitchen tests
+        command: rvm $RUBY_VERSION --verbose do bundle exec rake circle
+        no_output_timeout: "900s"
 
 workflows:
-  version: 2
   build_and_test:
     jobs:
-      - specs-ruby21-puppet46
-      - specs-ruby21-puppet410
-      - specs-ruby21-puppet50
-      - specs-ruby21-puppet53
-      - specs-ruby22-puppet46
-      - specs-ruby22-puppet410
-      - specs-ruby22-puppet50
-      - specs-ruby22-puppet53
-      - specs-ruby23-puppet46
-      - specs-ruby23-puppet410
-      - specs-ruby23-puppet50
-      - specs-ruby23-puppet53
-      - specs-ruby23-puppet60
-      - specs-ruby23-puppet65
-      - specs-ruby24-puppet410
-      - specs-ruby24-puppet50
-      - specs-ruby24-puppet53
-      - specs-ruby24-puppet60
-      - specs-ruby24-puppet65
-      - specs-ruby25-puppet410
-      - specs-ruby25-puppet50
-      - specs-ruby25-puppet53
-      - specs-ruby25-puppet60
-      - specs-ruby25-puppet65
-      - specs-ruby25-puppet65-windows
-      - specs-ruby26-puppet60
-      - specs-ruby26-puppet65
-      - specs-ruby26-puppet79
-      - specs-ruby26-puppet714
-      - specs-ruby26-puppet725
-      - verify-gemfile-lock-dependencies
-      - kitchen-tests
+    - specs-ruby26-puppet734
+    # - specs-ruby27-puppet79-windows   # puppet_litmus requires a dependency "patron", which doesn't run on windows
+    - specs-ruby27-puppet734
+    - specs-ruby31-puppet734
+    - specs-ruby32-puppet734
+    - specs-ruby33-puppet734
+    # - specs-ruby34-puppet734          # ruby v3.4 specs fail with `Puppet::Error: Cannot determine basic system flavour (Puppet::Error)`
+    - specs-ruby31-puppet810
+    - specs-ruby32-puppet810
+    - specs-ruby33-puppet810
+    # - specs-ruby34-puppet810
+    - verify-gemfile-lock-dependencies
+    - kitchen-tests

@@ -2,12 +2,15 @@
 #
 # This class will install the necessary config to hook the http_check in the agent
 #
+# See the sample http_check.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/http_check/datadog_checks/http_check/data/conf.yaml.example
+#
 # Parameters:
 #   sitename
-#       (Required) The name of the instance.
+#       The name of the instance.
 #
 #   url
-#       (Required) The url to check.
+#       The url to check.
 #
 #   timeout
 #       The (optional) timeout in seconds.
@@ -98,7 +101,8 @@
 #       left in the certificate, and alternatively raise a critical
 #       warning if the certificate is y days from the expiration date.
 #       The SSL certificate will always be validated for this additional
-#       service check regardless of the value of disable_ssl_validation
+#       service check regardless of the value of disable_ssl_validation.
+#       check_certification_expiration defaults to true.
 #
 #   headers
 #       The (optional) headers parameter allows you to send extra headers with
@@ -165,99 +169,89 @@
 #          'tags'     => ['production', 'wordpress']
 #        }]
 #     }
-
-
 class datadog_agent::integrations::http_check (
-  $sitename  = undef,
-  $url       = undef,
-  $username  = undef,
-  $password  = undef,
-  $timeout   = 1,
-  $method    = 'get',
-  $min_collection_interval = undef,
-  $data      = undef,
-  $threshold = undef,
-  $window    = undef,
-  $content_match = undef,
-  $reverse_content_match = false,
-  $include_content = false,
-  $http_response_status_code = undef,
-  $collect_response_time = true,
-  $disable_ssl_validation = false,
-  $ignore_ssl_warning = false,
-  $skip_event = true,
-  $no_proxy  = false,
-  $check_certificate_expiration = true,
-  $days_warning = undef,
-  $days_critical = undef,
+  Optional[String] $sitename = undef,
+  Optional[String] $url = undef,
+  Optional[String] $username  = undef,
+  Optional[Any] $password  = undef,
+  Integer $timeout   = 1,
+  String $method    = 'get',
+  Integer $min_collection_interval = 15,
+  Optional[Any] $data      = undef,
+  Optional[Integer] $threshold = undef,
+  Optional[Integer] $window    = undef,
+  Optional[String] $content_match = undef,
+  Boolean $reverse_content_match = false,
+  Boolean $include_content = false,
+  Optional[String] $http_response_status_code = undef,
+  Boolean $collect_response_time = true,
+  Boolean $disable_ssl_validation = false,
+  Boolean $ignore_ssl_warning = false,
+  Boolean $skip_event = true,
+  Boolean $no_proxy  = false,
+  Boolean $check_certificate_expiration = true,
+  Optional[Integer] $days_warning = undef,
+  Optional[Integer] $days_critical = undef,
   Optional[Boolean] $check_hostname = undef,
   Optional[String] $ssl_server_name = undef,
-  $headers   = [],
-  $allow_redirects = true,
-  $tags      = [],
-  $contact   = [],
+  Array $headers   = [],
+  Boolean $allow_redirects = true,
+  Array $tags      = [],
+  Array $contact   = [],
   Optional[Array] $instances  = undef,
-  $ca_certs  = undef,
+  Optional[String] $ca_certs  = undef,
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
   if !$instances and $url {
     $_instances = [{
-      'sitename'                     => $sitename,
-      'url'                          => $url,
-      'username'                     => $username,
-      'password'                     => $password,
-      'timeout'                      => $timeout,
-      'method'                       => $method,
-      'min_collection_interval'      => $min_collection_interval,
-      'data'                         => $data,
-      'threshold'                    => $threshold,
-      'window'                       => $window,
-      'content_match'                => $content_match,
-      'reverse_content_match'        => $reverse_content_match,
-      'include_content'              => $include_content,
-      'http_response_status_code'    => $http_response_status_code,
-      'collect_response_time'        => $collect_response_time,
-      'disable_ssl_validation'       => $disable_ssl_validation,
-      'ignore_ssl_warning'           => $ignore_ssl_warning,
-      'skip_event'                   => $skip_event,
-      'no_proxy'                     => $no_proxy,
-      'check_certificate_expiration' => $check_certificate_expiration,
-      'days_warning'                 => $days_warning,
-      'days_critical'                => $days_critical,
-      'check_hostname'               => $check_hostname,
-      'ssl_server_name'              => $ssl_server_name,
-      'headers'                      => $headers,
-      'allow_redirects'              => $allow_redirects,
-      'tags'                         => $tags,
-      'contact'                      => $contact,
-      'ca_certs'                     => $ca_certs,
+        'sitename'                     => $sitename,
+        'url'                          => $url,
+        'username'                     => $username,
+        'password'                     => $password,
+        'timeout'                      => $timeout,
+        'method'                       => $method,
+        'min_collection_interval'      => $min_collection_interval,
+        'data'                         => $data,
+        'threshold'                    => $threshold,
+        'window'                       => $window,
+        'content_match'                => $content_match,
+        'reverse_content_match'        => $reverse_content_match,
+        'include_content'              => $include_content,
+        'http_response_status_code'    => $http_response_status_code,
+        'collect_response_time'        => $collect_response_time,
+        'disable_ssl_validation'       => $disable_ssl_validation,
+        'ignore_ssl_warning'           => $ignore_ssl_warning,
+        'skip_event'                   => $skip_event,
+        'no_proxy'                     => $no_proxy,
+        'check_certificate_expiration' => $check_certificate_expiration,
+        'days_warning'                 => $days_warning,
+        'days_critical'                => $days_critical,
+        'check_hostname'               => $check_hostname,
+        'ssl_server_name'              => $ssl_server_name,
+        'headers'                      => $headers,
+        'allow_redirects'              => $allow_redirects,
+        'tags'                         => $tags,
+        'contact'                      => $contact,
+        'ca_certs'                     => $ca_certs,
     }]
-  } elsif !$instances{
+  } elsif !$instances {
     $_instances = []
   } else {
     $_instances = $instances
   }
 
-  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/http_check.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
-    $dst_dir = "${datadog_agent::params::conf_dir}/http_check.d"
-    file { $legacy_dst:
-      ensure => 'absent'
-    }
+  $dst_dir = "${datadog_agent::params::conf_dir}/http_check.d"
 
-    file { $dst_dir:
-      ensure  => directory,
-      owner   => $datadog_agent::dd_user,
-      group   => $datadog_agent::params::dd_group,
-      mode    => $datadog_agent::params::permissions_directory,
-      require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
-    }
-    $dst = "${dst_dir}/conf.yaml"
-  } else {
-    $dst = $legacy_dst
+  file { $dst_dir:
+    ensure  => directory,
+    owner   => $datadog_agent::dd_user,
+    group   => $datadog_agent::params::dd_group,
+    mode    => $datadog_agent::params::permissions_directory,
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name],
   }
+  $dst = "${dst_dir}/conf.yaml"
 
   file { $dst:
     ensure  => file,
@@ -266,6 +260,6 @@ class datadog_agent::integrations::http_check (
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/http_check.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

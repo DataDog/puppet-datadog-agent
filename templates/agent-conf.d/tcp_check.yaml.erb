@@ -19,9 +19,6 @@ instances:
 <% if instance['collect_response_time'] -%>
     collect_response_time: <%= instance['collect_response_time'] %>
 <% end -%>
-<% if instance['skip_event'] -%>
-    skip_event: <%= instance['skip_event'] %>
-<% end -%>
 <% if instance['tags'] and ! instance['tags'].empty? -%>
     tags:
   <%- Array(instance['tags']).each do |tag| -%>

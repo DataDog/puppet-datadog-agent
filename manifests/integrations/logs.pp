@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the logs integration.
 #
+# See the Datadog Logs Collection docs for all available configuration options
+# https://docs.datadoghq.com/agent/logs/?tab=tailfiles#custom-log-collection
+#
 # Parameters:
 #   $logs:
 #       array of log sources.
@@ -35,21 +38,18 @@
 # Documentation:
 # https://docs.datadoghq.com/logs/log_collection
 #
-
-class datadog_agent::integrations::logs(
+class datadog_agent::integrations::logs (
   Array $logs = [],
 ) inherits datadog_agent::params {
-  unless $::datadog_agent::_agent_major_version == 5 {
-    require ::datadog_agent
+  require datadog_agent
 
-    file { "${datadog_agent::params::conf_dir}/logs.yaml":
-      ensure  => file,
-      owner   => $datadog_agent::dd_user,
-      group   => $datadog_agent::params::dd_group,
-      mode    => $datadog_agent::params::permissions_protected_file,
-      content => template('datadog_agent/agent-conf.d/logs.yaml.erb'),
-      require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
-    }
+  file { "${datadog_agent::params::conf_dir}/logs.yaml":
+    ensure  => file,
+    owner   => $datadog_agent::dd_user,
+    group   => $datadog_agent::params::dd_group,
+    mode    => $datadog_agent::params::permissions_protected_file,
+    content => template('datadog_agent/agent-conf.d/logs.yaml.erb'),
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

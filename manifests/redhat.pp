@@ -19,7 +19,7 @@ class datadog_agent::redhat (
     ]
     #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'
     if $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ or $agent_version == 'latest' {
-      if $agent_major_version > 5 and ($agent_version == 'latest' or 0 + $3 > 35) {
+      if $agent_major_version >= 6 and ($agent_version == 'latest' or 0 + $3 > 35) {
         $keys = $all_keys[0,3]
       } else {
         $keys = $all_keys
@@ -31,7 +31,7 @@ class datadog_agent::redhat (
     if ($rpm_repo_gpgcheck != undef) {
       $repo_gpgcheck = $rpm_repo_gpgcheck
     } else {
-      if ($agent_repo_uri == undef) and ($agent_major_version > 5) {
+      if ($agent_repo_uri == undef) and ($agent_major_version >= 6) {
         case $facts['os']['name'] {
           'RedHat', 'CentOS', 'OracleLinux': {
             # disable repo_gpgcheck on 8.1 because of https://bugzilla.redhat.com/show_bug.cgi?id=1792506
@@ -51,10 +51,6 @@ class datadog_agent::redhat (
     }
 
     case $agent_major_version {
-      5 : {
-        $defaulturl = "https://yum.datadoghq.com/rpm/${facts['os']['architecture']}/"
-        $gpgkeys = $keys
-      }
       6 : {
         $defaulturl = "https://yum.datadoghq.com/stable/6/${facts['os']['architecture']}/"
         $gpgkeys = $keys

@@ -53,40 +53,32 @@
 # }
 #
 class datadog_agent::integrations::rabbitmq (
-  Optional[String] $url      = undef,
-  String $username           = 'guest',
-  String $password           = 'guest',
-  Boolean $ssl_verify        = true,
-  Boolean $tag_families      = false,
-  Array $nodes               = [],
-  Array $nodes_regexes       = [],
-  Array $queues              = [],
-  Array $queues_regexes      = [],
-  Array $vhosts              = [],
-  Array $exchanges           = [],
-  Array $exchanges_regexes   = [],
+  Optional[String] $url    = undef,
+  String $username         = 'guest',
+  String $password         = 'guest',
+  Boolean $ssl_verify      = true,
+  Boolean $tag_families    = false,
+  Array $nodes             = [],
+  Array $nodes_regexes     = [],
+  Array $queues            = [],
+  Array $queues_regexes    = [],
+  Array $vhosts            = [],
+  Array $exchanges         = [],
+  Array $exchanges_regexes = [],
 ) inherits datadog_agent::params {
   require datadog_agent
 
-  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/rabbitmq.yaml"
-  if $datadog_agent::_agent_major_version > 5 {
-    $dst_dir = "${datadog_agent::params::conf_dir}/rabbitmq.d"
-    file { $legacy_dst:
-      ensure => 'absent',
-    }
+  $dst_dir = "${datadog_agent::params::conf_dir}/rabbitmq.d"
 
-    file { $dst_dir:
-      ensure  => directory,
-      owner   => $datadog_agent::dd_user,
-      group   => $datadog_agent::params::dd_group,
-      mode    => $datadog_agent::params::permissions_directory,
-      require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name],
-    }
-    $dst = "${dst_dir}/conf.yaml"
-  } else {
-    $dst = $legacy_dst
+  file { $dst_dir:
+    ensure  => directory,
+    owner   => $datadog_agent::dd_user,
+    group   => $datadog_agent::params::dd_group,
+    mode    => $datadog_agent::params::permissions_directory,
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name],
   }
+  $dst = "${dst_dir}/conf.yaml"
 
   file { $dst:
     ensure  => file,

@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the jmx integration
 #
+# See the sample jmx.d/conf.yaml for all available configuration options
+# https://docs.datadoghq.com/integrations/java/?tab=host#overview
+#
 # Parameters:
 #   $init_config:
 #       Hash of inital configuration, consisting of the following keys:
@@ -61,31 +64,23 @@
 #    }],
 #  }
 #
-class datadog_agent::integrations::jmx(
-  $init_config = {},
-  $instances   = [],
+class datadog_agent::integrations::jmx (
+  Hash $init_config = {},
+  Array $instances   = [],
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
-  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/jmx.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
-    $dst_dir = "${datadog_agent::params::conf_dir}/jmx.d"
-    file { $legacy_dst:
-      ensure => 'absent'
-    }
+  $dst_dir = "${datadog_agent::params::conf_dir}/jmx.d"
 
-    file { $dst_dir:
-      ensure  => directory,
-      owner   => $datadog_agent::dd_user,
-      group   => $datadog_agent::params::dd_group,
-      mode    => $datadog_agent::params::permissions_directory,
-      require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
-    }
-    $dst = "${dst_dir}/conf.yaml"
-  } else {
-    $dst = $legacy_dst
+  file { $dst_dir:
+    ensure  => directory,
+    owner   => $datadog_agent::dd_user,
+    group   => $datadog_agent::params::dd_group,
+    mode    => $datadog_agent::params::permissions_directory,
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name],
   }
+  $dst = "${dst_dir}/conf.yaml"
 
   file { $dst:
     ensure  => file,
@@ -94,7 +89,6 @@ class datadog_agent::integrations::jmx(
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/jmx.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
-
 }

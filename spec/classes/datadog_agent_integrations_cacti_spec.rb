@@ -5,11 +5,7 @@ describe 'datadog_agent::integrations::cacti' do
     context 'supported agents' do
       let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
 
-      conf_file = if agent_major_version == 5
-                    '/etc/dd-agent/conf.d/cacti.yaml'
-                  else
-                    "#{CONF_DIR}/cacti.d/conf.yaml"
-                  end
+      conf_file = "#{CONF_DIR}/cacti.d/conf.yaml"
 
       context 'with default parameters' do
         it { is_expected.to compile }

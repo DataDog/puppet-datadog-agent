@@ -3,20 +3,15 @@ require 'spec_helper'
 describe 'datadog_agent::integration' do
   ALL_SUPPORTED_AGENTS.each do |agent_major_version|
     context 'supported agents' do
-      if agent_major_version == 5
-        conf_file = '/etc/dd-agent/conf.d/test.yaml'
-      else
-        conf_dir = "#{CONF_DIR}/test.d"
-        conf_file = "#{conf_dir}/conf.yaml"
-      end
+      conf_dir = "#{CONF_DIR}/test.d"
+      conf_file = "#{conf_dir}/conf.yaml"
 
       let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
 
       let(:title) { 'test' }
 
-      if agent_major_version > 5
-        it { is_expected.to contain_file(conf_dir.to_s).that_comes_before("File[#{conf_file}]") }
-      end
+      it { is_expected.to contain_file(conf_dir.to_s).that_comes_before("File[#{conf_file}]") }
+
       it { is_expected.to contain_file(conf_file.to_s).that_notifies("Service[#{SERVICE_NAME}]") }
 
       context 'with instances' do

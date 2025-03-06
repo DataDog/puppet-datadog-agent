@@ -1,14 +1,15 @@
+# Define: datadog_agent::install_integration
+#
+# Installs the integration with the given name and version.
 define datadog_agent::install_integration (
   Enum['present', 'absent'] $ensure           = 'present',
-  String                    $integration_name = undef,
-  String                    $version          = undef,
+  Optional[String]          $integration_name = undef,
+  Optional[String]          $version          = undef,
   Boolean                   $third_party      = false,
-){
-
-  require ::datadog_agent
+) {
+  require datadog_agent
 
   if $ensure == 'present' {
-
     if $third_party {
       $install_cmd = 'install --third-party'
     } else {
@@ -31,5 +32,4 @@ define datadog_agent::install_integration (
       notify  => Service[$datadog_agent::params::service_name],
     }
   }
-
 }

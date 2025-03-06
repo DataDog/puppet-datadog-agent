@@ -46,6 +46,7 @@ group :development do
     gem "metadata-json-lint", '~> 3.0.3',        require: false
     gem "voxpupuli-puppet-lint-plugins", '~> 4.0', require: false
     gem "dependency_checker", '= 0.3.0',           require: false
+    gem 'puppet-lint', '~> 3.4.0',                 require: false
   else
     gem "facterdb", '~> 3.4.0',                      require: false
     gem "test-kitchen", '~> 3.7.0'
@@ -58,6 +59,7 @@ group :development do
     gem "metadata-json-lint", '~> 4.0',            require: false
     gem "voxpupuli-puppet-lint-plugins", '~> 5.0', require: false
     gem "dependency_checker", '~> 1.0.0',          require: false
+    gem 'puppet-lint', '~> 4.3.0',                 require: false
   end
 end
 group :development, :release_prep do

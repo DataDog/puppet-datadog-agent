@@ -799,7 +799,7 @@ class datadog_agent (
 
   if ($facts['os']['name'] == 'Windows') {
     file { 'C:/ProgramData/Datadog':
-      ensure   => directory,
+      ensure => directory,
     }
 
     file { 'C:/ProgramData/Datadog/datadog.yaml':

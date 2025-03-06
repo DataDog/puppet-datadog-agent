@@ -96,6 +96,6 @@ class datadog_agent::suse (
   }
 
   package { $agent_flavor:
-    ensure  => $agent_version,
+    ensure => $agent_version,
   }
 }

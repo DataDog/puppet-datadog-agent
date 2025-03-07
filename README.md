@@ -24,11 +24,9 @@ puppet module install datadog-datadog_agent
 - By default Datadog Agent v7.x is installed. To use Agent version 6, change the setting `agent_major_version`.
 - Agent v5-specific legacy options have been removed. Refer to the CHANGELOG.md for more details and the datadog_agent class comments for all available options.
 - Configuration options for the following integrations have been updated:
-  - ElasticSearch
+  - ElasticSearch **[BREAKING CHANGES]**
     - `ssl_verify` accepts only Boolean values
-    - `tls_verify`options have been added
-  - PostgreSQL
-    - `custom_metrics` option has been removed. Use `custom_queries` instead.
+    - `tls_verify` options have been added
   - TCP Check
     -  `skip_event` option has been removed sinced Datadog Agent v6.4+
 

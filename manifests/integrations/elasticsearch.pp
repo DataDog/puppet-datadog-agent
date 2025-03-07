@@ -34,8 +34,15 @@ class datadog_agent::integrations::elasticsearch (
   Boolean $pshard_stats      = false,
   Optional[String] $ssl_cert = undef,
   Optional[String] $ssl_key  = undef,
-  Boolean $ssl_verify        = true, #kept for backwards compatibility
+  Boolean $ssl_verify        = true, # kept for backwards compatibility
   Boolean $tls_verify        = $ssl_verify,
+  Boolean $tls_use_host_header = false,
+  Boolean $tls_ignore_warning  = false,
+  Optional[String] $tls_cert = undef,
+  Optional[String] $tls_private_key = undef,
+  Optional[String] $tls_ca_cert = undef,
+  Array $tls_protocols_allowed = [],
+  Array $tls_ciphers         = [],
   Array $tags                = [],
   String $url                = 'http://localhost:9200',
   Optional[String] $username = undef,
@@ -55,7 +62,14 @@ class datadog_agent::integrations::elasticsearch (
         'tls_verify'         => $tls_verify,
         'tags'               => $tags,
         'url'                => $url,
-        'username'           => $username
+        'username'           => $username,
+        'tls_use_host_header' => $tls_use_host_header,
+        'tls_ignore_warning'  => $tls_ignore_warning,
+        'tls_cert'            => $tls_cert,
+        'tls_private_key'     => $tls_private_key,
+        'tls_ca_cert'         => $tls_ca_cert,
+        'tls_protocols_allowed' => $tls_protocols_allowed,
+        'tls_ciphers'         => $tls_ciphers,
     }]
   } elsif !$instances {
     $_instances = []

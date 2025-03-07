@@ -18,16 +18,37 @@ instances:
 <%- if instance['url'].match(/^https/) -%>
       tls_verify: <%= instance['tls_verify'] %>
 <%- end -%>
-<%- if instance['ssl_cert'] && instance['ssl_cert'] != :undef -%>
-      ssl_cert: <%= instance['ssl_cert'] %>
+<%- if instance['tls_cert'] && instance['tls_cert'] != :undef -%>
+      tls_cert: <%= instance['tls_cert'] %>
 <%- end -%>
-<%- if instance['ssl_key'] && instance['ssl_key'] != :undef -%>
-      ssl_key: <%= instance['ssl_key'] %>
+<%- if instance['tls_ca_cert'] && instance['tls_ca_cert'] != :undef -%>
+      tls_ca_cert: <%= instance['tls_ca_cert'] %>
+<%- end -%>
+<%- if instance['tls_private_key'] && instance['tls_private_key'] != :undef -%>
+      tls_private_key: <%= instance['tls_private_key'] %>
+<%- end -%>
+<%- if instance['tls_use_host_header'] && instance['tls_use_host_header'] != :undef -%>
+      tls_use_host_header: <%= instance['tls_use_host_header'] %>
+<%- end -%>
+<%- if instance['tls_ignore_warning'] && instance['tls_ignore_warning'] != :undef -%>
+      tls_ignore_warning: <%= instance['tls_ignore_warning'] %>
 <%- end -%>
 <%- unless instance['tags'].empty? -%>
       tags:
   <%- instance['tags'].each do |tag| -%>
         - <%= tag %>
+  <%- end -%>
+<%- end -%>
+<%- unless instance['tls_protocols_allowed'].nil? -%>
+      tls_protocols_allowed:
+  <%- instance['tls_protocols_allowed'].each do |protocol| -%>
+        - <%= protocol %>
+  <%- end -%>
+<%- end -%>
+<%- unless instance['tls_ciphers'].nil? -%>
+      tls_ciphers:
+  <%- instance['tls_ciphers'].each do |cipher| -%>
+        - <%= cipher %>
   <%- end -%>
 <%- end -%>
 <%- end -%>

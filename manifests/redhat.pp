@@ -78,11 +78,11 @@ class datadog_agent::redhat (
     }
 
     yumrepo { 'datadog5':
-      ensure   => absent,
+      ensure => absent,
     }
 
     yumrepo { 'datadog6':
-      ensure   => absent,
+      ensure => absent,
     }
 
     yumrepo { 'datadog':
@@ -100,7 +100,7 @@ class datadog_agent::redhat (
     }
   } else {
     package { $agent_flavor:
-      ensure  => $agent_version,
+      ensure => $agent_version,
     }
   }
 }

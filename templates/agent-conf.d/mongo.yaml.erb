@@ -4,7 +4,24 @@ init_config:
 
 instances:
 <% @servers.each do |server| -%>
+  <% if !server['hosts'].nil? && server['hosts'].any? -%>
+  - hosts:
+    <%- server['hosts'].each do |host| -%>
+      - <%= host %>
+    <%- end -%>
+    <%- if !server['username'].nil? -%>
+      username: <%= server['username'] %>
+    <%- end -%>
+    <%- if !server['password'].nil? -%>
+      password: <%= server['password'] %>
+    <%- end -%>
+    <%- if !server['database'].nil? -%>
+      database: <%= server['database'] %>
+    <%- end -%>
+  <%- end -%>
+  <% if server['hosts'].nil? -%>
   - server: mongodb://<%= server['username'] %><%= ":" unless server['password'].nil? %><%= server['password'] %><%= "@" unless server['username'].nil? %><%= server['host'] %>:<%= server['port'] %>/<%= server['database'] %>
+  <%- end -%>
   <%- if !server['tags'].nil? && server['tags'].any? -%>
     tags:
     <%- server['tags'].each do |tag| -%>
@@ -49,5 +66,17 @@ instances:
     <%- server['collections'].each do |collection| -%>
       - <%= collection %>
     <%- end -%>
+  <%- end -%>
+  <%- if !server['dbm'].nil? -%>
+    dbm: <%= server['dbm'] %>
+  <%- end -%>
+  <%- if !server['database_autodiscovery'].nil? -%>
+    database_autodiscovery:
+    <%- if !server['database_autodiscovery']['enabled'].nil? -%>
+      enabled: <%= server['database_autodiscovery']['enabled'] %>
+    <%- end -%>
+  <%- end -%>
+  <%- if !server['reported_database_hostname'].nil? -%>
+    reported_database_hostname: <%= server['reported_database_hostname'] %>
   <%- end -%>
 <% end -%>

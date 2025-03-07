@@ -4,7 +4,8 @@ This module installs the Datadog Agent and sends Puppet reports to Datadog.
 
 ### Requirements
 
-The Datadog Puppet module supports Linux and Windows and is compatible with Puppet >= 4.6.x or Puppet Enterprise version >= 2016.4. For detailed information on compatibility, check the [module page on Puppet Forge][1].
+The Datadog Puppet module supports Linux and Windows and is compatible with Puppet >= 7.34.x or Puppet Enterprise
+version >= 2021.7.x. For detailed information on compatibility, check the [module page on Puppet Forge][1].
 
 ### Installation
 
@@ -16,13 +17,23 @@ puppet module install datadog-datadog_agent
 
 #### Upgrading
 
-- By default Datadog Agent v7.x is installed. To use an earlier Agent version, change the setting `agent_major_version`.
-- `agent5_enable` is no longer used, as it has been replaced by `agent_major_version`.
-- `agent6_extra_options` has been renamed to `agent_extra_options` since it applies to both Agent v6 and v7.
-- `agent6_log_file` has been renamed to `agent_log_file` since it applies to both Agent v6 and v7.
-- `agent5_repo_uri` and `agent6_repo_uri` become `agent_repo_uri` for all Agent versions.
-- `conf_dir` and `conf6_dir` become `conf_dir` for all Agent versions.
-- The repository file created on Linux is named `datadog` for all Agent versions instead of `datadog5`/`datadog6`.
+> [!IMPORTANT]
+> The Datadog Puppet Module v4.x drops support for Puppet <= 6 and Datadog Agent v5. To upgrade or install the Datadog
+> Agent v5+ on Puppet <= 6, use module v3.x.
+
+- By default Datadog Agent v7.x is installed. To use Agent version 6, change the setting `agent_major_version`.
+- Agent v5-specific legacy options have been removed. Refer to the CHANGELOG.md for more details and the datadog_agent class comments for all available options.
+
+> [!IMPORTANT]
+> Updates and breaking changes have been made in the below agent integrations:
+
+  - ElasticSearch **[BREAKING CHANGES]**
+    - `ssl_verify` accepts only Boolean values
+    - `tls_verify` options have been added
+  - Disk Check **[BREAKING CHANGES]**
+    - `use_mount`, `all_partitions`, and `tag_by_filesystem` accept only Boolean values
+  - TCP Check
+    -  `skip_event` option has been removed sinced Datadog Agent v6.4+
 
 ### Configuration
 
@@ -291,15 +302,15 @@ These variables can be set in the `datadog_agent` class to control settings in t
 
 | variable name                           | description                                                                                                                                                                                      |
 |-----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `agent_major_version`                   | The version of the Agent to install: either 5, 6 or 7 (default: 7).                                                                                                                              |
+| `agent_major_version`                   | The version of the Agent to install: either 6 or 7 (default: 7).                                                                                                                                 |
 | `agent_version`                         | Lets you pin a specific minor version of the Agent to install, for example: `1:7.16.0-1`. Leave empty to install the latest version.                                                             |
 | `collect_ec2_tags`                      | Collect an instance's custom EC2 tags as Agent tags by using `true`.                                                                                                                             |
 | `collect_instance_metadata`             | Collect an instance's EC2 metadata as Agent tags by using `true`.                                                                                                                                |
-| `datadog_site`                          | The Datadog site to report to (Agent v6 and v7 only). Defaults to `datadoghq.com`, eg: `datadoghq.eu` or `us3.datadoghq.com`.                                                          |
+| `datadog_site`                          | The Datadog site to report to. Defaults to `datadoghq.com`, eg: `datadoghq.eu` or `us3.datadoghq.com`.                                                                                           |
 | `dd_url`                                | The Datadog intake server URL. You are unlikely to need to change this. Overrides `datadog_site`                                                                                                 |
 | `host`                                  | Overrides the node's host name.                                                                                                                                                                  |
 | `local_tags`                            | An array of `<KEY:VALUE>` strings that are set as tags for the node.                                                                                                                             |
-| `non_local_traffic`                     | Allow other nodes to relay their traffic through this node.                                                                                                                                      |
+| `non_local_traffic`                     | Allow other nodes to relay their DogstatsD traffic through this node.                                                                                                                            |
 | `apm_enabled`                           | A boolean to enable the APM Agent (defaults to false).                                                                                                                                           |
 | `process_enabled`                       | A boolean to enable the process Agent (defaults to false).                                                                                                                                       |
 | `scrub_args`                            | A boolean to enable the process cmdline scrubbing (defaults to true).                                                                                                                            |

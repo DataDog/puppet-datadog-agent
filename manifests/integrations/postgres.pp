@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the postgres integration
 #
+# See the sample postgres.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/postgres/datadog_checks/postgres/data/conf.yaml.example
+#
 # Parameters:
 #   $password
 #       The password for the datadog user
@@ -94,7 +97,7 @@
 #           descriptors:
 #           - ["tag_column", "tag_column.datadog.tag"]
 #
-class datadog_agent::integrations::postgres(
+class datadog_agent::integrations::postgres (
   Optional[String] $password             = undef,
   String $host                           = 'localhost',
   String $dbname                         = 'postgres',
@@ -112,47 +115,39 @@ class datadog_agent::integrations::postgres(
   Hash $custom_metrics                   = {},
   Optional[Array] $instances             = undef,
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
-  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/postgres.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
-    $dst_dir = "${datadog_agent::params::conf_dir}/postgres.d"
-    file { $legacy_dst:
-      ensure => 'absent'
-    }
+  $dst_dir = "${datadog_agent::params::conf_dir}/postgres.d"
 
-    file { $dst_dir:
-      ensure  => directory,
-      owner   => $datadog_agent::dd_user,
-      group   => $datadog_agent::params::dd_group,
-      mode    => $datadog_agent::params::permissions_directory,
-      require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
-    }
-    $dst = "${dst_dir}/conf.yaml"
-  } else {
-    $dst = $legacy_dst
+  file { $dst_dir:
+    ensure  => directory,
+    owner   => $datadog_agent::dd_user,
+    group   => $datadog_agent::params::dd_group,
+    mode    => $datadog_agent::params::permissions_directory,
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name],
   }
+  $dst = "${dst_dir}/conf.yaml"
 
   if !$instances and $host {
     $_instances = [{
-      'host'                          => $host,
-      'password'                      => $password,
-      'dbname'                        => $dbname,
-      'port'                          => $port,
-      'username'                      => $username,
-      'ssl'                           => $ssl,
-      'use_psycopg2'                  => $use_psycopg2,
-      'tags'                          => $tags,
-      'tables'                        => $tables,
-      'custom_metrics'                => $custom_metrics,
-      'collect_function_metrics'      => $collect_function_metrics,
-      'collect_count_metrics'         => $collect_count_metrics,
-      'collect_activity_metrics'      => $collect_activity_metrics,
-      'collect_database_size_metrics' => $collect_database_size_metrics,
-      'collect_default_database'      => $collect_default_database,
+        'host'                          => $host,
+        'password'                      => $password,
+        'dbname'                        => $dbname,
+        'port'                          => $port,
+        'username'                      => $username,
+        'ssl'                           => $ssl,
+        'use_psycopg2'                  => $use_psycopg2,
+        'tags'                          => $tags,
+        'tables'                        => $tables,
+        'custom_metrics'                => $custom_metrics,
+        'collect_function_metrics'      => $collect_function_metrics,
+        'collect_count_metrics'         => $collect_count_metrics,
+        'collect_activity_metrics'      => $collect_activity_metrics,
+        'collect_database_size_metrics' => $collect_database_size_metrics,
+        'collect_default_database'      => $collect_default_database,
     }]
-  } elsif !$instances{
+  } elsif !$instances {
     $_instances = []
   } else {
     $_instances = $instances

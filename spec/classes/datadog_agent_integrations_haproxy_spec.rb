@@ -10,11 +10,7 @@ describe 'datadog_agent::integrations::haproxy' do
         }
       end
 
-      conf_file = if agent_major_version == 5
-                    '/etc/dd-agent/conf.d/haproxy.yaml'
-                  else
-                    "#{CONF_DIR}/haproxy.d/conf.yaml"
-                  end
+      conf_file = "#{CONF_DIR}/haproxy.d/conf.yaml"
 
       it { is_expected.to compile.with_all_deps }
       it {

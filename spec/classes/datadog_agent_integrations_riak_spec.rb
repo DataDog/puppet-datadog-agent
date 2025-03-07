@@ -5,11 +5,7 @@ describe 'datadog_agent::integrations::riak' do
     context 'supported agents' do
       let(:pre_condition) { "class {'::datadog_agent': agent_major_version => #{agent_major_version}}" }
 
-      conf_file = if agent_major_version == 5
-                    '/etc/dd-agent/conf.d/riak.yaml'
-                  else
-                    "#{CONF_DIR}/riak.d/conf.yaml"
-                  end
+      conf_file = "#{CONF_DIR}/riak.d/conf.yaml"
 
       it { is_expected.to compile.with_all_deps }
       it {

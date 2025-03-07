@@ -49,9 +49,6 @@
 #   $non_local_traffic
 #       Enable you to use the agent as a proxy. Defaults to false.
 #       See https://github.com/DataDog/dd-agent/wiki/Proxy-Configuration
-#   $dogstreams
-#       Optional array of logs to parse and custom parsers to use.
-#       See https://github.com/DataDog/dd-agent/blob/ed5e698/datadog.conf.example#L149-L178
 #   $log_level
 #       Set value of 'log_level' variable. Default is 'info' as in dd-agent.
 #       Valid values here are: critical, debug, error, fatal, info, warn and warning.
@@ -92,8 +89,6 @@
 #       separate way of adding keys.
 #   $skip_ssl_validation
 #       Skip SSL validation.
-#   $use_curl_http_client
-#       Uses the curl HTTP client for the forwarder
 #   $recent_point_threshold
 #       Sets the threshold for accepting points.
 #   String. Default: empty (30 second intervals)
@@ -146,12 +141,6 @@
 #       Default: empty
 #   $device_blacklist_re
 #       Specifies pattern for device blacklisting.
-#       String. Default: empty
-#   $dogstreams
-#       Specifies port for list of logstreams/modules to be used.
-#       String. Default: empty
-#   $custom_emitters
-#       Specifies a comma seperated list of non standard emitters to be used
 #       String. Default: empty
 #   $agent_log_file
 #       Specifies the log file location (Agent 6 and 7 only).
@@ -288,7 +277,6 @@ class datadog_agent (
   String $puppetmaster_user = $settings::user,
   String $puppet_gem_provider = $datadog_agent::params::gem_provider,
   Boolean $non_local_traffic = false,
-  Array $dogstreams = [],
   String $log_level = 'info',
   Boolean $log_to_syslog = true,
   String $service_ensure = 'running',
@@ -314,7 +302,6 @@ class datadog_agent (
   String $extra_template = '',
   Boolean $skip_ssl_validation = false,
   Boolean $skip_apt_key_trusting = false,
-  Boolean $use_curl_http_client = false,
   String $recent_point_threshold = '',
   Variant[Stdlib::Port, Pattern[/^\d*$/]] $listen_port = '',
   Optional[String] $additional_checksd = undef,
@@ -328,7 +315,6 @@ class datadog_agent (
   String $dogstatsd_interval = '',
   Boolean $dogstatsd_normalize = true,
   String $device_blacklist_re = '',
-  String $custom_emitters = '',
   String $agent_log_file = $datadog_agent::params::agent_log_file,
   String $collector_log_file = '',
   String $forwarder_log_file = '',

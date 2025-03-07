@@ -1,7 +1,7 @@
 fixtures:
   repositories:
     stdlib:
-      repo: "https://github.com/puppetlabs/puppetlabs-stdlib.git" # TODO: why git: and not https:?
+      repo: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
       ref: "v9.7.0" # Puppet >= 7.0.0 < 9.0.0
     concat:
       repo: "https://github.com/puppetlabs/puppetlabs-concat.git"

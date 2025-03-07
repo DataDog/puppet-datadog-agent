@@ -24,7 +24,6 @@ This release brings support for Puppet 8, which means all classes are now using 
 * [DEPRECATE] No longer possible to use the custom metrics parameter when using the PostgresSQL class
 * [DEPRECATE] `ganglia` configuration no longer supported as per DataDog Agent v6+
 * [DEPRECATE] `skip_event` setting on TCP Check class has been removed from DataDog integration
-* [DEPRECATE] Removal of SSL settings from the Redis integration
 * [DEPRECATE] Postgres implementation now only accepts booleans for `ssl` settings.
 
 # 3.24.0 / 2025-02-25

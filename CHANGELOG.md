@@ -5,26 +5,27 @@ Changes
 <!-- markdownlint-disable MD003 -->
 <!-- markdownlint-disable MD001 -->
 
-# 4.0.0 / 2025-02-28
+# 4.0.0 / 2025-03-07
 
-This release has multiple breaking changes, you may need to update your module integration; note that module dependencies has been updated.
+This release has multiple breaking changes, you may need to update your module integration; note that module
+dependencies has been updated.
 
-This release brings support for Puppet 8, which means all classes are now using defined class parameters types; this could break existing implementations.
+This release brings support for Puppet 8, which means all classes are now using defined class parameters types; this
+could break existing implementations.
 
 * [FEATURE] Add Support for Puppet 8 ([#779])
 * [FEATURE] Update Module Dependencies including updates for StdLib, migrating to newer functions where appropriate ([#800])
-* [FEATURE] Class definitions updated with references to DataDog examples
+* [FEATURE] Class definitions updated with references to Datadog examples
 * [FEATURE] Update to CI Builds to work with Ruby 3
 * [BUGFIX] Fix issue where MSI path was not correctly parsed ([#814])
 * [BUGFIX] BREAKING - `datadog_agent::integrations::disk` now expects booleans for `use_mount`, `all_partitions` and `tag_by_filesystem`
-* [DEPRECATE] Drop support for Datadog Agent version 5, including removal of unit tests
 * [DEPRECATE] Drop support for Puppet 6 and below
-* [DEPRECATE] Remove support for supply a String to the SSL_Verify option on the elasticsearch integration. We now use tls_verify which matches core DataDog code.
-* [DEPRECATE] Support for Jenkins integrations is removed
-* [DEPRECATE] No longer possible to use the custom metrics parameter when using the PostgresSQL class
-* [DEPRECATE] `ganglia` configuration no longer supported as per DataDog Agent v6+
-* [DEPRECATE] `skip_event` setting on TCP Check class has been removed from DataDog integration
-* [DEPRECATE] Postgres implementation now only accepts booleans for `ssl` settings.
+* [DEPRECATE] Drop support for Datadog Agent version 5, including removal of unit tests
+* [DEPRECATE] Remove `ganglia`, `graphite`, `dogstreams`, `custom_emitters` and `use_curl_http_client` legacy configuration options which are no longer supported since Datadog Agent v6+
+* [DEPRECATE] Remove support for supplying a string to the `ssl_verify` option on the elasticsearch integration. We now use `tls_verify` which matches core Datadog code.
+* [DEPRECATE] Remove legacy Jenkins integration
+* [DEPRECATE] `skip_event` setting on TCP Check class has been removed from DataDog integration (removed since Datadog Agent v6.4+)
+* [DEPRECATE] Remove support for supplying a String to the `ssl_verify` option on the elasticsearch integration. Add updated `tls_*` options to match core Datadog code.
 
 # 3.24.0 / 2025-02-25
 

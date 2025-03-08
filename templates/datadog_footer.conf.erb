@@ -27,13 +27,6 @@ recent_point_threshold: <%= @recent_point_threshold %>
 listen_port: <%= @listen_port %>
 <% end -%>
 
-# Start a graphite listener on this port
-<% if @graphite_listen_port.to_s.empty? -%>
-# graphite_listen_port: 17124
-<% else -%>
-graphite_listen_port: <%= @graphite_listen_port %>
-<% end -%>
-
 # Additional directory to look for Datadog checks
 <% if @additional_checksd.nil? -%>
 # additional_checksd: /etc/dd-agent/checks.d/
@@ -47,10 +40,6 @@ additional_checksd: <%= @additional_checksd %>
 # For more information, please see
 # https://github.com/DataDog/dd-agent/wiki/Network-Traffic-and-Proxy-Configuration
 non_local_traffic: <%= @non_local_traffic %>
-
-# Select the Tornado HTTP Client in the forwarder
-# Default to the simple http client
-use_curl_http_client: <%= @use_curl_http_client %>
 
 # The loopback address the Forwarder and Dogstatsd will bind.
 # Optional, it is mainly used when running the agent on Openshift
@@ -161,61 +150,6 @@ statsd_forward_port: <%= @statsd_forward_port %>
 <% else -%>
 device_blacklist_re: <%= @device_blacklist_re %>
 <% end -%>
-
-# -------------------------------------------------------------------------- #
-#  Dogstream (log file parser)
-# -------------------------------------------------------------------------- #
-
-# Comma-separated list of logs to parse and optionally custom parsers to use.
-# The form should look like this:
-#
-#   dogstreams: /path/to/log1:parsers_module:custom_parser, /path/to/log2, /path/to/log3, ...
-#
-# Or this:
-#
-#   dogstreams: /path/to/log1:/path/to/my/parsers_module.py:custom_parser, /path/to/log2, /path/to/log3, ...
-#
-# Each entry is a path to a log file and optionally a Python module/function pair
-# separated by colons.
-#
-# Custom parsers should take a 2 parameters, a logger object and
-# a string parameter of the current line to parse. It should return a tuple of
-# the form:
-#   (metric (str), timestamp (unix timestamp), value (float), attributes (dict))
-# where attributes should at least contain the key 'metric_type', specifying
-# whether the given metric is a 'counter' or 'gauge'.
-#
-# Unless parsers are specified with an absolute path, the modules must exist in
-# the Agent's PYTHONPATH. You can set this as an environment variable when
-# starting the Agent. If the name of the custom parser function is not passed,
-# 'parser' is assumed.
-#
-# If this value isn't specified, the default parser assumes this log format:
-#     metric timestamp value key0=val0 key1=val1 ...
-#
-<%
-if not @dogstreams.empty?
--%>
-dogstreams: <%= @dogstreams.join(', ') %>
-<% end -%>
-
-# ========================================================================== #
-# Custom Emitters                                                            #
-# ========================================================================== #
-
-# Comma-separated list of emitters to be used in addition to the standard one
-#
-# Expected to be passed as a comma-separated list of colon-delimited
-# name/object pairs.
-#
-<% if @custom_emitters.empty? -%>
-# custom_emitters: /usr/local/my-code/emitters/rabbitmq.py:RabbitMQEmitter
-<% else -%>
-custom_emitters: <%= @custom_emitters %>
-<% end -%>
-#
-# If the name of the emitter function is not specified, 'emitter' is assumed.
-
 
 # ========================================================================== #
 # Logging

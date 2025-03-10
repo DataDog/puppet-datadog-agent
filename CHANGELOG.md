@@ -698,6 +698,7 @@ Please read the [docs]() for more details.
 [#164]: https://github.com/DataDog/puppet-datadog-agent/issues/164
 [#168]: https://github.com/DataDog/puppet-datadog-agent/issues/168
 [#169]: https://github.com/DataDog/puppet-datadog-agent/issues/169
+[#171]: https://github.com/DataDog/puppet-datadog-agent/issues/171
 [#173]: https://github.com/DataDog/puppet-datadog-agent/issues/173
 [#174]: https://github.com/DataDog/puppet-datadog-agent/issues/174
 [#175]: https://github.com/DataDog/puppet-datadog-agent/issues/175
@@ -973,8 +974,10 @@ Please read the [docs]() for more details.
 [#814]: https://github.com/DataDog/puppet-datadog-agent/issues/814
 [#820]: https://github.com/DataDog/puppet-datadog-agent/issues/820
 [#821]: https://github.com/DataDog/puppet-datadog-agent/issues/821
+[#823]: https://github.com/DataDog/puppet-datadog-agent/issues/823
 [#824]: https://github.com/DataDog/puppet-datadog-agent/issues/824
 [#835]: https://github.com/DataDog/puppet-datadog-agent/issues/835
+[#838]: https://github.com/DataDog/puppet-datadog-agent/issues/838
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

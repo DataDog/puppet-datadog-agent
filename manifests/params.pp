@@ -2,7 +2,6 @@
 #
 # This class contains the parameters for the Datadog module
 #
-
 class datadog_agent::params {
   $datadog_site                   = 'datadoghq.com'
   $dd_groups                      = undef
@@ -28,7 +27,7 @@ class datadog_agent::params {
   case $facts['os']['name'] {
     'Ubuntu','Debian','Raspbian' : {
       $rubydev_package            = 'ruby-dev'
-      case $::operatingsystemrelease{
+      case $facts['os']['release']['full'] {
         '14.04': {
           # Specific ruby/rubygems package name for Ubuntu 14.04
           $ruby_package           = 'ruby'
@@ -87,5 +86,4 @@ class datadog_agent::params {
     }
     default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${facts['os']['name']}") }
   }
-
 }

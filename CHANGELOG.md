@@ -1,5 +1,33 @@
 Changes
 =======
+<!-- markdownlint-disable MD025 -->
+<!-- markdownlint-disable MD024 -->
+<!-- markdownlint-disable MD003 -->
+<!-- markdownlint-disable MD001 -->
+
+# 4.0.0 / 2025-03-10
+
+This release has multiple breaking changes. You may need to update your module integration. Note that module
+dependencies have been updated.
+
+This release adds support for Puppet 8, updating all classes to use defined class parameters types. Be aware that this change
+may break existing implementations.
+
+* [FEATURE] Add Support for Puppet 8 ([#823])(thanks [@xenon8], [@nielstholenaar]).
+  * [FEATURE] Update Module Dependencies including updates for StdLib, migrating to newer functions where appropriate.
+  * [FEATURE] Class definitions updated with references to Datadog examples.
+  * [FEATURE] Update to CI Builds to work with Ruby 3.
+  * [BUGFIX] Fix issue where MSI path was not correctly parsed.
+  * [BUGFIX] BREAKING - `datadog_agent::integrations::disk` now expects booleans for `use_mount`, `all_partitions`, and `tag_by_filesystem`.
+  * [BUGFIX] Fix `supress_errors` typo in the ActiveMQ_xml check. `supress_errors` is preserved for backwards compatibility, but new `suppress_errors` should be used instead.
+  * [DEPRECATE] Drop support for Puppet 6 and below.
+  * [DEPRECATE] Drop support for Datadog Agent version 5, including removal of unit tests.
+  * [DEPRECATE] Remove `ganglia`, `graphite`, `dogstreams`, `custom_emitters`, and `use_curl_http_client` legacy configuration options, which are no longer supported since Datadog Agent v6+
+  * [DEPRECATE] Remove support for supplying a string to the `ssl_verify` option on the elasticsearch integration. We now use `tls_verify` which matches core Datadog code.
+  * [DEPRECATE] Remove legacy Jenkins integration.
+  * [DEPRECATE] `skip_event` setting on TCP Check class has been removed from the Datadog integration (removed since Datadog Agent v6.4+).
+  * [DEPRECATE] Remove support for supplying a String to the `ssl_verify` option on the elasticsearch integration. Add updated `tls_*` options to match core Datadog code.
+* [FEATURE] Update mongo configuration template with `dbm`, `database_autodiscovery`, `reported_database_hostname`, and `hosts` parameters. ([#838]) (thanks [@lu-zhengda]).
 
 # 3.24.0 / 2025-02-25
 
@@ -23,6 +51,7 @@ Changes
 # 3.21.0 / 2023-07-03
 
 * [FEATURE] Trust new APT and RPM keys. ([#782])
+
 # 3.20.0 / 2023-01-12
 
 * [DEPRECATE] Remove the old RPM GPG key 4172A230 from hosts that still trust it, and stop trusting it. ([#770][])
@@ -68,7 +97,7 @@ Changes
 * [BUGFIX] Do not add process integration configuration file if not configured ([#703][]) (Thanks [@yanjunding][])
 * [FEATURE] add support for `min_collection_interval` for HTTP check ([#699][]) (Thanks [@yanjunding][])
 * [FEATURE] Improvements for APT keys management ([#698][], [#700][], [#701][] and [#714][])
-* [FEATURE] Include 'datadog_agent' class in the catalog when using the generic integration ([#697][]) (Thanks [@stantona][]) 
+* [FEATURE] Include 'datadog_agent' class in the catalog when using the generic integration ([#697][]) (Thanks [@stantona][])
 * [BUGFIX] Update `excluded_interface_re` type to String ([#696][]) (Thanks [@florusboth][])
 
 # 3.12.0 / 2021-05-06
@@ -167,9 +196,9 @@ then it is safe to upgrade.
 ### Notes
 
 * [MAJOR] Agent 7 support. See [#588][].
-    * Introduces `agent_major_version` parameter that replaces `agent5_enable`.
-    * Removes `agent6`/`agent5` prefixes in argument names.
-    * Unifies config for Agent 5/6 repos and removes the use of facter.
+  * Introduces `agent_major_version` parameter that replaces `agent5_enable`.
+  * Removes `agent6`/`agent5` prefixes in argument names.
+  * Unifies config for Agent 5/6 repos and removes the use of facter.
 * [IMPROVEMENT] Removes uses of `validate_legacy`.
 * [IMPROVEMENT] Keeps the group ownership of config files as `dd-agent`.
 * [IMPROVEMENT] Removes `service_name` and `package_name` parameters.
@@ -339,6 +368,7 @@ then it is safe to upgrade.
 # 2.0.0 / 2018-02-27
 
 ### Overview
+
 This release is a major release, there are a some breaking changes. We have
 tried to keep the interface as similar as possible to what the community
 was already used to, but have had to make some changes and cleaned up some
@@ -447,7 +477,6 @@ Please read the [docs]() for more details.
 * [DOCUMENTATION] Cleanup EC2-related parameter docs. See [#252][] (Thanks [@jdavisp3][])
 * [DOCUMENTATION] Zookeeper: fix comment to match reality. See [#297][] (Thanks [@generica][])
 
-
 # 1.9.0 / 2016-12-20
 
 ### Notes
@@ -476,8 +505,6 @@ Please read the [docs]() for more details.
 
 * [CI] Multiple fixes related to the spec tests on older puppets.
 * [CI] Consul: adding spec tests. See [#264][]. (Thanks [@flyinprogrammer][]).
-
-
 
 # 1.8.1 / 2016-08-15
 
@@ -628,6 +655,7 @@ Please read the [docs]() for more details.
 * [FEATURE] Add `use_mount` option in the base datadog_agent class
 * [FEATURE] Add proxy options in the base datadog_agent class
 * [BUGFIX] Use correct JMX-styled tags in JMX integrations
+
 > Careful this means that you probably have to update a buggy array of tags (that gives you nothing in the agent) to a hash of tags.
 
 * [BUGFIX] Fix ordering in YAML templates using `to_yaml` broken because of ruby 1.8
@@ -670,7 +698,6 @@ Please read the [docs]() for more details.
 [#164]: https://github.com/DataDog/puppet-datadog-agent/issues/164
 [#168]: https://github.com/DataDog/puppet-datadog-agent/issues/168
 [#169]: https://github.com/DataDog/puppet-datadog-agent/issues/169
-[#171]: https://github.com/DataDog/puppet-datadog-agent/issues/171
 [#173]: https://github.com/DataDog/puppet-datadog-agent/issues/173
 [#174]: https://github.com/DataDog/puppet-datadog-agent/issues/174
 [#175]: https://github.com/DataDog/puppet-datadog-agent/issues/175
@@ -934,13 +961,16 @@ Please read the [docs]() for more details.
 [#756]: https://github.com/DataDog/puppet-datadog-agent/issues/756
 [#761]: https://github.com/DataDog/puppet-datadog-agent/issues/761
 [#770]: https://github.com/DataDog/puppet-datadog-agent/issues/770
+[#779]: https://github.com/DataDog/puppet-datadog-agent/issues/779
 [#782]: https://github.com/DataDog/puppet-datadog-agent/issues/782
 [#785]: https://github.com/DataDog/puppet-datadog-agent/issues/785
 [#789]: https://github.com/DataDog/puppet-datadog-agent/issues/789
 [#790]: https://github.com/DataDog/puppet-datadog-agent/issues/790
 [#798]: https://github.com/DataDog/puppet-datadog-agent/issues/798
 [#799]: https://github.com/DataDog/puppet-datadog-agent/issues/799
+[#800]: https://github.com/DataDog/puppet-datadog-agent/issues/800
 [#806]: https://github.com/DataDog/puppet-datadog-agent/issues/806
+[#814]: https://github.com/DataDog/puppet-datadog-agent/issues/814
 [#820]: https://github.com/DataDog/puppet-datadog-agent/issues/820
 [#821]: https://github.com/DataDog/puppet-datadog-agent/issues/821
 [#824]: https://github.com/DataDog/puppet-datadog-agent/issues/824
@@ -1026,12 +1056,14 @@ Please read the [docs]() for more details.
 [@kevin-bowers]: https://github.com/kevin-bowers
 [@kitchen]: https://github.com/kitchen
 [@lowkeyshift]: https://github.com/lowkeyshift
+[@lu-zhengda]: https://github.com/lu-zhengda
 [@mcasper]: https://github.com/mcasper
 [@milescrabill]: https://github.com/milescrabill
 [@mraylu]: https://github.com/mraylu
 [@mrunkel-ut]: https://github.com/mrunkel-ut
 [@mtougeron]: https://github.com/mtougeron
 [@murdok5]: https://github.com/murdok5
+[@nielstholenaar]: https://github.com/nielstholenaar
 [@npaufler]: https://github.com/npaufler
 [@o0oxid]: https://github.com/o0oxid
 [@obi11235]: https://github.com/obi11235
@@ -1065,6 +1097,7 @@ Please read the [docs]() for more details.
 [@turnopil]: https://github.com/turnopil
 [@tuxinaut]: https://github.com/tuxinaut
 [@vaisingh]: https://github.com/vaisingh
+[@xenon8]: https://github.com/xenon8
 [@yanjunding]: https://github.com/yanjunding
 [@yrcjaya]: https://github.com/yrcjaya
 [@zabacad]: https://github.com/zabacad

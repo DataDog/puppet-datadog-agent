@@ -2,6 +2,9 @@
 #
 # This class will install the necessary configuration for the mongo integration
 #
+# See the sample mongo.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/mongo/datadog_checks/mongo/data/conf.yaml.example
+#
 # NOTE: In newer versions of the Datadog Agent, the ssl parameters will be deprecated in favor the tls variants
 #
 # Parameters:
@@ -104,30 +107,22 @@
 #    ]
 #  }
 #
-class datadog_agent::integrations::mongo(
-  Array $servers = [{'host' => 'localhost', 'port' => '27017'}]
+class datadog_agent::integrations::mongo (
+  Array $servers = [{ 'host' => 'localhost', 'port' => '27017' }]
 ) inherits datadog_agent::params {
-  require ::datadog_agent
+  require datadog_agent
 
-  $legacy_dst = "${datadog_agent::params::legacy_conf_dir}/mongo.yaml"
-  if $::datadog_agent::_agent_major_version > 5 {
-    $dst_dir = "${datadog_agent::params::conf_dir}/mongo.d"
-    file { $legacy_dst:
-      ensure => 'absent'
-    }
+  $dst_dir = "${datadog_agent::params::conf_dir}/mongo.d"
 
-    file { $dst_dir:
-      ensure  => directory,
-      owner   => $datadog_agent::dd_user,
-      group   => $datadog_agent::params::dd_group,
-      mode    => $datadog_agent::params::permissions_directory,
-      require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
-    }
-    $dst = "${dst_dir}/conf.yaml"
-  } else {
-    $dst = $legacy_dst
+  file { $dst_dir:
+    ensure  => directory,
+    owner   => $datadog_agent::dd_user,
+    group   => $datadog_agent::params::dd_group,
+    mode    => $datadog_agent::params::permissions_directory,
+    require => Package[$datadog_agent::params::package_name],
+    notify  => Service[$datadog_agent::params::service_name],
   }
+  $dst = "${dst_dir}/conf.yaml"
 
   file { $dst:
     ensure  => file,
@@ -136,6 +131,6 @@ class datadog_agent::integrations::mongo(
     mode    => $datadog_agent::params::permissions_protected_file,
     content => template('datadog_agent/agent-conf.d/mongo.yaml.erb'),
     require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 }

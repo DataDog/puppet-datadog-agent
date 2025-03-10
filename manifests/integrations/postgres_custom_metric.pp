@@ -15,13 +15,12 @@
 # $descriptor:
 #   an array that maps an sql column's to a tag. Each descriptor consists of two
 #   fields -- column name, and datadog tag.
-define datadog_agent::integrations::postgres_custom_metric(
+define datadog_agent::integrations::postgres_custom_metric (
   String $query,
   Hash $metrics,
   Boolean $relation = false,
   Array $descriptors = [],
 ) {
-
   if $query !~ '^.*%s.*$' {
     fail('custom_metrics require %s for metric substitution')
   }

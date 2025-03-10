@@ -1,6 +1,6 @@
 {
   "name": "datadog-datadog_agent",
-  "version": "3.24.0",
+  "version": "4.0.0",
   "author": "James Turnbull <james@lovedthanlost.net>, Rob Terhaar <rob@atlanticdynamic>, Jaime Fullaondo <jaime.fullaondo@datadoghq.com>, Albert Vaca <albert.vaca@datadoghq.com>",
   "summary": "Install the Datadog monitoring agent and report Puppet runs to Datadog",
   "license": "Apache-2.0",
@@ -10,31 +10,27 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">=4.25.0 <9.0.0"
+      "version_requirement": ">=4.25.0 <10.0.0"
     },
     {
       "name": "puppetlabs/concat",
-      "version_requirement": ">=4.0.0 <8.0.0"
+      "version_requirement": ">=4.0.0 <10.0.0"
     },
     {
       "name": "puppetlabs/apt",
-      "version_requirement": ">=4.4.0 <9.0.0"
-    },
-    {
-      "name": "puppetlabs/puppetserver_gem",
-      "version_requirement": ">=1.0.0 <2.0.0"
+      "version_requirement": ">=4.4.0 <10.0.0"
     },
     {
       "name": "puppetlabs/yumrepo_core",
-      "version_requirement": ">=1.0.3 < 2.0.0"
+      "version_requirement": ">=1.0.3 < 3.0.0"
     },
     {
       "name": "puppetlabs/powershell",
-      "version_requirement": ">=2.3.0 <5.0.0"
+      "version_requirement": ">=2.3.0 <7.0.0"
     },
     {
       "name": "puppet/zypprepo",
-      "version_requirement": ">=3.1.0 <4.0.0"
+      "version_requirement": ">=3.1.0 <6.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -42,33 +38,41 @@
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
         "6",
-        "7"
+        "7",
+        "8",
+        "9"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "6",
-        "7"
+        "7",
+        "8",
+        "9"
       ]
     },
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
         "6",
-        "7"
+        "7",
+        "8",
+        "9"
       ]
     },
     {
       "operatingsystem": "AlmaLinux",
       "operatingsystemrelease": [
-        "8"
+        "8",
+        "9"
       ]
     },
     {
       "operatingsystem": "Rocky",
       "operatingsystemrelease": [
-        "8"
+        "8",
+        "9"
       ]
     },
     {
@@ -91,7 +95,13 @@
         "26",
         "27",
         "28",
-        "29"
+        "29",
+        "30",
+        "31",
+        "32",
+        "33",
+        "34",
+        "35"
       ]
     },
     {
@@ -100,7 +110,12 @@
         "6",
         "7",
         "8",
-        "9"
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14"
       ]
     },
     {
@@ -111,7 +126,10 @@
         "17.04",
         "17.10",
         "18.04",
-        "18.10"
+        "18.10",
+        "20.04",
+        "22.04",
+        "24.04"
       ]
     },
     {
@@ -148,11 +166,11 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">=4.6.0 <8.0.0"
+      "version_requirement": ">=4.6.0 < 9.0.0"
     }
   ],
   "description": "This will install the Datadog monitoring agent. Sign up and get your API key at: http://www.datadoghq.com",
-  "pdk-version": "1.15.0",
-  "template-url": "https://github.com/puppetlabs/pdk-templates#1.15.0",
-  "template-ref": "tags/1.15.0-0-g0bc522e"
+  "pdk-version": "3.4.0",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#3.4.0",
+  "template-ref": "tags/3.4.0-0-gd3cc13f"
 }

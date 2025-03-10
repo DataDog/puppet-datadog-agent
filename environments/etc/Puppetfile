@@ -1,9 +1,8 @@
 # Track control branch and fall-back to master if no matching branch.
 mod 'datadog_agent', :local => true
-mod 'puppetlabs-apt', '2.4.0'
-mod 'puppetlabs-concat', '4.0.0'
-mod 'puppetlabs-puppetserver_gem', '1.0.0'
-mod 'puppetlabs-stdlib', '4.25.0'
-mod 'puppetlabs-powershell', '2.3.0'
-mod 'puppetlabs-yumrepo_core', '1.0.3'
-mod 'puppet-zypprepo', '3.1.0'
+mod 'puppetlabs-apt', '10.0.1'
+mod 'puppetlabs-concat', '9.1.0'
+mod 'puppetlabs-stdlib', '9.7.0'
+mod 'puppetlabs-powershell', '6.0.2'
+mod 'puppetlabs-yumrepo_core', '2.1.0'
+mod 'puppet-zypprepo', '5.0.0'

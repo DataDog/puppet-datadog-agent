@@ -5,7 +5,7 @@ Changes
 <!-- markdownlint-disable MD003 -->
 <!-- markdownlint-disable MD001 -->
 
-# 4.0.0 / 2025-03-07
+# 4.0.0 / 2025-03-10
 
 This release has multiple breaking changes. You may need to update your module integration. Note that module
 dependencies have been updated.
@@ -13,20 +13,21 @@ dependencies have been updated.
 This release adds support for Puppet 8, updating all classes to use defined class parameters types. Be aware that this change
 may break existing implementations.
 
-* [FEATURE] Add Support for Puppet 8 ([#779]).
-* [FEATURE] Update Module Dependencies including updates for StdLib, migrating to newer functions where appropriate ([#800]).
-* [FEATURE] Class definitions updated with references to Datadog examples.
-* [FEATURE] Update to CI Builds to work with Ruby 3.
-* [BUGFIX] Fix issue where MSI path was not correctly parsed ([#814]).
-* [BUGFIX] BREAKING - `datadog_agent::integrations::disk` now expects booleans for `use_mount`, `all_partitions`, and `tag_by_filesystem`.
-* [BUGFIX] Fix `supress_errors` typo in the ActiveMQ_xml check. `supress_errors` is preserved for backwards compatibility, but new `suppress_errors` should be used instead.
-* [DEPRECATE] Drop support for Puppet 6 and below.
-* [DEPRECATE] Drop support for Datadog Agent version 5, including removal of unit tests.
-* [DEPRECATE] Remove `ganglia`, `graphite`, `dogstreams`, `custom_emitters`, and `use_curl_http_client` legacy configuration options, which are no longer supported since Datadog Agent v6+
-* [DEPRECATE] Remove support for supplying a string to the `ssl_verify` option on the elasticsearch integration. We now use `tls_verify` which matches core Datadog code.
-* [DEPRECATE] Remove legacy Jenkins integration.
-* [DEPRECATE] `skip_event` setting on TCP Check class has been removed from the Datadog integration (removed since Datadog Agent v6.4+).
-* [DEPRECATE] Remove support for supplying a String to the `ssl_verify` option on the elasticsearch integration. Add updated `tls_*` options to match core Datadog code.
+* [FEATURE] Add Support for Puppet 8 ([#823])(thanks [@xenon8], [@nielstholenaar]).
+  * [FEATURE] Update Module Dependencies including updates for StdLib, migrating to newer functions where appropriate.
+  * [FEATURE] Class definitions updated with references to Datadog examples.
+  * [FEATURE] Update to CI Builds to work with Ruby 3.
+  * [BUGFIX] Fix issue where MSI path was not correctly parsed.
+  * [BUGFIX] BREAKING - `datadog_agent::integrations::disk` now expects booleans for `use_mount`, `all_partitions`, and `tag_by_filesystem`.
+  * [BUGFIX] Fix `supress_errors` typo in the ActiveMQ_xml check. `supress_errors` is preserved for backwards compatibility, but new `suppress_errors` should be used instead.
+  * [DEPRECATE] Drop support for Puppet 6 and below.
+  * [DEPRECATE] Drop support for Datadog Agent version 5, including removal of unit tests.
+  * [DEPRECATE] Remove `ganglia`, `graphite`, `dogstreams`, `custom_emitters`, and `use_curl_http_client` legacy configuration options, which are no longer supported since Datadog Agent v6+
+  * [DEPRECATE] Remove support for supplying a string to the `ssl_verify` option on the elasticsearch integration. We now use `tls_verify` which matches core Datadog code.
+  * [DEPRECATE] Remove legacy Jenkins integration.
+  * [DEPRECATE] `skip_event` setting on TCP Check class has been removed from the Datadog integration (removed since Datadog Agent v6.4+).
+  * [DEPRECATE] Remove support for supplying a String to the `ssl_verify` option on the elasticsearch integration. Add updated `tls_*` options to match core Datadog code.
+* [FEATURE] Update mongo configuration template with `dbm`, `database_autodiscovery`, `reported_database_hostname`, and `hosts` parameters. ([#838]) (thanks [@lu-zhengda]).
 
 # 3.24.0 / 2025-02-25
 
@@ -1055,12 +1056,14 @@ Please read the [docs]() for more details.
 [@kevin-bowers]: https://github.com/kevin-bowers
 [@kitchen]: https://github.com/kitchen
 [@lowkeyshift]: https://github.com/lowkeyshift
+[@lu-zhengda]: https://github.com/lu-zhengda
 [@mcasper]: https://github.com/mcasper
 [@milescrabill]: https://github.com/milescrabill
 [@mraylu]: https://github.com/mraylu
 [@mrunkel-ut]: https://github.com/mrunkel-ut
 [@mtougeron]: https://github.com/mtougeron
 [@murdok5]: https://github.com/murdok5
+[@nielstholenaar]: https://github.com/nielstholenaar
 [@npaufler]: https://github.com/npaufler
 [@o0oxid]: https://github.com/o0oxid
 [@obi11235]: https://github.com/obi11235
@@ -1094,6 +1097,7 @@ Please read the [docs]() for more details.
 [@turnopil]: https://github.com/turnopil
 [@tuxinaut]: https://github.com/tuxinaut
 [@vaisingh]: https://github.com/vaisingh
+[@xenon8]: https://github.com/xenon8
 [@yanjunding]: https://github.com/yanjunding
 [@yrcjaya]: https://github.com/yrcjaya
 [@zabacad]: https://github.com/zabacad

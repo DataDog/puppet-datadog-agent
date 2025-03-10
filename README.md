@@ -27,6 +27,8 @@ puppet module install datadog-datadog_agent
 > [!IMPORTANT]
 > Updates and breaking changes have been made in the below agent integrations:
 
+  - ActiveMQ_XML
+    - `suppress_errors` config should now be used instead of `supress_errors` (backward-compatible)
   - ElasticSearch **[BREAKING CHANGES]**
     - `ssl_verify` accepts only Boolean values
     - `tls_verify` options have been added

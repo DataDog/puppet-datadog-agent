@@ -38,33 +38,41 @@
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
         "6",
-        "7"
+        "7",
+        "8",
+        "9"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "6",
-        "7"
+        "7",
+        "8",
+        "9"
       ]
     },
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
         "6",
-        "7"
+        "7",
+        "8",
+        "9"
       ]
     },
     {
       "operatingsystem": "AlmaLinux",
       "operatingsystemrelease": [
-        "8"
+        "8",
+        "9"
       ]
     },
     {
       "operatingsystem": "Rocky",
       "operatingsystemrelease": [
-        "8"
+        "8",
+        "9"
       ]
     },
     {
@@ -87,7 +95,13 @@
         "26",
         "27",
         "28",
-        "29"
+        "29",
+        "30",
+        "31",
+        "32",
+        "33",
+        "34",
+        "35"
       ]
     },
     {
@@ -96,7 +110,12 @@
         "6",
         "7",
         "8",
-        "9"
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14"
       ]
     },
     {
@@ -107,7 +126,10 @@
         "17.04",
         "17.10",
         "18.04",
-        "18.10"
+        "18.10",
+        "20.04",
+        "22.04",
+        "24.04"
       ]
     },
     {

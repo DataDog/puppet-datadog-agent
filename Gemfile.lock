@@ -461,7 +461,7 @@ GEM
       tty-cursor (~> 0.7)
     unicode-display_width (2.6.0)
     unicode_utils (1.4.0)
-    uri (1.0.2)
+    uri (1.0.3)
     voxpupuli-puppet-lint-plugins (5.0.0)
       puppet-lint (~> 4.0)
       puppet-lint-absolute_classname-check (~> 4.0)
@@ -508,6 +508,7 @@ PLATFORMS
   arm64-darwin-22
   arm64-darwin-24
   x64-mingw32
+  x86_64-linux
 
 DEPENDENCIES
   CFPropertyList (< 3.0.7)

@@ -18,7 +18,7 @@
 #       Username to use for authentication - optional
 #   $password
 #       Password to use for authentication - optional
-#   $supress_errors
+#   $suppress_errors
 #      Supress connection errors if URL is expected to be offline at times (eg. standby host) - optional
 #   $detailed_queues
 #      List of queues to monitor, required if you have more than 300 queues you wish to track, otherwise optional.
@@ -33,7 +33,7 @@
 #    url     => 'http://localhost:8161',
 #    username => 'datadog',
 #    password => 'some_pass',
-#    supress_errors => false,
+#    suppress_errors => false,
 #    detailed_queues => ['queue1', 'queue2', 'queue3'],
 #    detailed_topics => ['topic1', 'topic2', 'topic3'],
 #    detailed_subscribers => ['subscriber1', 'subscriber2', 'subscriber3'],
@@ -45,7 +45,7 @@
 #     - url: 'http://localhost:8161'
 #       username: 'datadog'
 #       password: 'some_pass'
-#       supress_errors: false
+#       suppress_errors: false
 #       detailed_queues: ['queue1', 'queue2', 'queue3']
 #       detailed_topics: ['topic1', 'topic2', 'topic3']
 #       detailed_subscribers: ['subscriber1', 'subscriber2', 'subscriber3']
@@ -53,7 +53,8 @@
 #
 class datadog_agent::integrations::activemq_xml (
   String $url                         = 'http://localhost:8161',
-  Boolean $supress_errors             = false,
+  Boolean $supress_errors             = false, # keep for backwards-compatibility
+  Boolean $suppress_errors            = $supress_errors,
   Optional[String] $username          = undef,
   Optional[String] $password          = undef,
   Array[String] $detailed_queues      = [],
@@ -80,7 +81,7 @@ class datadog_agent::integrations::activemq_xml (
         'url'                  => $url,
         'username'             => $username,
         'password'             => $password,
-        'supress_errors'       => $supress_errors,
+        'suppress_errors'      => $suppress_errors,
         'detailed_queues'      => $detailed_queues,
         'detailed_topics'      => $detailed_topics,
         'detailed_subscribers' => $detailed_subscribers,

@@ -36,7 +36,7 @@ describe 'datadog_agent::integrations::activemq_xml' do
           it {
             is_expected.to contain_file(conf_file)
               .with_content(%r{http://localhost:8161})
-              .with_content(%r{supress_errors: false})
+              .with_content(%r{suppress_errors: false})
               .without_content(%r{detailed_queues:})
               .without_content(%r{detailed_topics:})
               .without_content(%r{detailed_subscribers:})
@@ -46,7 +46,7 @@ describe 'datadog_agent::integrations::activemq_xml' do
         context 'with extra detailed parameters' do
           let(:params) do
             {
-              supress_errors: true,
+              suppress_errors: true,
               detailed_queues: ['queue1', 'queue2'],
               detailed_topics: ['topic1', 'topic2'],
               detailed_subscribers: ['subscriber1', 'subscriber2'],
@@ -56,7 +56,7 @@ describe 'datadog_agent::integrations::activemq_xml' do
           it {
             is_expected.to contain_file(conf_file)
               .with_content(%r{http://localhost:8161})
-              .with_content(%r{supress_errors: true})
+              .with_content(%r{suppress_errors: true})
               .with_content(%r{detailed_queues:.*\s+- queue1\s+- queue2})
               .with_content(%r{detailed_topics:.*\s+- topic1\s+- topic2})
               .with_content(%r{detailed_subscribers:.*\s+- subscriber1\s+- subscriber2})
@@ -90,14 +90,14 @@ describe 'datadog_agent::integrations::activemq_xml' do
           it {
             is_expected.to contain_file(conf_file)
               .with_content(%r{url: http://localhost:8161})
-              .without_content(%r{supress_errors:})
+              .without_content(%r{suppress_errors:})
               .with_content(%r{username: joe})
               .with_content(%r{password: hunter1})
               .with_content(%r{detailed_queues:.*\s+- queue1\s+- queue2})
               .with_content(%r{detailed_topics:.*\s+- topic1\s+- topic2})
               .with_content(%r{detailed_subscribers:.*\s+- subscriber1\s+- subscriber2})
               .with_content(%r{url: http://remotehost:8162})
-              .without_content(%r{supress_errors:})
+              .without_content(%r{suppress_errors:})
               .with_content(%r{username: moe})
               .with_content(%r{password: hunter2})
               .with_content(%r{detailed_queues:.*\s+- queue3\s+- queue4})

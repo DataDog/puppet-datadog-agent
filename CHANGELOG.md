@@ -19,6 +19,7 @@ may break existing implementations.
 * [FEATURE] Update to CI Builds to work with Ruby 3.
 * [BUGFIX] Fix issue where MSI path was not correctly parsed ([#814]).
 * [BUGFIX] BREAKING - `datadog_agent::integrations::disk` now expects booleans for `use_mount`, `all_partitions`, and `tag_by_filesystem`.
+* [BUGFIX] Fix `supress_errors` typo in the ActiveMQ_xml check. `supress_errors` is preserved for backwards compatibility, but new `suppress_errors` should be used instead.
 * [DEPRECATE] Drop support for Puppet 6 and below.
 * [DEPRECATE] Drop support for Datadog Agent version 5, including removal of unit tests.
 * [DEPRECATE] Remove `ganglia`, `graphite`, `dogstreams`, `custom_emitters`, and `use_curl_http_client` legacy configuration options, which are no longer supported since Datadog Agent v6+

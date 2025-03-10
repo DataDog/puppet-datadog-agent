@@ -21,7 +21,7 @@ puppet module install datadog-datadog_agent
 > The Datadog Puppet Module v4.x drops support for Puppet <= 6 and Datadog Agent v5. To upgrade or install the Datadog
 > Agent v5+ on Puppet <= 6, use module v3.x.
 
-- By default Datadog Agent v7.x is installed. To use Agent version 6, change the setting `agent_major_version`.
+- By default, Datadog Agent v7.x is installed. To use Agent version 6, change the setting `agent_major_version`.
 - Agent v5-specific legacy options have been removed. Refer to the CHANGELOG.md for more details and the datadog_agent class comments for all available options.
 
 > [!IMPORTANT]

@@ -112,6 +112,7 @@ platforms:
     - dnf module -y reset ruby
     - dnf module -y enable ruby:3.1
     - dnf module -y install ruby:3.1/common
+    - dnf update
 
     - rpm -Uvh https://yum.puppet.com/puppet8-release-el-9.noarch.rpm #installs the puppet-agent repo
     - yum install -y puppet-agent-8.10.0 rubygems ruby-devel procps-ng

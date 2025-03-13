@@ -61,7 +61,7 @@ describe 'datadog_agent::reports' do
           it do
             is_expected.to contain_package('dogapi')\
               .with_ensure('installed')
-              .with_provider('puppetserver_gem')
+              .with_provider('gem')
           end
 
           it do
@@ -117,7 +117,7 @@ describe 'datadog_agent::reports' do
       it do
         is_expected.to contain_package('dogapi')\
           .with_ensure('1.2.2')
-          .with_provider('puppetserver_gem')
+          .with_provider('gem')
       end
 
       it do

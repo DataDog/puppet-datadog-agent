@@ -112,6 +112,45 @@ describe 'datadog_agent::integrations::tcp_check' do
 
           skip('doubly undefined behavior')
         end
+
+        context 'with multiple instances' do
+          let(:params) do
+            {
+              instances: [
+                {
+                  check_name: 'foo.bar.baz',
+                  host: 'foo.bar.baz',
+                  port: '80',
+                  timeout: 123,
+                  threshold: 456,
+                  window: 789,
+                  collect_response_time: true,
+                },
+                {
+                  check_name: 'baz.bar.foo',
+                  host: 'baz.bar.foo',
+                  port: '8080',
+                  timeout: 456,
+                  tags: ['foo', 'bar', 'baz']
+                },
+              ]
+            }
+          end
+
+          it { is_expected.to contain_file(conf_file).with_content(%r{name: foo.bar.baz}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{host: foo.bar.baz}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{port: 80}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{timeout: 123}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{threshold: 456}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{window: 789}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{collect_response_time: true}) }
+
+          it { is_expected.to contain_file(conf_file).with_content(%r{name: baz.bar.foo}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{host: baz.bar.foo}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{port: 8080}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{timeout: 456}) }
+          it { is_expected.to contain_file(conf_file).with_content(%r{tags:\s+- foo\s+- bar\s+- baz\s*?[^-]}m) }
+        end
       end
     end
   end

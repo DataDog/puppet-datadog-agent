@@ -39,13 +39,13 @@ instances:
         - <%= tag %>
   <%- end -%>
 <%- end -%>
-<%- unless instance['tls_protocols_allowed'].nil? -%>
+<%- unless instance['tls_protocols_allowed'].empty? -%>
       tls_protocols_allowed:
   <%- instance['tls_protocols_allowed'].each do |protocol| -%>
         - <%= protocol %>
   <%- end -%>
 <%- end -%>
-<%- unless instance['tls_ciphers'].nil? -%>
+<%- unless instance['tls_ciphers'].empty? -%>
       tls_ciphers:
   <%- instance['tls_ciphers'].each do |cipher| -%>
         - <%= cipher %>

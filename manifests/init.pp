@@ -250,7 +250,7 @@
 # OR
 #
 # class { 'datadog_agent':
-#     api_key   => 'your key',
+#     api_key   => Sensitive('your key'),
 #     tags      => ['env:production', 'linux'],
 #     puppet_run_reports  => false,
 #     puppetmaster_user   => puppet,

@@ -5,7 +5,7 @@
 # @param packages_to_install String: The packages to be installed by the Datadog installer.
 #
 class datadog_agent::installer_telemetry (
-  Sensitive[String] $api_key = 'your_API_key',
+  Sensitive[String] $api_key = Sensitive('your_API_key'),
   String $datadog_site = 'datadoghq.com',
   String $packages_to_install = 'datadog-agent',
 ) {

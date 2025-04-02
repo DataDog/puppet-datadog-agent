@@ -261,7 +261,7 @@ class datadog_agent (
   String $dd_url = '',
   String $datadog_site = $datadog_agent::params::datadog_site,
   String $host = '',
-  Sensitive[String] $api_key = 'your_API_key',
+  Sensitive[String] $api_key = Sensitive('your_API_key'),
   Enum['datadog-agent', 'Datadog Agent', 'datadog-iot-agent'] $agent_flavor = $datadog_agent::params::package_name,
   Boolean $collect_ec2_tags = false,
   Boolean $collect_gce_tags = false,

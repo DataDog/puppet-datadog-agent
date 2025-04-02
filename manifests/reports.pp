@@ -15,7 +15,7 @@
 # Sample Usage:
 #
 class datadog_agent::reports (
-  Sensitive[String] $api_key = 'your_API_key',
+  Sensitive[String] $api_key,
   String $puppetmaster_user,
   String $dogapi_version,
   Boolean $manage_dogapi_gem = true,

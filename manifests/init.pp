@@ -762,7 +762,7 @@ class datadog_agent (
   $_trusted_facts_tags = datadog_agent::tag6($trusted_facts_to_tags, true, $trusted)
 
   $_agent_config = {
-    'api_key' => $api_key,
+    'api_key' => $api_key.unwrap,
     'dd_url' => $dd_url,
     'site' => $datadog_site,
     'cmd_port' => $cmd_port,

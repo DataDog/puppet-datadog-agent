@@ -287,7 +287,7 @@ describe 'datadog_agent' do
           {
             agent_major_version: 7,
             windows_npm_install: true,
-            api_key: 'notakey',
+            api_key: Sensitive('notakey'),
             host: 'notahost',
           }
         end
@@ -304,7 +304,7 @@ describe 'datadog_agent' do
         let(:params) do
           {
             agent_major_version: 7,
-            api_key: 'notakey',
+            api_key: Sensitive('notakey'),
             host: 'notahost',
           }
         end

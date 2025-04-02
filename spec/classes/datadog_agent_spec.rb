@@ -295,7 +295,7 @@ describe 'datadog_agent' do
         it do
           is_expected.to contain_package('Datadog Agent').with(
             ensure: 'installed',
-            install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'ADDLOCAL' => 'MainApplication,NPM' }],
+            install_options: ['/norestart', { 'APIKEY' => Sensitive('notakey'), 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'ADDLOCAL' => 'MainApplication,NPM' }],
           )
         end
       end
@@ -312,7 +312,7 @@ describe 'datadog_agent' do
         it do
           is_expected.to contain_package('Datadog Agent').with(
             ensure: 'installed',
-            install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""' }],
+            install_options: ['/norestart', { 'APIKEY' => Sensitive('notakey'), 'HOSTNAME' => 'notahost', 'TAGS' => '""' }],
           )
         end
       end

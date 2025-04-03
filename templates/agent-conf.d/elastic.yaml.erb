@@ -33,22 +33,25 @@ instances:
 <%- if instance['tls_ignore_warning'] && instance['tls_ignore_warning'] != :undef -%>
       tls_ignore_warning: <%= instance['tls_ignore_warning'] %>
 <%- end -%>
-<%- unless instance['tags'].empty? -%>
+<%- tags = Array(instance['tags']) -%>
+<%- unless tags.empty? -%>
       tags:
-  <%- instance['tags'].each do |tag| -%>
+    <%- tags.each do |tag| -%>
         - <%= tag %>
-  <%- end -%>
+    <%- end -%>
 <%- end -%>
-<%- unless instance['tls_protocols_allowed'].nil? -%>
+<%- protocols = Array(instance['tls_protocols_allowed']) -%>
+  <%- unless protocols.empty? -%>
       tls_protocols_allowed:
-  <%- instance['tls_protocols_allowed'].each do |protocol| -%>
+    <%- protocols.each do |protocol| -%>
         - <%= protocol %>
+    <%- end -%>
   <%- end -%>
-<%- end -%>
-<%- unless instance['tls_ciphers'].nil? -%>
+  <%- ciphers = Array(instance['tls_ciphers']) -%>
+  <%- unless ciphers.empty? -%>
       tls_ciphers:
-  <%- instance['tls_ciphers'].each do |cipher| -%>
+    <%- ciphers.each do |cipher| -%>
         - <%= cipher %>
+    <%- end -%>
   <%- end -%>
-<%- end -%>
 <%- end -%>

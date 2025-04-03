@@ -5,6 +5,13 @@ Changes
 <!-- markdownlint-disable MD003 -->
 <!-- markdownlint-disable MD001 -->
 
+# 4.0.2 / 2025-04-03
+
+* [BUGFIX] Bump uri from 1.0.2 to 1.0.3 ([#846]).
+* [BUGFIX] Fix Datadog Reports ([#848]).
+* [BUGFIX] Fix tcp_check for multi-instances ([#851]).
+* [BUGFIX] Fix do not set empty tls_protocols_allowed and tls_ciphers for elasticsearch ([#852])(thanks [@nielstholenaar]).
+
 # 4.0.0 / 2025-03-10
 
 This release has multiple breaking changes. You may need to update your module integration. Note that module
@@ -978,6 +985,10 @@ Please read the [docs]() for more details.
 [#824]: https://github.com/DataDog/puppet-datadog-agent/issues/824
 [#835]: https://github.com/DataDog/puppet-datadog-agent/issues/835
 [#838]: https://github.com/DataDog/puppet-datadog-agent/issues/838
+[#846]: https://github.com/DataDog/puppet-datadog-agent/issues/846
+[#848]: https://github.com/DataDog/puppet-datadog-agent/issues/848
+[#851]: https://github.com/DataDog/puppet-datadog-agent/issues/851
+[#852]: https://github.com/DataDog/puppet-datadog-agent/issues/852
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

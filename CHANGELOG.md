@@ -5,7 +5,7 @@ Changes
 <!-- markdownlint-disable MD003 -->
 <!-- markdownlint-disable MD001 -->
 
-# 4.0.2 / 2025-04-03
+# 4.0.1 / 2025-04-03
 
 * [BUGFIX] Bump uri from 1.0.2 to 1.0.3 ([#846]).
 * [BUGFIX] Fix Datadog Reports ([#848]).

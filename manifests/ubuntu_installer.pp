@@ -1,7 +1,7 @@
 # Class: datadog_agent::ubuntu_installer
 # This class installs and configures the Datadog agent on Debian distributions.
 #
-# @param api_key String:Your DataDog API Key.
+# @param api_key Sensitive[String]:Your DataDog API Key.
 # @param datadog_site String: The site of the Datadog intake to send Agent data to. Defaults to 'datadoghq.com'.
 # @param agent_major_version Integer: The major version of the Datadog agent to install. Defaults to 7.
 # @param agent_minor_version Optional[String]: The minor version of the Datadog agent to install.
@@ -18,7 +18,7 @@
 # @param remote_policies Boolean: Whether to enable Agent remote policies. Default: false.
 #
 class datadog_agent::ubuntu_installer (
-  String $api_key = 'your_API_key',
+  Sensitive[String] $api_key = Sensitive('your_API_key'),
   String $datadog_site = $datadog_agent::params::datadog_site,
   Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
   Optional[String] $agent_minor_version = undef,

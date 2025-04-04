@@ -1,11 +1,11 @@
 # This class handles the installation telemetry for the Datadog installer.
 #
-# @param api_key String:Your DataDog API Key.
+# @param api_key Sensitive[String]:Your DataDog API Key.
 # @param datadog_site String: The site of the Datadog intake to send Agent data to. Defaults to 'datadoghq.com'.
 # @param packages_to_install String: The packages to be installed by the Datadog installer.
 #
 class datadog_agent::installer_telemetry (
-  String $api_key = 'your_API_key',
+  Sensitive[String] $api_key = Sensitive('your_API_key'),
   String $datadog_site = 'datadoghq.com',
   String $packages_to_install = 'datadog-agent',
 ) {

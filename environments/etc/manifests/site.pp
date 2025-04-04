@@ -1,6 +1,6 @@
 node default {
   class { 'datadog_agent':
-    api_key             => 'somenonnullapikeythats32charlong',
+    api_key             => Sensitive('somenonnullapikeythats32charlong'),
     agent_extra_options => {
       use_http => true,
     },

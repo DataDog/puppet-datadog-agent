@@ -46,7 +46,7 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
 
     ```conf
     class { 'datadog_agent':
-        api_key => "<YOUR_DD_API_KEY>",
+        api_key => Sensitive("<YOUR_DD_API_KEY>"),
     }
     ```
 
@@ -54,7 +54,7 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
 
     ```conf
     class { 'datadog_agent':
-        api_key => "<YOUR_DD_API_KEY>",
+        api_key => Sensitive("<YOUR_DD_API_KEY>"),
         datadog_site => "datadoghq.eu",
     }
     ```
@@ -63,7 +63,7 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
 
     ```conf
     class { 'datadog_agent':
-        api_key => "<YOUR_DD_API_KEY>",
+        api_key => Sensitive("<YOUR_DD_API_KEY>"),
         service_provider => 'upstart'
     }
     ```
@@ -84,7 +84,7 @@ Once the `datadog_agent` module is installed on your `puppetserver`/`puppetmaste
 
     ```conf
     class { 'datadog_agent':
-        api_key      => "<YOUR_DD_API_KEY>",
+        api_key      => Sensitive("<YOUR_DD_API_KEY>"),
         integrations => {
             "ntp" => {
                 init_config => {},
@@ -128,7 +128,7 @@ To enable reporting of Puppet runs to your Datadog timeline, enable the report p
 
     ```ruby
     class { 'datadog-agent':
-      api_key            => '<YOUR_DD_API_KEY>',
+      api_key            => Sensitive('<YOUR_DD_API_KEY>'),
       puppet_run_reports => true
       # ...
     }
@@ -265,7 +265,7 @@ If you don't see any reports coming in, check your Puppet server logs.
 2. Add this to each node's `site.pp` file:
     ```conf
     class { "datadog_agent":
-        api_key            => "<YOUR_DD_API_KEY>",
+        api_key            => Sensitive("<YOUR_DD_API_KEY>"),
         puppet_run_reports => true
     }
    ```
@@ -288,7 +288,7 @@ To generate tags from custom facts classify your nodes with Puppet facts as an a
 
 ```conf
 class { "datadog_agent":
-  api_key            => "<YOUR_DD_API_KEY>",
+  api_key            => Sensitive("<YOUR_DD_API_KEY>"),
   facts_to_tags      => ["os.family","networking.domain","my_custom_fact"],
 }
 ```

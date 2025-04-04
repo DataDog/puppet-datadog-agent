@@ -4,8 +4,7 @@
 # the datadog service.
 #
 # Parameters:
-#   $api_key:
-#       Your DataDog API Key. Please replace with your key value
+# @param api_key Sensitive[String]:Your DataDog API Key.
 #   $datadog_site:
 #       URL to use to talk to the Datadog API
 #
@@ -16,7 +15,7 @@
 # Sample Usage:
 #
 class datadog_agent::reports (
-  String $api_key,
+  Sensitive[String] $api_key,
   String $puppetmaster_user,
   String $dogapi_version,
   Boolean $manage_dogapi_gem = true,

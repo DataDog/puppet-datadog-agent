@@ -7,7 +7,7 @@ class datadog_agent::windows (
   String $agent_version = $datadog_agent::params::agent_version,
   Optional[String] $agent_repo_uri = undef,
   String $msi_location = 'C:/Windows/temp',
-  String $api_key = $datadog_agent::api_key,
+  Sensitive[String] $api_key = $datadog_agent::api_key,
   String $hostname = $datadog_agent::host,
   Array  $tags = $datadog_agent::tags,
   String $tags_join = join($tags,','),

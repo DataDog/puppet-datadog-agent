@@ -371,12 +371,12 @@ class datadog_agent (
 ) inherits datadog_agent::params {
   #In this regex, version '1:6.15.0~rc.1-1' would match as $1='1:', $2='6', $3='15', $4='0', $5='~rc.1', $6='1'
   if $agent_version != 'latest' and $agent_version =~ /([0-9]+:)?([0-9]+)\.([0-9]+)\.([0-9]+)((?:~|-)[^0-9\s-]+[^-\s]*)?(?:-([0-9]+))?/ {
-    $_agent_major_version = 0 + $2 # Cast to integer
+    $_agent_major_version = Integer($2, 10)
     if $agent_major_version != undef and $agent_major_version != $_agent_major_version {
       fail('Provided and deduced agent_major_version don\'t match')
     }
-    $_agent_minor_version = 0 + $3
-    $_agent_patch_version = 0 + $4
+    $_agent_minor_version = Integer($3, 10)
+    $_agent_patch_version = Integer($4, 10)
   } elsif $agent_major_version != undef {
     $_agent_major_version = $agent_major_version
   } else {

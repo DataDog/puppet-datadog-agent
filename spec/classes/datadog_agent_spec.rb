@@ -287,7 +287,7 @@ describe 'datadog_agent' do
           {
             agent_major_version: 7,
             windows_npm_install: true,
-            api_key: 'notakey',
+            api_key: Sensitive('notakey'),
             host: 'notahost',
           }
         end
@@ -295,7 +295,7 @@ describe 'datadog_agent' do
         it do
           is_expected.to contain_package('Datadog Agent').with(
             ensure: 'installed',
-            install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'ADDLOCAL' => 'MainApplication,NPM' }],
+            install_options: ['/norestart', { 'APIKEY' => Sensitive('notakey'), 'HOSTNAME' => 'notahost', 'TAGS' => '""', 'ADDLOCAL' => 'MainApplication,NPM' }],
           )
         end
       end
@@ -304,7 +304,7 @@ describe 'datadog_agent' do
         let(:params) do
           {
             agent_major_version: 7,
-            api_key: 'notakey',
+            api_key: Sensitive('notakey'),
             host: 'notahost',
           }
         end
@@ -312,7 +312,7 @@ describe 'datadog_agent' do
         it do
           is_expected.to contain_package('Datadog Agent').with(
             ensure: 'installed',
-            install_options: ['/norestart', { 'APIKEY' => 'notakey', 'HOSTNAME' => 'notahost', 'TAGS' => '""' }],
+            install_options: ['/norestart', { 'APIKEY' => Sensitive('notakey'), 'HOSTNAME' => 'notahost', 'TAGS' => '""' }],
           )
         end
       end

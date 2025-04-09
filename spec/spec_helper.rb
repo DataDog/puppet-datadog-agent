@@ -168,4 +168,9 @@ def ensure_module_defined(module_name)
   end
 end
 
+# Ensures that Puppet Sensitive is defined
+def Sensitive(value)
+  Puppet::Pops::Types::PSensitiveType::Sensitive.new(value)
+end
+
 # 'spec_overrides' from sync.yml will appear below this line

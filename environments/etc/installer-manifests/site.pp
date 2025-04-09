@@ -1,6 +1,6 @@
 node default {
   class { 'datadog_agent':
-    api_key                       => 'somenonnullapikeythats32charlong',
+    api_key                       => Sensitive('somenonnullapikeythats32charlong'),
     manage_install                => false,
     datadog_installer_enabled     => true,
     apm_instrumentation_enabled   => 'host',

@@ -7,7 +7,7 @@ Changes
 
 # 4.0.2 / 2025-04-10
 
-* [SANITY] Explicitly convert matches in `agent_version` to integers instead of type casting ([#856]) to avoid warnings.
+* [CHORE] Explicitly convert matches in `agent_version` to integers instead of type casting ([#856]) to avoid warnings.
 
 # 4.0.1 / 2025-04-03
 

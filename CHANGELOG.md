@@ -5,6 +5,10 @@ Changes
 <!-- markdownlint-disable MD003 -->
 <!-- markdownlint-disable MD001 -->
 
+# 4.0.2 / 2025-04-10
+
+* [CHORE] Explicitly convert matches in `agent_version` to integers instead of type casting ([#856]) to avoid warnings.
+
 # 4.0.1 / 2025-04-03
 
 * [BUGFIX] Bump uri from 1.0.2 to 1.0.3 ([#846]).
@@ -989,6 +993,7 @@ Please read the [docs]() for more details.
 [#848]: https://github.com/DataDog/puppet-datadog-agent/issues/848
 [#851]: https://github.com/DataDog/puppet-datadog-agent/issues/851
 [#852]: https://github.com/DataDog/puppet-datadog-agent/issues/852
+[#856]: https://github.com/DataDog/puppet-datadog-agent/issues/856
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

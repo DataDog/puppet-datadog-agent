@@ -74,9 +74,6 @@ class datadog_agent::windows (
       }
 
       $minor_version = Integer($version_parts[1])
-      if !is_integer($minor_version) {
-        fail("Invalid minor version number: ${version_parts[1]}")
-      }
 
       if $minor_version <= 46 {
         $ensure_version = "${agent_version}.1"

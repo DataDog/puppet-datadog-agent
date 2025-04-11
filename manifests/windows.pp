@@ -65,8 +65,21 @@ class datadog_agent::windows (
     if $agent_version == 'latest' {
       $ensure_version = 'installed'
     } else {
-      # While artifacts contain X.Y.Z in their name, their installed Windows versions are actually X.Y.Z.1
-      $ensure_version = "${agent_version}.1"
+      # While artifacts contain X.Y.Z in their name, their installed Windows versions are actually X.Y.Z.1 before 7.47.0.
+      # After 7.47.0, the version is X.Y.Z.0.
+      # Ref: https://github.com/DataDog/datadog-agent/pull/19576
+      $version_parts = split($agent_version, '[.]') # . is a meta regex character, so we need to escape it with [].
+      if length($version_parts) < 2 {
+        fail("Invalid version format: ${agent_version}. Expected format: X.Y.Z")
+      }
+
+      $minor_version = Integer($version_parts[1])
+
+      if $minor_version <= 46 {
+        $ensure_version = "${agent_version}.1"
+      } else {
+        $ensure_version = "${agent_version}.0"
+      }
     }
 
     $hostname_option = $hostname ? { '' => {}, default => { 'HOSTNAME' => $hostname } }

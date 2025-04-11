@@ -5,6 +5,10 @@ Changes
 <!-- markdownlint-disable MD003 -->
 <!-- markdownlint-disable MD001 -->
 
+# 4.0.3 / 2025-04-14
+
+* [BUGFIX] Handle Windows Agent pinned version above 7.46 ([#860]).
+
 # 4.0.2 / 2025-04-10
 
 * [CHORE] Explicitly convert matches in `agent_version` to integers instead of type casting ([#856]) to avoid warnings.
@@ -994,6 +998,7 @@ Please read the [docs]() for more details.
 [#851]: https://github.com/DataDog/puppet-datadog-agent/issues/851
 [#852]: https://github.com/DataDog/puppet-datadog-agent/issues/852
 [#856]: https://github.com/DataDog/puppet-datadog-agent/issues/856
+[#860]: https://github.com/DataDog/puppet-datadog-agent/issues/860
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

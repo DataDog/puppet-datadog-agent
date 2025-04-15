@@ -1,7 +1,7 @@
 ### MANAGED BY PUPPET
 
 ---
-:datadog_api_key: '<%= @api_key %>'
+:datadog_api_key: '<%= @api_key.unwrap %>'
 :api_url: <%= @datadog_site %>
 <% if @hostname_extraction_regex -%>
 :hostname_extraction_regex: '<%= @hostname_extraction_regex %>'

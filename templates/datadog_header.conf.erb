@@ -37,7 +37,7 @@ skip_ssl_validation: <%= @skip_ssl_validation %>
 # The Datadog api key to associate your Agent's data with your organization.
 # Can be found here:
 # https://app.datadoghq.com/account/settings
-api_key: <%= @api_key %>
+api_key: <%= @api_key.unwrap %>
 
 # Force the hostname to whatever you want.
 <% if @host.empty? -%>

@@ -250,7 +250,7 @@
 # OR
 #
 # class { 'datadog_agent':
-#     api_key   => 'your key',
+#     api_key   => Sensitive('your key'),
 #     tags      => ['env:production', 'linux'],
 #     puppet_run_reports  => false,
 #     puppetmaster_user   => puppet,
@@ -261,7 +261,7 @@ class datadog_agent (
   String $dd_url = '',
   String $datadog_site = $datadog_agent::params::datadog_site,
   String $host = '',
-  String $api_key = 'your_API_key',
+  Sensitive[String] $api_key = Sensitive('your_API_key'),
   Enum['datadog-agent', 'Datadog Agent', 'datadog-iot-agent'] $agent_flavor = $datadog_agent::params::package_name,
   Boolean $collect_ec2_tags = false,
   Boolean $collect_gce_tags = false,
@@ -762,7 +762,7 @@ class datadog_agent (
   $_trusted_facts_tags = datadog_agent::tag6($trusted_facts_to_tags, true, $trusted)
 
   $_agent_config = {
-    'api_key' => $api_key,
+    'api_key' => $api_key.unwrap,
     'dd_url' => $dd_url,
     'site' => $datadog_site,
     'cmd_port' => $cmd_port,

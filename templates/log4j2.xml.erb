@@ -5,14 +5,14 @@
                  fileName="/var/log/tomcat/<%= @application_name %>.log"
                  filePattern="/var/log/tomcat/<%= @application_name %>-%d{yyyy-MM-dd-HH-mm-ss}.log.gz"
                  ignoreExceptions="false">
-      <JsonLayout compact="true" properties="true" eventEol="true" stacktraceAsString="true" />
+      <JsonLayout compact="true" properties="true" eventEol="true" stacktraceAsString="true"/>
       <Policies>
-        <SizeBasedTriggeringPolicy size="250 MB"/>
+        <SizeBasedTriggeringPolicy size="256 MB"/>
       </Policies>
       <DefaultRolloverStrategy>
         <Delete basePath="/var/log/tomcat">
-          <IfFileName glob="<%= @application_name %>.*"/>
-          <IfAccumulatedFileSize exceeds="1 GB" />
+          <IfFileName glob="<%= @application_name %>-*.log.gz"/>
+          <IfAccumulatedFileSize exceeds="256 MB"/>
         </Delete>
       </DefaultRolloverStrategy>
     </RollingFile>

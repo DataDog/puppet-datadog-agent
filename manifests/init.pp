@@ -439,194 +439,95 @@ class datadog_agent (
     default:    { $_loglevel = 'INFO' }
   }
 
-  if $datadog_installer_enabled {
-    # If instrumentation is enabled and the libraries are not set, default to pinned latest versions
-    # Else, if user wants to install libraries without enabling instrumentation, use the provided libraries
-    if $apm_instrumentation_enabled and ! $apm_instrumentation_libraries {
-      $apm_instrumentation_libraries_str = join(['java:1', 'python:2', 'js:5', 'dotnet:3', 'ruby:2'], ',')
-    } elsif $apm_instrumentation_libraries {
-      $apm_instrumentation_libraries_str = join($apm_instrumentation_libraries, ',')
-    } else {
-      $apm_instrumentation_libraries_str = ''
-    }
-    # Agent version handling: the installer expects DD_AGENT_MINOR_VERSION to include the patch version.
-    # $_agent_minor_version is the minor version without the patch version.
-    # We need to add the patch version to the minor version to get the full version.
-    # If minor and patch version were not extracted (e.g. user is simply providing agent_major_version), we use an empty string for the minor version.
-    if $_agent_minor_version != undef and $_agent_patch_version != undef {
-      $_agent_minor_version_full = "${_agent_minor_version}.${_agent_patch_version}"
-    } else {
-      $_agent_minor_version_full = ''
-    }
+  # Install agent
+  if $manage_install {
     case $facts['os']['name'] {
-      'Ubuntu','Debian','Raspbian': {
-        class { 'datadog_agent::ubuntu_installer':
-          api_key                           => $api_key,
-          datadog_site                      => $datadog_site,
-          agent_major_version               => $_agent_major_version,
-          agent_minor_version               => $_agent_minor_version_full,
-          manage_agent_install              => $manage_install,
-          installer_repo_uri                => $agent_repo_uri,
-          release                           => $apt_release,
-          skip_apt_key_trusting             => $skip_apt_key_trusting,
-          apm_instrumentation_enabled       => $apm_instrumentation_enabled,
-          apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
-          remote_updates                    => $remote_updates,
-          remote_policies                   => $remote_policies,
+      'Ubuntu','Debian','Raspbian' : {
+        if $use_apt_backup_keyserver != undef or $apt_backup_keyserver != undef or $apt_keyserver != undef {
+          notify { 'apt keyserver arguments deprecation':
+            message  => '$use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver are deprecated since version 3.13.0',
+            loglevel => 'warning',
+          }
+        }
+        class { 'datadog_agent::ubuntu':
+          agent_major_version   => $_agent_major_version,
+          agent_version         => $agent_full_version,
+          agent_flavor          => $agent_flavor,
+          agent_repo_uri        => $agent_repo_uri,
+          release               => $apt_release,
+          skip_apt_key_trusting => $skip_apt_key_trusting,
         }
       }
       'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky' : {
-        class { 'datadog_agent::redhat_installer':
-          api_key                           => $api_key,
-          datadog_site                      => $datadog_site,
-          agent_major_version               => $_agent_major_version,
-          agent_minor_version               => $_agent_minor_version_full,
-          installer_repo_uri                => $agent_repo_uri,
-          rpm_repo_gpgcheck                 => $rpm_repo_gpgcheck,
-          apm_instrumentation_enabled       => $apm_instrumentation_enabled,
-          apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
-          remote_updates                    => $remote_updates,
-          remote_policies                   => $remote_policies,
+        class { 'datadog_agent::redhat':
+          agent_major_version => $_agent_major_version,
+          agent_flavor        => $agent_flavor,
+          agent_repo_uri      => $agent_repo_uri,
+          manage_repo         => $manage_repo,
+          agent_version       => $agent_full_version,
+          rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
+        }
+      }
+      'Windows' : {
+        class { 'datadog_agent::windows' :
+          agent_major_version  => $_agent_major_version,
+          agent_repo_uri       => $agent_repo_uri,
+          agent_version        => $agent_full_version,
+          msi_location         => $win_msi_location,
+          api_key              => $api_key,
+          hostname             => $host,
+          tags                 => $local_tags,
+          ensure               => $win_ensure,
+          npm_install          => $windows_npm_install,
+          ddagentuser_name     => $windows_ddagentuser_name,
+          ddagentuser_password => $windows_ddagentuser_password,
+        }
+        if ($win_ensure == absent) {
+          return() #Config files will remain unchanged on uninstall
         }
       }
       'OpenSuSE', 'SLES' : {
-        class { 'datadog_agent::suse_installer':
-          api_key                           => $api_key,
-          datadog_site                      => $datadog_site,
-          agent_major_version               => $_agent_major_version,
-          agent_minor_version               => $_agent_minor_version_full,
-          installer_repo_uri                => $agent_repo_uri,
-          rpm_repo_gpgcheck                 => $rpm_repo_gpgcheck,
-          apm_instrumentation_enabled       => $apm_instrumentation_enabled,
-          apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
-          remote_updates                    => $remote_updates,
-          remote_policies                   => $remote_policies,
+        class { 'datadog_agent::suse' :
+          agent_major_version => $_agent_major_version,
+          agent_flavor        => $agent_flavor,
+          agent_repo_uri      => $agent_repo_uri,
+          agent_version       => $agent_full_version,
+          rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
         }
       }
-      default: { fail("Class[datadog_agent::installer]: Unsupported operatingsystem: ${facts['os']['name']}") }
+      default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${facts['os']['name']}") }
     }
-  }
-
-  # If the agent is managed by the installer, we don't need to manage the agent installation
-  $_agent_managed_by_installer = ($datadog_installer_enabled and $remote_updates)
-
-  # Install agent
-  if ! $_agent_managed_by_installer {
-    if $manage_install {
-      case $facts['os']['name'] {
-        'Ubuntu','Debian','Raspbian' : {
-          if $use_apt_backup_keyserver != undef or $apt_backup_keyserver != undef or $apt_keyserver != undef {
-            notify { 'apt keyserver arguments deprecation':
-              message  => '$use_apt_backup_keyserver, $apt_backup_keyserver and $apt_keyserver are deprecated since version 3.13.0',
-              loglevel => 'warning',
-            }
-          }
-          class { 'datadog_agent::ubuntu':
-            agent_major_version   => $_agent_major_version,
-            agent_version         => $agent_full_version,
-            agent_flavor          => $agent_flavor,
-            agent_repo_uri        => $agent_repo_uri,
-            release               => $apt_release,
-            skip_apt_key_trusting => $skip_apt_key_trusting,
-          }
-        }
-        'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky' : {
-          class { 'datadog_agent::redhat':
-            agent_major_version => $_agent_major_version,
-            agent_flavor        => $agent_flavor,
-            agent_repo_uri      => $agent_repo_uri,
-            manage_repo         => $manage_repo,
-            agent_version       => $agent_full_version,
-            rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
-          }
-        }
-        'Windows' : {
-          class { 'datadog_agent::windows' :
-            agent_major_version  => $_agent_major_version,
-            agent_repo_uri       => $agent_repo_uri,
-            agent_version        => $agent_full_version,
-            msi_location         => $win_msi_location,
-            api_key              => $api_key,
-            hostname             => $host,
-            tags                 => $local_tags,
-            ensure               => $win_ensure,
-            npm_install          => $windows_npm_install,
-            ddagentuser_name     => $windows_ddagentuser_name,
-            ddagentuser_password => $windows_ddagentuser_password,
-          }
-          if ($win_ensure == absent) {
-            return() #Config files will remain unchanged on uninstall
-          }
-        }
-        'OpenSuSE', 'SLES' : {
-          class { 'datadog_agent::suse' :
-            agent_major_version => $_agent_major_version,
-            agent_flavor        => $agent_flavor,
-            agent_repo_uri      => $agent_repo_uri,
-            agent_version       => $agent_full_version,
-            rpm_repo_gpgcheck   => $rpm_repo_gpgcheck,
-          }
-        }
-        default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${facts['os']['name']}") }
-      }
-    } else {
-      if ! defined(Package[$agent_flavor]) {
-        package { $agent_flavor:
-          ensure => present,
-          source => 'Agent installation not managed by Puppet, make sure the Agent is installed beforehand.',
-        }
+  } else {
+    if ! defined(Package[$agent_flavor]) {
+      package { $agent_flavor:
+        ensure => present,
+        source => 'Agent installation not managed by Puppet, make sure the Agent is installed beforehand.',
       }
     }
   }
 
   # Declare service
-  if ! $_agent_managed_by_installer {
-    class { 'datadog_agent::service' :
-      agent_flavor     => $agent_flavor,
-      service_ensure   => $service_ensure,
-      service_enable   => $service_enable,
-      service_provider => $service_provider,
-    }
-    if ($facts['os']['name'] != 'Windows') {
-      if ($dd_groups) {
-        user { $dd_user:
-          groups => $dd_groups,
-          notify => Service[$datadog_agent::params::service_name],
-        }
+  class { 'datadog_agent::service' :
+    agent_flavor     => $agent_flavor,
+    service_ensure   => $service_ensure,
+    service_enable   => $service_enable,
+    service_provider => $service_provider,
+  }
+  if ($facts['os']['name'] != 'Windows') {
+    if ($dd_groups) {
+      user { $dd_user:
+        groups => $dd_groups,
+        notify => Service[$datadog_agent::params::service_name],
       }
+    }
 
-      # required by reports even in agent5 scenario
-      file { '/etc/datadog-agent':
-        ensure  => directory,
-        owner   => $dd_user,
-        group   => $dd_group,
-        mode    => $datadog_agent::params::permissions_directory,
-        require => Package[$agent_flavor],
-      }
-    }
-  } else {
-    class { 'datadog_agent::service' :
-      # Declare service for agent managed by installer with installer flavor
-      agent_flavor     => 'datadog-installer',
-      service_ensure   => $service_ensure,
-      service_enable   => $service_enable,
-      service_provider => $service_provider,
-    }
-    if ($facts['os']['name'] != 'Windows') {
-      if ($dd_groups) {
-        user { $dd_user:
-          groups => $dd_groups,
-          notify => Service[$datadog_agent::params::service_name],
-        }
-      }
-      # required to manage config and install info files even with installer
-      file { '/etc/datadog-agent':
-        ensure  => directory,
-        owner   => $dd_user,
-        group   => $dd_group,
-        mode    => $datadog_agent::params::permissions_directory,
-        require => Package['datadog-installer'],
-      }
+    # required by reports even in agent5 scenario
+    file { '/etc/datadog-agent':
+      ensure  => directory,
+      owner   => $dd_user,
+      group   => $dd_group,
+      mode    => $datadog_agent::params::permissions_directory,
+      require => Package[$agent_flavor],
     }
   }
 
@@ -751,10 +652,7 @@ class datadog_agent (
     force   => $conf_dir_purge,
     owner   => $dd_user,
     group   => $dd_group,
-  }
-
-  if ! $_agent_managed_by_installer {
-    File[$_conf_dir] ~> Service[$datadog_agent::params::service_name]
+    notify  => Service[$datadog_agent::params::service_name],
   }
 
   $_local_tags = datadog_agent::tag6($local_tags, false, undef)
@@ -851,4 +749,51 @@ class datadog_agent (
   }
 
   create_resources('datadog_agent::integration', $local_integrations)
+
+  # Install the deprecated RPM/DEB installer if APM instrumentation is enabled
+  if $datadog_installer_enabled {
+    # If instrumentation is enabled and the libraries are not set, default to pinned latest versions
+    # Else, if user wants to install libraries without enabling instrumentation, use the provided libraries
+    if $apm_instrumentation_enabled and ! $apm_instrumentation_libraries {
+      $apm_instrumentation_libraries_str = join(['java:1', 'python:2', 'js:5', 'dotnet:3', 'ruby:2'], ',')
+    } elsif $apm_instrumentation_libraries {
+      $apm_instrumentation_libraries_str = join($apm_instrumentation_libraries, ',')
+    } else {
+      $apm_instrumentation_libraries_str = ''
+    }
+    case $facts['os']['name'] {
+      'Ubuntu','Debian','Raspbian': {
+        class { 'datadog_agent::ubuntu_installer':
+          api_key                           => $api_key,
+          datadog_site                      => $datadog_site,
+          installer_repo_uri                => $agent_repo_uri,
+          release                           => $apt_release,
+          skip_apt_key_trusting             => $skip_apt_key_trusting,
+          apm_instrumentation_enabled       => $apm_instrumentation_enabled,
+          apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
+        }
+      }
+      'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky' : {
+        class { 'datadog_agent::redhat_installer':
+          api_key                           => $api_key,
+          datadog_site                      => $datadog_site,
+          installer_repo_uri                => $agent_repo_uri,
+          rpm_repo_gpgcheck                 => $rpm_repo_gpgcheck,
+          apm_instrumentation_enabled       => $apm_instrumentation_enabled,
+          apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
+        }
+      }
+      'OpenSuSE', 'SLES' : {
+        class { 'datadog_agent::suse_installer':
+          api_key                           => $api_key,
+          datadog_site                      => $datadog_site,
+          installer_repo_uri                => $agent_repo_uri,
+          rpm_repo_gpgcheck                 => $rpm_repo_gpgcheck,
+          apm_instrumentation_enabled       => $apm_instrumentation_enabled,
+          apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
+        }
+      }
+      default: { fail("Class[datadog_agent::installer]: Unsupported operatingsystem: ${facts['os']['name']}") }
+    }
+  }
 }

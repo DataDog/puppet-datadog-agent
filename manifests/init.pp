@@ -507,9 +507,15 @@ class datadog_agent (
   }
 
   # Declare service
+  if ($facts['os']['name'] != 'Windows' and $facts['datadog_agent_exp_active'] == true) {
+    $_service_ensure = 'stopped'
+  } else {
+    $_service_ensure = $service_ensure
+  }
+
   class { 'datadog_agent::service' :
     agent_flavor     => $agent_flavor,
-    service_ensure   => $service_ensure,
+    service_ensure   => $_service_ensure,
     service_enable   => $service_enable,
     service_provider => $service_provider,
   }

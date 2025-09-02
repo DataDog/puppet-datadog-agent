@@ -1,22 +1,21 @@
 Facter.add(:datadog_agent_exp_active) do
   confine kernel: 'Linux'
   setcode do
-    # Prefer systemd when available
+    active = false
+
+    # Determine via service manager when available
     if Facter::Util::Resolution.which('systemctl')
-      return true if system('systemctl is-active --quiet datadog-agent-exp')
+      active = system('systemctl is-active --quiet datadog-agent-exp')
+    elsif Facter::Util::Resolution.which('service')
+      active = system('service datadog-agent-exp status >/dev/null 2>&1')
+    else
+      # Fallback: look for the experiment agent binary as the running command (exact path prefix)
+      if Facter::Util::Resolution.which('pgrep')
+        active = system('pgrep -f "^/opt/datadog-packages/datadog-agent/experiment/bin/agent/agent( |$)" >/dev/null 2>&1')
+      end
     end
 
-    # SysV-compatible service command
-    if Facter::Util::Resolution.which('service')
-      return true if system('service datadog-agent-exp status >/dev/null 2>&1')
-    end
-
-    # Fallback: look for the experiment agent process by its binary path substring
-    if Facter::Util::Resolution.which('pgrep')
-      return true if system('pgrep -f datadog-packages/datadog-agent/experiment/bin/agent/agent >/dev/null 2>&1')
-    end
-
-    false
+    active
   end
 end
 

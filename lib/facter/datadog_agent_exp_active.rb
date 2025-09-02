@@ -8,15 +8,11 @@ Facter.add(:datadog_agent_exp_active) do
       active = system('systemctl is-active --quiet datadog-agent-exp')
     elsif Facter::Util::Resolution.which('service')
       active = system('service datadog-agent-exp status >/dev/null 2>&1')
-    else
+    elsif Facter::Util::Resolution.which('pgrep')
       # Fallback: look for the experiment agent binary as the running command (exact path prefix)
-      if Facter::Util::Resolution.which('pgrep')
-        active = system('pgrep -f "^/opt/datadog-packages/datadog-agent/experiment/bin/agent/agent( |$)" >/dev/null 2>&1')
-      end
+      active = system('pgrep -f "^/opt/datadog-packages/datadog-agent/experiment/bin/agent/agent( |$)" >/dev/null 2>&1')
     end
 
     active
   end
 end
-
-

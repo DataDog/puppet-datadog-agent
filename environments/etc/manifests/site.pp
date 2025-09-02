@@ -1,6 +1,8 @@
 node default {
   class { 'datadog_agent':
     api_key             => 'somenonnullapikeythats32charlong',
+    # Pin the Agent version to 7.64.3 to avoid breaking changes in postint for kitchen tests
+    agent_version       => '7.64.3',
     agent_extra_options => {
       use_http => true,
     },

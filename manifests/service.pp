@@ -23,6 +23,8 @@ class datadog_agent::service (
         provider  => $service_provider,
         hasstatus => false,
         pattern   => 'dd-agent',
+        # Skip restart if the experiment service is running
+        restart   => ['/bin/sh', '-c', 'if command -v systemctl >/dev/null 2>&1; then systemctl is-active --quiet datadog-agent-exp && exit 0; fi; if command -v service >/dev/null 2>&1; then service datadog-agent-exp status >/dev/null 2>&1 && exit 0; fi; pgrep -f datadog-packages/datadog-agent/experiment/bin/agent/agent >/dev/null 2>&1 && exit 0; systemctl restart datadog-agent 2>/dev/null || service datadog-agent restart 2>/dev/null || /bin/true'],
         require   => Package[$agent_flavor],
       }
     } else {
@@ -31,6 +33,8 @@ class datadog_agent::service (
         enable    => $service_enable,
         hasstatus => false,
         pattern   => 'dd-agent',
+        # Skip restart if the experiment service is running
+        restart   => ['/bin/sh', '-c', 'if command -v systemctl >/dev/null 2>&1; then systemctl is-active --quiet datadog-agent-exp && exit 0; fi; if command -v service >/dev/null 2>&1; then service datadog-agent-exp status >/dev/null 2>&1 && exit 0; fi; pgrep -f datadog-packages/datadog-agent/experiment/bin/agent/agent >/dev/null 2>&1 && exit 0; systemctl restart datadog-agent 2>/dev/null || service datadog-agent restart 2>/dev/null || /bin/true'],
         require   => Package[$agent_flavor],
       }
     }

@@ -5,6 +5,11 @@ Changes
 <!-- markdownlint-disable MD003 -->
 <!-- markdownlint-disable MD001 -->
 
+# 4.1.0 / 2025-09-08
+
+* [FEATURE] Support Remote Agent updates with Fleet Automation ([#866]).
+* [CHORE] Fix CI Kitchen tests by including `libyaml-dev` installation required by `psych` sub-dependency ([#868]).
+
 # 4.0.3 / 2025-04-14
 
 * [BUGFIX] Handle Windows Agent pinned version above 7.46 ([#860]).
@@ -999,6 +1004,8 @@ Please read the [docs]() for more details.
 [#852]: https://github.com/DataDog/puppet-datadog-agent/issues/852
 [#856]: https://github.com/DataDog/puppet-datadog-agent/issues/856
 [#860]: https://github.com/DataDog/puppet-datadog-agent/issues/860
+[#866]: https://github.com/DataDog/puppet-datadog-agent/issues/866
+[#867]: https://github.com/DataDog/puppet-datadog-agent/issues/868
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

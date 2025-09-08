@@ -89,6 +89,8 @@ platforms:
     - rpm -Uvh https://yum.puppet.com/puppet8-release-el-9.noarch.rpm #installs the puppet-agent repo
     - yum install -y puppet-agent-8.10.0 rubygems ruby-devel procps-ng
     - dnf group install -y "Development Tools"
+    - dnf install -y dnf-plugins-core
+    - dnf config-manager --set-enabled crb
     - dnf install -y libyaml-devel
     - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
@@ -118,6 +120,8 @@ platforms:
     - rpm -Uvh https://yum.puppet.com/puppet8-release-el-9.noarch.rpm #installs the puppet-agent repo
     - yum install -y puppet-agent-8.10.0 rubygems ruby-devel procps-ng
     - dnf group install -y "Development Tools" --nobest
+    - dnf install -y dnf-plugins-core
+    - dnf config-manager --set-enabled crb
     - dnf install -y libyaml-devel
     - ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 

@@ -3,26 +3,18 @@
 #
 # @param api_key String:Your DataDog API Key.
 # @param datadog_site String: The site of the Datadog intake to send Agent data to. Defaults to 'datadoghq.com'.
-# @param agent_major_version Integer: The major version of the Datadog agent to install. Defaults to 7.
-# @param agent_minor_version Optional[String]: The minor version of the Datadog agent to install.
 # @param installer_repo_uri Optional[String]: The URI of the installer repository.
 # @param release String: The distribution channel to be used for the APT repo. Eg: 'stable' or 'beta'. Default: stable.
 # @param skip_apt_key_trusting Boolean: Skip trusting the apt key. Default is false.
-# @param manage_agent_install Boolean: Whether Puppet should manage the regular Agent installation. Default is true (inherited from $manage_install).
 # @param apt_trusted_d_keyring String: The path to the trusted keyring file.
 # @param apt_usr_share_keyring String: The path to the keyring file in /usr/share.
 # @param apt_default_keys Hash[String, String]: A hash of default APT keys and their URLs.
 # @param apm_instrumentation_enabled Optional[Enum['host', 'docker', 'all']]: Enable APM instrumentation for the specified environment (host, docker, or all).
 # @param apm_instrumentation_libraries_str Optional[String]: APM instrumentation libraries as a comma-separated string.
-# @param remote_updates Boolean: Whether to enable Agent remote updates. Default: false.
-# @param remote_policies Boolean: Whether to enable Agent remote policies. Default: false.
 #
 class datadog_agent::ubuntu_installer (
   String $api_key = 'your_API_key',
   String $datadog_site = $datadog_agent::params::datadog_site,
-  Integer $agent_major_version = $datadog_agent::params::default_agent_major_version,
-  Optional[String] $agent_minor_version = undef,
-  Boolean $manage_agent_install = true,
   Optional[String] $installer_repo_uri = undef,
   String $release = $datadog_agent::params::apt_default_release,
   Boolean $skip_apt_key_trusting = false,
@@ -43,8 +35,6 @@ class datadog_agent::ubuntu_installer (
   },
   Optional[Enum['host', 'docker', 'all']] $apm_instrumentation_enabled = undef,
   Optional[String] $apm_instrumentation_libraries_str = undef,
-  Boolean $remote_updates = $datadog_agent::params::remote_updates,
-  Boolean $remote_policies = $datadog_agent::params::remote_policies,
 ) inherits datadog_agent::params {
   # Generate installer trace ID as a random 64-bit integer (Puppet does not support 128-bit integers)
   # Note: we cannot use fqdn_rand as the seed is dependent on the node, meaning the same trace ID would be generated on each run (for the same node)
@@ -65,7 +55,7 @@ class datadog_agent::ubuntu_installer (
   }
 
   # Do not re-install keys as it is already managed in `ubuntu.pp`
-  if ! $manage_agent_install {
+  if ! $datadog_agent::manage_install {
     if !$skip_apt_key_trusting {
       stdlib::ensure_packages(['gnupg'])
 
@@ -135,27 +125,10 @@ class datadog_agent::ubuntu_installer (
     environment => [
       "DD_SITE=${datadog_site}",
       "DD_API_KEY=${api_key}",
-      "DD_AGENT_MAJOR_VERSION=${agent_major_version}",
-      "DD_AGENT_MINOR_VERSION=${agent_minor_version}",
-      "DD_REMOTE_UPDATES=${remote_updates}",
-      "DD_REMOTE_POLICIES=${remote_policies}",
       "DD_APM_INSTRUMENTATION_ENABLED=${apm_instrumentation_enabled}",
       "DD_APM_INSTRUMENTATION_LIBRARIES=${apm_instrumentation_libraries_str}",
     ],
     require     => Package['datadog-installer'],
-  }
-
-  # Check if installer owns the Datadog Agent package
-  exec {
-    'Check if installer owns the Datadog Agent package':
-      command     => '/usr/bin/datadog-installer is-installed datadog-agent',
-      environment => [
-        "DD_SITE=${datadog_site}",
-        "DD_API_KEY=${api_key}",
-      ],
-      # We allow 0, 10 (package not installed)
-      returns     => [0, 10],
-      require     => Exec['Bootstrap the installer'],
   }
 
   # Check if installer owns APM libraries
@@ -181,15 +154,10 @@ class datadog_agent::ubuntu_installer (
     require => Exec['Bootstrap the installer'],
   }
 
-  if $remote_updates {
-    $packages_to_install = "datadog-agent,${apm_instrumentation_libraries_str}"
-  } else {
-    $packages_to_install = $apm_instrumentation_libraries_str
-  }
   class { 'datadog_agent::installer_telemetry':
     api_key             => $api_key,
     datadog_site        => $datadog_site,
-    packages_to_install => $packages_to_install,
+    packages_to_install => $apm_instrumentation_libraries_str,
     require             => Exec['End timer'],
   }
 }

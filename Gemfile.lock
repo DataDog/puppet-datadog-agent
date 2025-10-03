@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/fanny-jiang/kitchen-docker.git
+  revision: 462d59525df844e0ad291bbea2b9a40c45beaf65
+  branch: fanny/remove-dsa
+  specs:
+    kitchen-docker (3.0.0)
+      test-kitchen (>= 1.0.0, < 4.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -128,8 +136,6 @@ GEM
       bigdecimal (~> 3.1)
     jwt (2.10.1)
       base64
-    kitchen-docker (3.0.0)
-      test-kitchen (>= 1.0.0)
     kitchen-puppet (3.7.0)
       librarian-puppet (>= 3.0)
       net-ssh (>= 3)
@@ -518,7 +524,7 @@ DEPENDENCIES
   facterdb (~> 3.4.0)
   io-console (= 0.7.2)
   json (= 2.6.3)
-  kitchen-docker (~> 3.0.0)
+  kitchen-docker!
   kitchen-puppet
   kitchen-verifier-serverspec
   librarian-puppet (~> 5.0)

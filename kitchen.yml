@@ -75,7 +75,7 @@ platforms:
 
 - name: centos-stream9-puppet-8
   driver:
-    image: 'datadog/docker-library:chef_kitchen_systemd_centos_9'
+    image: 'fannyatdd/centos:stream9'
     platform: centosstream
     docker_platform: linux/amd64
     privileged: true

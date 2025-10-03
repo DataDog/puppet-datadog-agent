@@ -444,10 +444,9 @@ class datadog_agent (
     # Ensure legacy Python bytecode cache directory is removed before Agent package installation (Linux only)
     if ($facts['os']['name'] != 'Windows' and $facts['os']['family'] != 'Darwin') {
       file { '/opt/datadog-agent/python-scripts/__pycache__':
-        ensure  => absent,
-        recurse => true,
-        force   => true,
-        before  => Package[$agent_flavor],
+        ensure => absent,
+        force  => true,
+        before => Package[$agent_flavor],
       }
     }
     case $facts['os']['name'] {

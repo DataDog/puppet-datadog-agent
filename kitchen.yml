@@ -76,6 +76,8 @@ platforms:
 - name: centos-stream9-puppet-8
   driver:
     image: 'datadog/docker-library:chef_kitchen_systemd_centos_9'
+    build_context: 'kitchen/dockerfiles'
+    dockerfile: 'centos9.Dockerfile'
     platform: centosstream
     docker_platform: linux/amd64
     privileged: true
@@ -106,6 +108,8 @@ platforms:
 - name: rocky-9-puppet-8
   driver:
     image: 'datadog/docker-library:chef_kitchen_systemd_rocky_9'
+    build_context: 'kitchen/dockerfiles'
+    dockerfile: 'rocky9.Dockerfile'
     platform: rhel # kitchen-docker has issues installing packages otherwises
     docker_platform: linux/amd64
     privileged: true

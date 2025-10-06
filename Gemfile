@@ -30,7 +30,7 @@ group :development do
   gem "rb-readline", '= 0.5.5',                  require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "bcrypt_pbkdf", '= 1.0.1',                 require: false
   gem "kitchen-puppet"
-  gem "kitchen-docker", '~> 3.0.0',              require: false
+  gem "kitchen-docker", git: "https://github.com/DataDog/kitchen-docker.git", branch: 'main', require: false
   gem "kitchen-verifier-serverspec"
   gem "rexml", '~> 3.4.0',                       require: false
   gem "mixlib-shellout", "~> 2.2.7",             platforms: [:ruby]

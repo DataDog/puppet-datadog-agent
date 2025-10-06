@@ -1,6 +1,7 @@
 GIT
   remote: https://github.com/DataDog/kitchen-docker.git
-  revision: 35c3bac8c0922fced70aeab3dbba3ef467aa5b05
+  revision: ef614e7789c947825cb5774cde03b0ffbbb8563a
+  branch: main
   specs:
     kitchen-docker (3.0.0)
       test-kitchen (>= 1.0.0, < 4.0)

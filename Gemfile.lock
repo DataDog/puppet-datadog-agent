@@ -1,6 +1,6 @@
 GIT
-  remote: https://github.com/fanny-jiang/kitchen-docker.git
-  revision: 462d59525df844e0ad291bbea2b9a40c45beaf65
+  remote: https://github.com/DataDog/kitchen-docker.git
+  revision: 35c3bac8c0922fced70aeab3dbba3ef467aa5b05
   branch: fanny/remove-dsa
   specs:
     kitchen-docker (3.0.0)

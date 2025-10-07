@@ -5,6 +5,10 @@ Changes
 <!-- markdownlint-disable MD003 -->
 <!-- markdownlint-disable MD001 -->
 
+# 4.1.1 / 2025-10-07
+* [CHORE] Remove pycache directory during upgrades ([#871]).
+* [CHORE] Fix CI Kitchen tests by using fork of kitchen-docker driver ([#873]).
+
 # 4.1.0 / 2025-09-08
 
 * [FEATURE] Support Remote Agent updates with Fleet Automation ([#866]).
@@ -1005,7 +1009,10 @@ Please read the [docs]() for more details.
 [#856]: https://github.com/DataDog/puppet-datadog-agent/issues/856
 [#860]: https://github.com/DataDog/puppet-datadog-agent/issues/860
 [#866]: https://github.com/DataDog/puppet-datadog-agent/issues/866
-[#867]: https://github.com/DataDog/puppet-datadog-agent/issues/868
+[#867]: https://github.com/DataDog/puppet-datadog-agent/issues/867
+[#868]: https://github.com/DataDog/puppet-datadog-agent/issues/868
+[#871]: https://github.com/DataDog/puppet-datadog-agent/issues/871
+[#873]: https://github.com/DataDog/puppet-datadog-agent/issues/873
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni

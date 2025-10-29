@@ -12,7 +12,7 @@ require 'spec_helper_local' if File.file?(File.join(File.dirname(__FILE__), 'spe
 include RspecPuppetFacts
 
 DEBIAN_OS = ['Ubuntu', 'Debian'].freeze
-REDHAT_OS = ['RedHat', 'CentOS', 'Fedora', 'Amazon', 'Scientific', 'OracleLinux', 'AlmaLinux', 'Rocky'].freeze
+REDHAT_OS = ['RedHat', 'CentOS', 'Fedora', 'Amazon', 'Scientific', 'OracleLinux', 'AlmaLinux', 'Rocky', 'XCP-ng'].freeze
 WINDOWS_OS = ['Windows'].freeze
 
 if RSpec::Support::OS.windows?

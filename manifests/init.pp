@@ -466,7 +466,7 @@ class datadog_agent (
           skip_apt_key_trusting => $skip_apt_key_trusting,
         }
       }
-      'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky' : {
+      'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky', 'XCP-ng' : {
         class { 'datadog_agent::redhat':
           agent_major_version => $_agent_major_version,
           agent_flavor        => $agent_flavor,
@@ -787,7 +787,7 @@ class datadog_agent (
           apm_instrumentation_libraries_str => $apm_instrumentation_libraries_str,
         }
       }
-      'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky' : {
+      'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux','AlmaLinux','Rocky', 'XCP-ng' : {
         class { 'datadog_agent::redhat_installer':
           api_key                           => $api_key,
           datadog_site                      => $datadog_site,

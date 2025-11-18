@@ -55,7 +55,7 @@ class datadog_agent::params {
       $permissions_protected_file = '0600'
       $agent_binary               = '/opt/datadog-agent/bin/agent/agent'
     }
-    'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux', 'AlmaLinux', 'Rocky', 'OpenSuSE', 'SLES' : {
+    'RedHat','CentOS','Fedora','Amazon','Scientific','OracleLinux', 'AlmaLinux', 'Rocky', 'OpenSuSE', 'SLES', 'XCP-ng' : {
       $rubydev_package            = 'ruby-devel'
       $ruby_package               = 'ruby'
       $rubygems_package           = 'rubygems'

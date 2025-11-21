@@ -2,19 +2,26 @@
 #
 # This class will install the necessary configuration for the mongo integration
 #
+# See the sample mongo.d/conf.yaml for all available configuration options
+# https://github.com/DataDog/integrations-core/blob/master/mongo/datadog_checks/mongo/data/conf.yaml.example
+#
 # NOTE: In newer versions of the Datadog Agent, the ssl parameters will be deprecated in favor the tls variants
 #
 # Parameters:
+#   $hosts
+#       Array of hosts host (and optional port number) where the mongod instance is running
+#   $dbm
+#       Enable the Database Monitoring feature
+#   $database_autodiscovery
+#       Enable the Database Autodiscovery feature
+#   $reported_database_hostname
+#       Optional database hostname override the mongodb hostname detected by the Agent from mongodb admin command serverStatus
 #   $additional_metrics
 #       Optional array of additional metrics
 #   $database
 #       Optionally specify database to query. Defaults to 'admin'
-#   $host:
-#       The host mongo is running on. Defaults to '127.0.0.1'
 #   $password
 #       Optionally specify password for connection
-#   $port
-#       The port mongo is running on. Defaults to 27017
 #   $ssl
 #       Optionally enable SSL for connection
 #   $ssl_ca_certs
@@ -37,6 +44,12 @@
 #       Optional array of tags
 #   $username
 #       Optionally specify username for connection
+#   $host:
+#       Deprecated use $hosts instead
+#       The host mongo is running on. Defaults to '127.0.0.1'
+#   $port
+#       Deprecated use $hosts instead
+#       The port mongo is running on. Defaults to 27017
 #
 # Sample Usage (Older Agent Versions):
 #
@@ -73,19 +86,20 @@
 #      {
 #        'additional_metrics' => ['top'],
 #        'database'           => 'database_name',
-#        'host'               => 'localhost',
+#        'hosts'              => ['localhost:27017'],
 #        'password'           => 'mongo_password',
-#        'port'               => '27017',
 #        'tls'                => true,
 #        'tls_ca_file'       => '/path/to/ca.pem',
 #        'tls_allow_invalid_certificates'      => false,
 #        'tls_certificate_key_file'       => '/path/to/combined.pem',
 #        'tags'               => ['optional_tag1', 'optional_tag2'],
 #        'username'           => 'mongo_username',
+#        'dbm'                => true,
+#        'database_autodiscovery' => {'enabled' => true},
+#        'reported_database_hostname' => 'mymongodbhost',
 #      },
 #      {
-#        'host'               => 'localhost',
-#        'port'               => '27018',
+#        'hosts'              => ['localhost:27017'],
 #        'tags'               => [],
 #        'additional_metrics' => [],
 #        'collections'        => [],

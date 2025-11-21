@@ -1,6 +1,10 @@
 Changes
 =======
 
+# Unreleased
+
+* [BUGFIX] Backport MongoDB hosts array support from main to fix broken connection strings with modern configuration format
+
 # 3.24.0 / 2025-02-25
 
 * [BUGFIX] Fix incorrect SSL parameter data type for postgres integration ([#824])

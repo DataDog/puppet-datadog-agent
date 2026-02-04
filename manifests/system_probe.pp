@@ -35,8 +35,8 @@ class datadog_agent::system_probe (
 
   if $facts['os']['name'] == 'Windows' {
     file { 'C:/ProgramData/Datadog/system-probe.yaml':
-      owner   => $datadog_agent::params::dd_user,
-      group   => $datadog_agent::params::dd_group,
+      owner   => $datadog_agent::dd_user,
+      group   => $datadog_agent::dd_group,
       mode    => '0640',
       content => template('datadog_agent/system_probe.yaml.erb'),
       require => File['C:/ProgramData/Datadog'],

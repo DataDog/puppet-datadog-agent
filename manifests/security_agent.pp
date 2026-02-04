@@ -20,8 +20,8 @@ class datadog_agent::security_agent (
 
   if $facts['os']['name'] == 'Windows' {
     file { 'C:/ProgramData/Datadog/security-agent.yaml':
-      owner   => $datadog_agent::params::dd_user,
-      group   => $datadog_agent::params::dd_group,
+      owner   => $datadog_agent::dd_user,
+      group   => $datadog_agent::dd_group,
       mode    => '0640',
       content => template('datadog_agent/security-agent.yaml.erb'),
       require => File['C:/ProgramData/Datadog'],

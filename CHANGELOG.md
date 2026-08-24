@@ -5,6 +5,13 @@ Changes
 <!-- markdownlint-disable MD003 -->
 <!-- markdownlint-disable MD001 -->
 
+# 4.2.0 / 2026-08-24
+
+* [FEATURE] Add XCP-ng support as a RedHat-based operating system ([#878])(thanks [@meltingrobot]).
+* [BUGFIX] Honor the configured Windows Agent user and group for security-agent and system-probe configuration files ([#880])(thanks [@BarnumD]).
+* [CHORE] Pin GitHub Actions to immutable commit SHAs ([#881]).
+* [CHORE] Add Telemetry Onboarding as a code owner and fix Kitchen tests ([#882]).
+
 # 4.1.1 / 2025-10-07
 * [CHORE] Remove pycache directory during upgrades ([#871]).
 * [CHORE] Fix CI Kitchen tests by using fork of kitchen-docker driver ([#873]).
@@ -1013,8 +1020,13 @@ Please read the [docs]() for more details.
 [#868]: https://github.com/DataDog/puppet-datadog-agent/issues/868
 [#871]: https://github.com/DataDog/puppet-datadog-agent/issues/871
 [#873]: https://github.com/DataDog/puppet-datadog-agent/issues/873
+[#878]: https://github.com/DataDog/puppet-datadog-agent/issues/878
+[#880]: https://github.com/DataDog/puppet-datadog-agent/issues/880
+[#881]: https://github.com/DataDog/puppet-datadog-agent/issues/881
+[#882]: https://github.com/DataDog/puppet-datadog-agent/issues/882
 [@Aramack]: https://github.com/Aramack
 [@BIAndrews]: https://github.com/BIAndrews
+[@BarnumD]: https://github.com/BarnumD
 [@ChannoneArif-nbcuni]: https://github.com/ChannoneArif-nbcuni
 [@ColinHebert]: https://github.com/ColinHebert
 [@ColinHerbert]: https://github.com/ColinHerbert
@@ -1096,6 +1108,7 @@ Please read the [docs]() for more details.
 [@lowkeyshift]: https://github.com/lowkeyshift
 [@lu-zhengda]: https://github.com/lu-zhengda
 [@mcasper]: https://github.com/mcasper
+[@meltingrobot]: https://github.com/meltingrobot
 [@milescrabill]: https://github.com/milescrabill
 [@mraylu]: https://github.com/mraylu
 [@mrunkel-ut]: https://github.com/mrunkel-ut

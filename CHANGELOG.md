@@ -5,7 +5,7 @@ Changes
 <!-- markdownlint-disable MD003 -->
 <!-- markdownlint-disable MD001 -->
 
-# 4.2.0 / 2026-08-24
+# 4.2.0 / 2026-08-28
 
 * [FEATURE] Add XCP-ng support as a RedHat-based operating system ([#878])(thanks [@meltingrobot]).
 * [BUGFIX] Honor the configured Windows Agent user and group for security-agent and system-probe configuration files ([#880])(thanks [@BarnumD]).

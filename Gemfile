@@ -32,7 +32,7 @@ group :development do
   gem "kitchen-puppet"
   gem "kitchen-docker", git: "https://github.com/DataDog/kitchen-docker.git", branch: 'main', require: false
   gem "kitchen-verifier-serverspec"
-  gem "rexml", '~> 3.4.0',                       require: false
+  gem "rexml", '~> 3.4.2',                       require: false
   gem "mixlib-shellout", "~> 2.2.7",             platforms: [:ruby]
   if ruby_version >= Gem::Version.new('2.5') && ruby_version < Gem::Version.new('3.1')
     gem "test-kitchen", '= 3.0.0', platforms: [:ruby]
